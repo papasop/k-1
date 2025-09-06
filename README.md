@@ -50,7 +50,19 @@ The Colab notebook verifies the following:
 9. **Non-Abelian extension**:  
    - Directional SCI (\(\SU(2)\))  
    - Wilson line ordering
+=== A. U(1) core verifications ===
+[Theorem ω=0] mean(K)=1.000000, std(K)=2.57e-14
+[eq:Kdef] mean(K-1)=4.00e-05, rel.err=2.08e-06
+[eq:omegalin] approx=4.00e-05, rel.err=2.21e-05
+[eq:holonomy] Theta(final)=9.00e-04
+[eq:threshold] 未越阈
 
----
+=== B. Information geometry ===
+[eq:curvcert] H''(1)=-1.644934, target=-π²/6
+[eq:drift] numeric=6.079276e-01, theory=6.079271e-01
+
+=== C. Non-Abelian (SU(2)) ===
+[Directional SCI] mean rel.err=1.01e-02
+[Wilson line] Δφ=0.000e+00
 
 
