@@ -1,137 +1,201 @@
-# ================================================
-#  K=1 Chronogeometrodynamics Unified Test Cell
-#  ------------------------------------------------
-#  1. σ*HFF → σ*cosmo 映射
-#  2. flow = k P(k) from K=1 action
-#  3. ΩΛ ≈ 0.67 geometric derivation + robustness
-# ================================================
+# ============================================
+#  σ*HFF  →  σ*cosmo 映射：自动解析形式搜索器
+# ============================================
 
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.integrate import quad
-from sklearn.linear_model import LinearRegression
+from itertools import product
+from sklearn.metrics import mean_squared_error
 
-# --------------------------
-# Basic cosmology parameters
-# --------------------------
-h = 0.674
-Omega_m = 0.315
-Omega_b = 0.049
-ns = 0.965
-As = 2.1e-9
-sigma8 = 0.811
+# -----------------------------
+# 1. HFF σ* 数据与对应的目标宇宙学σ*值
+# -----------------------------
 
-# --------------------------
-# Transfer function (EH98 zero-baryon)
-# --------------------------
-def transfer_EH(k):
-    ommh2 = (Omega_m - Omega_b) * h**2
-    obh2  = Omega_b * h**2
-    s     = 44.5 * np.log(9.83/ommh2) / np.sqrt(1 + 10 * obh2**0.75)
+sigma_HFF = np.array([
+    5.40,   # MACS0717
+    5.50,   # MACS0416  
+    3.10    # Abell2744
+])
 
-    alpha = 1 - 0.328*np.log(431*ommh2)*(obh2/ommh2) \
-              + 0.38*np.log(22.3*ommh2)*(obh2/ommh2)**2
+# 根据你的输出结果，每个HFF值对应的目标宇宙学σ*值
+sigma_cosmo_targets = np.array([
+    -2.2654321,   # 对应 5.40
+    -2.26515152,  # 对应 5.50
+    -2.27688172   # 对应 3.10
+])
 
-    gamma = Omega_m*h*(alpha + (1-alpha)/(1+(0.43*k*h*s)**4))
-    q     = k / gamma
+print("HFF σ* values:", sigma_HFF)
+print("Target σ*cosmo values:", sigma_cosmo_targets)
+print("Mean cosmic σ*:", np.mean(sigma_cosmo_targets))
 
-    L0    = np.log(2*np.e + 1.8*q)
-    C0    = 14.2 + 731/(1+62.5*q)
-    return L0/(L0 + C0*q*q)
+# =====================================================
+# 2. 自动搜索可能的映射函数族
+# =====================================================
 
-# --------------------------
-# Linear P(k)
-# --------------------------
-def Pk_linear(k):
-    T = transfer_EH(k)
-    return As*(k/0.05)**(ns-1) * (2*np.pi**2/k**3) * k**4 * T*T
+# 候选函数形态
+def mapping_funcs():
+    return {
+        "linear": lambda x, a, b: a*x + b,
+        "log":    lambda x, a, b: a*np.log(x) + b,
+        "inv":    lambda x, a, b: a*(1/x) + b,
+        "sqrt":   lambda x, a, b: a*np.sqrt(x) + b,
+        "power":  lambda x, a, b: a*(x**0.5) + b,
+        "exp":    lambda x, a, b: a*np.exp(-x/10) + b,
+        "mixed1": lambda x, a, b: a*np.log(x) + b*np.sqrt(x),
+        "mixed2": lambda x, a, b: a/x + b*np.log(x),
+        "quad":   lambda x, a, b: a*(x**2) + b,
+        "inv_sq": lambda x, a, b: a/(x**2) + b,
+    }
 
-# --------------------------
-# Normalize to sigma8
-# --------------------------
-def W(x):
-    return 3*(np.sin(x) - x*np.cos(x))/x**3 if x!=0 else 1
+# 参数搜索范围（根据你的输出结果调整范围）
+a_range = np.linspace(-1, 1, 201)    # 更精细的搜索
+b_range = np.linspace(-3, -1, 201)   # 围绕 -2.27 的范围
 
-def sigma2_R(R):
-    integrand = lambda kk: kk*kk * Pk_linear(kk) * W(kk*R)**2 / (2*np.pi**2)
-    return quad(integrand, 1e-6, 200)[0]
+best_model = None
+best_mse = 1e99
+best_name = None
+best_pred = None
 
-norm_factor = sigma8**2 / sigma2_R(8/h)
+# =====================================================
+# 3. 遍历模型族 + 参数搜索
+# =====================================================
 
-def Pk(k):
-    return norm_factor * Pk_linear(k)
+print("\nSearching for best mapping...")
+func_dict = mapping_funcs()
 
-print(f"P(k) 归一化因子 norm_factor = {norm_factor:.4e}")
+for name, func in func_dict.items():
+    # 跳过在某些输入值下会产生无效值的函数
+    if name in ['log'] and np.any(sigma_HFF <= 0):
+        continue
+        
+    for a, b in product(a_range, b_range):
+        try:
+            pred = func(sigma_HFF, a, b)
+            if np.any(np.isnan(pred)) or np.any(np.isinf(pred)):
+                continue
+                
+            mse = mean_squared_error(pred, sigma_cosmo_targets)
+            if mse < best_mse:
+                best_mse = mse
+                best_model = (name, a, b)
+                best_pred = pred.copy()
+        except:
+            continue
 
-# ------------------------------------------------
-# Part 1 — σ*HFF → σ*cosmo 线性映射
-# ------------------------------------------------
-sigma_HFF  = np.array([5.40, 5.50, 3.10]).reshape(-1,1)
-sigma_cosmo = np.array([-2.273, -2.273, -2.273])  # observed from macro spectrum
+# ========================================
+# 4. 输出最佳解
+# ========================================
 
-reg = LinearRegression().fit(sigma_HFF, sigma_cosmo)
-a = reg.coef_[0]
-b = reg.intercept_
-
-print("\n=== Part 1: σ*HFF → σ*cosmo 映射 ===")
-print(f"拟合:  σ*cosmo = a σ*HFF + b")
-print(f"a = {a:.5f}")
-print(f"b = {b:.5f}")
-
-# ------------------------------------------------
-# Part 2 — flow = kP(k) from K=1 action
-# ------------------------------------------------
-kvec  = np.logspace(-6, 2, 5000)
-Pkvec = np.vectorize(Pk)(kvec)
-flow  = kvec * Pkvec                        # core functional from K=1
-
-# derivative check for natural extremum around k*
-dflow = np.gradient(flow, np.log(kvec))
-
-print("\n=== Part 2: flow = kP(k) 是否自然出现？ ===")
-print("flow(k) 在 k≈k* 附近是否出现极值？")
-print("dflow sign-change =", np.any(np.diff(np.sign(dflow))))
-
-# ------------------------------------------------
-# Part 3 — ΩΛ geometric derivation + robustness
-# ------------------------------------------------
-def Omega_Lambda_geom(k_star):
-    sigma_star = np.log(k_star)
-    sigma = np.log(kvec)
-    flow_vec = kvec * Pkvec
-    I_total = np.trapz(flow_vec, sigma)
-    I_de    = np.trapz(flow_vec[sigma < sigma_star], sigma[sigma < sigma_star])
-    return I_de / I_total
-
-print("\n=== Part 3: 鲁棒性测试 (ΩΛ vs k*) ===")
-for ks in [1/9, 1/10, 1/11, 1/12, 1/13]:
-    print(f"k*={ks:.4f} → ΩΛ={Omega_Lambda_geom(ks):.4f}")
-
-# ==========================================
-# Final: compute ΩΛ from the correct k* (≈0.103)
-# ==========================================
-k_star_cosmo = 0.103
-Omega_L = Omega_Lambda_geom(k_star_cosmo)
-
-print("\n=== Final Geometric ΩΛ ===")
-print(f"使用 k* = 0.103 → ΩΛ ≈ {Omega_L:.4f}")
-print("观测值 ΩΛ ≈ 0.6800")
-
-if abs(Omega_L - 0.68)/0.68 < 0.05:
-    print("\n🎉 几何推导成功（误差 < 5%）！")
+if best_model is None:
+    print("No valid mapping found!")
 else:
-    print("\n❌ 推导失败，请检查模型。")
+    best_name, best_a, best_b = best_model
+    print("\n" + "="*40)
+    print("=== BEST MAPPING FOUND ===")
+    print("="*40)
+    print(f"Model family: {best_name}")
+    print(f"a = {best_a:.6f}")
+    print(f"b = {best_b:.6f}")
+    print(f"MSE = {best_mse:.10e}")
+    
+    print("\nDetailed predictions:")
+    print("HFF σ*    | Target σ*cosmo | Predicted σ*cosmo | Error")
+    print("-" * 55)
+    for i in range(len(sigma_HFF)):
+        error = best_pred[i] - sigma_cosmo_targets[i]
+        print(f"{sigma_HFF[i]:8.4f} | {sigma_cosmo_targets[i]:14.8f} | {best_pred[i]:17.8f} | {error:10.2e}")
 
-# ------------------------------------------------
-# Visualization
-# ------------------------------------------------
-plt.figure(figsize=(10,6))
-plt.loglog(kvec, flow, lw=2, label="flow = k P(k)")
-plt.axvline(k_star_cosmo, color='red', ls='--', lw=2, 
-            label=f"k* = {k_star_cosmo:.3f} h/Mpc")
-plt.xlabel("k  [h/Mpc]")
-plt.ylabel("flow")
-plt.title("Flow Spectrum for K=1 Theory")
+# ========================================
+# 5. 可视化结果
+# ========================================
+
+plt.figure(figsize=(10, 6))
+
+# 散点图
+plt.subplot(1, 2, 1)
+plt.scatter(sigma_HFF, sigma_cosmo_targets, color="red", s=100, label="Target σ*cosmo", zorder=5)
+plt.scatter(sigma_HFF, best_pred, color="blue", s=80, label="Best-fit prediction", zorder=5)
+
+# 连接线显示误差
+for i in range(len(sigma_HFF)):
+    plt.plot([sigma_HFF[i], sigma_HFF[i]], [sigma_cosmo_targets[i], best_pred[i]], 
+             'k--', alpha=0.5, linewidth=1)
+
+plt.xlabel("σ* (HFF)")
+plt.ylabel("σ* (Cosmo)")
+plt.title(f"Best Mapping: {best_name}\na={best_a:.6f}, b={best_b:.6f}")
 plt.legend()
-plt.grid(alpha=0.3)
+plt.grid(True, alpha=0.3)
+
+# 函数曲线图
+plt.subplot(1, 2, 2)
+x_plot = np.linspace(2.5, 6.0, 100)
+best_func = func_dict[best_name]
+y_plot = best_func(x_plot, best_a, best_b)
+
+plt.plot(x_plot, y_plot, 'b-', label=f"{best_name} mapping", linewidth=2)
+plt.scatter(sigma_HFF, sigma_cosmo_targets, color="red", s=100, label="Target points", zorder=5)
+plt.xlabel("σ* (HFF)")
+plt.ylabel("σ* (Cosmo)")
+plt.title("Mapping Function")
+plt.legend()
+plt.grid(True, alpha=0.3)
+
+plt.tight_layout()
 plt.show()
+
+# ========================================
+# 6. 验证其他候选模型
+# ========================================
+
+print("\n" + "="*50)
+print("COMPARISON WITH OTHER MODEL FAMILIES")
+print("="*50)
+
+# 测试所有模型在最佳参数附近的表现
+test_models = {}
+for name, func in func_dict.items():
+    if name == best_name:
+        continue
+        
+    # 简单测试线性回归来找到近似最佳参数
+    try:
+        if name == "linear":
+            X = sigma_HFF.reshape(-1, 1)
+            model = LinearRegression().fit(X, sigma_cosmo_targets)
+            a_test, b_test = model.coef_[0], model.intercept_
+        elif name == "inv":
+            X = (1/sigma_HFF).reshape(-1, 1)
+            model = LinearRegression().fit(X, sigma_cosmo_targets)
+            a_test, b_test = model.coef_[0], model.intercept_
+        elif name == "log":
+            X = np.log(sigma_HFF).reshape(-1, 1)
+            model = LinearRegression().fit(X, sigma_cosmo_targets)
+            a_test, b_test = model.coef_[0], model.intercept_
+        else:
+            # 对于复杂函数，使用网格搜索
+            best_mse_temp = 1e99
+            a_test, b_test = 0, 0
+            for a, b in product(np.linspace(-1, 1, 51), np.linspace(-3, -1, 51)):
+                pred_temp = func(sigma_HFF, a, b)
+                if np.any(np.isnan(pred_temp)):
+                    continue
+                mse_temp = mean_squared_error(pred_temp, sigma_cosmo_targets)
+                if mse_temp < best_mse_temp:
+                    best_mse_temp = mse_temp
+                    a_test, b_test = a, b
+        
+        pred_test = func(sigma_HFF, a_test, b_test)
+        mse_test = mean_squared_error(pred_test, sigma_cosmo_targets)
+        test_models[name] = (mse_test, a_test, b_test)
+        
+    except:
+        test_models[name] = (np.inf, 0, 0)
+
+# 按MSE排序输出
+sorted_models = sorted(test_models.items(), key=lambda x: x[1][0])
+print(f"\n{'Model':<10} {'MSE':<15} {'a':<12} {'b':<12}")
+print("-" * 50)
+print(f"{best_name:<10} {best_mse:<15.2e} {best_a:<12.6f} {best_b:<12.6f}")
+for name, (mse, a, b) in sorted_models[:5]:  # 只显示前5个
+    print(f"{name:<10} {mse:<15.2e} {a:<12.6f} {b:<12.6f}")
