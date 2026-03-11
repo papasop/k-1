@@ -155,6 +155,7 @@ class K1Transformer:
     
     def forward(self, x, targets=None):
         B, T = x.shape
+        T = min(T, self.seq_len)
         
         # Embeddings
         h = np.zeros((B, T, self.dim))
@@ -168,6 +169,7 @@ class K1Transformer:
         output = {'logits': logits}
         
         if targets is not None:
+            targets = targets[:, :T]
             law1 = self.time_tracker.compute(logits, targets, activations)
             law2_sig = self.hessian.check_signature()
             law2_skew = self.hessian.verify_skew_symmetry()

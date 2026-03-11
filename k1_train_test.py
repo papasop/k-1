@@ -42,10 +42,11 @@ import matplotlib.pyplot as plt
 
 np.random.seed(42)
 
-print("="*70)
-print("K=1 TRANSFORMER TRAINING TEST")
-print(f"Version {__version__}")
-print("="*70)
+def _print_banner():
+    print("="*70)
+    print("K=1 TRANSFORMER TRAINING TEST")
+    print(f"Version {__version__}")
+    print("="*70)
 
 # ============================================================================
 # PART 1: Base Transformer (Standard Implementation)
@@ -89,6 +90,7 @@ class BaseTransformer:
             hidden: [B, T, D] for K=1 monitoring
         """
         B, T = tokens.shape
+        T = min(T, self.seq_len)
         
         # Embedding
         h = np.zeros((B, T, self.dim))
@@ -200,9 +202,9 @@ class K1Monitor:
     
     def diagnose(self, K: float) -> str:
         """AI-powered diagnosis based on K value"""
-        if K > 20:
+        if K >= 20:
             return "⚠️  K太大 → 学习率过高或初始化不好"
-        elif K > 5:
+        elif K >= 5:
             return "⚠️  K偏大 → 可能需要降低学习率"
         elif K >= 2.0:
             return "→ K略偏大 → 继续观察"
@@ -247,6 +249,8 @@ class K1Transformer:
         
         # 2. K=1 monitoring (new)
         if targets is not None:
+            T = logits.shape[1]
+            targets = targets[:, :T]
             metrics = self.monitor.compute_metrics(logits, targets, hidden)
             law3 = self.monitor.check_law3()
             diagnosis = self.monitor.diagnose(metrics['K'])
@@ -494,6 +498,7 @@ Convergence:
 # ============================================================================
 
 def main():
+    _print_banner()
     parser = argparse.ArgumentParser(
         description='K=1 Transformer Training Test',
         epilog='Example: python k1_train_test.py --steps 500'
