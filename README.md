@@ -112,7 +112,7 @@ The script evaluates the K-proxy metric every 10 training steps and reports the 
 - **Probability of decrease:** P(ΔV < 0) = 0.41
 - **Standard deviation:** σ_ΔV = 0.10
 
-This confirms dissipative dynamics in the synthetic run: the Lyapunov-style potential often decreases as training progresses. In this example, K converges toward a lower-loss regime around 0.14 rather than toward K=1, which suggests the optimal K value can be task-dependent.
+Taken together, these diagnostics indicate mixed but net dissipative behavior in the synthetic run: the primary checkpoint-to-checkpoint drift is negative even though some longer windows reverse and `P(ΔV < 0)` is below 0.5. In this example, K converges toward a lower-loss regime around 0.14 rather than toward K=1, which suggests the optimal K value can be task-dependent.
 
 ![Training Dynamics](k1_training.png)
 
@@ -149,7 +149,7 @@ The Lorentzian Hessian signature shown in the paper remains part of the theoreti
 ### Installation
 
 ```bash
-pip install -r requirements.txt numpy matplotlib
+pip install -r requirements.txt
 ```
 
 ### Quick Demo (NumPy only)
