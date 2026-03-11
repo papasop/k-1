@@ -53,6 +53,9 @@ try:
 except ImportError:
     HAS_TORCH = False
 
+if HAS_TORCH:
+    __all__.append('K1TransformerPyTorch')
+
 # ============================================================================
 # PART 1: Core Theory Components (Pure NumPy)
 # ============================================================================
@@ -316,6 +319,7 @@ class K1TransformerNumPy:
             Dict with logits and K1_metrics (if targets provided)
         """
         B, T = x.shape
+        T = min(T, self.seq_len)
         
         # Standard embedding (same as any Transformer)
         h = np.zeros((B, T, self.dim))
@@ -336,6 +340,7 @@ class K1TransformerNumPy:
         
         # K=1 Monitoring (NEW! This is what makes it K=1)
         if targets is not None:
+            targets = targets[:, :T]
             # Law I: Information time
             law1_metrics = self.time_tracker.compute(logits, targets, activations)
             
