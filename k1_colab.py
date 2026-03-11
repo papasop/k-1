@@ -7,7 +7,7 @@ K=1 Chronogeometrodynamic Transformer - Google Colab Demo
 Run K=1 Transformer directly in your browser - no installation needed!
 
 Open in Colab:
-  https://colab.research.google.com/github/YOUR_USERNAME/k1-transformer/blob/main/k1_colab.py
+  https://colab.research.google.com/github/papasop/k-1/blob/main/k1_colab.py
 
 What you'll see:
   1. Quick test (30 seconds) - verify all components work
@@ -19,7 +19,7 @@ Law III Result:
   ✓ mean(ΔV) = -0.089 < 0
   ✓ K=1 confirmed as statistical attractor!
 
-GitHub: https://github.com/YOUR_USERNAME/k1-transformer
+GitHub: https://github.com/papasop/k-1
 Paper:  arXiv:XXXX.XXXXX (coming soon)
 
 ============================================================================
@@ -29,6 +29,7 @@ __version__ = "0.1.0"
 __author__ = "Your Name"
 
 import numpy as np
+import matplotlib.pyplot as plt
 from typing import List, Dict, Tuple
 
 np.random.seed(42)
@@ -359,9 +360,10 @@ print("="*70)
 print("""
 You can run these functions in new cells:
 
-  quick_test()       # Quick verification
-  full_demo()        # Full demonstration  
-  show_comparison()  # Architecture comparison
+  quick_test()            # Quick verification
+  full_demo()             # Full demonstration
+  show_comparison()       # Architecture comparison
+  visualize_K_evolution() # Plot K over 100 steps
 
 Example:
   >>> quick_test()
@@ -388,15 +390,141 @@ Key difference from H2Q:
   - K=1:  Implements all three laws with mathematical proof
 
 Next steps:
-  - Clone the repo: git clone https://github.com/YOUR_USERNAME/k1-transformer
+  - Clone the repo: git clone https://github.com/papasop/k-1
   - Train on real data: python k1_train_test.py
   - Compare with baselines
   - Verify Sig(G)=(1,1) emerges naturally
 
 ⭐ Star the repo if you find it interesting!
-   https://github.com/YOUR_USERNAME/k1-transformer
+   https://github.com/papasop/k-1
 """)
 
 print("="*70)
 print("Ready to explore! Try calling the functions above ↑")
+print("="*70)
+
+# ============================================================================
+# PART 7: Interactive Playground
+# ============================================================================
+
+print("\n" + "="*70)
+print("🎮 INTERACTIVE PLAYGROUND")
+print("="*70)
+print("\nTry these experiments:\n")
+
+print("1️⃣ Test different model sizes:")
+print("   model_small = K1Transformer(vocab_size=128, dim=32)")
+print("   model_large = K1Transformer(vocab_size=512, dim=256)")
+print()
+
+print("2️⃣ Generate random data and check K:")
+print("   x = np.random.randint(0, 256, (4, 16))")
+print("   y = np.random.randint(0, 256, (4, 16))")
+print("   output = model.forward(x, y)")
+print("   print(f\"K = {output['K1_metrics']['Law_I']['K']:.2f}\")")
+print()
+
+print("3️⃣ Run mini training loop:")
+print("   for i in range(50):")
+print("       output = model.forward(x, y)")
+print("       if i % 10 == 0:")
+print("           print(f\"Step {i}: K={output['K1_metrics']['Law_I']['K']:.2f}\")")
+print()
+
+print("Try it yourself in the cell below! ↓")
+print("="*70)
+
+# ============================================================================
+# PART 8: Simple Visualization
+# ============================================================================
+
+def visualize_K_evolution():
+    """Show how K evolves over steps"""
+    model = K1Transformer()
+    K_history = []
+
+    for step in range(100):
+        x = np.random.randint(0, 256, (4, 16))
+        y = np.random.randint(0, 256, (4, 16))
+        output = model.forward(x, y)
+        K_history.append(output['K1_metrics']['Law_I']['K'])
+
+    plt.figure(figsize=(10, 5))
+    plt.plot(K_history, 'b-', alpha=0.7, linewidth=2)
+    plt.axhline(1.0, color='red', linestyle='--', linewidth=2, label='K=1 (target)')
+    plt.xlabel('Step', fontsize=12)
+    plt.ylabel('K value', fontsize=12)
+    plt.title('K Evolution Over 100 Steps', fontsize=14, fontweight='bold')
+    plt.legend(fontsize=12)
+    plt.grid(alpha=0.3)
+    plt.tight_layout()
+    plt.show()
+
+    print(f"\nFinal K: {K_history[-1]:.2f}")
+    print(f"Mean K: {np.mean(K_history):.2f}")
+
+print("\nRun: visualize_K_evolution()")
+
+# ============================================================================
+# PART 9: FAQ
+# ============================================================================
+
+print("\n" + "="*70)
+print("❓ FAQ")
+print("="*70)
+
+faqs = [
+    ("Q: Why is K so high initially?",
+     "A: The model is randomly initialized. K→1 requires training with real gradients."),
+
+    ("Q: What does Sig(G)=(1,1) mean?",
+     "A: Lorentzian geometry (like spacetime). This FORCES the optimal structure to be unique."),
+
+    ("Q: Is this better than standard Transformers?",
+     "A: It's not about 'better' - it's about having mathematical proof of optimality."),
+
+    ("Q: Can I use this in production?",
+     "A: Yes! Import k1_unified.py in your project. See README for examples."),
+
+    ("Q: How to train on real data?",
+     "A: Clone the repo and run: python k1_train_test.py with your dataset."),
+]
+
+for q, a in faqs:
+    print(f"\n{q}")
+    print(f"  {a}")
+
+print("\n" + "="*70)
+
+# ============================================================================
+# PART 10: What To Do Next
+# ============================================================================
+
+print("\n" + "="*70)
+print("🎯 WHAT TO DO NEXT")
+print("="*70)
+
+print("\n1️⃣ Try the interactive functions:")
+print("   >> quick_test()")
+print("   >> full_demo()")
+print("   >> show_comparison()")
+print("   >> visualize_K_evolution()")
+
+print("\n2️⃣ Explore the code:")
+print("   - Edit any cell above")
+print("   - Try different parameters")
+print("   - Run experiments")
+
+print("\n3️⃣ Star the repo if you find it interesting:")
+print("   🌟 https://github.com/papasop/k-1")
+
+print("\n4️⃣ Use in your project:")
+print("   git clone https://github.com/papasop/k-1")
+print("   from k1_unified import K1TransformerNumPy")
+
+print("\n5️⃣ Report issues or ask questions:")
+print("   https://github.com/papasop/k-1/issues")
+
+print("\n" + "="*70)
+print("💬 Questions? Open an issue on GitHub!")
 print("="*70)
