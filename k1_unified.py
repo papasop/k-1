@@ -70,9 +70,11 @@ class InformationTimeTracker:
         >>> metrics = tracker.compute(logits, targets, hidden)
         >>> print(f"K = {metrics['K']:.2f}")
     """
-    def __init__(self):
+    def __init__(self, gamma: float = 0.99, epsilon: float = 1e-8, base_std: float = 0.1):
         self.ema_K = 1.0
-        self.gamma = 0.99
+        self.gamma = gamma
+        self.epsilon = epsilon
+        self.base_std = base_std
     
     def compute(self, predictions: np.ndarray, 
                 targets: np.ndarray, 
@@ -90,22 +92,17 @@ class InformationTimeTracker:
         """
         B, T, V = predictions.shape
         
-        # dΦ: Cross-entropy (information surprise)
+        # dΦ: Cross-entropy (information surprise) — vectorized
         exp_p = np.exp(predictions - np.max(predictions, axis=-1, keepdims=True))
         probs = exp_p / np.sum(exp_p, axis=-1, keepdims=True)
         
-        dPhi = 0.0
-        count = 0
-        for b in range(B):
-            for t in range(T):
-                target_idx = targets[b, t]
-                if target_idx >= 0:
-                    dPhi += -np.log(probs[b, t, target_idx] + 1e-8)
-                    count += 1
-        dPhi /= max(count, 1)
+        mask = targets >= 0                                      # [B, T]
+        b_idx, t_idx = np.where(mask)
+        target_probs = probs[b_idx, t_idx, targets[b_idx, t_idx]]
+        dPhi = np.mean(-np.log(target_probs + self.epsilon)) if target_probs.size > 0 else 0.0
         
         # H: Entropy resistance (system friction)
-        H = np.std(activations) + 0.1
+        H = np.std(activations) + self.base_std
         
         # K: Information flow ratio
         K = dPhi / H
