@@ -18,8 +18,8 @@ Neural network architectures are traditionally designed through trial-and-error,
 **Key contributions:**
 
 1. A **Uniqueness Theorem** proving that `J_G = α_eff G⁻¹ J` is the only stable structure for such systems
-2. Experimental validation of **K-metric dynamics**, demonstrating that the information flow ratio *K = dΦ/H* can decrease during training while the Lyapunov-style drift remains negative on average
-3. A careful separation between what is measured in training runs and what remains part of the paper's theoretical framework
+2. Experimental validation of **K-metric dynamics**, showing that the information flow ratio *K = dΦ/H* can decrease during training
+3. A careful separation between measured drift diagnostics and the paper's broader theoretical claims
 
 This represents a paradigm shift from *trial-and-error architecture design* to *mathematically proven optimality*.
 
@@ -63,7 +63,7 @@ where α_eff ≈ 0.0817 is determined by passivity and Wiener constraints. This 
 
 #### Law III: Dissipative Drift Property
 
-The Lyapunov potential V = ½(K−1)² is used as a diagnostic quantity during training. In the synthetic validation run below, checkpoint-to-checkpoint drift is negative on average, indicating dissipative behavior, but this does **not** by itself establish K=1 as a universal attractor for every task.
+The Lyapunov potential V = ½(K−1)² is used as a diagnostic quantity during training. In the synthetic validation run below, the drift metrics are mixed: the primary checkpoint-to-checkpoint average is negative, while a longer evaluation window is positive. This supports only a cautious dissipative interpretation and does **not** by itself establish K=1 as a universal attractor for every task.
 
 ### Hessian Geometry and Lorentzian Signature
 
@@ -112,7 +112,7 @@ The script evaluates the K-proxy metric every 10 training steps and reports the 
 - **Probability of decrease:** P(ΔV < 0) = 0.41
 - **Standard deviation:** σ_ΔV = 0.10
 
-Taken together, these diagnostics indicate mixed but net dissipative behavior in the synthetic run: the primary checkpoint-to-checkpoint drift is negative even though some longer windows reverse and `P(ΔV < 0)` is below 0.5. In this example, K converges toward a lower-loss regime around 0.14 rather than toward K=1, which suggests the optimal K value can be task-dependent.
+Taken together, these diagnostics support only a cautious dissipative reading for the synthetic run. The primary checkpoint-to-checkpoint drift is negative (`⟨ΔV⟩ = -0.015`), but the longer 20-checkpoint window is positive (`0.088`) and `P(ΔV < 0)` is below 0.5. In this example, K converges toward a lower-loss regime around 0.14 rather than toward K=1, which suggests the optimal K value can be task-dependent.
 
 ![Training Dynamics](k1_training.png)
 
