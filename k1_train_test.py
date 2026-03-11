@@ -249,7 +249,8 @@ class K1Transformer:
         
         # 2. K=1 monitoring (new)
         if targets is not None:
-            targets = targets[:, :logits.shape[1]]
+            T = logits.shape[1]
+            targets = targets[:, :T]
             metrics = self.monitor.compute_metrics(logits, targets, hidden)
             law3 = self.monitor.check_law3()
             diagnosis = self.monitor.diagnose(metrics['K'])
