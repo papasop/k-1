@@ -103,7 +103,7 @@ class HessianStructureMatrix:
     def check_signature(self):
         G = self.get_G()
         eigs = np.linalg.eigvalsh(G)
-        return (int(np.sum(eigs < -1e-6)), int(np.sum(eigs > 1e-6)))
+        return (int(np.sum(eigs > 1e-6)), int(np.sum(eigs < -1e-6)))
 
 
 class DissipativeMonitor:
@@ -247,6 +247,8 @@ def full_demo():
     print(f"  Sig(G) = {law2['signature']}", end="")
     if law2['signature'] == (1, 1):
         print(" → ✓ Lorentzian")
+    else:
+        print()
     
     G = np.array(law2['G'])
     J_G = np.array(law2['J_G'])

@@ -180,13 +180,13 @@ class HessianStructureMatrix:
         Check Hessian signature
         
         Returns:
-            (num_negative, num_positive) eigenvalues
+            (num_positive, num_negative) eigenvalues — standard (p, q) convention
         """
         G = self.get_G()
         eigs = np.linalg.eigvalsh(G)
-        sig_neg = int(np.sum(eigs < -1e-6))
         sig_pos = int(np.sum(eigs > 1e-6))
-        return (sig_neg, sig_pos)
+        sig_neg = int(np.sum(eigs < -1e-6))
+        return (sig_pos, sig_neg)
 
 
 class DissipativeMonitor:
@@ -527,6 +527,8 @@ def run_demo():
     print(f"  Sig(G) = {law2['signature']}", end="")
     if law2['signature'] == (1, 1):
         print(" → ✓ Lorentzian")
+    else:
+        print()
     print(f"  Skew-sym error: {law2['skew_sym_error']:.2e}", end="")
     if law2['skew_sym_error'] < 1e-10:
         print(" → ✓ Uniqueness verified")

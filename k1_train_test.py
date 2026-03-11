@@ -204,12 +204,12 @@ class K1Monitor:
             return "⚠️  K太大 → 学习率过高或初始化不好"
         elif K > 5:
             return "⚠️  K偏大 → 可能需要降低学习率"
-        elif 0.5 < K < 2.0:
+        elif K >= 2.0:
+            return "→ K略偏大 → 继续观察"
+        elif K >= 0.5:
             return "✓ K接近1 → 训练正常"
-        elif K < 0.5:
-            return "⚠️  K太小 → 可能欠拟合"
         else:
-            return "→ 继续观察"
+            return "⚠️  K太小 → 可能欠拟合"
 
 
 # ============================================================================
@@ -251,19 +251,8 @@ class K1Transformer:
             law3 = self.monitor.check_law3()
             diagnosis = self.monitor.diagnose(metrics['K'])
             
-            # Loss
-            B, T, V = logits.shape
-            exp_logits = np.exp(logits - np.max(logits, axis=-1, keepdims=True))
-            probs = exp_logits / np.sum(exp_logits, axis=-1, keepdims=True)
-            
-            loss = 0.0
-            count = 0
-            for b in range(B):
-                for t in range(T):
-                    if targets[b, t] >= 0:
-                        loss += -np.log(probs[b, t, targets[b, t]] + 1e-8)
-                        count += 1
-            loss /= max(count, 1)
+            # Loss (same as dPhi from K=1 metrics)
+            loss = metrics['dPhi']
             
             # K=1 penalty
             k_penalty = 0.01 * metrics['V']
