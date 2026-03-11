@@ -18,8 +18,8 @@ Neural network architectures are traditionally designed through trial-and-error,
 **Key contributions:**
 
 1. A **Uniqueness Theorem** proving that `J_G = α_eff G⁻¹ J` is the only stable structure for such systems
-2. Experimental validation of **Law III**, demonstrating that the information flow ratio *K = dΦ/H* converges from K=3.91 to K=0.07 during training with mean Lyapunov drift ⟨ΔV⟩ < 0
-3. The first empirical confirmation that **K=1** acts as a statistical attractor in neural network training
+2. Experimental validation of **K-metric dynamics**, showing that the information flow ratio *K = dΦ/H* can decrease during training
+3. A careful separation between measured drift diagnostics and the paper's broader theoretical claims
 
 This represents a paradigm shift from *trial-and-error architecture design* to *mathematically proven optimality*.
 
@@ -45,7 +45,7 @@ where:
 |-----|------|-----------|
 | **I** | Information Time Metric | K = dΦ / H |
 | **II** | Wiener-Geometric Constraint | J_G = α_eff G⁻¹ J (unique for Sig(G)=(1,1)) |
-| **III** | Statistical Attractor Property | ⟨ΔV⟩ < 0, where V = ½(K−1)² |
+| **III** | Dissipative Drift Property | ⟨ΔV⟩ < 0, where V = ½(K−1)² |
 
 #### Law I: Information Time Metric
 
@@ -61,9 +61,9 @@ J_G = α_eff G⁻¹ J
 
 where α_eff ≈ 0.0817 is determined by passivity and Wiener constraints. This is remarkable: *geometry alone* determines the optimal structure—the architecture is *forced* by mathematical constraints rather than designed by hand.
 
-#### Law III: Statistical Attractor Property
+#### Law III: Dissipative Drift Property
 
-The Lyapunov potential V = ½(K−1)² satisfies ⟨ΔV⟩ < 0, establishing K=1 as the statistical attractor. The system naturally evolves toward K=1 during training.
+The Lyapunov potential V = ½(K−1)² is used as a diagnostic quantity during training. In the synthetic validation run below, the drift metrics are mixed: the primary checkpoint-to-checkpoint average is negative, while a longer evaluation window is positive. This supports only a cautious dissipative interpretation and does **not** by itself establish K=1 as a universal attractor for every task.
 
 ### Hessian Geometry and Lorentzian Signature
 
@@ -83,43 +83,64 @@ The proof proceeds via three steps: (1) passivity requires skew-symmetry, (2) th
 
 | Parameter | Value |
 |-----------|-------|
-| Dataset | TinyStories validation set, 100,000 characters |
-| Vocabulary | 95 unique characters (character-level tokenization) |
-| Model | Transformer (2 layers, 128 dim, 4 heads, 1.23M params) |
-| Training | 500 steps, batch size 32, learning rate 3×10⁻⁴ |
-| Device | CUDA GPU (NVIDIA T4) |
+| Dataset | Synthetic repeated text, 38,700 characters |
+| Vocabulary | 33 unique characters (synthetic character-level tokenization) |
+| Model | Transformer (2 layers, 128 dim, 4 heads, 412,705 params) |
+| Training | 500 steps, batch size 32 |
+| Device | CPU |
 
 ### Training Dynamics
 
-| Step | Loss | K | V = ½(K−1)² | Status |
-|------|------|------|-------------|--------|
-| 0 | 4.30 | 3.91 | 4.23 | Initial |
-| 100 | 2.47 | 2.20 | 0.72 | Decreasing |
-| 200 | 2.13 | 1.86 | 0.37 | Near K=1 |
-| 300 | 0.38 | 0.32 | 0.23 | Below K=1 |
-| 500 | 0.08 | 0.07 | 0.43 | Converged |
+| Step | Loss | K | V = ½(K−1)² | H | Status |
+|------|------|------|-------------|---|--------|
+| 0 | 3.686 | 2.50 | 1.13 | 1.43 | Initial |
+| 100 | 1.991 | 1.28 | 0.04 | 1.57 | High K |
+| 200 | 1.494 | 0.95 | 0.00 | 1.51 | Decreasing |
+| 300 | 0.904 | 0.51 | 0.12 | 1.47 | Decreasing |
+| 400 | 0.462 | 0.22 | 0.30 | 1.44 | Decreasing |
+| 499 | 0.280 | 0.14 | 0.37 | 1.43 | Decreasing |
 
 ### Law III Verification
 
-Mean Lyapunov drift over a sliding window of 50 steps:
+The script evaluates the K-proxy metric every 10 training steps and reports the following summary:
 
-- **Mean drift:** ⟨ΔV⟩ = −0.234 < 0 ✓
-- **Probability of decrease:** P(ΔV < 0) = 0.62
-- **Standard deviation:** σ_ΔV = 0.18
+- **Initial K:** 2.50
+- **Final K:** 0.14
+- **Change in K:** −2.37 (−94.5%)
+- **Checkpoint-to-checkpoint drift:** ⟨ΔV⟩ = −0.015 < 0 ✓
+- **Windowed drift (20 checkpoints ≈ 200 steps):** 0.088
+- **Probability of decrease:** P(ΔV < 0) = 0.41
+- **Standard deviation:** σ_ΔV = 0.10
 
-This confirms that V decreases on average, establishing K=1 as a statistical attractor.
+Taken together, these diagnostics support only a cautious dissipative reading for the synthetic run. The primary checkpoint-to-checkpoint drift is negative (`⟨ΔV⟩ = -0.015`), but the longer 20-checkpoint window is positive (`0.088`) and `P(ΔV < 0)` is below 0.5. In this example, K converges toward a lower-loss regime around 0.14 rather than toward K=1, which suggests the optimal K value can be task-dependent.
 
 ![Training Dynamics](k1_training.png)
 
 ### K-Metric Diagnostics
 
-The K-metric provides real-time training diagnostics:
+The K-metric provides real-time training diagnostics, but its interpretation depends on the task:
 
 | K Range | Interpretation |
 |---------|----------------|
 | K > 10 | Learning rate too high |
-| 0.5 < K < 2 | Training healthy |
-| K < 0.5 | Possible overfitting |
+| 0.5 < K < 2 | Training in a moderate regime |
+| K < 0.5 | Simple-task optimum or possible overfitting; interpret with loss |
+
+### What this validation does and does not show
+
+This repository's training validation demonstrates:
+
+- K-proxy metric dynamics during training
+- Dissipative behavior through negative average Lyapunov-style drift
+- Correlation between K-metric changes and loss reduction
+
+It does **not** establish from this training run alone:
+
+- Hidden Lorentzian spacetime discovered from data
+- A uniquely optimal architecture for every task
+- K=1 as a universal attractor
+
+The Lorentzian Hessian signature shown in the paper remains part of the theoretical framework. The script reports the paper's `Sig(G) = (1,1)` result, but it does not empirically estimate that Hessian from the synthetic run.
 
 ---
 
@@ -145,7 +166,7 @@ This runs the full K=1 demonstration using pure NumPy, including verification of
 python k1_train_test.py
 ```
 
-Trains a K=1 Transformer and validates that Law III (⟨ΔV⟩ < 0) emerges naturally during training.
+Trains a K=1 Transformer on synthetic text and validates K-metric / dissipative dynamics during training. The reported Lorentzian signature remains a theoretical input from the paper rather than an empirical estimate from the run.
 
 ### PyTorch Concept Validation
 
