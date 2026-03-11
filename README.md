@@ -147,6 +147,14 @@ python k1_train_test.py
 
 Trains a K=1 Transformer and validates that Law III (⟨ΔV⟩ < 0) emerges naturally during training.
 
+### PyTorch Concept Validation
+
+```bash
+python k1_concept_validation.py --quick-test
+```
+
+Runs the standalone PyTorch concept-validation script on synthetic repeated text and reports K-proxy, Lyapunov drift, and loss dynamics. Install PyTorch separately if it is not already available in your environment.
+
 ### Google Colab
 
 Run the interactive notebook directly in your browser—no installation required:
@@ -160,6 +168,7 @@ Run the interactive notebook directly in your browser—no installation required
 ```
 k1_unified.py            # Core K=1 implementation (Laws I–III, NumPy)
 k1_train_test.py         # Training & experimental validation
+k1_concept_validation.py # PyTorch concept-validation script
 k1_colab.py              # Google Colab demo version
 k1_colab.ipynb           # Interactive Jupyter notebook
 k1_training.png          # Training dynamics visualization
@@ -234,4 +243,3 @@ explanation = connector.explain(open("k1_unified.py").read())
 ## License
 
 [MIT](LICENSE)
-
