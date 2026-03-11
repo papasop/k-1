@@ -35,6 +35,9 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+COMPARISON_THRESHOLD = 1.0
+H_PROXY_EPSILON = 1e-3
+
 
 @dataclass
 class Config:
@@ -81,15 +84,19 @@ def get_tinystories_data(num_chars: int = 100000) -> Tuple[torch.Tensor, List[st
     NOTE: This is NOT the actual TinyStories dataset from the paper.
     """
 
+    if num_chars < 2:
+        raise ValueError("num_chars must be at least 2 to build next-token targets.")
+
     sample_text = """
     Once upon a time, there was a little girl named Lily. She loved to play
     outside in the sunshine. One day, she saw a big, red ball in the park.
     She ran to get it and started to play. Suddenly, a boy came and took the
     ball away. Lily was sad and didn't know what to do. She went home and
     told her mom. Her mom said, "It's okay, Lily. We can get another ball."
-    """ * 100
+    """
+    repeat_count = max(1, (num_chars // len(sample_text)) + 1)
+    text = (sample_text * repeat_count)[:num_chars]
 
-    text = sample_text[:num_chars]
     chars = sorted(set(text))
     vocab_size = len(chars)
 
@@ -245,15 +252,16 @@ def compute_K_metric(
     try:
         with torch.no_grad():
             _, loss = model(batch, targets)
-            dphi = float(loss.item()) if loss is not None else 0.0
-            model(batch, targets)
+            if loss is None:
+                raise RuntimeError("K-metric computation requires targets to produce a loss.")
+            dphi = float(loss.item())
     finally:
         hook.remove()
         model.train(was_training)
 
     if activations:
         sigma = torch.std(activations[0]).item()
-        h_proxy = sigma + 1e-3
+        h_proxy = sigma + H_PROXY_EPSILON
     else:
         h_proxy = 1.0
 
@@ -302,7 +310,14 @@ def compute_hessian_signature(
     _k_history: List[float],
     _sigma_history: List[float],
 ) -> Tuple[np.ndarray, Tuple[int, int]]:
-    """Return the theoretical Hessian signature from the paper."""
+    """
+    Return the theoretical Hessian signature from the paper.
+
+    Per the paper's Section 2.4 discussion of the extended (K, σ)
+    dynamical system, the theoretical Hessian uses ∂²V/∂σ² = -1/9
+    even though the basic reference potential V = 0.5(K-1)^2 does
+    not itself depend on σ.
+    """
 
     g_theoretical = np.array([[1.0, 0.0], [0.0, -1.0 / 9.0]])
     signature_theoretical = (1, 1)
@@ -313,7 +328,7 @@ def compute_hessian_signature(
     print("   Signature = (1, 1) - Lorentzian")
     print("\n   NOTE: No empirical Hessian estimation performed.")
     print("   The σ-dependence comes from the full theoretical framework,")
-    print("   not from the basic V=(K-1)^2 formula.")
+    print("   not from the basic V=0.5(K-1)^2 formula.")
 
     return g_theoretical, signature_theoretical
 
@@ -424,13 +439,13 @@ def train(config: Config) -> Tuple[nn.Module, List[float], List[float], List[flo
             v_value = compute_lyapunov_potential(k_value)
             k_history.append(k_value)
             v_history.append(v_value)
-            sigma_history.append(h_proxy - 1e-3)
+            sigma_history.append(h_proxy - H_PROXY_EPSILON)
             eval_steps.append(iteration)
 
         if iteration % config.eval_interval == 0 or iteration == config.max_iters - 1:
             current_k = k_history[-1] if k_history else 0.0
             current_v = v_history[-1] if v_history else 0.0
-            current_h = sigma_history[-1] + 1e-3 if sigma_history else 1.0
+            current_h = sigma_history[-1] + H_PROXY_EPSILON if sigma_history else 1.0
             if not k_history or iteration == 0:
                 status = "Initial"
             elif current_k < k_history[0] * 0.5:
@@ -465,7 +480,7 @@ def train(config: Config) -> Tuple[nn.Module, List[float], List[float], List[flo
     print("   This suggests task-dependent optimal K values:")
     print("   - Simple tasks (like repeated text): K_opt < 1")
     print("   - Complex tasks: K_opt ≈ 1 or higher")
-    print("   The Lyapunov potential V=(K-1)^2 decreases, confirming")
+    print("   The Lyapunov potential V=0.5(K-1)^2 decreases, confirming")
     print("   drift toward lower-loss states, though not necessarily K=1.")
 
     law3_results = verify_law_III(v_history, window=config.window_size)
@@ -518,27 +533,31 @@ def train(config: Config) -> Tuple[nn.Module, List[float], List[float], List[flo
         "loss_final": 0.084,
     }
 
+    def comparison_marker(actual: float, expected: float) -> str:
+        return "✓" if abs(actual - expected) < COMPARISON_THRESHOLD else "✗"
+
     print(f"\n{'Metric':<20} | {'Paper':>10} | {'This Run':>10} | {'Match'}")
     print("-" * 60)
     print(
         f"{'K initial':<20} | {paper_results['K_initial']:>10.2f} | "
-        f"{k_initial:>10.2f} | {abs(k_initial - paper_results['K_initial']) < 1.0}"
+        f"{k_initial:>10.2f} | {comparison_marker(k_initial, paper_results['K_initial'])}"
     )
     print(
         f"{'K final':<20} | {paper_results['K_final']:>10.2f} | "
-        f"{k_final:>10.2f} | {abs(k_final - paper_results['K_final']) < 1.0}"
+        f"{k_final:>10.2f} | {comparison_marker(k_final, paper_results['K_final'])}"
     )
     print(
         f"{'<ΔV>':<20} | {paper_results['mean_drift']:>10.3f} | "
-        f"{law3_results['mean_drift']:>10.3f} | {law3_results['mean_drift'] < 0}"
+        f"{law3_results['mean_drift']:>10.3f} | "
+        f"{'✓' if law3_results['mean_drift'] < 0 else '✗'}"
     )
     print(
         f"{'Loss initial':<20} | {paper_results['loss_initial']:>10.3f} | "
-        f"{loss_initial:>10.3f} | {abs(loss_initial - paper_results['loss_initial']) < 1.0}"
+        f"{loss_initial:>10.3f} | {comparison_marker(loss_initial, paper_results['loss_initial'])}"
     )
     print(
         f"{'Loss final':<20} | {paper_results['loss_final']:>10.3f} | "
-        f"{loss_final:>10.3f} | {abs(loss_final - paper_results['loss_final']) < 1.0}"
+        f"{loss_final:>10.3f} | {comparison_marker(loss_final, paper_results['loss_final'])}"
     )
 
     print("\n" + "=" * 60)
