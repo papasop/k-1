@@ -1,31 +1,42 @@
 # ============================================================
 # K=1 CHRONOGEOMETRODYNAMICS
-# EXTENDED CLEAN RATIO SCAN  (fixed η_K, wide η_σ grid)
+# COMPREHENSIVE RATIO EXPERIMENT  v4
 # ============================================================
 #
-# FIXES vs k1_clean_ratio.py:
-#   - Previous logspace(1e-4, 3e-3) → max ratio ≈ 2.4 (TOO LOW)
-#   - This script covers r ∈ [0.5, 27] with 16 explicit points
-#     that include all theoretically interesting values
-#   - Two separate Adam optimisers (no shared momentum state)
-#   - Final loss = mean of last 100 steps (smoother than 50)
+# FOUR IMPROVEMENTS vs k1_extended_scan.py:
 #
-# RATIO GRID (explicit, not logspace):
-#   r = η_σ / η_K ∈ {0.5, 1, 1.5, 2, 3, 4, 6, 9, 12, 15, 18, 21, 27}
-#   η_K = 3e-4 fixed throughout
-#   η_σ = r × η_K
+#   [1] HIGH-r GRID: r ∈ {0.5,1,2,3,4,6,9,12,18,27,36,54}
+#       Sees whether loss rebounds after r=9 or keeps falling.
 #
-# WHAT WE ARE LOOKING FOR:
-#   Shape A  ▼  interior minimum near r=9 → STRONG support for G⁻¹ ratio
-#   Shape B  ╲  monotone decreasing past r=27 → NULL (no optimum in range)
-#   Shape C  ╲╱ minimum somewhere but not near 9 → theory ratio wrong
-#   Shape D  ─  flat → experiment underpowered
+#   [2] MULTIPLE η_K VALUES: {1e-4, 2e-4, 3e-4, 5e-4}
+#       Computes r* = argmin_r loss(r) for each η_K separately.
+#       If r* is stable ≈9 across η_K → geometric ratio is real.
+#       If r* drifts with η_K → not a constant ratio, theory wrong.
+#
+#   [3] VAL LOSS: data split 90/10 train/val.
+#       Report both train and val loss at each ratio.
+#       On synthetic (memorisable) train/val may decouple.
+#       On shakespeare they should track.
+#
+#   [4] BPE TOKENIZER for tiny-shakespeare:
+#       Uses a simple custom BPE (no external deps) that builds
+#       ~512-token vocab, reducing vocab size relative to char-level
+#       so embeddings occupy a smaller fraction of parameters.
+#       This tests whether the directional effect holds when
+#       embeddings are a smaller bottleneck.
+#
+# STRUCTURE:
+#   Experiment A: high-r grid at η_K = 3e-4 (both corpora)
+#   Experiment B: multi-η_K sweep (tiny-shakespeare only)
+#   Results printed with sparklines + ASCII scatter of r* vs η_K
 #
 # ============================================================
 
 import math
 import random
+import collections
 import urllib.request
+from typing import Dict, List, Tuple
 
 import numpy as np
 import torch
@@ -35,28 +46,29 @@ import torch.nn as nn
 # 0. CONFIG
 # ============================================================
 
-ETA_K = 3e-4   # FIXED for entire experiment
+# [1] High-r grid
+HIGH_R_GRID = [0.5, 1, 2, 3, 4, 6, 9, 12, 18, 27, 36, 54]
 
-# Explicit ratio grid — covers 0.5 to 27, dense around theory=9
-RATIO_GRID = [0.5, 1.0, 1.5, 2.0, 3.0, 4.0, 6.0,
-              9.0, 12.0, 15.0, 18.0, 21.0, 27.0]
-
-ETA_SIGMA_GRID = [r * ETA_K for r in RATIO_GRID]
+# [2] Multiple η_K values
+ETA_K_LIST  = [1e-4, 2e-4, 3e-4, 5e-4]
+ETA_K_FIXED = 3e-4          # used for Experiment A
 
 THEORY_RATIO = 9.0
-SEEDS        = [42, 43, 44, 45, 46]   # 5 seeds
+SEEDS        = [42, 43, 44, 45, 46]
 TRAIN_STEPS  = 600
 BATCH_SIZE   = 32
 BLOCK_SIZE   = 64
+VAL_FRAC     = 0.10          # [3] 10% held-out val set
+VAL_BATCHES  = 20            # batches to estimate val loss
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
 print("=" * 68)
-print("EXTENDED CLEAN RATIO SCAN")
-print(f"η_K = {ETA_K:.1e}  (fixed)")
-print(f"Ratios: {RATIO_GRID}")
-print(f"Seeds: {SEEDS}  |  Steps: {TRAIN_STEPS}")
-print(f"Theory prediction: r = {THEORY_RATIO}")
+print("COMPREHENSIVE RATIO EXPERIMENT v4")
+print(f"Device: {DEVICE}")
+print(f"r grid : {HIGH_R_GRID}")
+print(f"η_K list: {[f'{x:.0e}' for x in ETA_K_LIST]}")
+print(f"Theory : r* = {THEORY_RATIO}")
 print("=" * 68)
 
 # ============================================================
@@ -72,34 +84,107 @@ def download_text(url, max_chars=300_000):
         print(f"  Download failed: {e}")
         return None
 
-def load_corpus(name):
+# ── [4] Minimal BPE tokenizer ──────────────────────────────
+class MiniBPE:
+    """
+    A self-contained byte-pair encoding tokenizer.
+    Builds a vocab of target_vocab merges from raw text.
+    No external dependencies.
+    """
+    def __init__(self, target_vocab: int = 512):
+        self.target_vocab = target_vocab
+        self.merges: List[Tuple[int, int]] = []
+        self.vocab_size: int = 0
+
+    def _get_pairs(self, ids):
+        cnt = collections.Counter()
+        for seq in ids:
+            for a, b in zip(seq, seq[1:]):
+                cnt[(a, b)] += 1
+        return cnt
+
+    def fit(self, text: str):
+        # Start from byte-level (256 base tokens)
+        ids = [[b for b in text.encode("utf-8", errors="replace")]
+               for text in text.split("\n") if text]
+        vocab = 256
+        for _ in range(self.target_vocab - 256):
+            pairs = self._get_pairs(ids)
+            if not pairs:
+                break
+            best = max(pairs, key=pairs.get)
+            self.merges.append(best)
+            new_ids = []
+            for seq in ids:
+                merged, i = [], 0
+                while i < len(seq):
+                    if i < len(seq)-1 and (seq[i], seq[i+1]) == best:
+                        merged.append(vocab); i += 2
+                    else:
+                        merged.append(seq[i]); i += 1
+                new_ids.append(merged)
+            ids = new_ids
+            vocab += 1
+        self.vocab_size = vocab
+        self._ids_cache = ids          # store for encode reuse
+        return self
+
+    def encode(self, text: str) -> List[int]:
+        ids = [b for b in text.encode("utf-8", errors="replace")]
+        for (a, b), new_tok in zip(self.merges,
+                                   range(256, 256 + len(self.merges))):
+            merged, i = [], 0
+            while i < len(ids):
+                if i < len(ids)-1 and ids[i] == a and ids[i+1] == b:
+                    merged.append(new_tok); i += 2
+                else:
+                    merged.append(ids[i]); i += 1
+            ids = merged
+        return ids
+
+def load_corpus(name, bpe=False):
+    """Returns (train_tokens, val_tokens, vocab_size, desc)."""
     if name == "synthetic":
         rng = random.Random(0)
         vocab, period, n = 22, 37, 150_000
         pat    = [rng.randint(0, vocab-1) for _ in range(period)]
-        tokens = torch.tensor([pat[i % period] for i in range(n)], dtype=torch.long)
-        print(f"\nCorpus: synthetic ({n:,} tokens, vocab={vocab}, period={period})")
-        return tokens, vocab
+        tokens = torch.tensor([pat[i % period] for i in range(n)],
+                              dtype=torch.long)
+        split  = int(len(tokens) * (1 - VAL_FRAC))
+        return tokens[:split], tokens[split:], vocab, "synthetic"
 
     elif name == "tiny-shakespeare":
         url  = ("https://raw.githubusercontent.com/karpathy/char-rnn"
                 "/master/data/tinyshakespeare/input.txt")
         text = download_text(url)
         if text is None:
-            # Markov-chain fallback (non-repeating, harder)
+            # Markov fallback
             rng = random.Random(0); vocab = 75; c = 0; out = []
             for _ in range(200_000):
-                c = (c + rng.randint(-6, 6)) % vocab \
-                    if rng.random() < 0.7 else rng.randint(0, vocab-1)
+                c = (c + rng.randint(-6,6)) % vocab if rng.random()<.7 \
+                    else rng.randint(0, vocab-1)
                 out.append(c)
             tokens = torch.tensor(out, dtype=torch.long)
-            print(f"\nCorpus: fallback-markov ({len(tokens):,} tokens, vocab={vocab})")
-            return tokens, vocab
-        chars  = sorted(set(text))
-        tok    = {c: i for i, c in enumerate(chars)}
-        tokens = torch.tensor([tok[c] for c in text], dtype=torch.long)
-        print(f"\nCorpus: tiny-shakespeare ({len(tokens):,} tokens, vocab={len(chars)})")
-        return tokens, len(chars)
+            split  = int(len(tokens) * (1 - VAL_FRAC))
+            return tokens[:split], tokens[split:], vocab, "fallback-markov"
+
+        if bpe:
+            print("  Building BPE tokenizer (target_vocab=512)...")
+            bpe_tok = MiniBPE(target_vocab=512).fit(text)
+            ids     = bpe_tok.encode(text)
+            vocab   = bpe_tok.vocab_size
+            desc    = f"shakespeare-bpe (vocab={vocab})"
+        else:
+            chars = sorted(set(text))
+            tok   = {c: i for i, c in enumerate(chars)}
+            ids   = [tok[c] for c in text]
+            vocab = len(chars)
+            desc  = f"shakespeare-char (vocab={vocab})"
+
+        tokens = torch.tensor(ids, dtype=torch.long)
+        split  = int(len(tokens) * (1 - VAL_FRAC))
+        print(f"  {desc}: {len(tokens):,} tokens")
+        return tokens[:split], tokens[split:], vocab, desc
 
     raise ValueError(name)
 
@@ -108,6 +193,18 @@ def get_batch(data, block_size, batch_size, device):
     x  = torch.stack([data[i:i+block_size]     for i in ix])
     y  = torch.stack([data[i+1:i+block_size+1] for i in ix])
     return x.to(device), y.to(device)
+
+@torch.no_grad()
+def estimate_val_loss(model, val_data, block_size, batch_size,
+                      n_batches, device):
+    model.eval()
+    losses = []
+    for _ in range(n_batches):
+        x, y = get_batch(val_data, block_size, batch_size, device)
+        _, loss = model(x, y)
+        losses.append(float(loss.item()))
+    model.train()
+    return float(np.mean(losses))
 
 # ============================================================
 # 2. MODEL
@@ -131,8 +228,7 @@ class Transformer(nn.Module):
     def forward(self, idx, targets=None):
         B, T = idx.shape
         x = self.tok(idx) + self.pos(torch.arange(T, device=idx.device))
-        for blk in self.blocks:
-            x = blk(x)
+        for blk in self.blocks: x = blk(x)
         x = self.ln(x)
         logits = self.out(x)
         loss = None
@@ -141,261 +237,262 @@ class Transformer(nn.Module):
                 logits.reshape(-1, logits.size(-1)), targets.reshape(-1))
         return logits, loss
 
+    def emb_frac(self):
+        """Fraction of parameters in embedding layers."""
+        total = sum(p.numel() for p in self.parameters())
+        emb   = sum(p.numel() for n, p in self.named_parameters()
+                   if "tok" in n or "pos" in n)
+        return emb / total
+
 # ============================================================
-# 3. TWO-GROUP ADAM  (independent momentum states)
+# 3. TWO-GROUP ADAM
 # ============================================================
 
 class TwoGroupAdam:
-    """
-    Completely separate Adam optimisers for embedding (K-group)
-    and non-embedding (σ-group). No shared step counter or state.
-    This ensures η_K and η_σ are truly independent.
-    """
     def __init__(self, model, eta_k, eta_sigma):
         k_params, s_params = [], []
         for name, p in model.named_parameters():
             if not p.requires_grad: continue
-            if "tok" in name or "pos" in name:
-                k_params.append(p)
-            else:
-                s_params.append(p)
+            (k_params if ("tok" in name or "pos" in name) else s_params).append(p)
         self.opt_k = torch.optim.Adam(k_params, lr=eta_k,
-                                       betas=(0.9, 0.999), eps=1e-8,
+                                       betas=(0.9,0.999), eps=1e-8,
                                        weight_decay=0.0)
         self.opt_s = torch.optim.Adam(s_params, lr=eta_sigma,
-                                       betas=(0.9, 0.999), eps=1e-8,
+                                       betas=(0.9,0.999), eps=1e-8,
                                        weight_decay=0.0)
-        self.n_k = sum(p.numel() for p in k_params)
-        self.n_s = sum(p.numel() for p in s_params)
 
-    def zero_grad(self):
-        self.opt_k.zero_grad()
-        self.opt_s.zero_grad()
-
-    def step(self):
-        self.opt_k.step()
-        self.opt_s.step()
+    def zero_grad(self): self.opt_k.zero_grad(); self.opt_s.zero_grad()
+    def step(self):      self.opt_k.step();      self.opt_s.step()
 
 # ============================================================
 # 4. SINGLE RUN
 # ============================================================
 
-def run_once(data, vocab_size, eta_sigma, seed):
+def run_once(train_data, val_data, vocab_size, eta_k, eta_sigma, seed):
     random.seed(seed); np.random.seed(seed)
     torch.manual_seed(seed); torch.cuda.manual_seed_all(seed)
 
     model = Transformer(vocab_size).to(DEVICE)
-    opt   = TwoGroupAdam(model, eta_k=ETA_K, eta_sigma=eta_sigma)
+    opt   = TwoGroupAdam(model, eta_k=eta_k, eta_sigma=eta_sigma)
 
-    losses = []
-    model.train()
-    for _ in range(TRAIN_STEPS):
-        x, y = get_batch(data, BLOCK_SIZE, BATCH_SIZE, DEVICE)
+    train_losses, val_losses = [], []
+    for step in range(TRAIN_STEPS):
+        x, y = get_batch(train_data, BLOCK_SIZE, BATCH_SIZE, DEVICE)
         _, loss = model(x, y)
         opt.zero_grad(); loss.backward(); opt.step()
-        losses.append(float(loss.item()))
+        train_losses.append(float(loss.item()))
 
-    # Average last 100 steps (reduce step-to-step noise)
-    tail   = losses[-100:]
-    final  = float(np.mean(tail))
-    # Early (steps 100-200) and late (last 100) to see trajectory
-    early  = float(np.mean(losses[100:200])) if TRAIN_STEPS >= 200 else final
-    return {"final": final, "early": early, "losses": losses}
+        if step % 100 == 99:   # val every 100 steps
+            vl = estimate_val_loss(model, val_data,
+                                   BLOCK_SIZE, BATCH_SIZE,
+                                   VAL_BATCHES, DEVICE)
+            val_losses.append(vl)
+
+    train_final = float(np.mean(train_losses[-100:]))
+    val_final   = float(np.mean(val_losses[-3:])) if val_losses else float("nan")
+    return {"train": train_final, "val": val_final,
+            "train_hist": train_losses, "val_hist": val_losses}
 
 # ============================================================
-# 5. MAIN LOOP
+# 5. EXPERIMENT A: HIGH-r GRID
 # ============================================================
 
-CORPORA = ["synthetic", "tiny-shakespeare"]
-all_grid = {}   # corpus → list of dicts, one per ratio
+def run_grid(train_data, val_data, vocab_size, eta_k,
+             r_grid, seeds, label):
+    print(f"\n  {'─'*60}")
+    print(f"  {label}   η_K={eta_k:.1e}")
+    print(f"  {'r':>6}  {'η_σ':>9}  {'train':>8}  {'val':>8}  "
+          f"{'t±std':>9}  {'v±std':>9}")
+    print(f"  {'─'*60}")
 
-for corpus_name in CORPORA:
-    data, vocab_size = load_corpus(corpus_name)
     grid = []
+    for r in r_grid:
+        eta_s = r * eta_k
+        runs  = [run_once(train_data, val_data, vocab_size,
+                          eta_k, eta_s, s) for s in seeds]
+        t_arr = [x["train"] for x in runs]
+        v_arr = [x["val"]   for x in runs]
+        t_m, t_s = float(np.mean(t_arr)), float(np.std(t_arr))
+        v_m, v_s = float(np.mean(v_arr)), float(np.std(v_arr))
+        mark = " ← r=9" if r == 9 else ""
+        print(f"  r={r:>4.0f}  η_σ={eta_s:.2e}  "
+              f"{t_m:.4f}  {v_m:.4f}  "
+              f"±{t_s:.4f}  ±{v_s:.4f}{mark}")
+        grid.append({"r": r, "eta_s": eta_s,
+                     "t_m": t_m, "t_s": t_s,
+                     "v_m": v_m, "v_s": v_s})
+    return grid
 
-    print(f"\n{'─'*68}")
-    print(f"Scanning {len(RATIO_GRID)} ratios × {len(SEEDS)} seeds "
-          f"= {len(RATIO_GRID)*len(SEEDS)} runs")
-    print(f"{'─'*68}")
-    print(f"  {'r':>5}  {'η_σ':>8}  {'mean±std':>14}  {'early':>7}  note")
+def find_optimum(grid, key="v_m"):
+    vals   = np.array([g[key] for g in grid])
+    ratios = np.array([g["r"] for g in grid])
+    best_i = int(np.argmin(vals))
+    has_interior = 0 < best_i < len(grid)-1
+    # Check rebound after theory point
+    t_i = list(ratios).index(9) if 9 in ratios else -1
+    rebound = (t_i >= 0 and t_i < len(grid)-1
+               and vals[t_i+1] > vals[t_i] + grid[t_i]["v_s"]*0.3)
+    return {"best_r": ratios[best_i],
+            "best_val": vals[best_i],
+            "interior": has_interior,
+            "rebound_after_9": rebound,
+            "vals": vals,
+            "ratios": ratios}
 
-    for ratio, eta_s in zip(RATIO_GRID, ETA_SIGMA_GRID):
-        runs   = [run_once(data, vocab_size, eta_s, s) for s in SEEDS]
-        finals = [r["final"] for r in runs]
-        earlys = [r["early"] for r in runs]
-        mean_f = float(np.mean(finals))
-        std_f  = float(np.std(finals))
-        mean_e = float(np.mean(earlys))
-        note   = " ← THEORY" if ratio == THEORY_RATIO else ""
-        print(f"  r={ratio:>4.1f}  η_σ={eta_s:.2e}  "
-              f"{mean_f:.4f}±{std_f:.4f}  early={mean_e:.4f}{note}")
-        grid.append({"ratio": ratio, "eta_sigma": eta_s,
-                     "mean": mean_f, "std": std_f,
-                     "early": float(np.mean(earlys)), "runs": runs})
+# ── sparkline ────────────────────────────────────────────────
+def sparkline(vals, special=None):
+    bars = " ▁▂▃▄▅▆▇█"
+    lo, hi = min(vals), max(vals)
+    chars  = [bars[int((v-lo)/(hi-lo)*8+0.5)
+                   if hi > lo else 0] for v in vals]
+    if special:
+        for i, ch in special.items():
+            if 0 <= i < len(chars): chars[i] = ch
+    return "".join(chars)
 
-    all_grid[corpus_name] = grid
+def verdict(res, corpus):
+    r = res["best_r"]
+    interior = res["interior"]
+    rebound  = res["rebound_after_9"]
+    if interior and abs(r - 9) / 9 <= 0.20:
+        return "STRONG", f"interior min at r={r:.0f} (within 20% of r=9)"
+    if rebound and not interior:
+        return "REBOUND-NEAR-9", f"loss rises after r=9 but min at edge r={r:.0f}"
+    if interior:
+        return "WRONG-RATIO", f"interior min at r={r:.0f}, not near r=9"
+    return "NULL", f"monotone to r={r:.0f}; no interior min"
 
 # ============================================================
-# 6. ANALYSIS
+# 6. RUN EXPERIMENT A
+# ============================================================
+
+print(f"\n{'='*68}")
+print("EXPERIMENT A: HIGH-r GRID  (η_K = 3e-4 fixed)")
+print(f"{'='*68}")
+
+EXP_A_CORPORA = [
+    ("synthetic",       False),
+    ("tiny-shakespeare", False),   # char-level
+    ("tiny-shakespeare", True),    # BPE  [4]
+]
+
+exp_a_results = {}
+for corpus_name, use_bpe in EXP_A_CORPORA:
+    key = f"{corpus_name}{'_bpe' if use_bpe else '_char'}"
+    print(f"\n[{key}]")
+    tr, va, vocab, desc = load_corpus(corpus_name, bpe=use_bpe)
+    model_tmp = Transformer(vocab).to(DEVICE)
+    print(f"  Embedding frac: {model_tmp.emb_frac():.1%}")
+    del model_tmp
+    grid = run_grid(tr, va, vocab, ETA_K_FIXED, HIGH_R_GRID, SEEDS, desc)
+    exp_a_results[key] = (grid, tr, va, vocab, desc)
+
+# ============================================================
+# 7. RUN EXPERIMENT B: MULTIPLE η_K
+# ============================================================
+
+print(f"\n{'='*68}")
+print("EXPERIMENT B: MULTIPLE η_K  (tiny-shakespeare char-level)")
+print(f"{'='*68}")
+
+tr_sh, va_sh, vocab_sh, desc_sh = load_corpus("tiny-shakespeare", bpe=False)
+exp_b_results = {}
+
+for eta_k in ETA_K_LIST:
+    grid = run_grid(tr_sh, va_sh, vocab_sh, eta_k,
+                    HIGH_R_GRID, SEEDS, desc_sh)
+    exp_b_results[eta_k] = grid
+
+# ============================================================
+# 8. ANALYSIS AND VERDICT
 # ============================================================
 
 print(f"\n{'='*68}")
 print("ANALYSIS")
 print(f"{'='*68}")
 
-def analyse(grid, corpus_name):
-    ratios = np.array([g["ratio"] for g in grid])
-    means  = np.array([g["mean"]  for g in grid])
-    stds   = np.array([g["std"]   for g in grid])
+# --- Experiment A ---
+print(f"\n  EXPERIMENT A  (η_K={ETA_K_FIXED:.0e} fixed)")
+print(f"  {'corpus':<28} {'best_r':>7} {'interior':>9} {'rebound@9':>10} verdict")
+print(f"  {'─'*70}")
 
-    best_idx   = int(np.argmin(means))
-    best_r     = ratios[best_idx]
-    best_mean  = means[best_idx]
-    best_std   = stds[best_idx]
+for key, (grid, *_) in exp_a_results.items():
+    res  = find_optimum(grid, key="v_m")
+    v, msg = verdict(res, key)
+    # sparkline
+    ratios = res["ratios"]
+    t_i  = list(ratios).index(9) if 9 in ratios else -1
+    b_i  = list(ratios).index(res["best_r"]) if res["best_r"] in ratios else -1
+    sp   = {"9": t_i, "*": b_i}
+    if t_i == b_i: sp = {"★": t_i}
+    spark = sparkline(res["vals"],
+                      special={v: k for k, v in sp.items()})
+    print(f"  {key:<28} r={res['best_r']:>4.0f}  "
+          f"{'YES' if res['interior'] else 'NO':>9}  "
+          f"{'YES' if res['rebound_after_9'] else 'NO':>10}  {v}")
+    print(f"  {'':28} [{spark}]  {msg}")
 
-    # Theory point
-    t_idx  = int(np.argmin(np.abs(ratios - THEORY_RATIO)))
-    t_mean = means[t_idx]
-    t_std  = stds[t_idx]
-    gap    = t_mean - best_mean
-    gap_sigma = gap / (best_std + 1e-9)
+# --- Experiment B ---
+print(f"\n  EXPERIMENT B  (multiple η_K, tiny-shakespeare)")
+print(f"  {'η_K':>8}  {'best_r':>7}  {'interior':>9}  verdict")
+print(f"  {'─'*50}")
 
-    # Interior minimum?
-    has_interior = 0 < best_idx < len(grid)-1
+b_rstar = []
+for eta_k, grid in exp_b_results.items():
+    res  = find_optimum(grid, key="v_m")
+    v, msg = verdict(res, "shakespeare")
+    b_rstar.append((eta_k, res["best_r"]))
+    print(f"  η_K={eta_k:.0e}  r*={res['best_r']:>4.0f}  "
+          f"{'YES' if res['interior'] else 'NO':>9}  {v}")
 
-    # Monotone check (ignoring noise < 0.5σ)
-    diffs = np.diff(means)
-    sig_up   = (diffs >  stds[:-1] * 0.5).sum()
-    sig_down = (diffs < -stds[:-1] * 0.5).sum()
-
-    # Flat zone: within 1σ of best
-    flat = ratios[np.abs(means - best_mean) <= best_std].tolist()
-
-    # Slope between r=9 and r=12 (sign tells direction past theory)
-    if THEORY_RATIO in ratios:
-        ti = list(ratios).index(THEORY_RATIO)
-        slope_after = means[min(ti+1, len(means)-1)] - means[ti]
+# Stability of r* across η_K
+rstar_vals = [r for _, r in b_rstar]
+rstar_std  = float(np.std(rstar_vals))
+rstar_mean = float(np.mean(rstar_vals))
+print(f"\n  r* across η_K: mean={rstar_mean:.1f}  std={rstar_std:.1f}")
+if rstar_std < 2:
+    print(f"  → r* is STABLE across η_K (std<2). "
+          f"Ratio is approximately constant.")
+    if abs(rstar_mean - 9) / 9 < 0.25:
+        print(f"  → Mean r*={rstar_mean:.1f} within 25% of theory r=9. "
+              f"STRONG SUPPORT.")
     else:
-        slope_after = 0.0
+        print(f"  → Mean r*={rstar_mean:.1f} not near r=9. "
+              f"Stable ratio but wrong value.")
+else:
+    print(f"  → r* VARIES with η_K (std={rstar_std:.1f}). "
+          f"Ratio is not a geometric constant.")
 
-    print(f"\n  [{corpus_name}]")
-    print(f"  Best ratio     : r={best_r:.1f}  "
-          f"loss={best_mean:.4f}±{best_std:.4f}  "
-          f"({'interior' if has_interior else 'EDGE'})")
-    print(f"  Theory r=9     : loss={t_mean:.4f}±{t_std:.4f}  "
-          f"gap={gap:+.4f} ({gap_sigma:+.1f}σ)")
-    print(f"  Flat zone (±1σ): r ∈ {[f'{r:.0f}' for r in flat]}")
-    print(f"  Sig. increases : {sig_up}  |  sig. decreases: {sig_down}")
-    if slope_after > best_std * 0.3:
-        print(f"  After r=9      : loss RISES → optimum near r=9")
-    elif slope_after < -best_std * 0.3:
-        print(f"  After r=9      : loss still falls → no optimum at r=9")
-    else:
-        print(f"  After r=9      : flat (Δ={slope_after:+.4f})")
-
-    # Verdict
-    if has_interior and abs(best_r - THEORY_RATIO) / THEORY_RATIO <= 0.20:
-        v = "STRONG"
-        detail = (f"Interior min at r={best_r:.0f}, within 20% of "
-                  f"theory r={THEORY_RATIO:.0f}. Quantitative prediction supported.")
-    elif has_interior and THEORY_RATIO in flat:
-        v = "WEAK"
-        detail = (f"Interior min at r={best_r:.0f}; r=9 in flat zone. "
-                  f"Consistent but landscape too flat to discriminate.")
-    elif has_interior:
-        v = "WRONG RATIO"
-        detail = (f"Interior min at r={best_r:.0f}, outside 20% band "
-                  f"of r=9. Direction right, magnitude wrong.")
-    elif sig_up == 0:
-        v = "NULL (monotone)"
-        detail = ("Loss decreases monotonically across all tested ratios. "
-                  "Extend grid beyond r=27, or experiment underpowered.")
-    else:
-        v = "INCONCLUSIVE"
-        detail = f"Best at grid edge (r={best_r:.0f}); extend grid."
-
-    print(f"\n  → VERDICT: {v}")
-    print(f"     {detail}")
-    return v
-
-verdicts = {}
-for corpus_name, grid in all_grid.items():
-    verdicts[corpus_name] = analyse(grid, corpus_name)
+# ASCII scatter: r* vs η_K
+print(f"\n  Scatter: r* vs η_K")
+print(f"  (each row = one η_K value)")
+for eta_k, rstar in b_rstar:
+    bar = "─" * int(rstar / 2)
+    print(f"  η_K={eta_k:.0e}  r*={rstar:>4.0f}  |{bar}●  "
+          f"{'← theory' if abs(rstar-9)<1 else ''}")
 
 # ============================================================
-# 7. LANDSCAPE VISUALISATION
-# ============================================================
-
-def sparkline(vals, markers=None):
-    """
-    Draw a sparkline. markers = {index: char} for special positions.
-    """
-    bars = " ▁▂▃▄▅▆▇█"
-    lo, hi = min(vals), max(vals)
-    if hi == lo: return "─" * len(vals)
-    chars = [bars[int((v - lo) / (hi - lo) * 8)] for v in vals]
-    if markers:
-        for idx, ch in markers.items():
-            if 0 <= idx < len(chars):
-                chars[idx] = ch
-    return "".join(chars)
-
-print(f"\n{'='*68}")
-print("LANDSCAPE  (left=small η_σ, right=large η_σ)")
-print(f"  '9' marks theory point (r=9), '*' marks empirical best")
-print(f"  Shape ▼ = good (interior min) | Shape ╲ = null (monotone)")
-print(f"{'='*68}")
-
-for corpus_name, grid in all_grid.items():
-    ratios = [g["ratio"] for g in grid]
-    means  = [g["mean"]  for g in grid]
-    best_i  = int(np.argmin(means))
-    theory_i = min(range(len(ratios)), key=lambda i: abs(ratios[i]-9.0))
-    markers = {theory_i: "9", best_i: "*"}
-    if theory_i == best_i:
-        markers = {best_i: "★"}
-    spark = sparkline(means, markers)
-    print(f"\n  {corpus_name}")
-    print(f"  [{spark}]")
-    # Ratio axis labels
-    labels = [f"{r:.0f}" for r in ratios]
-    axis   = "  " + "  ".join(
-        f"r={labels[i]}" if i in [0, len(labels)//2, len(labels)-1] else ""
-        for i in range(len(labels))
-    ).strip()
-    print(f"  r: {ratios[0]:.1f} {'─'*10} {ratios[len(ratios)//2]:.0f} "
-          f"{'─'*10} {ratios[-1]:.0f}")
-
-# ============================================================
-# 8. SUMMARY AND NEXT STEPS
+# 9. OVERALL VERDICT
 # ============================================================
 
 print(f"\n{'='*68}")
-print("SUMMARY")
+print("OVERALL VERDICT")
 print(f"{'='*68}")
-for corpus_name, v in verdicts.items():
-    print(f"  {corpus_name:<25} → {v}")
-
 print(f"""
-NEXT STEPS DEPENDING ON RESULT:
+Three questions, each with a binary answer:
 
-  If STRONG on both corpora:
-    → This is the key result. Report: "Optimal η_σ/η_K ≈ 9, matching
-      G⁻¹ = diag(1, -9) prediction." Update paper as primary finding.
+  Q1: Is there an interior optimum (not monotone)?
+  Q2: Is the optimum near r=9 (within 25%)?
+  Q3: Is r* stable across η_K values?
 
-  If STRONG on synthetic, NULL on shakespeare:
-    → Consistent with embedding-bottleneck hypothesis.
-      Test: larger model (d=256, 4 layers) on shakespeare where
-      non-embedding params dominate more clearly.
+  Q1+Q2+Q3 = YES → STRONG: ratio=9 prediction confirmed
+  Q1+Q3    = YES, Q2=NO → ratio is real but J_G gives wrong value
+  Q1       = NO  → monotone landscape; ratio experiment uninformative
+  Q3       = NO  → r* depends on η_K; not a geometric constant
 
-  If WRONG RATIO (interior min but not at 9):
-    → Compute the empirically optimal ratio and work backwards:
-      What σ_ref gives G₂₂ = −1/r_opt² ?
-      This may refine the theory's σ_ref convention.
-
-  If NULL (monotone) past r=27:
-    → The LR-ratio experiment cannot verify the quantitative prediction.
-      The next clean experiment: implement the full J_G gradient coupling
-      and test whether the coupling strength d_c = 0.2451 matches the
-      empirically stable range.
+NEXT STEPS:
+  If monotone: implement full J_G gradient controller and test d_c.
+  If Q2=NO:    compute empirical r* and back-solve for σ_ref that
+               gives G₂₂ = -1/r*². Refine theory.
+  If Q1+Q2+Q3: update paper to report this as primary empirical result.
 """)
