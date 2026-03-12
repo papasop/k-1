@@ -102,7 +102,8 @@ class Config:
     K_star: float     = 1.0
     # FIX-6: delta_window = 50 to match paper
     delta_window: int = 50
-    # Reference sigma for damping modulation (empirical, ~activation std at init)
+    # sigma_ref is now set data-driven from step-0 H (see train_run).
+    # Config.sigma_ref kept as fallback default only.
     sigma_ref: float  = 1.0
     device: str       = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -304,12 +305,23 @@ def compute_adaptive_law3(K_series: List[float], window: int,
       K_opt = mean(K[-tail:])          # empirical equilibrium
       V_opt = 1/2 * (K - K_opt)^2     # recentred potential
 
-    Paper language:
-      "The equilibrium value K_opt appears task-dependent. We estimate it
-       empirically as the mean K over the final {tail} steps and recompute
-       the Lyapunov potential V_opt = 1/2*(K - K_opt)^2 to verify that
-       training dynamics are dissipative relative to the actual attractor,
-       rather than the theoretical K*=1 reference."
+    NOTE:
+      K_opt is estimated post hoc from the final training regime.
+      Therefore this is an empirical attractor-centered verification,
+      not the online control target used by the optimizer itself.
+      P(ΔV<0) = 1.0 is partly tautological: since K_opt is derived from
+      the same trajectory, convergence toward K_opt is guaranteed in the
+      limit. The non-trivial content is that K converges monotonically to
+      a task-specific attractor rather than oscillating.
+      A stronger test would estimate K_opt from a held-out validation run.
+
+    Paper language (safe):
+      "The equilibrium value K_opt appears task-dependent. Relative to the
+       empirically estimated K_opt (post-hoc, same trajectory), the Lyapunov
+       proxy V_opt = 1/2*(K-K_opt)^2 satisfies <ΔV_opt> < 0 and
+       P(ΔV_opt < 0) = 1.0, consistent with monotone convergence to the
+       task-specific attractor. Note that this is an attractor-centered
+       verification, not a causal prediction."
     """
     # Estimate task-specific equilibrium from the training tail
     K_arr  = np.array(K_series)
@@ -632,6 +644,10 @@ def train_run(config: Config, mode: str,
             eps_H=config.eps_H,
         )
 
+        # FIX-3: set sigma_ref from first observed H (data-driven, not hardcoded 1.0)
+        if mode == "projected_jg" and step == 0:
+            optimizer.sigma_ref = state["sigma"]
+
         optimizer.zero_grad()
         loss.backward()
 
@@ -868,17 +884,25 @@ INTERPRETATION:
     K_opt is task-dependent, not universally 1.
 
   Adaptive K_opt: V_opt = 1/2*(K - K_opt)^2
-    K_opt = mean(K[-50:]) estimates the actual training attractor.
-    Law III tests whether dynamics are dissipative RELATIVE TO K_opt.
-    If pass_adapt = ✓: training converges to its own attractor,
-    consistent with the dissipative character of Law II.
+    K_opt = mean(K[-50:]) estimated post hoc from the same trajectory.
+    *** TAUTOLOGY WARNING ***
+    P(ΔV<0) = 1.0 is partly tautological: K_opt is derived from the
+    trajectory itself, so convergence toward K_opt is guaranteed in the
+    limit. The non-trivial content is monotone convergence (no oscillation).
+    A stronger test requires K_opt estimated from a held-out validation run.
+
+    What IS meaningful:
+      (a) K converges monotonically to a task-specific attractor K_opt << 1.
+      (b) K_opt correlates with final loss across all runs (lower K_opt,
+          lower loss — see summary table). This is an independent finding.
 
   Paper language (safe):
     "The equilibrium value K_opt appears task-dependent. Relative to the
-     empirically estimated K_opt, the Lyapunov proxy V_opt = 1/2*(K-K_opt)^2
-     satisfies <ΔV_opt> < 0 and P(ΔV_opt < 0) > 0.5, consistent with
-     Law III dissipation. We conjecture that a refined theory with
-     task-adaptive K_opt would replace the fixed K*=1 reference."
+     empirically estimated K_opt (post-hoc attractor), V_opt = 1/2*(K-K_opt)^2
+     satisfies <ΔV_opt> < 0 with P = 1.0, consistent with monotone convergence
+     to the task-specific attractor. Note that K_opt is estimated from the
+     same trajectory, so this constitutes an attractor-centered verification
+     rather than a prospective causal test."
 """)
 
 
