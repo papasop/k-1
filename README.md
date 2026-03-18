@@ -237,18 +237,6 @@ scores_L = Q(I − 2αP_t)K^T / √d
          = scores_std − 2α × (timelike inner product)
 ```
 
----
-
-## Citation
-
-```bibtex
-@misc{lorentz-transformer,
-  title  = {Lorentz Transformer: Pseudo-Riemannian Architecture from K=1 Field Equations},
-  author = {},
-  year   = {2026},
-  url    = {https://github.com/YOUR_USERNAME/lorentz-transformer}
-}
-```
 
 ---
 
