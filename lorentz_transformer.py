@@ -1628,6 +1628,75 @@ def train(train_cfg: TrainConfig, model_cfg: LorentzConfig):
 #  
 # ─────────────────────────────────────────────
 
+def scale_train(d_model=256, n_layers=6, n_hops=2,
+                total_steps=5000, lorentz_alpha=0.25):
+    """
+    规模验证训练
+    默认: 256维/6层（比quick_train大4倍，比GPT-2小3倍）
+    也可用: d_model=512, n_layers=8
+    """
+    model_cfg = LorentzConfig(
+        d_model=d_model,
+        n_heads=max(4, d_model//64),   # 每head 64维
+        n_layers=n_layers,
+        max_seq_len=64,
+        lorentz_alpha=lorentz_alpha,
+        hess_warmup_steps=200,
+        hess_update_freq=40,
+        hutchinson_k=20,
+        lambda_spacelike=0.0,
+    )
+    n_params = (sum([
+        d_model * d_model * 4,          # QKV + O proj per layer
+        d_model * d_model * 4 * 2,      # FFN
+        d_model,                         # LayerNorm
+    ]) * n_layers + d_model * 35) / 1e6
+    print(f"规模: d={d_model}  L={n_layers}  "
+          f"H={model_cfg.n_heads}  ~{n_params:.1f}M params")
+
+    train_cfg = TrainConfig(
+        dataset='synthetic', n_hops=n_hops,
+        n_train=32000, n_val=4000,
+        total_steps=total_steps, batch_size=32,   # 更大模型用小batch
+        base_lr=1e-4,                              # 大模型用小lr
+        scale_t=2.0, scale_s=0.5,
+        lorentz_start=0.5,
+        eval_interval=500, log_interval=200,
+        out_dir=f'./checkpoints_scale_{d_model}',
+    )
+    return train(train_cfg, model_cfg)
+
+
+def wikitext_train(d_model=256, n_layers=6, total_steps=10000,
+                   lorentz_alpha=0.25):
+    """
+    真实语言数据训练（wikitext-103）
+    需要: pip install datasets transformers
+    """
+    model_cfg = LorentzConfig(
+        vocab_size=50257,               # GPT-2词表
+        d_model=d_model,
+        n_heads=max(4, d_model//64),
+        n_layers=n_layers,
+        max_seq_len=256,
+        lorentz_alpha=lorentz_alpha,
+        hess_warmup_steps=500,          # 真实数据需要更长warmup
+        hess_update_freq=100,
+        hutchinson_k=10,               # 真实数据Hutchinson适当减少
+        lambda_spacelike=0.0,
+    )
+    train_cfg = TrainConfig(
+        dataset='wikitext',
+        total_steps=total_steps, batch_size=16,
+        base_lr=1e-4,
+        scale_t=2.0, scale_s=0.5,
+        lorentz_start=0.5,
+        eval_interval=1000, log_interval=200,
+        out_dir=f'./checkpoints_wikitext_{d_model}',
+    )
+    return train(train_cfg, model_cfg)
+
+
 def quick_train(n_hops=2, total_steps=2000, d_model=128,
                 n_layers=4, lorentz_alpha=0.25):
     """   ( )"""
@@ -1674,7 +1743,7 @@ if __name__ == '__main__':
     # Colab/Jupyter argparse    → 
     p = argparse.ArgumentParser(description='Lorentz Transformer')
     p.add_argument('--mode', default='quick',
-                   choices=['quick', 'full', 'test'])
+                   choices=['quick', 'full', 'test', 'scale', 'wikitext'])
     p.add_argument('--n_hops',        type=int,   default=2)
     p.add_argument('--total_steps',   type=int,   default=0)
     p.add_argument('--d_model',       type=int,   default=128)
@@ -1690,6 +1759,14 @@ if __name__ == '__main__':
         steps = args.total_steps or 2000
         quick_train(args.n_hops, steps, args.d_model,
                     args.n_layers, args.lorentz_alpha)
+    elif args.mode == 'scale':
+        steps = args.total_steps or 5000
+        scale_train(args.d_model or 256, args.n_layers or 6,
+                    args.n_hops, steps, args.lorentz_alpha)
+    elif args.mode == 'wikitext':
+        steps = args.total_steps or 10000
+        wikitext_train(args.d_model or 256, args.n_layers or 6,
+                       steps, args.lorentz_alpha)
     else:
         steps = args.total_steps or 10000
         full_train(args.n_hops, steps, args.d_model,
