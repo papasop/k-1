@@ -141,7 +141,7 @@ lorentz_transformer.py    # 单文件完整实现（~1800行）
 
 **参考：**
 - Li, Y.Y.N. *K=1 Chronogeometrodynamics*. Preprint, 2025.
-- Li, Y.Y.N. *Neural Null Cones: Zero-Curvature Channels in Loss Landscapes from Symplectic Hessian Decomposition*. Preprint, 2025.
+
 
 ---
 
