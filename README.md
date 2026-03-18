@@ -37,9 +37,6 @@ r(baseline, delta) ≈ -1.0
 ### 4. 光锥翻转（α=1.0）
 真实因果链token对的类时比例（0.688）显著高于噪声对（0.416），差值+0.271。
 
-### 5. 与NCCL论文的关系
-Neural Null Cones论文（2025）在GPT-2上独立确认了损失Hessian的不定结构，验证精度10⁻²⁶。该论文明确将理论起源归于本项目的K=1场方程。
-
 ---
 
 ## 架构组件（全部实现）
@@ -163,9 +160,6 @@ lorentz_transformer.py    # 单文件完整实现（~1950行）
 
 信息时间度量 `dt²_info = Σ_q Φ_q/H_q` 在参数空间定义了伪黎曼度量。Fisher信息（正定）和K-FAC（正定）无法看到这个结构，因为它们从定义上只能看到正曲率。
 
-**参考：**
-- Li, Y.Y.N. *K=1 Chronogeometrodynamics*. Preprint, 2025.
-- Li, Y.Y.N. *Neural Null Cones: Zero-Curvature Channels in Loss Landscapes from Symplectic Hessian Decomposition*. Preprint, 2025.
 
 ---
 
