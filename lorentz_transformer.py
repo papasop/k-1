@@ -104,7 +104,8 @@ class LorentzConfig:
     dropout:     float = 0.1
 
     # Component 1: Minkowski注意力
-    lorentz_alpha: float = 0.25
+    lorentz_alpha:      float = 0.25
+    use_minkowski_norm: bool  = True   # 闵可夫斯基LayerNorm
 
     # Component 2: P_t更新
     hess_update_freq:  int   = 40
@@ -322,6 +323,50 @@ class LorentzMultiHeadAttention(nn.Module):
 
 
 # ─────────────────────────────────────────────
+# Minkowski LayerNorm（洛伦兹归一化）
+# ─────────────────────────────────────────────
+class MinkowskiLayerNorm(nn.Module):
+    """
+    闵可夫斯基归一化。
+
+    标准LayerNorm: x / ||x||_2  （欧氏）
+    MinkowskiLayerNorm: x / sqrt(|<x,x>_η|)  （闵可夫斯基）
+
+    η-内积: <x,x>_η = ||x_s||² - ||x_t||²
+      类空分量(x_s)贡献正，类时分量(x_t)贡献负。
+    mask未注入时退化为标准LayerNorm。
+    """
+    def __init__(self, d_model: int, eps: float = 1e-5):
+        super().__init__()
+        self.d_model = d_model
+        self.eps     = eps
+        self.weight  = nn.Parameter(torch.ones(d_model))
+        self.bias    = nn.Parameter(torch.zeros(d_model))
+        self.register_buffer('timelike_mask',
+                              torch.zeros(d_model, dtype=torch.bool))
+        self._has_mask = False
+
+    def set_timelike_mask(self, mask: torch.Tensor):
+        self.timelike_mask.copy_(mask.bool())
+        self._has_mask = mask.any().item()
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        mean = x.mean(dim=-1, keepdim=True)
+        x_c  = x - mean
+        if not self._has_mask:
+            var = x_c.pow(2).mean(dim=-1, keepdim=True)
+            x_n = x_c / (var + self.eps).sqrt()
+        else:
+            m   = self.timelike_mask.float()
+            x_t = x_c * m
+            x_s = x_c * (1.0 - m)
+            eta_sq = (x_s.pow(2).sum(dim=-1, keepdim=True) -
+                      x_t.pow(2).sum(dim=-1, keepdim=True))
+            x_n = x_c / (eta_sq.abs() + self.eps).sqrt()
+        return self.weight * x_n + self.bias
+
+
+# ─────────────────────────────────────────────
 # 前馈网络
 # ─────────────────────────────────────────────
 class FeedForward(nn.Module):
@@ -347,8 +392,8 @@ class LorentzBlock(nn.Module):
         super().__init__()
         self.attn  = LorentzMultiHeadAttention(config)
         self.ff    = FeedForward(config)
-        self.norm1 = nn.LayerNorm(config.d_model)
-        self.norm2 = nn.LayerNorm(config.d_model)
+        self.norm1 = MinkowskiLayerNorm(config.d_model)
+        self.norm2 = MinkowskiLayerNorm(config.d_model)
 
     def forward(self, x: torch.Tensor,
                 attention_mask: Optional[torch.Tensor] = None):
@@ -469,6 +514,8 @@ class TimeLikeProbe:
                 # G_ema < 0 → 类时
                 binary_mask = (self._mask_ema[li] < 0)
                 block.attn.set_timelike_mask(binary_mask.to(device))
+                block.norm1.set_timelike_mask(binary_mask.to(device))
+                block.norm2.set_timelike_mask(binary_mask.to(device))
                 self.timelike_fracs[li] = binary_mask.float().mean().item()
 
                 lmin_safe = G_safe.min().item()
@@ -543,7 +590,7 @@ class LorentzTransformer(nn.Module):
         ])
 
         # 输出层
-        self.norm_f = nn.LayerNorm(config.d_model)
+        self.norm_f = MinkowskiLayerNorm(config.d_model)
         self.lm_head = nn.Linear(config.d_model, config.vocab_size,
                                   bias=False)
 
@@ -1221,22 +1268,27 @@ def load_real_dataset(cfg: TrainConfig, model_cfg: LorentzConfig):
     model_cfg.vocab_size = tokenizer.vocab_size   # 50257
 
     if cfg.dataset == 'wikitext':
-        ds = load_dataset('wikitext', 'wikitext-103-raw-v1')
+        ds = load_dataset('wikitext', 'wikitext-2-raw-v1')   # 快速版（2M tokens）
     elif cfg.dataset == 'openwebtext':
         ds = load_dataset('openwebtext', split='train[:1%]')
     else:
         raise ValueError(f"未知数据集: {cfg.dataset}")
 
-    def tokenize(examples):
-        return tokenizer(examples['text'], truncation=False)
-
     train_ids = []
     val_ids   = []
+    print("  Tokenizing...")
     for split, target in [('train', train_ids), ('validation', val_ids)]:
         if split not in ds: continue
+        count = 0
         for text in ds[split]['text']:
-            ids = tokenizer(text)['input_ids']
+            if not text.strip(): continue
+            # 긴 문서를 max_seq_len 단위로 분할 (truncation 대신)
+            ids = tokenizer(text, add_special_tokens=False)['input_ids']
             target.extend(ids)
+            count += 1
+            if count % 1000 == 0 and count > 0:
+                print(f"    {split}: {count} docs, {len(target):,} tokens")
+    print(f"  train={len(train_ids):,}  val={len(val_ids):,} tokens  OK")
 
     return (torch.tensor(train_ids, dtype=torch.long),
             torch.tensor(val_ids,   dtype=torch.long))
@@ -1288,7 +1340,9 @@ class TokenLoader:
         self.device     = device
 
     def next_batch(self):
-        n    = len(self.tokens) - self.seq_len
+        n    = len(self.tokens) - self.seq_len - 1
+        if n <= 0:
+            raise ValueError(f"Token count({len(self.tokens)}) < seq_len({self.seq_len})")
         idxs = torch.randint(0, n, (self.batch_size,))
         x    = torch.stack([self.tokens[i:i+self.seq_len] for i in idxs])
         y    = torch.stack([self.tokens[i+1:i+self.seq_len+1] for i in idxs])
@@ -1654,14 +1708,16 @@ def scale_train(d_model=256, n_layers=6, n_hops=2,
     print(f"规模: d={d_model}  L={n_layers}  "
           f"H={model_cfg.n_heads}  ~{n_params:.1f}M params")
 
+    # 学习率根据模型大小自动调整
+    lr = 3e-4 if d_model <= 256 else 2e-4   # 512维用2e-4，比256维大2倍
     train_cfg = TrainConfig(
         dataset='synthetic', n_hops=n_hops,
         n_train=32000, n_val=4000,
-        total_steps=total_steps, batch_size=32,   # 更大模型用小batch
-        base_lr=1e-4,                              # 大模型用小lr
+        total_steps=total_steps, batch_size=32,
+        base_lr=lr,
         scale_t=2.0, scale_s=0.5,
         lorentz_start=0.5,
-        eval_interval=500, log_interval=200,
+        eval_interval=1000, log_interval=500,   # 15000步调整输出频率
         out_dir=f'./checkpoints_scale_{d_model}',
     )
     return train(train_cfg, model_cfg)
@@ -1670,7 +1726,7 @@ def scale_train(d_model=256, n_layers=6, n_hops=2,
 def wikitext_train(d_model=256, n_layers=6, total_steps=10000,
                    lorentz_alpha=0.25):
     """
-    真实语言数据训练（wikitext-103）
+    真实语言数据训练（wikitext-2，~2M tokens）
     需要: pip install datasets transformers
     """
     model_cfg = LorentzConfig(
@@ -1678,17 +1734,18 @@ def wikitext_train(d_model=256, n_layers=6, total_steps=10000,
         d_model=d_model,
         n_heads=max(4, d_model//64),
         n_layers=n_layers,
-        max_seq_len=256,
+        max_seq_len=512,                # 512토큰으로 고정
         lorentz_alpha=lorentz_alpha,
-        hess_warmup_steps=500,          # 真实数据需要更长warmup
+        hess_warmup_steps=2000,         # 실제 언어 데이터는 더 긴 warmup
         hess_update_freq=100,
-        hutchinson_k=10,               # 真实数据Hutchinson适当减少
+        hutchinson_k=10,
         lambda_spacelike=0.0,
     )
+    lr = 3e-4 if d_model <= 256 else 1e-4
     train_cfg = TrainConfig(
         dataset='wikitext',
-        total_steps=total_steps, batch_size=16,
-        base_lr=1e-4,
+        total_steps=total_steps, batch_size=16,  # 256维用更大batch
+        base_lr=lr,
         scale_t=2.0, scale_s=0.5,
         lorentz_start=0.5,
         eval_interval=1000, log_interval=200,
@@ -1749,10 +1806,9 @@ if __name__ == '__main__':
     #   wikitext_train() → 真实语言数据
     # ══════════════════════════════════════════════
 
-    log = scale_train(
-        d_model      = 256,    # 维度（128→256→512）
-        n_layers     = 6,      # 层数（4→6→8）
-        n_hops       = 2,      # 任务难度
-        total_steps  = 5000,   # 训练步数
-        lorentz_alpha= 0.25,   # 洛伦兹强度
+    log = wikitext_train(
+        d_model      = 256,    # 256维：4.7M参数，wikitext-2足够支撑
+        n_layers     = 6,
+        total_steps  = 10000,  # Phase1=5000收敛，Phase2=5000洛伦兹
+        lorentz_alpha= 0.25,
     )
