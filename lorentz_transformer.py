@@ -367,21 +367,69 @@ class MinkowskiLayerNorm(nn.Module):
 
 
 # ─────────────────────────────────────────────
-# 前馈网络
+# 洛伦兹前馈网络
 # ─────────────────────────────────────────────
 class FeedForward(nn.Module):
+    """
+    洛伦兹前馈网络。
+
+    标准FFN: x → Linear → GELU → Linear（各向同性）
+
+    洛伦兹FFN：
+      1. 将输入分解为类时分量(x_t)和类空分量(x_s)
+      2. 类时分量: Linear_t → SiLU（平滑，保留负值，适合时间方向）
+      3. 类空分量: Linear_s → GELU（标准，适合空间方向）
+      4. 合并后投影回d_model
+
+    设计原理：
+      类时方向对应因果信息流，SiLU（x*sigmoid(x））保留负激活，
+      允许类时方向传递"抑制"信号（时间上的因果否定）。
+      类空方向对应语义定位，GELU保持标准行为。
+
+    mask未注入时退化为标准FFN（安全fallback）。
+    """
     def __init__(self, config: LorentzConfig):
         super().__init__()
-        self.net = nn.Sequential(
-            nn.Linear(config.d_model, config.d_ff),
-            nn.GELU(),
-            nn.Dropout(config.dropout),
-            nn.Linear(config.d_ff, config.d_model),
-            nn.Dropout(config.dropout),
-        )
+        self.d_model = config.d_model
+        self.d_ff    = config.d_ff
+        self.drop    = nn.Dropout(config.dropout)
 
-    def forward(self, x):
-        return self.net(x)
+        # 표준 FFN (fallback 및 Phase 1)
+        self.w1 = nn.Linear(config.d_model, config.d_ff, bias=False)
+        self.w2 = nn.Linear(config.d_ff, config.d_model, bias=False)
+
+        # 类时专用 FFN
+        self.w1_t = nn.Linear(config.d_model, config.d_ff // 2, bias=False)
+        self.w2_t = nn.Linear(config.d_ff // 2, config.d_model, bias=False)
+
+        # 类空专用 FFN
+        self.w1_s = nn.Linear(config.d_model, config.d_ff // 2, bias=False)
+        self.w2_s = nn.Linear(config.d_ff // 2, config.d_model, bias=False)
+
+        self.register_buffer('timelike_mask',
+                              torch.zeros(config.d_model, dtype=torch.bool))
+        self._has_mask = False
+
+    def set_timelike_mask(self, mask: torch.Tensor):
+        self.timelike_mask.copy_(mask.bool())
+        self._has_mask = mask.any().item()
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        if not self._has_mask:
+            # 标准FFN fallback
+            return self.drop(self.w2(F.gelu(self.w1(x))))
+
+        m   = self.timelike_mask.float()
+        x_t = x * m               # 类时分量
+        x_s = x * (1.0 - m)      # 类空分量
+
+        # 类时: SiLU（保留负激活，传递因果抑制信号）
+        h_t = self.drop(self.w2_t(F.silu(self.w1_t(x_t))))
+
+        # 类空: GELU（标准语义处理）
+        h_s = self.drop(self.w2_s(F.gelu(self.w1_s(x_s))))
+
+        return h_t + h_s
 
 
 # ─────────────────────────────────────────────
@@ -473,9 +521,7 @@ class TimeLikeProbe:
             def make_loss_fn(layer_idx):
                 def loss_fn():
                     h = (self.model.embed(xb) +
-                         self.model.pos_emb(
-                             torch.arange(xb.shape[1],
-                                          device=device).unsqueeze(0)))
+                         self.model.pos_enc(xb.shape[1], device))
                     for i, blk in enumerate(self.model.blocks):
                         ao, aw = blk.attn(blk.norm1(h))
                         h = h + ao
@@ -516,6 +562,7 @@ class TimeLikeProbe:
                 block.attn.set_timelike_mask(binary_mask.to(device))
                 block.norm1.set_timelike_mask(binary_mask.to(device))
                 block.norm2.set_timelike_mask(binary_mask.to(device))
+                block.ff.set_timelike_mask(binary_mask.to(device))
                 self.timelike_fracs[li] = binary_mask.float().mean().item()
 
                 lmin_safe = G_safe.min().item()
@@ -524,6 +571,11 @@ class TimeLikeProbe:
 
             except Exception:
                 new_G_diags.append(None)
+
+        # 位置编码使用第一层的mask
+        if self.model.blocks:
+            first_mask = self.model.blocks[0].attn.timelike_mask
+            self.model.pos_enc.set_timelike_mask(first_mask)
 
         self.model.train()
         self.n_updates += 1
@@ -546,6 +598,90 @@ class TimeLikeProbe:
                 f'  layer {li:2d}: frac={frac:.3f} λ_min={lmin:.2e} {bar}')
         lines.append(f'  总更新次数: {self.n_updates}')
         return '\n'.join(lines)
+
+
+# ─────────────────────────────────────────────
+# 洛伦兹位置编码
+# ─────────────────────────────────────────────
+class LorentzPositionalEncoding(nn.Module):
+    """
+    洛伦兹位置编码：时间坐标和空间坐标分离。
+
+    标准位置编码：pos_emb(i) ∈ R^d_model（各向同性）
+    所有d_model维度平等对待位置信息。
+
+    洛伦兹位置编码：
+      时间分量（类时维度）：编码因果顺序（时间箭头方向）
+        使用单调递增函数：t_enc[i] = sin(i / L) 归一化到[-1, 1]
+        因果位置的时间坐标应该是严格有序的
+
+      空间分量（类空维度）：编码语义位置（标准正弦编码）
+        使用标准Transformer正弦编码：sin/cos(i / 10000^(2k/d))
+
+    两者拼接后投影到d_model维度（不增加参数量，只重新分配）。
+
+    mask未注入时退化为标准位置编码。
+    """
+    def __init__(self, config: LorentzConfig):
+        super().__init__()
+        self.d_model  = config.d_model
+        self.max_len  = config.max_seq_len
+
+        # 标准可学习位置嵌入（fallback）
+        self.pos_emb  = nn.Embedding(config.max_seq_len, config.d_model)
+
+        # 时间分量投影（类时维度 → 可学习缩放）
+        self.time_scale = nn.Parameter(torch.ones(1))
+
+        self.register_buffer('timelike_mask',
+                              torch.zeros(config.d_model, dtype=torch.bool))
+        self._has_mask = False
+
+        # 预计算正弦位置编码
+        self._build_sinusoidal(config.max_seq_len, config.d_model)
+
+    def _build_sinusoidal(self, max_len: int, d_model: int):
+        """预计算标准正弦位置编码"""
+        pe = torch.zeros(max_len, d_model)
+        pos = torch.arange(max_len).unsqueeze(1).float()
+        div = torch.exp(torch.arange(0, d_model, 2).float() *
+                        -(math.log(10000.0) / d_model))
+        pe[:, 0::2] = torch.sin(pos * div)
+        pe[:, 1::2] = torch.cos(pos * div[:d_model//2])
+        self.register_buffer('sinusoidal', pe)
+
+    def set_timelike_mask(self, mask: torch.Tensor):
+        self.timelike_mask.copy_(mask.bool())
+        self._has_mask = mask.any().item()
+
+    def forward(self, seq_len: int, device: torch.device) -> torch.Tensor:
+        """
+        返回位置编码 (1, L, d_model)
+        """
+        pos_idx = torch.arange(seq_len, device=device).unsqueeze(0)
+
+        if not self._has_mask:
+            # fallback: 标准可学习位置编码
+            return self.pos_emb(pos_idx)
+
+        # 洛伦兹位置编码
+        m = self.timelike_mask.float()  # (d_model,)
+
+        # 标准正弦编码（类空分量用）
+        sin_enc = self.sinusoidal[:seq_len].unsqueeze(0)  # (1, L, d_model)
+
+        # 时间分量：单调因果编码
+        # t[i] = i / (L-1)，归一化到[0, 1]，严格单调
+        t = torch.arange(seq_len, device=device).float()
+        if seq_len > 1:
+            t = t / (seq_len - 1)
+        t = t.unsqueeze(0).unsqueeze(-1)  # (1, L, 1)
+
+        # 类时维度用时间坐标，类空维度用正弦编码
+        time_enc = t * m * self.time_scale   # 类时：单调时间坐标
+        space_enc = sin_enc * (1.0 - m)      # 类空：标准正弦
+
+        return time_enc + space_enc
 
 
 # ─────────────────────────────────────────────
@@ -581,7 +717,7 @@ class LorentzTransformer(nn.Module):
 
         # 嵌入层
         self.embed   = nn.Embedding(config.vocab_size, config.d_model)
-        self.pos_emb = nn.Embedding(config.max_seq_len, config.d_model)
+        self.pos_enc = LorentzPositionalEncoding(config)   # 洛伦兹位置编码
         self.drop    = nn.Dropout(config.dropout)
 
         # Transformer块
@@ -627,9 +763,9 @@ class LorentzTransformer(nn.Module):
 
         device = input_ids.device
 
-        # 位置编码
-        pos = torch.arange(L, device=device).unsqueeze(0)
-        h   = self.drop(self.embed(input_ids) + self.pos_emb(pos))
+        # 洛伦兹位置编码
+        pos_enc = self.pos_enc(L, device)
+        h       = self.drop(self.embed(input_ids) + pos_enc)
 
         # 构造加性attention mask
         attn_bias = None
@@ -699,7 +835,7 @@ class LorentzTransformer(nn.Module):
         """返回参数量"""
         n = sum(p.numel() for p in self.parameters())
         if non_embedding:
-            n -= self.pos_emb.weight.numel()
+            n -= self.pos_enc.pos_emb.weight.numel()
         return n
 
     def lightcone_stats(self) -> dict:
