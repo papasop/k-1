@@ -1,244 +1,177 @@
-# Lorentz Transformer
+# 洛伦兹Transformer（Lorentz Transformer）
 
-> **Transformer parameter space is a pseudo-Riemannian (Lorentzian) manifold.**
-> 
-> 50–80% of W_Q parameters have negative diagonal Hessian of dt²_info — confirmed across 3 seeds, 2 tasks, 4 α values, 80 epochs.
-
+基于K=1信息几何场方程的Transformer架构。在参数空间引入伪黎曼几何结构，用闵可夫斯基内积替代欧氏内积，实现真正的洛伦兹注意力机制。
 
 ---
 
-## What is this
+## 核心发现
 
-Standard Transformers assume their parameter space is flat Euclidean space. This repository shows it is not.
+### 1. 伪黎曼结构存在（实验确认）
+W_Q参数空间的50-90%方向对dt²_info的Hessian为负（类时方向）。这一结构在以下条件下全部稳定复现：
+- 合成多跳推理任务（1-hop / 2-hop）
+- 真实语言数据（wikitext，英语维基百科）
+- 128维 / 256维 / 512维三个规模
+- 3个随机种子
 
-The K=1 information geometry field equation defines a metric on the attention weight manifold:
+**这是Transformer处理语言时参数空间的内在几何性质，不是任务特异性产物。**
 
+### 2. r规律（8个独立实验）
 ```
-dt²_info = Σ_q K_q      K_q = Φ_q / H_q
+r(baseline, delta) ≈ -1.0
 ```
+跨K-field、Minkowski注意力、Geodesic Adam三种完全不同的注入机制全部成立。baseline越低，洛伦兹修正越有益；baseline越高，越接近临界区。这是Transformer训练动态的基本规律。
 
-The Hessian of this metric with respect to W_Q determines curvature. Experimental measurement via Hutchinson estimator (K=20) reveals the curvature is **indefinite** — roughly half the parameter directions are concave (timelike) and half convex (spacelike). This is the defining property of a **Lorentzian manifold**.
+### 3. 光锥翻转（α=1.0）
+真实因果链token对的类时比例（0.688）显著高于噪声对（0.416），差值+0.271。注意力机制能够识别真实的因果方向。
 
-From this single geometric fact, three architectural components follow directly.
+### 4. 与NCCL论文的关系
+Neural Null Cones论文（2025）在GPT-2上独立确认了损失Hessian的不定结构（null cone），验证精度10⁻²⁶。该论文明确将理论起源归于本项目的K=1场方程。两者发现的是同一几何结构的不同侧面：
+- NCCL：代数零曲率方向（工程应用）
+- 本项目：物理类时方向（信息几何理论）
 
 ---
 
-## Three Findings
+## 架构组件
 
-### Finding 1: Pseudo-Riemannian Structure (Primary)
+### Component 1：Minkowski注意力
+```
+scores_L = QK^T/√d - 2α(QP_t_scaled)K^T/√d
+η = I - 2α P_t
+```
+P_t是类时投影矩阵，动态更新，归一化处理确保修正幅度与标准scores同量级。
 
-`G_ii = ∂²(dt²_info) / ∂W_Q[i]²`
+### Component 2：Geodesic Adam
+```
+g_t = P_t ⊙ grad   →  步长 × scale_t (=2.0)
+g_s = (I-P_t) ⊙ grad → 步长 × scale_s (=0.5)
+```
+梯度在类时/类空方向差异化优化，类时方向步长是类空方向的4倍。
 
-| Task | α | Seeds | G_ii < 0 fraction |
-|------|---|-------|-------------------|
-| 1-hop | 0.25 | 3/3 | 51–58% |
-| 1-hop | 0.5  | 3/3 | 59–70% |
-| 1-hop | 1.0  | 3/3 | 60–80% |
-| 2-hop | 0.25 | 2/2 | 54–73% |
-| 2-hop | 1.0  | 1/1 | 58–80% |
+### Component 3：MinkowskiLayerNorm（新）
+```
+标准LayerNorm:       x / sqrt(mean(x²) + ε)
+MinkowskiLayerNorm: x / sqrt(|<x,x>_η| + ε)
 
-`G_ii < 0` means dt²_info is concave in that parameter direction → timelike.  
-`G_ii > 0` means convex → spacelike.  
-Result is stable across all conditions.
+<x,x>_η = ||x_s||² - ||x_t||²
+```
+用闵可夫斯基η-范数替代欧氏L2范数，保持几何信息在block之间的传递。mask未激活时自动退化为标准LayerNorm。
 
-### Finding 2: Lightcone Flip (New)
-
-With Minkowski attention at α=1.0, the lightcone correctly identifies causal token pairs:
-
-| Task | α | Real chain (timelike) | Noise (timelike) | Gap |
-|------|---|-----------------------|------------------|-----|
-| 1-hop | 0.0 | 0.289 | 0.631 | −0.342 ✗ |
-| 1-hop | 0.5 | 0.430 | 0.551 | −0.122 ✗ |
-| 1-hop | 1.0 | 0.688 | 0.416 | **+0.271 ✓** |
-| 2-hop | 0.0 | 0.535 | 0.600 | −0.065 ✗ |
-| 2-hop | 1.0 | 0.488 | 0.415 | **+0.073 ✓** |
-
-Both tasks flip at α=1.0. The Minkowski inner product separates causal from non-causal connections.
-
-### Finding 3: R-Law (Unified Training Dynamics)
-
-Across every experiment — K-field, CGD, K=1 Lorentz — the correlation between baseline accuracy and injection delta is r ≈ −1.0. This is not specific to any injection mechanism. It is a fundamental property of Transformer training dynamics.
-
-| Experiment | Condition | r(baseline, Δ) |
-|------------|-----------|----------------|
-| K-field (1-hop) | d=−1, α=0.5 | −0.997 |
-| K=1 Lorentz (1-hop) | α=0.25 | −0.966 |
-| K=1 Lorentz (1-hop) | α=0.5  | −0.999 |
-| K=1 Lorentz (2-hop) | α=0.25 | −1.000 |
-
-**Interpretation:** Lorentz Transformer benefits models in the learning regime (low baseline) and is neutral or harmful on saturated baselines. Optimal use case: pre-training from scratch or fine-tuning on genuinely novel tasks.
+### P_t（动态类时投影矩阵）
+两阶段训练协议：
+- Phase 1（前50%步数）：标准Adam收敛，不计算P_t
+- Phase 2（后50%步数）：激活P_t，每100步用Hutchinson估计dt²_info的对角Hessian更新
 
 ---
 
-## Architecture
+## 实验结果
 
-All three components share one object: the **timelike projection matrix P_t**.
+### 规模扩展
+| 规模 | 参数 | 数据 | Phase 2 frac | r_law判断 |
+|------|------|------|-------------|----------|
+| 128维/4层 | 0.8M | 合成2-hop | 47-62% | △ 临界区 |
+| 256维/6层 | 4.7M | 合成2-hop | 47-55% | ✓ 洛伦兹有益 (delta=+0.0938) |
+| 512维/8层 | 25M | 合成2-hop | 80-91%（深层）| △ 数据量不足 |
+| 256维/6层 | 17.6M | wikitext | 67-79% | 结构确认✓ |
 
+### MinkowskiLayerNorm效果（wikitext 256维）
 ```
-G_diag  = Hutchinson estimate of ∂²(dt²_info)/∂W_Q²
-P_t     = diag(G_diag < 0)        # 1 where timelike, 0 where spacelike
-η       = I − 2α P_t              # Minkowski signature matrix
+无MinkowskiLayerNorm: Phase 2 step=6000 val_loss=7.691（比Phase 1 best差）
+有MinkowskiLayerNorm: Phase 2 step=6000 val_loss=7.588（比Phase 1 best好0.167）
 ```
+光锥统计从全0.50恢复为有意义的层间差异（0.73-0.80）。
 
-### Component 1: Minkowski Attention
+---
+
+## 快速开始
 
 ```python
-scores_L = Q η K^T / √d
-         = QK^T/√d  −  2α · (Q P_t) K^T / √d
+# Colab 安装
+!pip install torch datasets transformers
+
+# 上传 lorentz_transformer.py 后运行
+
+# 合成任务（快速验证，~3分钟）
+exec(open('lorentz_transformer.py').read())
+log = quick_train(n_hops=2, total_steps=2000)
+
+# 规模验证（256维，~10分钟）
+log = scale_train(d_model=256, n_layers=6, total_steps=5000)
+
+# 真实语言数据（wikitext-2，~20分钟）
+log = wikitext_train(d_model=256, n_layers=6, total_steps=10000)
 ```
 
-Standard Euclidean inner product → Minkowski inner product.  
-α=0 recovers standard attention exactly.  
-α=1.0 flips the lightcone (causal pairs become timelike).
-
-### Component 2: Geodesic Adam
-
-```python
-g_t = P_t @ grad          # timelike gradient component
-g_s = grad - g_t          # spacelike gradient component
-grad_geodesic = scale_t * g_t + scale_s * g_s   # scale_t > 1 > scale_s
-optimizer.step(grad_geodesic)
-```
-
-Timelike directions receive a larger step (information-rich, geodesic path).  
-Spacelike directions receive a smaller step (knowledge-preserving).
-
-### Component 3: Timelike Regularization
-
-```python
-R(θ) = λ_s * ‖(I − P_t) θ‖²   # penalize spacelike params
-loss  = loss_task + R(θ)
-```
-
-Constrains updates to the timelike submanifold.  
-Geometric alternative to EWC: no task boundary, no parameter snapshots.
-
----
-
-## Hyperparameters
-
-| Parameter | Default | Description |
-|-----------|---------|-------------|
-| `α` | 0.25 | Lorentz strength (0 = standard attention) |
-| `scale_t` | 1.5 | Timelike LR multiplier |
-| `scale_s` | 0.5 | Spacelike LR multiplier |
-| `λ_s` | 1e-4 | Spacelike regularization |
-| `N` | 40 steps | P_t update frequency |
-| `K` | 20 | Hutchinson samples |
-| `warmup` | 50–100 | Steps before first P_t update |
-| `EMA` | 0.3 | Fraction of new P_t per update |
-
----
-
-## Computing P_t
-
-| Method | HVP Cost | Detects G_ii < 0 | LLM Scale (d=4096) |
-|--------|----------|------------------|---------------------|
-| Hutchinson (K=20) | 20 HVPs | ✓ | ~336ms/layer — slow |
-| Lanczos (k=10) | 10 HVPs | ✓ | ~1–5ms/layer ✓ |
-| Random Lanczos (Nyström) | 2k HVPs | ✓ | ~5–20ms/layer ✓ |
-| K-FAC | 0 extra | ✗ (S is PSD) | **Cannot detect timelike directions** |
-
-> **Warning:** K-FAC approximates H ≈ A ⊗ S where A and S are covariance matrices (positive semi-definite). Their Kronecker product is also PSD — it can never have negative elements. K-FAC cannot detect timelike directions. Use Lanczos instead.
-
-HVP implementation:
-```python
-g1 = autograd.grad(loss_fn(), W_Q, create_graph=True)[0]
-Hv = autograd.grad((g1 * v).sum(), W_Q)[0]   # Hessian-vector product
-```
-
----
-
-## Files
-
-| File | Description |
-|------|-------------|
-| `experiments/k1_lorentz.py` | Main experiment: Hutchinson Hessian + Minkowski attention (3 steps) |
-| `experiments/geodesic_adam.py` | Geodesic Adam optimizer + TimeLikeManager |
-| `experiments/lanczos_lorentz.py` | Lanczos vs Hutchinson; LLM scale feasibility |
-| `experiments/gpt2_lorentz_test.py` | GPT-2 validation: λ_min, stability, depth monotonicity |
-| `experiments/lorentz_inner.py` | Minkowski inner product attention with lightcone diagnostics |
-| `experiments/lorentz_scores.py` | Position-B: Mahalanobis distance penalty on scores |
-| `experiments/cgd_experiment.py` | CGD three-method experiment (Γ^info, PLLR, NULL subspace) |
-| `experiments/dtfv2_experiment.py` | K-field routing experiment (v8, 3 seeds, val-set selection) |
-| `experiments/kfac_feasibility.py` | K-FAC vs Lanczos feasibility (shows K-FAC fails) |
-| `docs/lorentz_spec.docx` | Full architecture specification |
-
----
-
-## Roadmap
-
-- [x] Pseudo-Riemannian structure confirmed (50–80% timelike, r=−1.0, lightcone flip)
-- [x] Three architecture components specified
-- [x] Minkowski attention implemented and tested (`k1_lorentz.py`)
-- [x] Geodesic Adam implemented (`geodesic_adam.py`)
-- [ ] Geodesic Adam experimental validation (1-hop / 2-hop)
-- [ ] Three components joint training (Lorentz Full)
-- [ ] Scale to 256d / 6L
-- [ ] GPT-2 (768d / 12L) — Random Lanczos, real language data
-- [ ] Lorentz LLM from scratch at 1B+ scale
-- [ ] Evaluate on MuSiQue / HotpotQA (multi-hop reasoning)
-
----
-
-## Quick Start
-
+### 终端运行
 ```bash
-git clone https://github.com/YOUR_USERNAME/lorentz-transformer
-cd lorentz-transformer
-pip install torch numpy scipy
-```
+# 测试
+python lorentz_transformer.py --mode test
 
-```bash
-# Main experiment: confirms pseudo-Riemannian structure + lightcone flip
-python experiments/k1_lorentz.py
+# 合成任务
+python lorentz_transformer.py --mode quick --n_hops 2
 
-# Geodesic Adam: timelike/spacelike gradient decomposition
-python experiments/geodesic_adam.py
-
-# Lanczos feasibility at LLM scale
-python experiments/lanczos_lorentz.py
-```
-
-Expected output from `k1_lorentz.py`:
-```
-layer 0: 负=9489(57.92%) 正=6895(42.08%)  类时参数=0.579
-layer 1: 负=9194(56.12%) 正=7190(43.88%)  类时参数=0.561
-...
-光锥 [K1-Lorentz(α=1.0)]: 真实链类时=0.688  噪声类时=0.416  差=+0.271  ✓因果
+# 规模验证
+python lorentz_transformer.py --mode scale --d_model 256
 ```
 
 ---
 
-## Theory
-
-The K=1 field equation defines information spacetime geometry for attention mechanisms.
-Key objects:
+## 文件结构
 
 ```
-H_q   = −Σ_j a_qj log(a_qj)          Shannon entropy at query q
-Φ_q   = Σ_j a_qj²                     Attention concentration
-K_q   = Φ_q / H_q                     K-field (information density)
-
-dt²_info = Σ_q K_q                    Information time metric
-
-G_ij  = ∂²(dt²_info) / ∂θ_i ∂θ_j    Curvature tensor (Hessian)
-G_ii < 0  →  timelike  (concave)
-G_ii > 0  →  spacelike (convex)
-
-η = I − 2α P_t                        Minkowski metric matrix
-scores_L = Q η K^T / √d              Lorentzian attention
+lorentz_transformer.py    # 单文件完整实现（~1800行）
+│
+├── LorentzConfig         # 配置（d_model, n_layers, lorentz_alpha等）
+├── MinkowskiLayerNorm    # 闵可夫斯基归一化（Component 3）
+├── LorentzMultiHeadAttention  # Minkowski注意力（Component 1）
+├── TimeLikeProbe         # P_t动态更新管理器
+├── LorentzTransformer    # 主模型
+├── GeodesicAdam          # 测地线优化器（Component 2）
+├── LorentzCosineScheduler # 4段式学习率调度
+├── TrainConfig           # 训练配置
+├── train()               # 完整训练循环
+├── quick_train()         # 快速测试
+├── scale_train()         # 规模验证
+└── wikitext_train()      # 真实语言训练
 ```
-
-Derivation of the Minkowski attention formula:
-```
-scores_L = Q(I − 2αP_t)K^T / √d
-         = QK^T/√d − 2α(QP_t)K^T/√d
-         = scores_std − 2α × (timelike inner product)
-```
-
 
 ---
+
+## 理论背景
+
+本项目基于K=1信息几何场方程（chronogeometrodynamics）。核心思想：
+
+信息时间度量 `dt²_info = Σ_q Φ_q/H_q`（注意力分布的信息密度）在参数空间定义了一个伪黎曼度量。该度量在某些参数方向上为负（类时），在其他方向为正（类空），形成洛伦兹几何结构。
+
+这不是工程近似，是从信息几何第一性原理推导出的结构。Fisher信息（正定）和K-FAC（正定）都无法看到这个结构，因为它们从定义上只能看到正曲率。
+
+**参考：**
+- Li, Y.Y.N. *K=1 Chronogeometrodynamics*. Preprint, 2025.
+- Li, Y.Y.N. *Neural Null Cones: Zero-Curvature Channels in Loss Landscapes from Symplectic Hessian Decomposition*. Preprint, 2025.
+
+---
+
+## 当前状态与下一步
+
+**已完成：**
+- ✅ Minkowski注意力（Component 1）
+- ✅ Geodesic Adam（Component 2）
+- ✅ MinkowskiLayerNorm（Component 3）
+- ✅ 两阶段训练协议
+- ✅ 真实语言数据上的伪黎曼结构验证
+
+**进行中：**
+- 🔄 wikitext上的完整性能验证
+- 🔄 FFN的洛伦兹重构
+- 🔄 洛伦兹位置编码
+
+**计划中：**
+- 📋 与标准Transformer的正式对比实验
+- 📋 规模扩展到GPT-2规模（768维/12层）
+- 📋 论文写作
+
+---
+
+*洛伦兹Transformer项目 — 2025-2026*
 
 ## License
 
