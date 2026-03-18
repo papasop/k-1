@@ -1740,34 +1740,19 @@ def full_train(n_hops=2, total_steps=10000, d_model=128,
 
 
 if __name__ == '__main__':
-    # Colab/Jupyter argparse    → 
-    p = argparse.ArgumentParser(description='Lorentz Transformer')
-    p.add_argument('--mode', default='quick',
-                   choices=['quick', 'full', 'test', 'scale', 'wikitext'])
-    p.add_argument('--n_hops',        type=int,   default=2)
-    p.add_argument('--total_steps',   type=int,   default=0)
-    p.add_argument('--d_model',       type=int,   default=128)
-    p.add_argument('--n_layers',      type=int,   default=4)
-    p.add_argument('--lorentz_alpha', type=float, default=0.25)
-    args, _ = p.parse_known_args()   #     
+    # ══════════════════════════════════════════════
+    # 直接运行配置（在Colab里点击运行即可）
+    # 修改下面的参数来切换模式：
+    #
+    #   quick_train()  → 128维/4层/2000步  快速验证
+    #   scale_train()  → 256维/6层/5000步  规模验证  ← 当前
+    #   wikitext_train() → 真实语言数据
+    # ══════════════════════════════════════════════
 
-    if args.mode == 'test':
-        print("Smoke test (10 steps)...")
-        log = quick_train(n_hops=1, total_steps=10, d_model=64, n_layers=2)
-        print(f"✓   val_loss={log['val_loss'][-1]:.4f}")
-    elif args.mode == 'quick':
-        steps = args.total_steps or 2000
-        quick_train(args.n_hops, steps, args.d_model,
-                    args.n_layers, args.lorentz_alpha)
-    elif args.mode == 'scale':
-        steps = args.total_steps or 5000
-        scale_train(args.d_model or 256, args.n_layers or 6,
-                    args.n_hops, steps, args.lorentz_alpha)
-    elif args.mode == 'wikitext':
-        steps = args.total_steps or 10000
-        wikitext_train(args.d_model or 256, args.n_layers or 6,
-                       steps, args.lorentz_alpha)
-    else:
-        steps = args.total_steps or 10000
-        full_train(args.n_hops, steps, args.d_model,
-                   args.n_layers, args.lorentz_alpha)
+    log = scale_train(
+        d_model      = 256,    # 维度（128→256→512）
+        n_layers     = 6,      # 层数（4→6→8）
+        n_hops       = 2,      # 任务难度
+        total_steps  = 5000,   # 训练步数
+        lorentz_alpha= 0.25,   # 洛伦兹强度
+    )
