@@ -636,6 +636,7 @@ class LorentzPositionalEncoding(nn.Module):
         self.register_buffer('timelike_mask',
                               torch.zeros(config.d_model, dtype=torch.bool))
         self._has_mask = False
+        self._blend    = 0.0   # 线性混合比例（0=标准，1=完全洛伦兹）
 
         # 预计算正弦位置编码
         self._build_sinusoidal(config.max_seq_len, config.d_model)
@@ -654,34 +655,34 @@ class LorentzPositionalEncoding(nn.Module):
         self.timelike_mask.copy_(mask.bool())
         self._has_mask = mask.any().item()
 
+    def set_blend(self, alpha: float):
+        """设置洛伦兹编码的混合比例（0=标准，1=完全洛伦兹）"""
+        self._blend = max(0.0, min(1.0, alpha))
+
     def forward(self, seq_len: int, device: torch.device) -> torch.Tensor:
         """
         返回位置编码 (1, L, d_model)
+        支持线性混合：blend=0时纯标准，blend=1时纯洛伦兹
         """
         pos_idx = torch.arange(seq_len, device=device).unsqueeze(0)
+        std_enc  = self.pos_emb(pos_idx)
 
-        if not self._has_mask:
-            # fallback: 标准可学习位置编码
-            return self.pos_emb(pos_idx)
+        if not self._has_mask or self._blend == 0.0:
+            return std_enc
 
-        # 洛伦兹位置编码
-        m = self.timelike_mask.float()  # (d_model,)
-
-        # 标准正弦编码（类空分量用）
-        sin_enc = self.sinusoidal[:seq_len].unsqueeze(0)  # (1, L, d_model)
-
-        # 时间分量：单调因果编码
-        # t[i] = i / (L-1)，归一化到[0, 1]，严格单调
+        m        = self.timelike_mask.float()
+        sin_enc  = self.sinusoidal[:seq_len].unsqueeze(0)
         t = torch.arange(seq_len, device=device).float()
         if seq_len > 1:
             t = t / (seq_len - 1)
-        t = t.unsqueeze(0).unsqueeze(-1)  # (1, L, 1)
+        t = t.unsqueeze(0).unsqueeze(-1)
 
-        # 类时维度用时间坐标，类空维度用正弦编码
-        time_enc = t * m * self.time_scale   # 类时：单调时间坐标
-        space_enc = sin_enc * (1.0 - m)      # 类空：标准正弦
+        time_enc  = t * m * self.time_scale
+        space_enc = sin_enc * (1.0 - m)
+        lor_enc   = time_enc + space_enc
 
-        return time_enc + space_enc
+        # 线性混合：blend=0→标准，blend=1→洛伦兹
+        return (1.0 - self._blend) * std_enc + self._blend * lor_enc
 
 
 # ─────────────────────────────────────────────
@@ -1653,13 +1654,21 @@ def train(train_cfg: TrainConfig, model_cfg: LorentzConfig):
             print("  在收敛的模型上初始化P_t (3次)...")
             for _ in range(3):
                 xb_init, _ = train_loader.next_batch()
-                # warmup   : step=999999
                 model.probe.step(xb_init, 999999)
             fracs = model.probe.timelike_fracs
             lmins = model.probe.lambda_mins
             print(f"  类时比例: {[round(f,3) for f in fracs]}")
             print(f"  λ_min:    {[f'{l:.2e}' for l in lmins]}")
+            print(f"  位置编码warmup: 前200步线性混合（避免激活冲击）")
             print(f"{'='*55}\n")
+
+        # 位置编码线性混合 warmup（Phase 2 진입 후 200步에 걸쳐 0→1）
+        if _phase2_entered:
+            phase2_steps = step - lorentz_start_step
+            blend = min(1.0, phase2_steps / 200.0)
+            model.pos_enc.set_blend(blend)
+        else:
+            model.pos_enc.set_blend(0.0)
 
         # 调度器更新
         lr, alpha = scheduler.step(step, model)
