@@ -1,817 +1,788 @@
-"""
-NCCL 3-Task Continual Learning Experiment
-==========================================
-Extension of nccl_v2.py to 3 sequential tasks with tri-head architecture.
+# ============================================================
+# model.py
+# 洛伦兹Transformer核心架构
+#
+# 基于K=1信息几何场方程，参数空间为伪黎曼流形。
+# 三个组件全部集成在模型内部：
+#
+#   Component 1: Minkowski注意力
+#     scores_L = Q η K^T / √d
+#     η = I - 2α P_t  （闵可夫斯基符号矩阵）
+#
+#   Component 2: 类时投影矩阵P_t（动态更新）
+#     G_diag = Hutchinson(∂²dt²_info/∂W_Q²)
+#     P_t = diag(G_diag < 0)
+#     每N步更新，EMA平滑
+#
+#   Component 3: 类时子流形正则化
+#     R(θ) = λ_s ||(I-P_t)W_Q||²
+#     作为附加损失项，在train.py里调用
+#
+# 接口设计：
+#   model = LorentzTransformer(config)
+#   logits = model(input_ids)
+#   model.update_timelike(batch, step)     # 更新P_t
+#   reg_loss = model.regularization_loss() # 类时正则化
+#   model.save_lorentz_state(path)         # 保存含P_t的完整状态
+#   model.load_lorentz_state(path)         # 加载完整状态
+# ============================================================
 
-Tasks: CIFAR-100 split into 3:
-  Task A: classes 0-33   (34 classes, head_a)
-  Task B: classes 34-66  (33 classes, head_b)
-  Task C: classes 67-99  (33 classes, head_c)
-
-Key design for NCCL:
-  Phase 2 (learn B): project onto null(H_A)
-  Phase 3 (learn C): project onto null(H_A) ∩ null(H_B)
-  This tests whether null subspace intersection shrinks too fast.
-
-Methods: Naive, EWC, NCCL, Freeze
-Multi-seed: 3 seeds by default.
-"""
-
+import math
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+from dataclasses import dataclass, field
+from typing import Optional
 import numpy as np
-import copy
-import time
-import json
-from pathlib import Path
 
 
-# ============================================================
-# 1. Sub-Hessian computation (same as v2)
-# ============================================================
-
-def compute_sub_hessian(forward_fn, loss_fn, imgs, labs, param_indices, param, device):
-    import torch
-    sub_dim = len(param_indices)
-    H = np.zeros((sub_dim, sub_dim), dtype=np.float64)
-    out = forward_fn(imgs)
-    loss = loss_fn(out, labs)
-    g1 = torch.autograd.grad(loss, param, create_graph=True)[0]
-    g1_flat = g1.reshape(-1)
-    for i in range(sub_dim):
-        idx = param_indices[i]
-        g2 = torch.autograd.grad(g1_flat[idx], param, retain_graph=True)[0]
-        g2_flat = g2.reshape(-1)
-        for j in range(sub_dim):
-            H[i, j] = g2_flat[param_indices[j]].item()
-    return H
-
-
-def make_symplectic_J(n):
-    I_n = np.eye(n)
-    return np.block([[np.zeros((n, n)), I_n], [-I_n, np.zeros((n, n))]])
-
-
-def find_null_directions(H, sub_dim, lam=1e-6):
-    H_sym = 0.5 * (H + H.T)
-    H_reg = H_sym + lam * np.eye(sub_dim)
-    H_reg_norm = np.linalg.norm(H_reg)
-    if H_reg_norm < 1e-30:
-        return [], None
-    H_reg_inv = np.linalg.inv(H_reg)
-    J = make_symplectic_J(sub_dim // 2)
-    M = H_reg_inv @ J
-    evals_M, evecs_M = np.linalg.eig(M)
-    real_mask = np.abs(evals_M.imag) < 1e-8
-    real_indices = np.where(real_mask)[0]
-    null_vecs = []
-    for idx in real_indices:
-        e = evecs_M[:, idx].real
-        e_norm = e / (np.linalg.norm(e) + 1e-30)
-        if abs(e_norm @ H_reg @ e_norm) / (H_reg_norm + 1e-30) < 1e-6:
-            null_vecs.append(e_norm)
-    if len(null_vecs) < 2:
-        return null_vecs, None
-    V = np.column_stack(null_vecs)
-    Q, R = np.linalg.qr(V)
-    return null_vecs, Q
-
-
-# ============================================================
-# 2. Tri-Head ViT Architecture
-# ============================================================
-
-class TriHeadViT:
+# ─────────────────────────────────────────────
+# 配置
+# ─────────────────────────────────────────────
+@dataclass
+class LorentzConfig:
     """
-    ViT backbone + three independent classifier heads.
-    head_a: Linear(hidden, 34) for classes 0-33
-    head_b: Linear(hidden, 33) for classes 34-66
-    head_c: Linear(hidden, 33) for classes 67-99
+    洛伦兹Transformer的完整配置
+
+    模型结构：
+      vocab_size:  词表大小
+      d_model:     隐层维度
+      n_heads:     注意力头数
+      n_layers:    Transformer层数
+      d_ff:        前馈网络中间维度（默认4×d_model）
+      max_seq_len: 最大序列长度
+      dropout:     Dropout概率
+
+    洛伦兹参数（Component 1）：
+      lorentz_alpha:   Minkowski注意力强度（0=标准，1=完全洛伦兹）
+                       推荐从0.25开始，弱baseline任务可增大
+
+    P_t更新参数（Component 2）：
+      hess_update_freq:  每N步更新一次P_t
+      hess_warmup_steps: 初期跳过（Adam二阶矩未稳定）
+      hutchinson_k:      Hutchinson估计采样数
+      ema_decay:         P_t的EMA平滑系数（保留旧值的比例）
+
+    正则化参数（Component 3）：
+      lambda_spacelike:  类空参数正则化强度（惩罚类空参数，保护知识）
+      lambda_timelike:   类时参数奖励强度（0=不奖励，通常保持0）
     """
-    def __init__(self, base_model, device):
-        import torch
-        import torch.nn as nn
-        self.device = device
-        self.backbone = base_model.vit
-        hidden = base_model.config.hidden_size  # 192
+    # 模型结构
+    vocab_size:  int   = 50257    # GPT-2词表大小
+    d_model:     int   = 768
+    n_heads:     int   = 12
+    n_layers:    int   = 12
+    d_ff:        int   = 0        # 0表示自动设为4×d_model
+    max_seq_len: int   = 1024
+    dropout:     float = 0.1
 
-        # head_a from pretrained rows 0-33
-        self.head_a = nn.Linear(hidden, 34).to(device)
-        with torch.no_grad():
-            self.head_a.weight.copy_(base_model.classifier.weight[:34])
-            self.head_a.bias.copy_(base_model.classifier.bias[:34])
+    # Component 1: Minkowski注意力
+    lorentz_alpha: float = 0.25
 
-        # head_b and head_c freshly initialized
-        self.head_b = nn.Linear(hidden, 33).to(device)
-        nn.init.xavier_uniform_(self.head_b.weight)
-        nn.init.zeros_(self.head_b.bias)
+    # Component 2: P_t更新
+    hess_update_freq:  int   = 40
+    hess_warmup_steps: int   = 100
+    hutchinson_k:      int   = 20
+    ema_decay:         float = 0.7   # 保留旧值70%，新值30%
 
-        self.head_c = nn.Linear(hidden, 33).to(device)
-        nn.init.xavier_uniform_(self.head_c.weight)
-        nn.init.zeros_(self.head_c.bias)
+    # Component 3: 类时正则化
+    lambda_spacelike: float = 1e-4
+    lambda_timelike:  float = 0.0
 
-        self.backbone.to(device)
+    def __post_init__(self):
+        if self.d_ff == 0:
+            self.d_ff = 4 * self.d_model
+        assert self.d_model % self.n_heads == 0, \
+            f"d_model={self.d_model} 必须能被 n_heads={self.n_heads} 整除"
 
-    def _features(self, x):
-        return self.backbone(x).last_hidden_state[:, 0]
-
-    def forward_a(self, x): return self.head_a(self._features(x))
-    def forward_b(self, x): return self.head_b(self._features(x))
-    def forward_c(self, x): return self.head_c(self._features(x))
-
-    def freeze_head(self, head_name):
-        head = getattr(self, f'head_{head_name}')
-        for p in head.parameters():
-            p.requires_grad_(False)
-
-    def freeze_backbone(self):
-        for p in self.backbone.parameters():
-            p.requires_grad_(False)
-
-    def unfreeze_backbone(self):
-        for p in self.backbone.parameters():
-            p.requires_grad_(True)
-
-    def train(self):
-        self.backbone.train()
-        self.head_a.train()
-        self.head_b.train()
-        self.head_c.train()
-
-    def eval(self):
-        self.backbone.eval()
-        self.head_a.eval()
-        self.head_b.eval()
-        self.head_c.eval()
-
-    def backbone_state(self):
-        return copy.deepcopy(self.backbone.state_dict())
-
-    def head_state(self, name):
-        return copy.deepcopy(getattr(self, f'head_{name}').state_dict())
-
-    def load_backbone(self, sd):
-        self.backbone.load_state_dict(sd)
-
-    def load_head(self, name, sd):
-        getattr(self, f'head_{name}').load_state_dict(sd)
+    @property
+    def head_dim(self):
+        return self.d_model // self.n_heads
 
 
-# ============================================================
-# 3. Data: 3-way class split
-# ============================================================
-
-def make_3task_loaders(subset_size, batch_size):
-    import torch
-    import torchvision
-    import torchvision.transforms as transforms
-
-    mean, std = (0.5071, 0.4867, 0.4408), (0.2675, 0.2565, 0.2761)
-    tf_train = transforms.Compose([
-        transforms.Resize(224), transforms.RandomHorizontalFlip(),
-        transforms.ToTensor(), transforms.Normalize(mean, std)])
-    tf_val = transforms.Compose([
-        transforms.Resize(224), transforms.ToTensor(),
-        transforms.Normalize(mean, std)])
-
-    ds_train = torchvision.datasets.CIFAR100('./data', True, download=True, transform=tf_train)
-    ds_val = torchvision.datasets.CIFAR100('./data', False, download=True, transform=tf_val)
-
-    class RemappedSubset(torch.utils.data.Dataset):
-        def __init__(self, dataset, class_range, max_samples=0):
-            self.dataset = dataset
-            self.offset = min(class_range)
-            targets = dataset.targets if hasattr(dataset, 'targets') else \
-                      [dataset[i][1] for i in range(len(dataset))]
-            self.indices = [i for i, t in enumerate(targets) if t in class_range]
-            if max_samples > 0:
-                self.indices = self.indices[:max_samples]
-
-        def __len__(self):
-            return len(self.indices)
-
-        def __getitem__(self, idx):
-            img, label = self.dataset[self.indices[idx]]
-            return img, label - self.offset
-
-    classes_a = set(range(0, 34))
-    classes_b = set(range(34, 67))
-    classes_c = set(range(67, 100))
-
-    dl = lambda ds, shuffle=True: torch.utils.data.DataLoader(
-        ds, batch_size, shuffle=shuffle, num_workers=2, pin_memory=True)
-
-    loaders = {}
-    for name, cls_set in [('a', classes_a), ('b', classes_b), ('c', classes_c)]:
-        train = RemappedSubset(ds_train, cls_set, subset_size)
-        val = RemappedSubset(ds_val, cls_set, 0)
-        loaders[f'train_{name}'] = dl(train)
-        loaders[f'val_{name}'] = dl(val, False)
-        print(f"  Task {name.upper()}: {len(train)} train, {len(val)} val "
-              f"(classes {min(cls_set)}-{max(cls_set)} -> labels 0-{len(cls_set)-1})")
-
-    return loaders
-
-
-# ============================================================
-# 4. NCCL Engine (multi-task null intersection)
-# ============================================================
-
-class NCCLEngine3Task:
+# ─────────────────────────────────────────────
+# dt²_info 计算（K=1场方程的核心量）
+# ─────────────────────────────────────────────
+def compute_dt2_info(attn_w: torch.Tensor) -> torch.Tensor:
     """
-    For Phase 2: null subspace of Task A Hessian
-    For Phase 3: intersection of null(H_A) and null(H_B)
+    计算K=1信息时间度量
+
+    dt²_info = Σ_q K_q = Σ_q Φ_q/H_q
+
+    其中：
+      H_q = Shannon熵（注意力分布的不确定性）
+      Φ_q = Σ_j a_qj²（注意力集中度）
+      K_q = Φ_q/H_q（信息密度）
+
+    attn_w: (B, H, L, L) 注意力权重
+    返回: scalar，所有query位置的K_q均值
     """
-    def __init__(self, model, loaders_for_hessian, forward_fns, loss_fn,
-                 sub_dim=50, n_subsets=3, update_every=25, device='cuda'):
-        import torch
-        self.model = model
-        self.loaders = loaders_for_hessian  # list of dataloaders
-        self.loader_iters = [iter(dl) for dl in loaders_for_hessian]
-        self.forward_fns = forward_fns       # list of forward functions
-        self.loss_fn = loss_fn
-        self.sub_dim = sub_dim
-        self.n_subsets = n_subsets
-        self.update_every = update_every
-        self.device = device
+    aw = attn_w.mean(dim=1).float()                    # (B, L, L) 头平均
+    aw = torch.nan_to_num(aw, nan=0.0)
+    aw = aw / aw.sum(-1, keepdim=True).clamp(min=1e-8)
 
-        self.target_layers = self._get_target_layers()
-        self.projections = {name: [] for name in self.target_layers}
-        self.stats = {"updates": 0, "null_layers": 0, "total_null_dirs": 0,
-                      "null_intersection_dims": []}
+    H   = -(aw * torch.log(aw + 1e-8)).sum(-1)        # (B, L) 熵
+    Phi = (aw ** 2).sum(-1)                            # (B, L) 集中度
+    H   = H.clamp(min=1e-8)
 
-    def _get_target_layers(self):
-        targets = {}
-        for li in range(12):
-            block = self.model.backbone.encoder.layer[li]
-            targets[f"attn_L{li}_q"] = block.attention.attention.query.weight
-            targets[f"attn_L{li}_o"] = block.attention.output.dense.weight
-            targets[f"mlp_L{li}_f1"] = block.intermediate.dense.weight
-            targets[f"mlp_L{li}_f2"] = block.output.dense.weight
-        return targets
+    return (Phi / H).mean()
 
-    def _get_batch(self, task_idx):
-        import torch
-        try:
-            imgs, labs = next(self.loader_iters[task_idx])
-        except StopIteration:
-            self.loader_iters[task_idx] = iter(self.loaders[task_idx])
-            imgs, labs = next(self.loader_iters[task_idx])
-        return imgs.to(self.device), labs.to(self.device)
 
-    def _find_null_for_task(self, forward_fn, imgs, labs, param, indices, dim):
-        try:
-            H = compute_sub_hessian(forward_fn, self.loss_fn, imgs, labs,
-                                    indices, param, self.device)
-            null_vecs, Q = find_null_directions(H, dim)
-            return null_vecs, Q
-        except Exception:
-            return [], None
+# ─────────────────────────────────────────────
+# Hutchinson对角Hessian估计
+# ─────────────────────────────────────────────
+def hutchinson_diag_hessian(loss_fn, param: nn.Parameter,
+                             n_samples: int = 20) -> torch.Tensor:
+    """
+    用Hutchinson估计量计算 ∂²L/∂param² 的对角元素
 
-    def _intersect_null_subspaces(self, Q_list):
+    G_ii ≈ (1/K) Σ_k v_k[i] * (H v_k)[i]
+    其中 v_k ~ Rademacher{±1}
+
+    loss_fn: callable() → scalar，必须通过param可微
+    param:   目标参数（W_Q），requires_grad=True
+    返回:    与param同形状的对角Hessian估计
+             G_ii < 0 → 类时（dt²_info在此方向凹）
+             G_ii > 0 → 类空（凸）
+    """
+    G = torch.zeros_like(param.data)
+
+    for _ in range(n_samples):
+        # Rademacher随机向量
+        v = (torch.randint(0, 2, param.shape,
+                           device=param.device) * 2 - 1).float()
+
+        # 一阶梯度（保留计算图）
+        loss = loss_fn()
+        g1 = torch.autograd.grad(
+            loss, param,
+            create_graph=True,
+            retain_graph=True
+        )[0]
+        if g1 is None:
+            continue
+
+        # Hessian-vector product
+        Hv = torch.autograd.grad(
+            (g1 * v.detach()).sum(),
+            param,
+            retain_graph=False
+        )[0]
+        if Hv is None:
+            continue
+
+        G = G + (v * Hv).detach() / n_samples
+
+    return G
+
+
+# ─────────────────────────────────────────────
+# Component 1: Minkowski多头注意力
+# ─────────────────────────────────────────────
+class LorentzMultiHeadAttention(nn.Module):
+    """
+    闵可夫斯基内积注意力
+
+    核心公式：
+      scores_L = Q η K^T / √d_h
+      η = I - 2α P_t
+
+    展开：
+      scores_L = QK^T/√d_h - 2α (QP_t)K^T/√d_h
+               = scores_std - 2α × 时间分量内积
+
+    P_t 由外部TimeLikeProbe计算并通过 set_timelike_mask() 注入。
+    α=0 完全退化为标准注意力（安全fallback）。
+
+    对每个head独立处理：
+      P_t_head[h] = diag(mask[h*d_h:(h+1)*d_h])
+      时间分量 = Q_h @ P_t_head[h] @ K_h^T / √d_h
+    """
+    def __init__(self, config: LorentzConfig):
+        super().__init__()
+        self.n_heads  = config.n_heads
+        self.head_dim = config.head_dim
+        self.d_model  = config.d_model
+        self.alpha    = config.lorentz_alpha
+
+        self.q_proj = nn.Linear(config.d_model, config.d_model, bias=False)
+        self.k_proj = nn.Linear(config.d_model, config.d_model, bias=False)
+        self.v_proj = nn.Linear(config.d_model, config.d_model, bias=False)
+        self.o_proj = nn.Linear(config.d_model, config.d_model, bias=False)
+        self.drop   = nn.Dropout(config.dropout)
+
+        # 类时掩码：(d_model,) 布尔向量
+        # True=类时（G_ii<0），False=类空（G_ii>0）
+        # 由TimeLikeProbe通过set_timelike_mask()注入
+        self.register_buffer('timelike_mask',
+                              torch.zeros(config.d_model, dtype=torch.bool))
+        self._has_mask = False
+
+        # 诊断：最近一次的洛伦兹间隔（用于光锥分析）
+        self.last_intervals: Optional[torch.Tensor] = None
+
+    def set_timelike_mask(self, mask: torch.Tensor):
         """
-        Find intersection of multiple null subspaces.
-        Sum of projection matrices: vectors in intersection have eigenvalue = num_tasks.
+        注入类时掩码
+        mask: (d_model,) bool张量，True=类时
         """
-        if not Q_list or any(Q is None for Q in Q_list):
-            return None
-        if len(Q_list) == 1:
-            return Q_list[0]
-
-        n = Q_list[0].shape[0]
-        P_sum = sum(Q @ Q.T for Q in Q_list)
-        eigvals, eigvecs = np.linalg.eigh(P_sum)
-
-        num_tasks = len(Q_list)
-        tol = 0.5
-        mask = eigvals > (num_tasks - tol)
-        if not np.any(mask):
-            return None
-
-        V = eigvecs[:, mask]
-        Q_int, _ = np.linalg.qr(V)
-        return Q_int
-
-    def update_null_directions(self):
-        import torch
-        self.stats["updates"] += 1
-        batches = [self._get_batch(i) for i in range(len(self.loaders))]
-
-        for name, param in self.target_layers.items():
-            self.projections[name] = []
-            num_params = param.numel()
-            dim = min(self.sub_dim, num_params)
-            if dim % 2 != 0:
-                dim -= 1
-            if dim < 4:
-                continue
-
-            param.requires_grad_(True)
-
-            for s in range(self.n_subsets):
-                rng = np.random.RandomState(
-                    int(time.time() * 1000 + s * 7919) % (2**31))
-                indices = torch.tensor(
-                    sorted(rng.choice(num_params, size=dim, replace=False)),
-                    dtype=torch.long, device=self.device)
-
-                Q_list = []
-                for t_idx, (imgs, labs) in enumerate(batches):
-                    null_vecs, Q = self._find_null_for_task(
-                        self.forward_fns[t_idx], imgs, labs, param, indices, dim)
-                    if Q is not None:
-                        Q_list.append(Q)
-
-                if len(Q_list) == len(self.loaders):
-                    Q_int = self._intersect_null_subspaces(Q_list)
-                    if Q_int is not None and Q_int.shape[1] >= 1:
-                        self.projections[name].append((indices, Q_int))
-                        self.stats["null_layers"] += 1
-                        self.stats["total_null_dirs"] += Q_int.shape[1]
-                        self.stats["null_intersection_dims"].append(Q_int.shape[1])
-
-            param.requires_grad_(False)
-
-    def project_gradients(self):
-        import torch
-        for name, param in self.target_layers.items():
-            if param.grad is None:
-                continue
-            projections = self.projections[name]
-            if not projections:
-                param.grad.zero_()
-                continue
-            grad_flat = param.grad.reshape(-1)
-            for indices, Q in projections:
-                sub_grad = grad_flat[indices].detach().cpu().numpy().astype(np.float64)
-                g_null = Q @ (Q.T @ sub_grad)
-                with torch.no_grad():
-                    grad_flat[indices] = torch.tensor(
-                        g_null, dtype=grad_flat.dtype, device=self.device)
-
-
-# ============================================================
-# 5. EWC Engine (multi-task Fisher accumulation)
-# ============================================================
-
-class EWCEngine3Task:
-    def __init__(self, model, loaders, forward_fns, loss_fn,
-                 ewc_lambda=1000, n_samples=500, device='cuda'):
-        import torch
-        self.model = model
-        self.ewc_lambda = ewc_lambda
-        self.device = device
-        self.fisher = {}
-        self.theta_star = {}
-
-        for name, param in model.backbone.named_parameters():
-            self.theta_star[name] = param.data.clone()
-
-        for loader, forward_fn in zip(loaders, forward_fns):
-            self._accumulate_fisher(loader, forward_fn, loss_fn, n_samples)
-
-    def _accumulate_fisher(self, loader, forward_fn, loss_fn, n_samples):
-        import torch
-        self.model.eval()
-        count = 0
-        for imgs, labs in loader:
-            if count >= n_samples:
-                break
-            imgs, labs = imgs.to(self.device), labs.to(self.device)
-            self.model.backbone.zero_grad()
-            out = forward_fn(imgs)
-            loss = loss_fn(out, labs)
-            loss.backward()
-            for name, param in self.model.backbone.named_parameters():
-                if param.grad is not None:
-                    if name not in self.fisher:
-                        self.fisher[name] = torch.zeros_like(param)
-                    self.fisher[name] += param.grad.detach() ** 2
-            count += imgs.size(0)
-        for name in self.fisher:
-            self.fisher[name] /= max(count, 1)
-
-    def penalty(self):
-        loss = 0.0
-        for name, param in self.model.backbone.named_parameters():
-            if name in self.fisher:
-                loss += (self.fisher[name] *
-                         (param - self.theta_star[name]) ** 2).sum()
-        return 0.5 * self.ewc_lambda * loss
-
-
-# ============================================================
-# 6. Evaluation
-# ============================================================
-
-def evaluate(model, loader, loss_fn, device, task='a', label=""):
-    import torch
-    model.eval()
-    correct = total = 0
-    total_loss = 0.0
-    forward_fn = getattr(model, f'forward_{task}')
-    with torch.no_grad():
-        for imgs, labs in loader:
-            imgs, labs = imgs.to(device), labs.to(device)
-            out = forward_fn(imgs)
-            total_loss += loss_fn(out, labs).item()
-            correct += out.argmax(1).eq(labs).sum().item()
-            total += labs.size(0)
-    acc = 100.0 * correct / total
-    avg_loss = total_loss / len(loader)
-    if label:
-        print(f"    {label}: acc={acc:.1f}% loss={avg_loss:.4f}")
-    return acc, avg_loss
-
-
-# ============================================================
-# 7. Training Functions
-# ============================================================
-
-def train_task(model, task_name, dl_train, dl_val, loss_fn, device, epochs, lr):
-    import torch
-    print(f"\n  Training Task {task_name.upper()} (backbone + head_{task_name})...")
-    forward_fn = getattr(model, f'forward_{task_name}')
-    head = getattr(model, f'head_{task_name}')
-    params = list(model.backbone.parameters()) + list(head.parameters())
-    optimizer = torch.optim.SGD(params, lr=lr, momentum=0.9, weight_decay=1e-4)
-
-    for ep in range(epochs):
-        model.train()
-        rloss = nb = 0
-        for imgs, labs in dl_train:
-            imgs, labs = imgs.to(device), labs.to(device)
-            optimizer.zero_grad()
-            loss = loss_fn(forward_fn(imgs), labs)
-            loss.backward()
-            optimizer.step()
-            rloss += loss.item()
-            nb += 1
-        if (ep + 1) % 5 == 0 or ep == 0 or ep == epochs - 1:
-            acc, _ = evaluate(model, dl_val, loss_fn, device, task_name)
-            print(f"    Ep {ep+1}/{epochs}: train={rloss/nb:.4f} val_{task_name.upper()}={acc:.1f}%")
-
-
-def train_new_task(model, method, new_task, dl_train_new,
-                   dl_vals, loss_fn, device, epochs, lr,
-                   ewc_engine=None, nccl_engine=None):
-    import torch
-    forward_fn = getattr(model, f'forward_{new_task}')
-    head = getattr(model, f'head_{new_task}')
-
-    if method == "freeze":
-        model.freeze_backbone()
-        params = list(head.parameters())
-    else:
-        params = list(model.backbone.parameters()) + list(head.parameters())
-
-    optimizer = torch.optim.SGD(params, lr=lr, momentum=0.9, weight_decay=1e-4)
-    step = 0
-
-    for ep in range(epochs):
-        model.train()
-        rloss = nb = 0
-        for imgs, labs in dl_train_new:
-            imgs, labs = imgs.to(device), labs.to(device)
-            optimizer.zero_grad()
-            loss = loss_fn(forward_fn(imgs), labs)
-            if ewc_engine and method == "ewc":
-                loss = loss + ewc_engine.penalty()
-            loss.backward()
-
-            if method == "nccl" and nccl_engine:
-                if step % nccl_engine.update_every == 0:
-                    nccl_engine.update_null_directions()
-                nccl_engine.project_gradients()
-
-            optimizer.step()
-            rloss += loss.item()
-            nb += 1
-            step += 1
-
-        extra = ""
-        if nccl_engine and method == "nccl":
-            extra = (f" | upd={nccl_engine.stats['updates']} "
-                     f"null={nccl_engine.stats['null_layers']}")
-            if nccl_engine.stats['null_intersection_dims']:
-                avg_dim = np.mean(nccl_engine.stats['null_intersection_dims'])
-                extra += f" avg_int_dim={avg_dim:.1f}"
-
-        if (ep + 1) % 5 == 0 or ep == 0 or ep == epochs - 1:
-            accs = {}
-            for t, dl_v in dl_vals.items():
-                acc, _ = evaluate(model, dl_v, loss_fn, device, t)
-                accs[t] = acc
-            acc_str = " ".join(f"{t.upper()}={accs[t]:.1f}%" for t in sorted(accs))
-            print(f"    Ep {ep+1}/{epochs}: loss={rloss/nb:.4f} {acc_str}{extra}")
-
-    if method == "freeze":
-        model.unfreeze_backbone()
-
-
-# ============================================================
-# 8. Main Experiment
-# ============================================================
-
-def run_experiment(args):
-    import torch
-    import torch.nn as nn
-    from transformers import ViTForImageClassification
-
-    device = torch.device(args.device if torch.cuda.is_available() else "cpu")
-    print(f"Device: {device}")
-    print(f"Architecture: Tri-head ViT-Tiny (3 tasks)")
-    print(f"Epochs: A={args.epochs_a}, B={args.epochs_b}, C={args.epochs_c}")
-    print(f"EWC lambda: {args.ewc_lambda}")
-    print(f"NCCL: update_every={args.update_every}, n_subsets={args.n_subsets}")
-    print("=" * 70)
-
-    if hasattr(torch.backends, 'cuda'):
-        torch.backends.cuda.enable_flash_sdp(False)
-        torch.backends.cuda.enable_mem_efficient_sdp(False)
-        torch.backends.cuda.enable_math_sdp(True)
-
-    print("\nLoading CIFAR-100 (3-way class split)...")
-    loaders = make_3task_loaders(args.subset_size, args.batch_size)
-    loss_fn = nn.CrossEntropyLoss()
-
-    def make_model():
-        torch.manual_seed(args.seed)
-        base = ViTForImageClassification.from_pretrained(
-            'WinKawaks/vit-tiny-patch16-224',
-            num_labels=100, ignore_mismatched_sizes=True,
-            attn_implementation="eager")
-        return TriHeadViT(base, device)
-
-    # ============================================================
-    # Phase 1: Train on Task A
-    # ============================================================
-    print("\n" + "=" * 70)
-    print("PHASE 1: TASK A TRAINING (backbone + head_a)")
-    print("=" * 70)
-
-    model_base = make_model()
-    train_task(model_base, 'a', loaders['train_a'], loaders['val_a'],
-               loss_fn, device, args.epochs_a, args.lr)
-    acc_a_base, _ = evaluate(model_base, loaders['val_a'], loss_fn, device, 'a',
-                              "Task A baseline")
-
-    backbone_after_a = model_base.backbone_state()
-    head_a_state = model_base.head_state('a')
-
-    # ============================================================
-    # Phase 2: Learn Task B (head_a frozen)
-    # ============================================================
-    print("\n" + "=" * 70)
-    print("PHASE 2: TASK B LEARNING (head_a FROZEN)")
-    print("=" * 70)
-
-    methods = ["naive", "ewc", "nccl", "freeze"]
-    phase2_states = {}
-
-    for method in methods:
-        print(f"\n--- {method.upper()} ---")
-        m = make_model()
-        m.load_backbone(backbone_after_a)
-        m.load_head('a', head_a_state)
-        m.freeze_head('a')
-
-        ewc_engine = nccl_engine = None
-        if method == "ewc":
-            ewc_engine = EWCEngine3Task(
-                m, [loaders['train_a']], [m.forward_a], loss_fn,
-                ewc_lambda=args.ewc_lambda, device=device)
-        if method == "nccl":
-            # Phase 2: single-task null (same as v2)
-            nccl_engine = NCCLEngine3Task(
-                m, [loaders['train_a']], [m.forward_a], loss_fn,
-                sub_dim=args.sub_dim, n_subsets=args.n_subsets,
-                update_every=args.update_every, device=device)
-
-        dl_vals = {'a': loaders['val_a'], 'b': loaders['val_b']}
-        train_new_task(m, method, 'b', loaders['train_b'],
-                       dl_vals, loss_fn, device, args.epochs_b,
-                       args.lr_b, ewc_engine, nccl_engine)
-
-        acc_a_p2, _ = evaluate(m, loaders['val_a'], loss_fn, device, 'a', "Task A after P2")
-        acc_b_p2, _ = evaluate(m, loaders['val_b'], loss_fn, device, 'b', "Task B after P2")
-
-        phase2_states[method] = {
-            'backbone': m.backbone_state(),
-            'head_b': m.head_state('b'),
-            'acc_a_p2': acc_a_p2,
-            'acc_b_p2': acc_b_p2,
-            'nccl_p2_stats': nccl_engine.stats if nccl_engine else None,
-        }
-
-    # ============================================================
-    # Phase 3: Learn Task C (head_a, head_b frozen)
-    # ============================================================
-    print("\n" + "=" * 70)
-    print("PHASE 3: TASK C LEARNING (head_a, head_b FROZEN)")
-    print("=" * 70)
-
-    results = {
-        "task_a_baseline": acc_a_base,
-        "methods": {}
-    }
-
-    for method in methods:
-        print(f"\n--- {method.upper()} ---")
-        m = make_model()
-        m.load_backbone(phase2_states[method]['backbone'])
-        m.load_head('a', head_a_state)
-        m.load_head('b', phase2_states[method]['head_b'])
-        m.freeze_head('a')
-        m.freeze_head('b')
-
-        acc_b_base = phase2_states[method]['acc_b_p2']
-
-        ewc_engine = nccl_engine = None
-        if method == "ewc":
-            ewc_engine = EWCEngine3Task(
-                m, [loaders['train_a'], loaders['train_b']],
-                [m.forward_a, m.forward_b], loss_fn,
-                ewc_lambda=args.ewc_lambda, device=device)
-        if method == "nccl":
-            # Phase 3: null intersection of Task A AND Task B
-            nccl_engine = NCCLEngine3Task(
-                m, [loaders['train_a'], loaders['train_b']],
-                [m.forward_a, m.forward_b], loss_fn,
-                sub_dim=args.sub_dim, n_subsets=args.n_subsets,
-                update_every=args.update_every, device=device)
-
-        dl_vals = {'a': loaders['val_a'], 'b': loaders['val_b'], 'c': loaders['val_c']}
-        train_new_task(m, method, 'c', loaders['train_c'],
-                       dl_vals, loss_fn, device, args.epochs_c,
-                       args.lr_b, ewc_engine, nccl_engine)
-
-        acc_a_final, _ = evaluate(m, loaders['val_a'], loss_fn, device, 'a', "Task A final")
-        acc_b_final, _ = evaluate(m, loaders['val_b'], loss_fn, device, 'b', "Task B final")
-        acc_c_final, _ = evaluate(m, loaders['val_c'], loss_fn, device, 'c', "Task C final")
-
-        forget_a = acc_a_base - acc_a_final
-        forget_b = acc_b_base - acc_b_final
-
-        results["methods"][method] = {
-            "acc_a_after_p2": phase2_states[method]['acc_a_p2'],
-            "acc_b_after_p2": phase2_states[method]['acc_b_p2'],
-            "acc_a_final": acc_a_final,
-            "acc_b_final": acc_b_final,
-            "acc_c_final": acc_c_final,
-            "forget_a_total": forget_a,
-            "forget_b_p3": forget_b,
-            "total": acc_a_final + acc_b_final + acc_c_final,
-        }
-        if nccl_engine:
-            results["methods"][method]["nccl_p3_stats"] = nccl_engine.stats
-        if phase2_states[method]['nccl_p2_stats']:
-            results["methods"][method]["nccl_p2_stats"] = phase2_states[method]['nccl_p2_stats']
-
-    # ============================================================
-    # Summary
-    # ============================================================
-    print(f"\n{'='*70}")
-    print("FINAL RESULTS (TRI-HEAD, 3 TASKS)")
-    print(f"{'='*70}")
-    print(f"\n  Task A baseline: {acc_a_base:.1f}%")
-
-    print(f"\n  {'Method':<10s} {'A(P2)':>7s} {'B(P2)':>7s} {'A(fin)':>7s} "
-          f"{'B(fin)':>7s} {'C(fin)':>7s} {'fA':>6s} {'fB':>6s} {'Total':>7s}")
-    print(f"  {'-'*68}")
-
-    for method in methods:
-        r = results["methods"][method]
-        print(f"  {method.upper():<10s} {r['acc_a_after_p2']:>6.1f}% {r['acc_b_after_p2']:>6.1f}% "
-              f"{r['acc_a_final']:>6.1f}% {r['acc_b_final']:>6.1f}% {r['acc_c_final']:>6.1f}% "
-              f"{r['forget_a_total']:>+5.1f}% {r['forget_b_p3']:>+5.1f}% {r['total']:>6.1f}%")
-
-    # NCCL intersection diagnostics
-    for method in ["nccl"]:
-        r = results["methods"].get(method, {})
-        p3_stats = r.get("nccl_p3_stats", {})
-        dims = p3_stats.get("null_intersection_dims", [])
-        if dims:
-            print(f"\n  NCCL Phase 3 null∩ dims: mean={np.mean(dims):.1f} "
-                  f"min={min(dims)} max={max(dims)} ({len(dims)} subsets)")
-            print(f"  NCCL Phase 3 updates={p3_stats['updates']} "
-                  f"null_layers={p3_stats['null_layers']}")
-        else:
-            print(f"\n  ⚠️ NCCL Phase 3: NO null intersection found")
-
-    print(f"\n  KEY: fA = Task A forgetting (baseline→final), fB = Task B forgetting (P2→final)")
-
-    out_path = Path(args.output.replace(".json", f"_seed{args.seed}.json")
-                    if hasattr(args, 'seeds') and len(args.seeds) > 1
-                    else args.output)
-    with open(out_path, "w") as f:
-        json.dump(results, f, indent=2, default=str)
-    print(f"\nSaved: {out_path}")
-
-    return results
-
-
-# ============================================================
-# 9. Config and Main
-# ============================================================
-
-class Config:
-    device = "cuda"
-    seed = 0
-    seeds = [0, 1, 2]
-    batch_size = 64
-    lr = 0.01
-    lr_b = 0.005
-    epochs_a = 20
-    epochs_b = 10
-    epochs_c = 10
-    sub_dim = 50
-    n_subsets = 3
-    update_every = 25
-    ewc_lambda = 1000
-    subset_size = 2500
-    output = "nccl_3task.json"
-
-
-def main():
-    args = Config()
-    import sys
-    if not any('jupyter' in a or 'ipykernel' in a or 'colab' in a for a in sys.argv):
-        try:
-            import argparse
-            p = argparse.ArgumentParser()
-            for k, v in vars(Config()).items():
-                if isinstance(v, list):
-                    p.add_argument(f"--{k}", type=int, nargs='+', default=v)
+        self.timelike_mask.copy_(mask.bool())
+        self._has_mask = mask.any().item()
+
+    def forward(self, x: torch.Tensor,
+                attention_mask: Optional[torch.Tensor] = None):
+        """
+        x:              (B, L, d_model)
+        attention_mask: (B, 1, 1, L) 或 (B, 1, L, L)，加性掩码（-inf为mask位置）
+        返回: (output, attn_weights)
+        """
+        B, L, _ = x.shape
+        H, d_h  = self.n_heads, self.head_dim
+        scale   = math.sqrt(d_h)
+
+        Q = self.q_proj(x).view(B, L, H, d_h).transpose(1, 2).float()
+        K = self.k_proj(x).view(B, L, H, d_h).transpose(1, 2).float()
+        V = self.v_proj(x).view(B, L, H, d_h).transpose(1, 2)
+
+        # 标准scores
+        scores = torch.matmul(Q, K.transpose(-2, -1)) / scale   # (B,H,L,L)
+
+        # ── Minkowski修正（Component 1）──
+        if self._has_mask and self.alpha > 0:
+            # 类时掩码 → per-head对角权重
+            # timelike_mask: (d_model,) → (H, d_h)
+            mask_2d = self.timelike_mask.view(H, d_h).float()   # (H, d_h)
+
+            # 对每个head：Q_t = Q_h * mask_h（类时分量）
+            # Q: (B, H, L, d_h)
+            # mask_2d[h]: (d_h,) → 广播到 (B, 1, L, d_h)
+            mask_bcast = mask_2d.unsqueeze(0).unsqueeze(2)      # (1,H,1,d_h)
+            Q_t = Q * mask_bcast.to(Q.device)                   # 类时Q分量
+
+            # 时间分量内积
+            time_inner = torch.matmul(Q_t,
+                         K.transpose(-2, -1)) / scale           # (B,H,L,L)
+
+            # 洛伦兹修正：减去2α倍时间分量
+            scores = scores - 2.0 * self.alpha * time_inner
+
+        # attention mask
+        if attention_mask is not None:
+            scores = scores + attention_mask.to(scores.dtype)
+
+        # 存储洛伦兹间隔（诊断用）
+        self.last_intervals = (scores * scale).detach()
+
+        attn_w = F.softmax(scores, dim=-1).to(x.dtype)
+        attn_w = self.drop(attn_w)
+
+        out = torch.matmul(attn_w, V)
+        out = out.transpose(1, 2).contiguous().view(B, L, -1)
+        return self.o_proj(out), attn_w
+
+
+# ─────────────────────────────────────────────
+# 前馈网络
+# ─────────────────────────────────────────────
+class FeedForward(nn.Module):
+    def __init__(self, config: LorentzConfig):
+        super().__init__()
+        self.net = nn.Sequential(
+            nn.Linear(config.d_model, config.d_ff),
+            nn.GELU(),
+            nn.Dropout(config.dropout),
+            nn.Linear(config.d_ff, config.d_model),
+            nn.Dropout(config.dropout),
+        )
+
+    def forward(self, x):
+        return self.net(x)
+
+
+# ─────────────────────────────────────────────
+# Transformer Block
+# ─────────────────────────────────────────────
+class LorentzBlock(nn.Module):
+    def __init__(self, config: LorentzConfig):
+        super().__init__()
+        self.attn  = LorentzMultiHeadAttention(config)
+        self.ff    = FeedForward(config)
+        self.norm1 = nn.LayerNorm(config.d_model)
+        self.norm2 = nn.LayerNorm(config.d_model)
+
+    def forward(self, x: torch.Tensor,
+                attention_mask: Optional[torch.Tensor] = None):
+        ao, aw = self.attn(self.norm1(x), attention_mask)
+        x = x + ao
+        x = x + self.ff(self.norm2(x))
+        return x, aw
+
+
+# ─────────────────────────────────────────────
+# Component 2: 类时投影矩阵管理器
+# ─────────────────────────────────────────────
+class TimeLikeProbe:
+    """
+    管理各层W_Q的类时方向检测和P_t更新
+
+    核心流程：
+      每 hess_update_freq 步（warmup后）：
+        1. 对每层W_Q计算 dt²_info 的对角Hessian（Hutchinson）
+        2. G_ii < 0 的位置标记为类时
+        3. EMA平滑：mask_ema = decay×mask_old + (1-decay)×mask_new
+        4. 注入到各层的LorentzMultiHeadAttention
+
+    设计原则：
+      - 与模型和优化器解耦：外部调用 probe.update()
+      - EMA平滑防止mask剧烈跳变
+      - warmup期间不计算（Adam二阶矩未稳定）
+      - 失败时保留上一次的mask（安全fallback）
+
+    用法：
+      probe = TimeLikeProbe(model, config)
+      # 在train.py的训练循环里：
+      probe.step(batch_x, step_count)
+    """
+    def __init__(self, model: 'LorentzTransformer',
+                 config: LorentzConfig):
+        self.model  = model
+        self.config = config
+
+        # 每层的类时掩码EMA（float，[0,1]之间，代表"类时概率"）
+        # 初始化为0.5（中性）
+        self._mask_ema = [
+            torch.zeros(config.d_model, device='cpu')
+            for _ in range(config.n_layers)
+        ]
+        # threshold=0.3：需要EMA持续 > 0.3才标记为类时
+        # 配合可信度检查（|λ_min| > 1e-5），防止噪声信号
+        self._threshold = 0.3
+
+        # 诊断统计
+        self.timelike_fracs  = [0.0] * config.n_layers
+        self.lambda_mins     = [0.0] * config.n_layers
+        self.n_updates       = 0
+
+    def _make_loss_fn(self, layer_idx: int,
+                      W_Q_param: nn.Parameter,
+                      x: torch.Tensor):
+        """
+        构造第layer_idx层的dt²_info损失函数
+
+        只前向到目标层，提取注意力权重，计算dt²_info。
+        W_Q_param是可微的替换参数，其他权重detach。
+        """
+        model  = self.model
+        config = self.config
+
+        def loss_fn():
+            B, L = x.shape
+            h = (model.embed(x) +
+                 model.pos_emb(
+                     torch.arange(L, device=x.device).unsqueeze(0)))
+
+            for i, block in enumerate(model.blocks):
+                if i < layer_idx:
+                    h, _ = block(h)
+                elif i == layer_idx:
+                    xn = block.norm1(h)
+                    # 用替换参数W_Q_param计算Q
+                    Q  = F.linear(xn.float(), W_Q_param)
+                    K  = block.attn.k_proj(xn).float()
+                    d_h = config.head_dim
+                    H_n = config.n_heads
+                    Q = Q.view(B,L,H_n,d_h).transpose(1,2)
+                    K = K.view(B,L,H_n,d_h).transpose(1,2)
+                    sc = (torch.matmul(Q, K.transpose(-2,-1)) /
+                          math.sqrt(d_h))
+                    aw = F.softmax(sc, dim=-1)
+                    return -compute_dt2_info(aw)
                 else:
-                    p.add_argument(f"--{k}", type=type(v), default=v)
-            args = p.parse_args()
-        except SystemExit:
-            pass
-    if args.sub_dim % 2 != 0:
-        args.sub_dim -= 1
+                    break
+            return torch.tensor(0.0, device=x.device,
+                                requires_grad=True)
+        return loss_fn
 
-    all_seed_results = []
-    methods = ["naive", "ewc", "nccl", "freeze"]
+    def step(self, x: torch.Tensor, global_step: int):
+        """
+        主更新接口，在train.py的每个训练步调用
 
-    for seed in args.seeds:
-        print(f"\n{'#'*70}")
-        print(f"# SEED {seed}")
-        print(f"{'#'*70}")
-        args.seed = seed
-        result = run_experiment(args)
-        all_seed_results.append(result)
+        x:           当前batch输入 (B, L)
+        global_step: 全局训练步数
+        """
+        cfg = self.config
 
-    if len(args.seeds) >= 2:
-        print(f"\n{'='*70}")
-        print(f"MULTI-SEED SUMMARY ({len(args.seeds)} seeds: {args.seeds})")
-        print(f"{'='*70}")
+        if global_step < cfg.hess_warmup_steps:
+            return
+        if global_step % cfg.hess_update_freq != 0:
+            return
 
-        baselines = [r["task_a_baseline"] for r in all_seed_results]
-        print(f"\n  Task A baseline: {np.mean(baselines):.1f} ± {np.std(baselines):.1f}%")
+        # 用小batch计算（节省显存）
+        xb = x[:16].detach()
+        device = next(self.model.parameters()).device
+        xb = xb.to(device)
 
-        print(f"\n  {'Method':<10s} {'A(fin)':>14s} {'B(fin)':>14s} {'C(fin)':>14s} "
-              f"{'fA':>14s} {'fB':>14s} {'Total':>14s}")
-        print(f"  {'-'*90}")
+        for li, block in enumerate(self.model.blocks):
+            W_Q = block.attn.q_proj.weight   # (d_model, d_model)
 
-        for method in methods:
-            a_fin = [r["methods"][method]["acc_a_final"] for r in all_seed_results]
-            b_fin = [r["methods"][method]["acc_b_final"] for r in all_seed_results]
-            c_fin = [r["methods"][method]["acc_c_final"] for r in all_seed_results]
-            fa = [r["methods"][method]["forget_a_total"] for r in all_seed_results]
-            fb = [r["methods"][method]["forget_b_p3"] for r in all_seed_results]
-            total = [r["methods"][method]["total"] for r in all_seed_results]
+            # 创建可微副本
+            W_Q_param = nn.Parameter(W_Q.detach().clone())
 
-            print(f"  {method.upper():<10s} "
-                  f"{np.mean(a_fin):>5.1f}±{np.std(a_fin):>4.1f}%  "
-                  f"{np.mean(b_fin):>5.1f}±{np.std(b_fin):>4.1f}%  "
-                  f"{np.mean(c_fin):>5.1f}±{np.std(c_fin):>4.1f}%  "
-                  f"{np.mean(fa):>+5.1f}±{np.std(fa):>4.1f}%  "
-                  f"{np.mean(fb):>+5.1f}±{np.std(fb):>4.1f}%  "
-                  f"{np.mean(total):>5.1f}±{np.std(total):>4.1f}%")
+            loss_fn = self._make_loss_fn(li, W_Q_param, xb)
 
-        # NCCL wins check
-        nccl_fa = [r["methods"]["nccl"]["forget_a_total"] for r in all_seed_results]
-        naive_fa = [r["methods"]["naive"]["forget_a_total"] for r in all_seed_results]
-        ewc_fa = [r["methods"]["ewc"]["forget_a_total"] for r in all_seed_results]
-        wins_naive = sum(1 for n, na in zip(nccl_fa, naive_fa) if n < na)
-        wins_ewc = sum(1 for n, e in zip(nccl_fa, ewc_fa) if n < e)
-        print(f"\n  NCCL < Naive on fA: {wins_naive}/{len(args.seeds)} seeds")
-        print(f"  NCCL < EWC on fA:   {wins_ewc}/{len(args.seeds)} seeds")
+            try:
+                G = hutchinson_diag_hessian(
+                    loss_fn, W_Q_param,
+                    n_samples=cfg.hutchinson_k)
 
-        # Null intersection diagnostics
-        for i, r in enumerate(all_seed_results):
-            p3_stats = r["methods"].get("nccl", {}).get("nccl_p3_stats", {})
-            dims = p3_stats.get("null_intersection_dims", [])
-            if dims:
-                print(f"  Seed {args.seeds[i]} null∩: mean={np.mean(dims):.1f} "
-                      f"min={min(dims)} max={max(dims)}")
-            else:
-                print(f"  Seed {args.seeds[i]} null∩: EMPTY")
+                # 记录最小值（用于诊断）
+                lmin = G.min().item()
+                self.lambda_mins[li] = lmin
 
-        combined = {"seeds": args.seeds, "per_seed": all_seed_results}
-        with open(args.output, "w") as f:
-            json.dump(combined, f, indent=2, default=str)
-        print(f"\nSaved: {args.output}")
+                # 可信度检查：Hessian值太小 → 梯度接近零 → 符号是噪声
+                # 发生在训练初期或梯度消失时，跳过更新保留旧mask
+                if abs(lmin) < 1e-5:
+                    continue
+
+                # G_ii < 0 → 类时（二值信号）
+                timelike_signal = (G < 0).float()          # (d_model, d_model)
+                timelike_vec    = timelike_signal.mean(dim=1).cpu()  # (d_model,)
+
+                # EMA平滑（decay=0.7：保留70%旧值）
+                decay = cfg.ema_decay
+                self._mask_ema[li] = (decay * self._mask_ema[li] +
+                                      (1 - decay) * timelike_vec)
+
+                # 二值化：EMA > 0.3 → 类时
+                # 需要EMA持续在0.3以上，防止噪声触发
+                binary_mask = (self._mask_ema[li] > self._threshold)
+
+                block.attn.set_timelike_mask(binary_mask.to(device))
+                self.timelike_fracs[li] = binary_mask.float().mean().item()
+
+            except Exception as e:
+                # 失败：保留上一次的mask，不中断训练
+                pass
+
+        self.n_updates += 1
+
+    def get_param_mask_pairs(self, device):
+        """
+        返回 (W_Q_param, mask) 列表，供GeodesicAdam使用
+        """
+        pairs = []
+        for li, block in enumerate(self.model.blocks):
+            mask = block.attn.timelike_mask
+            pairs.append((block.attn.q_proj.weight, mask.to(device)))
+        return pairs
+
+    def report(self) -> str:
+        lines = ['TimeLikeProbe诊断:']
+        for li in range(self.config.n_layers):
+            frac = self.timelike_fracs[li]
+            lmin = self.lambda_mins[li]
+            bar  = '█' * int(frac * 20)
+            lines.append(
+                f'  layer {li:2d}: frac={frac:.3f} λ_min={lmin:.6f} {bar}')
+        lines.append(f'  总更新次数: {self.n_updates}')
+        return '\n'.join(lines)
 
 
-if __name__ == "__main__":
-    main()
+# ─────────────────────────────────────────────
+# 主模型：洛伦兹Transformer
+# ─────────────────────────────────────────────
+class LorentzTransformer(nn.Module):
+    """
+    洛伦兹Transformer
+
+    基于K=1信息几何场方程的Transformer架构。
+    三个组件全部集成：
+      - LorentzMultiHeadAttention（Component 1）
+      - TimeLikeProbe（Component 2，作为属性）
+      - regularization_loss()（Component 3）
+
+    标准用法（train.py里）：
+      model  = LorentzTransformer(config)
+      probe  = model.probe                    # 访问TimeLikeProbe
+      optim  = GeodesicAdam(model.parameters())
+
+      # 训练步
+      logits = model(input_ids, attention_mask)
+      loss   = ce_loss + model.regularization_loss()
+      loss.backward()
+      optim.update_timelike_masks(
+          probe.get_param_mask_pairs(device))  # 更新梯度分解
+      optim.step()
+      probe.step(input_ids, global_step)       # 更新P_t
+    """
+    def __init__(self, config: LorentzConfig):
+        super().__init__()
+        self.config = config
+
+        # 嵌入层
+        self.embed   = nn.Embedding(config.vocab_size, config.d_model)
+        self.pos_emb = nn.Embedding(config.max_seq_len, config.d_model)
+        self.drop    = nn.Dropout(config.dropout)
+
+        # Transformer块
+        self.blocks = nn.ModuleList([
+            LorentzBlock(config) for _ in range(config.n_layers)
+        ])
+
+        # 输出层
+        self.norm_f = nn.LayerNorm(config.d_model)
+        self.lm_head = nn.Linear(config.d_model, config.vocab_size,
+                                  bias=False)
+
+        # 权重共享（标准GPT做法）
+        self.lm_head.weight = self.embed.weight
+
+        # Component 2：类时投影矩阵管理器
+        self.probe = TimeLikeProbe(self, config)
+
+        # 参数初始化
+        self._init_weights()
+
+    def _init_weights(self):
+        """标准GPT-2风格初始化"""
+        for module in self.modules():
+            if isinstance(module, nn.Linear):
+                nn.init.normal_(module.weight, mean=0.0,
+                                std=0.02 / math.sqrt(2 * self.config.n_layers))
+                if module.bias is not None:
+                    nn.init.zeros_(module.bias)
+            elif isinstance(module, nn.Embedding):
+                nn.init.normal_(module.weight, mean=0.0, std=0.02)
+
+    def forward(self, input_ids: torch.Tensor,
+                attention_mask: Optional[torch.Tensor] = None):
+        """
+        input_ids:      (B, L) long
+        attention_mask: (B, L) bool，True=有效位置（自动转为加性掩码）
+        返回: logits (B, L, vocab_size)
+        """
+        B, L = input_ids.shape
+        assert L <= self.config.max_seq_len, \
+            f"序列长度{L}超过最大{self.config.max_seq_len}"
+
+        device = input_ids.device
+
+        # 位置编码
+        pos = torch.arange(L, device=device).unsqueeze(0)
+        h   = self.drop(self.embed(input_ids) + self.pos_emb(pos))
+
+        # 构造加性attention mask
+        attn_bias = None
+        if attention_mask is not None:
+            # (B, L) → (B, 1, 1, L)，pad位置设为-inf
+            attn_bias = (~attention_mask).float()
+            attn_bias = attn_bias.masked_fill(
+                ~attention_mask, float('-inf')).unsqueeze(1).unsqueeze(2)
+
+        # 因果掩码（自回归）
+        causal = torch.triu(
+            torch.full((L, L), float('-inf'), device=device),
+            diagonal=1).unsqueeze(0).unsqueeze(0)   # (1,1,L,L)
+
+        if attn_bias is not None:
+            combined_mask = attn_bias + causal
+        else:
+            combined_mask = causal
+
+        # 前向传播
+        for block in self.blocks:
+            h, _ = block(h, combined_mask)
+
+        h = self.norm_f(h)
+        return self.lm_head(h)
+
+    def regularization_loss(self) -> torch.Tensor:
+        """
+        Component 3：类时子流形正则化损失
+
+        R(θ) = λ_s · Σ_l ||(I-P_t) W_Q_l||²
+
+        惩罚每层W_Q的类空分量，保护类空方向不被过度更新。
+        这约束参数更新在类时子流形上，是EWC的几何版本。
+
+        返回: scalar tensor，加到任务损失上
+        """
+        cfg  = self.config
+        loss = torch.tensor(0.0,
+                            device=next(self.parameters()).device)
+
+        if cfg.lambda_spacelike == 0 and cfg.lambda_timelike == 0:
+            return loss
+
+        for block in self.blocks:
+            W_Q  = block.attn.q_proj.weight   # (d_model, d_model)
+            mask = block.attn.timelike_mask.float()  # (d_model,) 0/1
+
+            if not block.attn._has_mask:
+                continue
+
+            # 类空分量：(I - P_t) W_Q
+            # P_t作用于行（output维度）
+            mask_row = mask.unsqueeze(1)         # (d_model, 1) 广播
+            W_spacelike = W_Q * (1 - mask_row)  # 类空行
+            W_timelike  = W_Q * mask_row         # 类时行
+
+            if cfg.lambda_spacelike > 0:
+                loss = loss + cfg.lambda_spacelike * W_spacelike.pow(2).sum()
+
+            if cfg.lambda_timelike > 0:
+                loss = loss - cfg.lambda_timelike * W_timelike.pow(2).sum()
+
+        return loss
+
+    def get_num_params(self, non_embedding=True):
+        """返回参数量"""
+        n = sum(p.numel() for p in self.parameters())
+        if non_embedding:
+            n -= self.pos_emb.weight.numel()
+        return n
+
+    def lightcone_stats(self) -> dict:
+        """
+        返回各层的光锥统计（诊断用）
+        interval < 0 → 类时，> 0 → 类空
+        """
+        stats = {}
+        for li, block in enumerate(self.blocks):
+            iv = block.attn.last_intervals
+            if iv is not None:
+                stats[f'layer_{li}'] = {
+                    'timelike_frac': (iv < 0).float().mean().item(),
+                    'mean_interval': iv[iv != float('-inf')].mean().item() if (iv != float('-inf')).any() else 0.0,
+                    'std_interval':  iv.std().item(),
+                }
+        return stats
+
+    def set_lorentz_alpha(self, alpha: float):
+        """动态调整洛伦兹强度（用于训练阶段切换）"""
+        self.config.lorentz_alpha = alpha
+        for block in self.blocks:
+            block.attn.alpha = alpha
+
+    def save_lorentz_state(self, path: str):
+        """
+        保存完整状态，包括P_t的EMA历史
+
+        标准 torch.save(model.state_dict()) 不包含probe的状态。
+        这个方法额外保存probe，确保训练可以从任意checkpoint恢复。
+        """
+        state = {
+            'model_state': self.state_dict(),
+            'config':      self.config,
+            'probe_mask_ema': self.probe._mask_ema,
+            'probe_n_updates': self.probe.n_updates,
+            'probe_timelike_fracs': self.probe.timelike_fracs,
+        }
+        torch.save(state, path)
+
+    @classmethod
+    def load_lorentz_state(cls, path: str,
+                            device: str = 'cpu') -> 'LorentzTransformer':
+        """
+        从checkpoint加载完整状态（包括probe）
+        """
+        import torch.serialization as _ts
+        _ts.add_safe_globals([LorentzConfig])
+        state  = torch.load(path, map_location=device, weights_only=False)
+        config = state['config']
+        model  = cls(config)
+        model.load_state_dict(state['model_state'])
+        model.probe._mask_ema       = state['probe_mask_ema']
+        model.probe.n_updates       = state['probe_n_updates']
+        model.probe.timelike_fracs  = state['probe_timelike_fracs']
+        # 恢复各层的timelike_mask
+        for li, block in enumerate(model.blocks):
+            ema = state['probe_mask_ema'][li]
+            mask = (ema > model.probe._threshold).to(device)
+            block.attn.set_timelike_mask(mask)
+        return model.to(device)
+
+
+# ─────────────────────────────────────────────
+# 快速验证
+# ─────────────────────────────────────────────
+if __name__ == '__main__':
+    print('='*55)
+    print('LorentzTransformer 快速验证')
+    print('='*55)
+
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    print(f'Device: {device}')
+
+    # 小规格测试（快速）
+    cfg = LorentzConfig(
+        vocab_size  = 1000,
+        d_model     = 128,
+        n_heads     = 4,
+        n_layers    = 4,
+        max_seq_len = 64,
+        lorentz_alpha      = 0.25,
+        hess_update_freq   = 10,
+        hess_warmup_steps  = 5,
+        hutchinson_k       = 5,
+    )
+
+    model = LorentzTransformer(cfg).to(device)
+    print(f'参数量: {model.get_num_params()/1e6:.2f}M')
+    print(f'config: d={cfg.d_model} h={cfg.n_heads} L={cfg.n_layers} '
+          f'α={cfg.lorentz_alpha}')
+
+    # 前向测试
+    x      = torch.randint(0, cfg.vocab_size, (2, 32), device=device)
+    mask   = torch.ones(2, 32, dtype=torch.bool, device=device)
+    logits = model(x, mask)
+    print(f'\n前向通过: input={list(x.shape)} → logits={list(logits.shape)}')
+
+    # 损失计算
+    loss_ce  = F.cross_entropy(
+        logits[:, :-1].reshape(-1, cfg.vocab_size),
+        x[:, 1:].reshape(-1))
+    loss_reg = model.regularization_loss()
+    loss_tot = loss_ce + loss_reg
+    print(f'CE loss={loss_ce.item():.4f}  '
+          f'Reg loss={loss_reg.item():.6f}  '
+          f'Total={loss_tot.item():.4f}')
+
+    # 反向测试
+    loss_tot.backward()
+    print('反向通过 ✓')
+
+    # P_t更新测试
+    print('\nP_t更新测试...')
+    # warmup=5, update_freq=10，需要step>=15才能触发第2次更新
+    # 多跑35步确保EMA有3次更新（step=5,15,25,35）
+    for step in range(40):
+        model.probe.step(x, step)
+    print(model.probe.report())
+
+    # 光锥统计（需要再次前向）
+    _ = model(x, mask)
+    lc = model.lightcone_stats()
+    print('\n光锥统计:')
+    for layer, s in lc.items():
+        print(f'  {layer}: timelike={s["timelike_frac"]:.3f}  '
+              f'mean_interval={s["mean_interval"]:.3f}')
+
+    # Checkpoint保存/加载测试
+    import tempfile, os
+    with tempfile.NamedTemporaryFile(suffix='.pt', delete=False) as f:
+        tmp = f.name
+    model.save_lorentz_state(tmp)
+    model2 = LorentzTransformer.load_lorentz_state(tmp, device=str(device))
+    # eval模式关闭dropout，确保输出确定性
+    model.eval(); model2.eval()
+    with torch.no_grad():
+        out1 = model(x, mask)
+        out2 = model2(x, mask)
+    assert torch.allclose(out1, out2, atol=1e-5), 'Checkpoint不一致！'
+    print('\nCheckpoint保存/加载 ✓')
+    model.train()  # 恢复训练模式
+    os.unlink(tmp)
+
+    print('\n所有测试通过 ✓')
+    print('下一步: optimizer.py (GeodesicAdam)')
