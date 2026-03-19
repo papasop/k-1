@@ -214,9 +214,16 @@ class LorentzMultiHeadAttention(nn.Module):
         # 输出投影
         self.o_proj = nn.Linear(config.d_model, config.d_model, bias=False)
 
-        # 保留dropout配置用于API兼容，但默认返回确定性的注意力权重
+        # 默认使用确定性的注意力权重，必要时可显式开启dropout
         self.dropout_p = float(config.dropout)
-        self.drop = nn.Identity()
+        self.deterministic_attention = getattr(
+            config, "deterministic_attention", True
+        )
+        self.drop = (
+            nn.Identity()
+            if self.deterministic_attention
+            else nn.Dropout(self.dropout_p)
+        )
 
         # 类时掩码：(d_model,) bool向量
         # True = 类时维度（G_ii<0）
@@ -243,13 +250,13 @@ class LorentzMultiHeadAttention(nn.Module):
                 True/1.0 = 类时维度
                 False/0.0 = 类空维度
         """
-        if mask.numel() != self.timelike_mask.numel():
+        if mask.shape != self.timelike_mask.shape:
             raise ValueError(
-                f"timelike_mask长度必须是{self.timelike_mask.numel()}，"
-                f"实际收到{mask.numel()}"
+                "timelike_mask shape must be "
+                f"{self.timelike_mask.shape}, but received {mask.shape}"
             )
 
-        self.timelike_mask.copy_(mask.view_as(self.timelike_mask).bool())
+        self.timelike_mask.copy_(mask.bool())
         self._has_mask = mask.any().item()
 
     def forward(
@@ -356,6 +363,7 @@ class LorentzMultiHeadAttention(nn.Module):
             f"head_dim={self.head_dim}, "
             f"alpha={self.alpha}, "
             f"dropout={self.dropout_p}, "
+            f"deterministic_attention={self.deterministic_attention}, "
             f"has_mask={self._has_mask}"
         )
 

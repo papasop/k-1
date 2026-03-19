@@ -14,10 +14,6 @@ import pytest
 import torch
 import torch.nn as nn
 
-import sys
-
-sys.path.insert(0, ".")
-
 from lorentz_transformer.core.attention import (
     LorentzMultiHeadAttention,
     compute_dt2_info,
@@ -33,6 +29,7 @@ class MockConfig:
     n_heads: int = 8
     lorentz_alpha: float = 0.25
     dropout: float = 0.1
+    deterministic_attention: bool = True
 
 
 class TestComputeDt2Info:
@@ -88,8 +85,8 @@ class TestLorentzMultiHeadAttention:
         return LorentzMultiHeadAttention(config)
 
     @pytest.fixture
-    def sample_input(self):
-        return torch.randn(2, 128, 256)
+    def sample_input(self, config):
+        return torch.randn(2, 128, config.d_model)
 
     def test_output_shape(self, attn_module, sample_input):
         output, weights = attn_module(sample_input)
@@ -104,9 +101,11 @@ class TestLorentzMultiHeadAttention:
     def test_weights_sum_to_one(self, attn_module, sample_input):
         _, weights = attn_module(sample_input)
         sums = weights.sum(dim=-1)
+        assert (weights >= 0).all()
         assert torch.allclose(sums, torch.ones_like(sums), atol=1e-5)
 
     def test_deterministic(self, attn_module, sample_input):
+        attn_module.eval()
         torch.manual_seed(42)
         output1, _ = attn_module(sample_input)
 
@@ -119,7 +118,7 @@ class TestLorentzMultiHeadAttention:
         attn = LorentzMultiHeadAttention(config)
         assert not attn._has_mask
 
-        mask = torch.randint(0, 2, (256,)).bool()
+        mask = torch.randint(0, 2, (config.d_model,)).bool()
         attn.set_timelike_mask(mask)
         assert attn._has_mask
 
@@ -128,10 +127,10 @@ class TestLorentzMultiHeadAttention:
 
     def test_alpha_zero_equals_standard_attention(self, sample_input):
         config_lorentz = MockConfig(lorentz_alpha=0.0)
-        config_standard = MockConfig(lorentz_alpha=0.0)
-
         attn_lorentz = LorentzMultiHeadAttention(config_lorentz)
-        attn_standard = LorentzMultiHeadAttention(config_standard)
+        attn_standard = LorentzMultiHeadAttention(config_lorentz)
+        attn_lorentz.eval()
+        attn_standard.eval()
         attn_lorentz.load_state_dict(attn_standard.state_dict())
 
         output_lorentz, weights_lorentz = attn_lorentz(sample_input)
@@ -143,11 +142,11 @@ class TestLorentzMultiHeadAttention:
     def test_minkowski_scores_differ_from_standard(self, config, sample_input):
         attn = LorentzMultiHeadAttention(config)
 
-        mask = torch.randint(0, 2, (256,)).bool()
+        mask = torch.randint(0, 2, (config.d_model,)).bool()
         attn.set_timelike_mask(mask)
         output_lorentz, _ = attn(sample_input)
 
-        attn.set_timelike_mask(torch.zeros(256, dtype=torch.bool))
+        attn.set_timelike_mask(torch.zeros(config.d_model, dtype=torch.bool))
         output_standard, _ = attn(sample_input)
 
         assert not torch.allclose(output_lorentz, output_standard, atol=1e-4)
@@ -171,9 +170,10 @@ class TestLorentzMultiHeadAttention:
         pad_mask = torch.ones(B, L)
         pad_mask[:, -pad_len:] = 0
 
-        attn_mask = (~pad_mask.bool()).float()
+        masked_positions = ~pad_mask.bool()
+        attn_mask = masked_positions.float()
         attn_mask = attn_mask.masked_fill(
-            ~pad_mask.bool(), float("-inf")
+            masked_positions, float("-inf")
         ).unsqueeze(1).unsqueeze(2)
 
         _, weights = attn_module(sample_input, attn_mask)
@@ -212,6 +212,8 @@ class TestLorentzMultiHeadAttention:
         repr_str = attn_module.extra_repr()
         assert "n_heads" in repr_str
         assert "alpha" in repr_str
+        assert "dropout" in repr_str
+        assert "deterministic_attention" in repr_str
 
 
 class TestHutchinsonDiagHessian:
@@ -254,8 +256,8 @@ class TestIntegration:
         config = MockConfig()
         attn = LorentzMultiHeadAttention(config)
 
-        x = torch.randn(2, 128, 256)
-        mask = torch.randint(0, 2, (256,)).bool()
+        x = torch.randn(2, 128, config.d_model)
+        mask = torch.randint(0, 2, (config.d_model,)).bool()
         attn.set_timelike_mask(mask)
 
         output, weights = attn(x)
@@ -280,7 +282,7 @@ class TestIntegration:
         attn = LorentzMultiHeadAttention(config)
 
         for seq_len in [32, 64, 128, 256]:
-            x = torch.randn(2, seq_len, 256)
+            x = torch.randn(2, seq_len, config.d_model)
             output, weights = attn(x)
             assert output.shape == x.shape
             assert weights.shape == (2, 8, seq_len, seq_len)
