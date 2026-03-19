@@ -213,7 +213,7 @@ class TestLorentzMultiHeadAttention:
         assert "n_heads" in repr_str
         assert "alpha" in repr_str
         assert "dropout" in repr_str
-        assert "deterministic_attention" in repr_str
+        assert "deterministic_attention=True" in repr_str
 
 
 class TestHutchinsonDiagHessian:
