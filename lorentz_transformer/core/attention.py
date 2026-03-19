@@ -12,7 +12,7 @@ Component 1: Minkowski多头注意力机制
 """
 
 import math
-from typing import Optional, Tuple
+from typing import Callable, Optional, Tuple
 
 import torch
 import torch.nn as nn
@@ -27,7 +27,7 @@ def compute_dt2_info(attn_w: torch.Tensor) -> torch.Tensor:
     """
     计算K=1信息时间度量。
 
-    dt²_info = Σ_q K_q = Σ_q (Φ_q / H_q)
+    dt²_info = mean_q K_q = mean_q (Φ_q / H_q)
 
     其中：
       H_q = Shannon熵（注意力分布的不确定性）
@@ -48,11 +48,16 @@ def compute_dt2_info(attn_w: torch.Tensor) -> torch.Tensor:
         >>> dt2_info = compute_dt2_info(attn_w)
         >>> print(dt2_info.item())  # scalar value
     """
+    if attn_w.dim() != 4:
+        raise ValueError(
+            f"attn_w 应为四维张量 (B, H, L, L)，实际收到 {tuple(attn_w.shape)}"
+        )
+
     # 对头维度求平均，得到每个样本的注意力分布
     aw = attn_w.mean(dim=1).float()  # (B, L, L)
 
     # 处理NaN值（防止log(0)）
-    aw = torch.nan_to_num(aw, nan=0.0)
+    aw = torch.nan_to_num(aw, nan=0.0, posinf=0.0, neginf=0.0)
 
     # 行归一化，确保是有效的概率分布
     aw = aw / aw.sum(-1, keepdim=True).clamp(min=1e-8)
@@ -73,7 +78,7 @@ def compute_dt2_info(attn_w: torch.Tensor) -> torch.Tensor:
 
 
 def hutchinson_diag_hessian(
-    loss_fn,
+    loss_fn: Callable[[], torch.Tensor],
     param: nn.Parameter,
     n_samples: int = 20,
 ) -> torch.Tensor:
@@ -111,7 +116,13 @@ def hutchinson_diag_hessian(
         >>> G = hutchinson_diag_hessian(loss_fn, W_Q, n_samples=20)
         >>> is_timelike = (G < 0)  # bool mask
     """
-    G = torch.zeros_like(param.data)
+    if n_samples <= 0:
+        raise ValueError(f"n_samples 必须为正整数，实际收到 {n_samples}")
+    if not param.requires_grad:
+        raise ValueError("param.requires_grad 必须为 True")
+
+    G = torch.zeros_like(param)
+    successful_samples = 0
 
     for _ in range(n_samples):
         # 生成Rademacher随机向量: {-1, +1}^shape
@@ -142,9 +153,13 @@ def hutchinson_diag_hessian(
         )
 
         # 累积：G += v ⊙ (H·v)
-        G = G + (v * Hv).detach() / n_samples
+        G = G + (v * Hv).detach()
+        successful_samples += 1
 
-    return G
+    if successful_samples == 0:
+        raise RuntimeError("Hutchinson Hessian 对角估计失败：没有成功的样本")
+
+    return G / successful_samples
 
 
 # ============================================================================
@@ -242,7 +257,13 @@ class LorentzMultiHeadAttention(nn.Module):
                 True/1.0 = 类时维度
                 False/0.0 = 类空维度
         """
-        self.timelike_mask.copy_(mask.bool())
+        if mask.shape != self.timelike_mask.shape:
+            raise ValueError(
+                f"mask 形状必须为 {tuple(self.timelike_mask.shape)}，"
+                f" 实际收到 {tuple(mask.shape)}"
+            )
+
+        self.timelike_mask.copy_(mask.to(device=self.timelike_mask.device).bool())
         self._has_mask = mask.any().item()
 
     def forward(
@@ -273,6 +294,11 @@ class LorentzMultiHeadAttention(nn.Module):
             6. 乘以V并合并head
             7. 输出投影
         """
+        if x.dim() != 3:
+            raise ValueError(
+                f"x 应为三维张量 (B, L, d_model)，实际收到 {tuple(x.shape)}"
+            )
+
         B, L, _ = x.shape
         H, d_h = self.n_heads, self.head_dim
         scale = math.sqrt(d_h)
