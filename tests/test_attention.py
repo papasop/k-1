@@ -180,12 +180,18 @@ class TestLorentzMultiHeadAttention:
         assert torch.allclose(output_lorentz, output_standard, atol=1e-5)
         assert torch.allclose(weights_lorentz, weights_standard, atol=1e-5)
 
-    def test_all_zero_timelike_mask_keeps_standard_attention(self, config, sample_input):
+    def test_all_zero_timelike_mask_keeps_standard_attention(
+        self,
+        config,
+        sample_input,
+    ):
         """全 False 的类时 mask 不应激活 Lorentz 修正。"""
         attn_masked = LorentzMultiHeadAttention(config)
         attn_standard = LorentzMultiHeadAttention(config)
         attn_masked.load_state_dict(attn_standard.state_dict())
-        attn_masked.set_timelike_mask(torch.zeros(config.d_model, dtype=torch.bool))
+        attn_masked.set_timelike_mask(
+            torch.zeros(config.d_model, dtype=torch.bool)
+        )
         attn_masked.eval()
         attn_standard.eval()
 
@@ -196,12 +202,18 @@ class TestLorentzMultiHeadAttention:
         assert torch.allclose(output_masked, output_standard, atol=1e-5)
         assert torch.allclose(weights_masked, weights_standard, atol=1e-5)
 
-    def test_all_one_timelike_mask_changes_attention_scores(self, config, sample_input):
+    def test_all_one_timelike_mask_changes_attention_scores(
+        self,
+        config,
+        sample_input,
+    ):
         """全 True 的类时 mask 应改变注意力结果。"""
         attn_lorentz = LorentzMultiHeadAttention(config)
         attn_standard = LorentzMultiHeadAttention(config)
         attn_lorentz.load_state_dict(attn_standard.state_dict())
-        attn_lorentz.set_timelike_mask(torch.ones(config.d_model, dtype=torch.bool))
+        attn_lorentz.set_timelike_mask(
+            torch.ones(config.d_model, dtype=torch.bool)
+        )
         attn_lorentz.eval()
         attn_standard.eval()
 
