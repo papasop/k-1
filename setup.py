@@ -7,6 +7,11 @@ from setuptools import find_namespace_packages, setup
 ROOT = Path(__file__).parent
 
 
+def read_readme() -> str:
+    readme_path = ROOT / "README.md"
+    return readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
+
+
 def read_version() -> str:
     init_path = ROOT / "lorentz_transformer" / "__init__.py"
     match = re.search(
@@ -24,7 +29,7 @@ setup(
     version=read_version(),
     author="papasop",
     description="Lorentz Transformer based on K=1 information geometry",
-    long_description=(ROOT / "README.md").read_text(encoding="utf-8"),
+    long_description=read_readme(),
     long_description_content_type="text/markdown",
     packages=find_namespace_packages(include=["lorentz_transformer*"]),
     include_package_data=True,
