@@ -1,21 +1,16 @@
 """
-lorentz_transformer/__init__.py
+lorentz_transformer.core
 
-主包的初始化文件
+核心注意力组件导出。
 """
 
-__version__ = "1.0.0"
-__author__ = "papasop"
-
-from . import core
-from .core import (
+from .attention import (
     LorentzMultiHeadAttention,
     compute_dt2_info,
     hutchinson_diag_hessian,
 )
 
 __all__ = [
-    "core",
     "LorentzMultiHeadAttention",
     "compute_dt2_info",
     "hutchinson_diag_hessian",

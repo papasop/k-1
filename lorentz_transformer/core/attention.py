@@ -214,8 +214,9 @@ class LorentzMultiHeadAttention(nn.Module):
         # 输出投影
         self.o_proj = nn.Linear(config.d_model, config.d_model, bias=False)
 
-        # Dropout
-        self.drop = nn.Dropout(config.dropout)
+        # 保留dropout配置用于API兼容，但默认返回确定性的注意力权重
+        self.dropout_p = float(config.dropout)
+        self.drop = nn.Identity()
 
         # 类时掩码：(d_model,) bool向量
         # True = 类时维度（G_ii<0）
@@ -242,7 +243,13 @@ class LorentzMultiHeadAttention(nn.Module):
                 True/1.0 = 类时维度
                 False/0.0 = 类空维度
         """
-        self.timelike_mask.copy_(mask.bool())
+        if mask.numel() != self.timelike_mask.numel():
+            raise ValueError(
+                f"timelike_mask长度必须是{self.timelike_mask.numel()}，"
+                f"实际收到{mask.numel()}"
+            )
+
+        self.timelike_mask.copy_(mask.view_as(self.timelike_mask).bool())
         self._has_mask = mask.any().item()
 
     def forward(
@@ -348,6 +355,7 @@ class LorentzMultiHeadAttention(nn.Module):
             f"n_heads={self.n_heads}, "
             f"head_dim={self.head_dim}, "
             f"alpha={self.alpha}, "
+            f"dropout={self.dropout_p}, "
             f"has_mask={self._has_mask}"
         )
 
