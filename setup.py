@@ -1,23 +1,21 @@
 """
 setup.py
 
-Package installation configuration.
+Package installation configuration
 """
 
-from pathlib import Path
+from setuptools import setup, find_packages
 
-from setuptools import find_packages, setup
-
-
-README_PATH = Path(__file__).resolve().parent / "README.md"
-
+with open("README.md", "r", encoding="utf-8") as f:
+    long_description = f.read()
 
 setup(
     name="lorentz-transformer",
     version="1.0.0",
     author="papasop",
+    author_email="your.email@example.com",
     description="Minkowski Geometry in Transformer Attention",
-    long_description=README_PATH.read_text(encoding="utf-8"),
+    long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/papasop/k-1",
     packages=find_packages(),
@@ -27,7 +25,6 @@ setup(
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
-        "Programming Language :: Python :: 3.12",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
         "Intended Audience :: Science/Research",
@@ -36,5 +33,9 @@ setup(
     python_requires=">=3.8",
     install_requires=[
         "torch>=1.12.0",
+        "numpy>=1.20.0",
     ],
+    extras_require={
+        "dev": ["pytest>=6.0", "black>=22.0", "flake8>=4.0"],
+    },
 )
