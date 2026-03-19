@@ -39,7 +39,7 @@ scores_L = (QK^T)/√d_h - 2α·(Q_t K^T)/√d_h
 特点：
 
 - α=0 时与标准 MultiHeadAttention 等价
-- 未注入类时 mask 时自动回退到标准注意力
+- 未注入 timelike mask 时自动回退到标准注意力
 - 支持加性 attention mask（causal、padding）
 - 保存 `last_intervals` 与 `last_intervals_raw` 供诊断分析
 
@@ -106,4 +106,3 @@ python lorentz_transformer/core/attention.py
 
 - torch >= 1.12
 - numpy >= 1.20
-
