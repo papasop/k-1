@@ -106,6 +106,7 @@ class LorentzConfig:
     # Component 1: Minkowski注意力
     lorentz_alpha:      float = 0.25
     use_minkowski_norm: bool  = True   # 闵可夫斯基LayerNorm
+    lambda_cone:        float = 0.0    # 光锥损失权重（0=关闭，0.01=开启）
 
     # Component 2: P_t更新
     hess_update_freq:  int   = 40
@@ -248,7 +249,8 @@ class LorentzMultiHeadAttention(nn.Module):
         self._has_mask = False
 
         # 诊断：最近一次的洛伦兹间隔（用于光锥分析）
-        self.last_intervals: Optional[torch.Tensor] = None
+        self.last_intervals:     Optional[torch.Tensor] = None
+        self.last_intervals_raw: Optional[torch.Tensor] = None
 
     def set_timelike_mask(self, mask: torch.Tensor):
         """
@@ -307,12 +309,15 @@ class LorentzMultiHeadAttention(nn.Module):
             # 洛伦兹修正：减去2α倍时间分量
             scores = scores - 2.0 * self.alpha * time_inner
 
+        # 광추 통계용: causal mask 전 순수 scores 저장 (lightcone_loss용)
+        self.last_intervals_raw = scores.detach().clone()
+
         # attention mask
         if attention_mask is not None:
             scores = scores + attention_mask.to(scores.dtype)
 
-        # 存储洛伦兹间隔（诊断用）
-        self.last_intervals = (scores * scale).detach()
+        # 기존 광추 통계용: causal mask 후 저장 (역사적 비교 유지)
+        self.last_intervals = scores.detach().clone()
 
         attn_w = F.softmax(scores, dim=-1).to(x.dtype)
         attn_w = self.drop(attn_w)
@@ -345,24 +350,33 @@ class MinkowskiLayerNorm(nn.Module):
         self.register_buffer('timelike_mask',
                               torch.zeros(d_model, dtype=torch.bool))
         self._has_mask = False
+        self._blend    = 0.0   # 0=标准norm，1=完全η-norm（用于warmup）
 
     def set_timelike_mask(self, mask: torch.Tensor):
         self.timelike_mask.copy_(mask.bool())
         self._has_mask = mask.any().item()
 
+    def set_blend(self, alpha: float):
+        self._blend = max(0.0, min(1.0, alpha))
+
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        mean = x.mean(dim=-1, keepdim=True)
-        x_c  = x - mean
-        if not self._has_mask:
-            var = x_c.pow(2).mean(dim=-1, keepdim=True)
-            x_n = x_c / (var + self.eps).sqrt()
+        mean  = x.mean(dim=-1, keepdim=True)
+        x_c   = x - mean
+        # 标准norm（始终计算）
+        var   = x_c.pow(2).mean(dim=-1, keepdim=True)
+        x_std = x_c / (var + self.eps).sqrt()
+        if not self._has_mask or self._blend == 0.0:
+            x_n = x_std
         else:
-            m   = self.timelike_mask.float()
-            x_t = x_c * m
-            x_s = x_c * (1.0 - m)
+            # η-norm
+            m      = self.timelike_mask.float()
+            x_t    = x_c * m
+            x_s    = x_c * (1.0 - m)
             eta_sq = (x_s.pow(2).sum(dim=-1, keepdim=True) -
                       x_t.pow(2).sum(dim=-1, keepdim=True))
-            x_n = x_c / (eta_sq.abs() + self.eps).sqrt()
+            x_eta  = x_c / (eta_sq.abs() + self.eps).sqrt()
+            # 线性blend，避免mask注入时的激活冲击
+            x_n    = (1.0 - self._blend) * x_std + self._blend * x_eta
         return self.weight * x_n + self.bias
 
 
@@ -409,27 +423,31 @@ class FeedForward(nn.Module):
         self.register_buffer('timelike_mask',
                               torch.zeros(config.d_model, dtype=torch.bool))
         self._has_mask = False
+        self._blend    = 0.0   # 线性混合比例（0=标准，1=完全洛伦兹）
 
     def set_timelike_mask(self, mask: torch.Tensor):
         self.timelike_mask.copy_(mask.bool())
         self._has_mask = mask.any().item()
 
+    def set_blend(self, alpha: float):
+        """设置洛伦兹FFN的混合比例（0=标准，1=完全洛伦兹）"""
+        self._blend = max(0.0, min(1.0, alpha))
+
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        if not self._has_mask:
-            # 标准FFN fallback
-            return self.drop(self.w2(F.gelu(self.w1(x))))
+        std_out = self.drop(self.w2(F.gelu(self.w1(x))))
+
+        if not self._has_mask or self._blend == 0.0:
+            return std_out
 
         m   = self.timelike_mask.float()
-        x_t = x * m               # 类时分量
-        x_s = x * (1.0 - m)      # 类空分量
-
-        # 类时: SiLU（保留负激活，传递因果抑制信号）
+        x_t = x * m
+        x_s = x * (1.0 - m)
         h_t = self.drop(self.w2_t(F.silu(self.w1_t(x_t))))
-
-        # 类空: GELU（标准语义处理）
         h_s = self.drop(self.w2_s(F.gelu(self.w1_s(x_s))))
+        lor_out = h_t + h_s
 
-        return h_t + h_s
+        # 线性混合：blend=0→标准，blend=1→洛伦兹
+        return (1.0 - self._blend) * std_out + self._blend * lor_out
 
 
 # ─────────────────────────────────────────────
@@ -440,8 +458,10 @@ class LorentzBlock(nn.Module):
         super().__init__()
         self.attn  = LorentzMultiHeadAttention(config)
         self.ff    = FeedForward(config)
-        self.norm1 = MinkowskiLayerNorm(config.d_model)
-        self.norm2 = MinkowskiLayerNorm(config.d_model)
+        # use_minkowski_norm=False时使用标准LayerNorm
+        NormClass  = MinkowskiLayerNorm if config.use_minkowski_norm else nn.LayerNorm
+        self.norm1 = NormClass(config.d_model)
+        self.norm2 = NormClass(config.d_model)
 
     def forward(self, x: torch.Tensor,
                 attention_mask: Optional[torch.Tensor] = None):
@@ -560,9 +580,13 @@ class TimeLikeProbe:
                 # G_ema < 0 → 类时
                 binary_mask = (self._mask_ema[li] < 0)
                 block.attn.set_timelike_mask(binary_mask.to(device))
-                block.norm1.set_timelike_mask(binary_mask.to(device))
-                block.norm2.set_timelike_mask(binary_mask.to(device))
-                block.ff.set_timelike_mask(binary_mask.to(device))
+                # hasattr保护：baseline使用nn.LayerNorm，没有set_timelike_mask
+                if hasattr(block.norm1, 'set_timelike_mask'):
+                    block.norm1.set_timelike_mask(binary_mask.to(device))
+                if hasattr(block.norm2, 'set_timelike_mask'):
+                    block.norm2.set_timelike_mask(binary_mask.to(device))
+                if hasattr(block.ff, 'set_timelike_mask'):
+                    block.ff.set_timelike_mask(binary_mask.to(device))
                 self.timelike_fracs[li] = binary_mask.float().mean().item()
 
                 lmin_safe = G_safe.min().item()
@@ -572,10 +596,13 @@ class TimeLikeProbe:
             except Exception:
                 new_G_diags.append(None)
 
-        # 位置编码使用第一层的mask
+        # 位置编码和norm_f使用第一层的mask
         if self.model.blocks:
             first_mask = self.model.blocks[0].attn.timelike_mask
             self.model.pos_enc.set_timelike_mask(first_mask)
+            # norm_f也注入mask（输出归一化几何一致性）
+            if hasattr(self.model.norm_f, 'set_timelike_mask'):
+                self.model.norm_f.set_timelike_mask(first_mask)
 
         self.model.train()
         self.n_updates += 1
@@ -715,6 +742,8 @@ class LorentzTransformer(nn.Module):
     def __init__(self, config: LorentzConfig):
         super().__init__()
         self.config = config
+        # 실험 설정 alpha를 별도 저장 - set_lorentz_alpha()가 config를 오염시켜도 유지됨
+        self._experiment_alpha = config.lorentz_alpha
 
         # 嵌入层
         self.embed   = nn.Embedding(config.vocab_size, config.d_model)
@@ -727,7 +756,8 @@ class LorentzTransformer(nn.Module):
         ])
 
         # 输出层
-        self.norm_f = MinkowskiLayerNorm(config.d_model)
+        NormClass   = MinkowskiLayerNorm if config.use_minkowski_norm else nn.LayerNorm
+        self.norm_f = NormClass(config.d_model)
         self.lm_head = nn.Linear(config.d_model, config.vocab_size,
                                   bias=False)
 
@@ -793,6 +823,34 @@ class LorentzTransformer(nn.Module):
         h = self.norm_f(h)
         return self.lm_head(h)
 
+    def lightcone_loss(self, lambda_cone: float = 0.01) -> torch.Tensor:
+        """
+        光锥损失：惩罚注意力间隔违反因果几何。
+        因果方向(j>i)应为类时(间隔<0)，非因果方向(j≤i)应为类空(间隔>0)。
+        """
+        if lambda_cone <= 0:
+            return torch.tensor(0.0)
+        total = torch.tensor(0.0, device=next(self.parameters()).device)
+        n = 0
+        for block in self.blocks:
+            iv = block.attn.last_intervals_raw
+            if iv is None:
+                continue
+            B, H, L, _ = iv.shape
+            # 2D causal mask → 4D broadcast
+            causal = torch.triu(
+                torch.ones(L, L, device=iv.device, dtype=torch.bool),
+                diagonal=1).unsqueeze(0).unsqueeze(0)   # (1,1,L,L)
+
+            # 因果方向(j>i)：间隔应<0，惩罚>0部分
+            loss_c  = torch.clamp(iv * causal.float(),  min=0).sum() / causal.sum().clamp(min=1)
+            # 非因果方向(j≤i)：间隔应>0，惩罚<0部分
+            noncausal = ~causal
+            loss_nc = torch.clamp(-iv * noncausal.float(), min=0).sum() / noncausal.sum().clamp(min=1)
+            total = total + loss_c + loss_nc
+            n += 1
+        return lambda_cone * (total / max(n, 1))
+
     def regularization_loss(self) -> torch.Tensor:
         """
         Component 3：类时子流形正则化损失
@@ -856,8 +914,10 @@ class LorentzTransformer(nn.Module):
         return stats
 
     def set_lorentz_alpha(self, alpha: float):
-        """动态调整洛伦兹强度（用于训练阶段切换）"""
-        self.config.lorentz_alpha = alpha
+        """动态调整洛伦兹强度（用于训练阶段切换）。
+        仅修改运行时attn.alpha，不污染config.lorentz_alpha实验配置。
+        """
+        # 不写回config，保留实验超参数的完整性
         for block in self.blocks:
             block.attn.alpha = alpha
 
@@ -868,12 +928,36 @@ class LorentzTransformer(nn.Module):
         标准 torch.save(model.state_dict()) 不包含probe的状态。
         这个方法额外保存probe，确保训练可以从任意checkpoint恢复。
         """
+        # config를 저장하기 전에 실험 초기 alpha로 복원한 복사본 사용
+        # (set_lorentz_alpha()가 runtime 중에 config.lorentz_alpha를 변경하지 않지만
+        #  방어적으로 _experiment_alpha로 덮어쓴다)
+        import copy as _copy
+        save_config = _copy.copy(self.config)
+        save_config.lorentz_alpha = self._experiment_alpha
         state = {
             'model_state': self.state_dict(),
-            'config':      self.config,
+            'config':      save_config,
+            'experiment_alpha': self._experiment_alpha,  # 명시적 보존
+            # 훈련 재개를 위한 상태 (train()에서 채워짐, 없으면 None)
+            'train_step':       getattr(self, '_saved_train_step', None),
+            'best_val_loss':    getattr(self, '_saved_best_val_loss', None),
+            'phase2_entered':   getattr(self, '_saved_phase2_entered', None),
             'probe_mask_ema': self.probe._mask_ema,
             'probe_n_updates': self.probe.n_updates,
             'probe_timelike_fracs': self.probe.timelike_fracs,
+            # 运行态：直接保存，不在加载时推算
+            'runtime': {
+                'pos_enc_blend': self.pos_enc._blend,
+                'pos_enc_has_mask': self.pos_enc._has_mask,
+                'norm_f_has_mask': getattr(self.norm_f, '_has_mask', False),
+                'blocks': [{
+                    'attn_has_mask': blk.attn._has_mask,
+                    'norm1_has_mask': getattr(blk.norm1, '_has_mask', False),
+                    'norm2_has_mask': getattr(blk.norm2, '_has_mask', False),
+                    'ff_has_mask':   getattr(blk.ff,   '_has_mask', False),
+                    'ff_blend':      getattr(blk.ff,   '_blend',    0.0),
+                } for blk in self.blocks],
+            },
         }
         torch.save(state, path)
 
@@ -889,14 +973,64 @@ class LorentzTransformer(nn.Module):
         config = state['config']
         model  = cls(config)
         model.load_state_dict(state['model_state'])
+        # _experiment_alpha 복원 (이전 checkpoint 호환: experiment_alpha 없으면 config에서)
+        model._experiment_alpha = state.get('experiment_alpha', config.lorentz_alpha)
         model.probe._mask_ema       = state['probe_mask_ema']
         model.probe.n_updates       = state['probe_n_updates']
         model.probe.timelike_fracs  = state['probe_timelike_fracs']
-        # 恢复各层的timelike_mask
+        # 恢复各层的timelike_mask到所有组件
         for li, block in enumerate(model.blocks):
             ema = state['probe_mask_ema'][li]
-            mask = (ema > model.probe._threshold).to(device)
-            block.attn.set_timelike_mask(mask)
+            mask = (ema < 0)  # G_ema < 0 → 类时
+            m = mask.to(device)
+            block.attn.set_timelike_mask(m)
+            if hasattr(block.norm1, 'set_timelike_mask'):
+                block.norm1.set_timelike_mask(m)
+            if hasattr(block.norm2, 'set_timelike_mask'):
+                block.norm2.set_timelike_mask(m)
+            if hasattr(block.ff, 'set_timelike_mask'):
+                block.ff.set_timelike_mask(m)
+        # 位置编码和norm_f使用第一层的mask
+        if model.blocks:
+            first_m = model.blocks[0].attn.timelike_mask
+            model.pos_enc.set_timelike_mask(first_m)
+            if hasattr(model.norm_f, 'set_timelike_mask'):
+                model.norm_f.set_timelike_mask(first_m)
+        # 恢复运行态（优先用保存的runtime，兼容旧checkpoint）
+        rt = state.get('runtime', None)
+        if rt is not None:
+            model.pos_enc.set_blend(rt['pos_enc_blend'])
+            model.pos_enc._has_mask = rt['pos_enc_has_mask']
+            if hasattr(model.norm_f, '_has_mask'):
+                model.norm_f._has_mask = rt['norm_f_has_mask']
+            for i, blk in enumerate(model.blocks):
+                if i < len(rt['blocks']):
+                    bs = rt['blocks'][i]
+                    blk.attn._has_mask = bs['attn_has_mask']
+                    if hasattr(blk.norm1, '_has_mask'):
+                        blk.norm1._has_mask = bs['norm1_has_mask']
+                    if hasattr(blk.norm2, '_has_mask'):
+                        blk.norm2._has_mask = bs['norm2_has_mask']
+                    if hasattr(blk.ff, '_has_mask'):
+                        blk.ff._has_mask = bs['ff_has_mask']
+                    if hasattr(blk.ff, 'set_blend'):
+                        blk.ff.set_blend(bs['ff_blend'])
+        else:
+            # 旧checkpoint兼容：无runtime字段
+            import warnings
+            warnings.warn(
+                "Checkpoint without runtime state detected. "
+                "pos_enc._blend and ff._blend reset to 0.0. "
+                "Weight restoration is accurate but training state may differ.",
+                RuntimeWarning, stacklevel=2)
+            model.pos_enc.set_blend(0.0)
+            for blk in model.blocks:
+                if hasattr(blk.ff, 'set_blend'):
+                    blk.ff.set_blend(0.0)
+        # 训练续训状态（train()读取这些属性）
+        model._saved_train_step     = state.get('train_step',     None)
+        model._saved_best_val_loss  = state.get('best_val_loss',  None)
+        model._saved_phase2_entered = state.get('phase2_entered', None)
         return model.to(device)
 
 
@@ -1079,9 +1213,15 @@ class GeodesicAdam(torch.optim.Adam):
                 g    = p.grad.data                          # (d_out, d_in)
                 mask = mask.to(g.device)
 
-                # 类时/类空分解（逐元素乘，对角P_t作用于每行）
-                g_t  = mask * g                             # 类时分量
-                g_s  = (1.0 - mask) * g                    # 类空分量
+                # 类时/类空分解（P_t作用于行/output维度）
+                # mask: (d_model,)=(d_out,), g: (d_out, d_in)
+                # reshape为(d_out,1)才能沿行广播，不污染列方向
+                if g.dim() == 2:
+                    m = mask.view(-1, 1)   # (d_out, 1)
+                else:
+                    m = mask               # 1D参数直接用
+                g_t  = m * g               # 类时分量
+                g_s  = (1.0 - m) * g       # 类空分量
 
                 # 有效缩放系数
                 eff_t, eff_s = self._get_effective_scales(
@@ -1142,7 +1282,7 @@ class GeodesicAdam(torch.optim.Adam):
             f'ratio={self.scale_t/self.scale_s:.1f}',
             f'  adaptive_scale={self.adaptive_scale}',
             f'  masked_params={self.n_masked_params}',
-            f'  timelike_frac={self.last_类时比例:.3f}',
+            f'  timelike_frac={self.last_timelike_frac:.3f}',
         ]
         if self.adaptive_scale and self.last_timelike_frac > 0:
             eff_t, eff_s = self._get_effective_scales(
@@ -1178,7 +1318,8 @@ class LorentzCosineScheduler:
                  warmup_steps: int,
                  base_lr: float,
                  min_lr: float = 1e-5,
-                 lorentz_alpha: float = 0.25):
+                 lorentz_alpha: float = 0.25,
+                 lorentz_start: float = 0.5):
 
         self.optimizer     = optimizer
         self.total_steps   = total_steps
@@ -1187,8 +1328,8 @@ class LorentzCosineScheduler:
         self.min_lr        = min_lr
         self.lorentz_alpha = lorentz_alpha
 
-        # 阶段边界
-        self.phase1_end = int(total_steps * 0.10)
+        # 阶段边界（与训练循环的lorentz_start_step保持一致）
+        self.phase1_end = int(total_steps * lorentz_start)
         self.phase2_end = int(total_steps * 0.90)
 
     def get_lr(self, step: int) -> float:
@@ -1206,10 +1347,13 @@ class LorentzCosineScheduler:
     def get_alpha(self, step: int) -> float:
         """计算当前步的洛伦兹强度α"""
         if step < self.phase1_end:
-            return 0.0   # Phase 0/1：纯标准注意力
+            return 0.0   # Phase 1：纯标准注意力
 
         if step < self.phase2_end:
-            return self.lorentz_alpha   # Phase 2：完整洛伦兹
+            # Phase 2 进入后1000步内线性增加（避免激活冲击）
+            phase2_steps = step - self.phase1_end
+            warmup = min(1.0, phase2_steps / 1000.0)
+            return self.lorentz_alpha * warmup
 
         # Phase 3：α余弦退火到0
         progress = (step - self.phase2_end) / max(
@@ -1407,13 +1551,34 @@ def load_real_dataset(cfg: TrainConfig, model_cfg: LorentzConfig):
     if cfg.dataset == 'wikitext':
         ds = load_dataset('wikitext', 'wikitext-2-raw-v1')   # 快速版（2M tokens）
     elif cfg.dataset == 'openwebtext':
-        ds = load_dataset('openwebtext', split='train[:1%]')
+        pct = getattr(cfg, 'owt_subset_pct', 10)
+        print(f"  OpenWebText subset: {pct}%")
+        ds_train = load_dataset('openwebtext', split=f'train[:{pct}%]')
+        ds = {'train': ds_train}
     else:
         raise ValueError(f"未知数据集: {cfg.dataset}")
 
     train_ids = []
     val_ids   = []
     print("  Tokenizing...")
+    # openwebtext는 validation split이 없으므로 train의 마지막 1%를 사용
+    if cfg.dataset == 'openwebtext':
+        all_ids = []
+        count = 0
+        for text in ds['train']['text']:
+            if not text.strip(): continue
+            ids = tokenizer(text, add_special_tokens=False)['input_ids']
+            all_ids.extend(ids)
+            count += 1
+            if count % 5000 == 0:
+                print(f"    train: {count} docs, {len(all_ids):,} tokens")
+        split_idx = int(len(all_ids) * 0.99)
+        train_ids = all_ids[:split_idx]
+        val_ids   = all_ids[split_idx:]
+        print(f"  train={len(train_ids):,}  val={len(val_ids):,} tokens  OK")
+        return (torch.tensor(train_ids, dtype=torch.long),
+                torch.tensor(val_ids,   dtype=torch.long))
+
     for split, target in [('train', train_ids), ('validation', val_ids)]:
         if split not in ds: continue
         count = 0
@@ -1507,38 +1672,103 @@ def r_law_probe(model: LorentzTransformer,
                 xb: torch.Tensor, yb: torch.Tensor,
                 mask_token_id: int) -> dict:
     """
-    r规律探针：比较当前模型 vs 关闭洛伦兹的模型的准确率差值
-
-    delta > 0 → 模型还在弱baseline区间，洛伦兹有益
-    delta < 0 → 模型已收敛，洛伦兹可能有害
-    delta ≈ 0 → 临界点
-
-    用于动态判断是否继续洛伦兹训练
+    r规律探针：比较当前模型 vs 关闭洛伦兹的模型的准确率差值。
+    进入前完整保存所有运行态，退出前完整恢复，不污染训练状态。
     """
+    was_training = model.training
     model.eval()
 
-    # 当前α（有洛伦兹）
-    alpha_orig = model.config.lorentz_alpha
+    # ── 保存完整运行态快照（包括lightcone诊断缓存）──
+    # 실제 운행 시 alpha는 attn.alpha에 저장 (set_lorentz_alpha()가 config를 쓰지 않으므로)
+    snap_alpha = model.blocks[0].attn.alpha if model.blocks else model.config.lorentz_alpha
+    snap_pos_blend = model.pos_enc._blend
+    snap_pos_has_mask = model.pos_enc._has_mask
+    snap_norm_f_has_mask = getattr(model.norm_f, '_has_mask', None)
+    # 快照lightcone诊断缓存，防止probe污染后续eval读取
+    snap_intervals = {}
+    for li, blk in enumerate(model.blocks):
+        snap_intervals[li] = {
+            'last_intervals':     blk.attn.last_intervals,
+            'last_intervals_raw': blk.attn.last_intervals_raw,
+        }
+
+    snap_blocks = []
+    for blk in model.blocks:
+        snap_blocks.append({
+            'attn_has_mask': blk.attn._has_mask,
+            'norm1_blend':   getattr(blk.norm1, '_blend', 0.0),
+            'norm2_blend':   getattr(blk.norm2, '_blend', 0.0),
+            'norm1_has_mask': getattr(blk.norm1, '_has_mask', None),
+            'norm2_has_mask': getattr(blk.norm2, '_has_mask', None),
+            'ff_has_mask':   getattr(blk.ff,   '_has_mask', None),
+            'ff_blend':      getattr(blk.ff,   '_blend',    0.0),
+        })
+
     mp = (xb == mask_token_id).nonzero(as_tuple=False)[:, 1]
 
+    # ── acc_with：使用当前完整洛伦兹状态 ──
     logits = model(xb)
     pred   = logits[torch.arange(len(xb)), mp].argmax(-1)
     acc_with = (pred == yb).float().mean().item()
 
-    # 关闭洛伦兹（α=0）
-    # alpha=0 + mask 비활성화로 완전한 표준 주의력 구현
+    # ── 完全关闭所有洛伦兹组件 ──
     model.set_lorentz_alpha(0.0)
-    for block in model.blocks:
-        block.attn._has_mask = False
+    model.pos_enc.set_blend(0.0)
+    model.pos_enc._has_mask = False
+    if snap_norm_f_has_mask is not None:
+        model.norm_f._has_mask = False
+    if hasattr(model.norm_f, 'set_blend'):
+        model.norm_f.set_blend(0.0)
+    for blk in model.blocks:
+        blk.attn._has_mask = False
+        if hasattr(blk.norm1, '_has_mask'):
+            blk.norm1._has_mask = False
+        if hasattr(blk.norm1, 'set_blend'):
+            blk.norm1.set_blend(0.0)
+        if hasattr(blk.norm2, '_has_mask'):
+            blk.norm2._has_mask = False
+        if hasattr(blk.norm2, 'set_blend'):
+            blk.norm2.set_blend(0.0)
+        if hasattr(blk.ff, '_has_mask'):
+            blk.ff._has_mask = False
+        if hasattr(blk.ff, 'set_blend'):
+            blk.ff.set_blend(0.0)
+
     logits0 = model(xb)
     pred0   = logits0[torch.arange(len(xb)), mp].argmax(-1)
     acc_without = (pred0 == yb).float().mean().item()
 
-    # 恢复
-    model.set_lorentz_alpha(alpha_orig)
-    for block in model.blocks:
-        block.attn._has_mask = block.attn.timelike_mask.any().item()
-    model.train()
+    # ── 完整恢复快照 ──
+    model.set_lorentz_alpha(snap_alpha)
+    model.pos_enc.set_blend(snap_pos_blend)
+    model.pos_enc._has_mask = snap_pos_has_mask
+    if snap_norm_f_has_mask is not None:
+        model.norm_f._has_mask = snap_norm_f_has_mask
+    if hasattr(model.norm_f, 'set_blend'):
+        model.norm_f.set_blend(getattr(model.norm_f, '_blend', 0.0))
+    for blk, snap in zip(model.blocks, snap_blocks):
+        blk.attn._has_mask = snap['attn_has_mask']
+        if snap['norm1_has_mask'] is not None:
+            blk.norm1._has_mask = snap['norm1_has_mask']
+        if hasattr(blk.norm1, 'set_blend'):
+            blk.norm1.set_blend(snap.get('norm1_blend', 0.0))
+        if snap['norm2_has_mask'] is not None:
+            blk.norm2._has_mask = snap['norm2_has_mask']
+        if hasattr(blk.norm2, 'set_blend'):
+            blk.norm2.set_blend(snap.get('norm2_blend', 0.0))
+        if snap['ff_has_mask'] is not None:
+            blk.ff._has_mask = snap['ff_has_mask']
+        if hasattr(blk.ff, 'set_blend'):
+            blk.ff.set_blend(snap['ff_blend'])
+
+    # 恢复lightcone诊断缓存（防止probe两次前向污染eval读取）
+    for li, blk in enumerate(model.blocks):
+        if li in snap_intervals:
+            blk.attn.last_intervals     = snap_intervals[li]['last_intervals']
+            blk.attn.last_intervals_raw = snap_intervals[li]['last_intervals_raw']
+
+    # 恢复进入前的training状态（不无条件设为train）
+    model.train(was_training)
 
     return {
         'acc_with':    acc_with,
@@ -1586,11 +1816,20 @@ def train(train_cfg: TrainConfig, model_cfg: LorentzConfig):
         print(f"  真实数据: train={len(train_tok):,}  val={len(val_tok):,}")
 
     # ── 模型初始化 ──
+    _resume_step        = 0
+    _resume_phase2      = False
+    _resume_best_loss   = float('inf')
     if train_cfg.resume:
         print(f"\n从Checkpoint恢复: {train_cfg.resume}")
         model = LorentzTransformer.load_lorentz_state(
             train_cfg.resume, device=str(device))
         model_cfg = model.config
+        # 훈련 재개 상태 읽기
+        _resume_step      = model._saved_train_step     or 0
+        _resume_phase2    = model._saved_phase2_entered or False
+        _resume_best_loss = model._saved_best_val_loss  or float('inf')
+        print(f"  재개 step={_resume_step}  phase2={_resume_phase2}  "
+              f"best={_resume_best_loss:.4f}")
     else:
         model = LorentzTransformer(model_cfg).to(device)
 
@@ -1608,15 +1847,37 @@ def train(train_cfg: TrainConfig, model_cfg: LorentzConfig):
         scale_s=train_cfg.scale_s,
         adaptive_scale=train_cfg.adaptive_scale,
     )
+    # 재개 시 옵티마이저 상태 복원
+    if train_cfg.resume and _resume_step > 0:
+        # 모델 checkpoint와 쌍을 이루는 optimizer 파일 찾기
+        # 규칙: best.pt → best_opt.pt, step_N.pt → step_N_opt.pt
+        _ckpt_stem = Path(train_cfg.resume).stem   # e.g. "best", "step_5000"
+        opt_path = str(Path(train_cfg.resume).parent / f'{_ckpt_stem}_opt.pt')
+        import os as _os
+        if _os.path.exists(opt_path):
+            opt_state = torch.load(opt_path, map_location=device,
+                                   weights_only=False)
+            # GeodesicAdam.load_lorentz()는 classmethod로 새 인스턴스 반환
+            # 기존 optimizer에 state를 직접 로드하려면 load_state_dict 사용
+            lorentz_extra = opt_state.pop('lorentz', {})
+            optimizer.load_state_dict(opt_state)
+            # scale_t/s/adaptive_scale 복원
+            optimizer.scale_t        = lorentz_extra.get('scale_t',        train_cfg.scale_t)
+            optimizer.scale_s        = lorentz_extra.get('scale_s',        train_cfg.scale_s)
+            optimizer.adaptive_scale = lorentz_extra.get('adaptive_scale', train_cfg.adaptive_scale)
+            print(f"  옵티마이저 상태 복원: {opt_path}")
+        else:
+            print(f"  경고: 옵티마이저 상태 파일 없음 ({opt_path}), 새로 시작")
 
     # ── 调度器 ──
     scheduler = LorentzCosineScheduler(
         optimizer,
-        total_steps  = train_cfg.total_steps,
-        warmup_steps = train_cfg.warmup_steps,
-        base_lr      = train_cfg.base_lr,
-        min_lr       = train_cfg.min_lr,
-        lorentz_alpha= model_cfg.lorentz_alpha,
+        total_steps   = train_cfg.total_steps,
+        warmup_steps  = train_cfg.warmup_steps,
+        base_lr       = train_cfg.base_lr,
+        min_lr        = train_cfg.min_lr,
+        lorentz_alpha = model_cfg.lorentz_alpha,
+        lorentz_start = train_cfg.lorentz_start,
     )
 
     # ──   ──
@@ -1625,7 +1886,8 @@ def train(train_cfg: TrainConfig, model_cfg: LorentzConfig):
         'timelike_fracs': [], 'r_law_delta': [],
         'lr': [], 'alpha': [], 'step': [],
     }
-    best_val_loss = float('inf')
+    best_val_loss = _resume_best_loss
+    _phase2_entered_init = _resume_phase2
     t0 = time.time()
 
     print(f"\n{'='*55}")
@@ -1635,7 +1897,7 @@ def train(train_cfg: TrainConfig, model_cfg: LorentzConfig):
     # ── 两阶段边界 ──
     lorentz_start_step = int(train_cfg.total_steps * train_cfg.lorentz_start)
     scheduler.set_lorentz_start(train_cfg.lorentz_start)
-    _phase2_entered = False
+    _phase2_entered = _phase2_entered_init  # resume 시 Phase 2 상태 복원
 
     print(f"两阶段训练:")
     print(f"  Phase 1 [1~{lorentz_start_step}步]: 标准Adam，充分收敛")
@@ -1643,44 +1905,89 @@ def train(train_cfg: TrainConfig, model_cfg: LorentzConfig):
           f"洛伦兹激活 (α={model_cfg.lorentz_alpha})")
     print()
 
-    # ──   ──
-    for step in range(1, train_cfg.total_steps + 1):
+    # 训练开始前确定洛伦兹路径（用初始配置值，不用被调度器修改的运行值）
+    _initial_lorentz_alpha = model_cfg.lorentz_alpha
+    is_lorentz_active = (_initial_lorentz_alpha > 0)
+    use_norm_ablation  = (model_cfg.use_minkowski_norm and not is_lorentz_active)
 
-        # Phase 2 进入处理
-        if step == lorentz_start_step + 1 and not _phase2_entered:
+    # 实验路径标签（日志可读性）
+    if use_norm_ablation:
+        print("⚠ 注意: use_minkowski_norm=True 且 lorentz_alpha=0")
+        print("  MinkowskiLayerNorm在mask未注入时退化为标准LayerNorm。")
+        print("  此路径等同于baseline，不是独立的LayerNorm消融实验。")
+        print("  如需真正的MinkowskiLayerNorm效果，请设置lorentz_alpha>0。")
+
+    # ──   ──
+    for step in range(_resume_step + 1, train_cfg.total_steps + 1):
+
+        # Phase 2 进入处理（仅洛伦兹模式）
+        if is_lorentz_active and step == lorentz_start_step + 1 and not _phase2_entered:
             _phase2_entered = True
             print(f"\n{'='*55}")
             print(f"Phase 2 开始 (step={step}): 洛伦兹激活")
             print("  在收敛的模型上初始化P_t (3次)...")
+            # 초기화: warmup과 freq 체크 모두 우회
+            # hess_update_freq의 배수이면서 hess_warmup_steps보다 큰 값 사용
+            _freq = model_cfg.hess_update_freq
+            _warm = model_cfg.hess_warmup_steps
+            _init_step = (_warm // _freq + 1) * _freq  # 첫 번째 유효한 스텝
             for _ in range(3):
                 xb_init, _ = train_loader.next_batch()
-                model.probe.step(xb_init, 999999)
+                model.probe.step(xb_init, _init_step)
             fracs = model.probe.timelike_fracs
             lmins = model.probe.lambda_mins
             print(f"  类时比例: {[round(f,3) for f in fracs]}")
             print(f"  λ_min:    {[f'{l:.2e}' for l in lmins]}")
-            print(f"  位置编码warmup: 前200步线性混合（避免激活冲击）")
+            print(f"  位置编码/Norm warmup: 前1000步线性混合（避免激活冲击）")
             print(f"{'='*55}\n")
 
-        # 位置编码线性混合 warmup（Phase 2 진입 후 200步에 걸쳐 0→1）
-        if _phase2_entered:
-            phase2_steps = step - lorentz_start_step
-            blend = min(1.0, phase2_steps / 200.0)
-            model.pos_enc.set_blend(blend)
+        # 位置编码/Norm blend（仅洛伦兹模式，200步线性warmup避免激活冲击）
+        if is_lorentz_active:
+            if _phase2_entered:
+                phase2_steps = step - lorentz_start_step
+                blend = min(1.0, phase2_steps / 1000.0)
+                model.pos_enc.set_blend(blend)
+                # MinkowskiLayerNorm同步warmup
+                for blk in model.blocks:
+                    if hasattr(blk.norm1, 'set_blend'):
+                        blk.norm1.set_blend(blend)
+                    if hasattr(blk.norm2, 'set_blend'):
+                        blk.norm2.set_blend(blend)
+                if hasattr(model.norm_f, 'set_blend'):
+                    model.norm_f.set_blend(blend)
+            else:
+                model.pos_enc.set_blend(0.0)
+                for blk in model.blocks:
+                    if hasattr(blk.norm1, 'set_blend'):
+                        blk.norm1.set_blend(0.0)
+                    if hasattr(blk.norm2, 'set_blend'):
+                        blk.norm2.set_blend(0.0)
+                if hasattr(model.norm_f, 'set_blend'):
+                    model.norm_f.set_blend(0.0)
         else:
             model.pos_enc.set_blend(0.0)
+        for blk in model.blocks:
+            blk.ff.set_blend(0.0)  # 版本2：FFN始终标准模式
 
         # 调度器更新
         lr, alpha = scheduler.step(step, model)
 
-        # P_t更新：仅Phase 2
-        if step > lorentz_start_step:
+        # P_t更新：仅洛伦兹模式的Phase 2
+        if is_lorentz_active and step > lorentz_start_step:
             xb_probe, _ = train_loader.next_batch()
             model.probe.step(xb_probe, step)
             pairs = model.probe.get_param_mask_pairs(device)
             optimizer.update_masks(pairs)
+        elif use_norm_ablation:
+            # MinkowskiLayerNorm消融注意：mask未注入时MinkowskiLayerNorm
+            # 退化为标准LayerNorm行为（见forward()），因此此路径
+            # 实际上等同于baseline，不能单独支撑"LayerNorm组件有效"的结论。
+            # 真正的MinkowskiLayerNorm效果需要Phase 2注入mask后才体现。
+            xb_probe = None
+            model.set_lorentz_alpha(0.0)
         else:
-            model.set_lorentz_alpha(0.0)  # Phase 1: 洛伦兹 
+            xb_probe = None   # 明确标记：baseline不使用xb_probe
+            model.set_lorentz_alpha(0.0)
 
         # 加载批次
         if is_synthetic:
@@ -1698,13 +2005,18 @@ def train(train_cfg: TrainConfig, model_cfg: LorentzConfig):
             pred   = logits[torch.arange(len(xb)), mp]
             loss   = F.cross_entropy(pred, yb)
         else:
+            # TokenLoader已经返回x[t]->y[t]=x[t+1]，直接对齐
             loss = F.cross_entropy(
-                logits[:, :-1].reshape(-1, model_cfg.vocab_size),
-                yb[:, 1:].reshape(-1))
+                logits.reshape(-1, model_cfg.vocab_size),
+                yb.reshape(-1))
 
         # 正则化损失 (Component 3)
-        reg_loss = model.regularization_loss()
-        total_loss = loss + reg_loss
+        reg_loss  = model.regularization_loss()
+        # 光锥损失（Phase 2에서만 활성화）
+        cone_loss = (model.lightcone_loss(model_cfg.lambda_cone)
+                     if step > lorentz_start_step and model_cfg.lambda_cone > 0
+                     else torch.tensor(0.0, device=device))
+        total_loss = loss + reg_loss + cone_loss
 
         # 反向传播
         optimizer.zero_grad()
@@ -1720,6 +2032,7 @@ def train(train_cfg: TrainConfig, model_cfg: LorentzConfig):
             elapsed = time.time() - t0
             print(f"step={step:5d}  loss={loss.item():.4f}  "
                   f"reg={reg_loss.item():.2e}  "
+                  f"cone={cone_loss.item():.2e}  "
                   f"lr={lr:.2e}  α={alpha:.3f}  "
                   f"timelike=[{fstr}]  "
                   f"t={elapsed:.0f}s")
@@ -1745,9 +2058,11 @@ def train(train_cfg: TrainConfig, model_cfg: LorentzConfig):
             else:
                 r_str = ""
 
-            #   (xb_probe  xb )
-            _probe_x = xb_probe if step > lorentz_start_step else xb
-            _ = model(_probe_x)
+            # 光锥统计前向（仅洛伦兹模式，baseline跳过以避免xb_probe未定义）
+            if is_lorentz_active and step > lorentz_start_step:
+                _ = model(xb_probe)
+            else:
+                _ = model(xb)
             lc    = model.lightcone_stats()
             lc_str = '  '.join(
                 f"L{li}:{s['timelike_frac']:.2f}"
@@ -1774,21 +2089,38 @@ def train(train_cfg: TrainConfig, model_cfg: LorentzConfig):
             if val_loss < best_val_loss:
                 best_val_loss = val_loss
                 ckpt_path = str(out_dir / 'best.pt')
+                # 훈련 상태를 모델에 임시 첨부 후 저장
+                model._saved_train_step     = step
+                model._saved_best_val_loss  = best_val_loss
+                model._saved_phase2_entered = _phase2_entered
                 model.save_lorentz_state(ckpt_path)
-                torch.save(optimizer.state_dict_lorentz(),
-                           str(out_dir / 'best_optimizer.pt'))
+                # optimizer 파일명 = 모델 파일명 + _opt (항상 쌍으로 매칭)
+                opt_ckpt = str(out_dir / 'best_opt.pt')
+                torch.save(optimizer.state_dict_lorentz(), opt_ckpt)
                 print(f"  ✓ best checkpoint : {ckpt_path}")
 
         # ──   ──
         if step % train_cfg.save_interval == 0:
             ckpt_path = str(out_dir / f'step_{step}.pt')
+            model._saved_train_step     = step
+            model._saved_best_val_loss  = best_val_loss
+            model._saved_phase2_entered = _phase2_entered
             model.save_lorentz_state(ckpt_path)
+            # optimizer 파일명 = step_N_opt.pt (모델과 항상 쌍)
+            torch.save(optimizer.state_dict_lorentz(),
+                       str(out_dir / f'step_{step}_opt.pt'))
             with open(str(out_dir / 'log.json'), 'w') as f:
                 json.dump(log, f, indent=2)
             print(f"  checkpoint: {ckpt_path}")
 
     # ──   ──
+    # final.pt에도 resume metadata 첨부
+    model._saved_train_step     = train_cfg.total_steps
+    model._saved_best_val_loss  = best_val_loss
+    model._saved_phase2_entered = _phase2_entered
     model.save_lorentz_state(str(out_dir / 'final.pt'))
+    torch.save(optimizer.state_dict_lorentz(),
+               str(out_dir / 'final_opt.pt'))
     with open(str(out_dir / 'log.json'), 'w') as f:
         json.dump(log, f, indent=2)
 
@@ -1868,6 +2200,113 @@ def scale_train(d_model=256, n_layers=6, n_hops=2,
     return train(train_cfg, model_cfg)
 
 
+def openwebtext_train(d_model=256, n_layers=6, total_steps=50000,
+                     lorentz_alpha=0.25, subset_pct=10):
+    """
+    OpenWebText 대규모 데이터 훈련。
+    wikitext-2의 ~1600배 데이터로 모델을 충분히 수렴시킨다。
+
+    subset_pct: 전체 OpenWebText의 몇 %를 사용할지（기본 10%=~400M tokens）
+      - subset_pct=1  → ~40M tokens  (빠른 테스트)
+      - subset_pct=10 → ~400M tokens (추천)
+      - subset_pct=100→ ~4B tokens   (전체, 매우 느림)
+
+    필요: pip install datasets transformers
+    Colab Pro+ 또는 A100 권장。
+    """
+    model_cfg = LorentzConfig(
+        vocab_size=50257,
+        d_model=d_model,
+        n_heads=max(4, d_model//64),
+        n_layers=n_layers,
+        max_seq_len=512,
+        lorentz_alpha=lorentz_alpha,
+        hess_warmup_steps=5000,         # 더 큰 데이터에 맞게 warmup 연장
+        hess_update_freq=200,
+        hutchinson_k=10,
+        lambda_spacelike=0.0,
+        lambda_cone=0.0,
+        use_minkowski_norm=True,
+    )
+    lr = 3e-4 if d_model <= 256 else 1e-4
+    train_cfg = TrainConfig(
+        dataset=f'openwebtext',
+        total_steps=total_steps, batch_size=32,  # 더 큰 배치
+        base_lr=lr,
+        scale_t=2.0, scale_s=0.5,
+        lorentz_start=0.5,
+        eval_interval=2000, log_interval=500,
+        out_dir=f'./checkpoints_owt_{d_model}',
+    )
+    # openwebtext subset 설정
+    train_cfg.owt_subset_pct = subset_pct
+    return train(train_cfg, model_cfg)
+
+
+def openwebtext_baseline(d_model=256, n_layers=6, total_steps=50000,
+                         subset_pct=10):
+    """OpenWebText 標準Transformer 对照组"""
+    model_cfg = LorentzConfig(
+        vocab_size=50257,
+        d_model=d_model,
+        n_heads=max(4, d_model//64),
+        n_layers=n_layers,
+        max_seq_len=512,
+        lorentz_alpha=0.0,
+        hess_warmup_steps=5000,
+        hess_update_freq=200,
+        hutchinson_k=10,
+        lambda_spacelike=0.0,
+        lambda_cone=0.0,
+        use_minkowski_norm=False,
+    )
+    lr = 3e-4 if d_model <= 256 else 1e-4
+    train_cfg = TrainConfig(
+        dataset='openwebtext',
+        total_steps=total_steps, batch_size=32,
+        base_lr=lr,
+        scale_t=1.0, scale_s=1.0,
+        lorentz_start=1.0,
+        eval_interval=2000, log_interval=500,
+        out_dir=f'./checkpoints_owt_baseline_{d_model}',
+    )
+    train_cfg.owt_subset_pct = subset_pct
+    return train(train_cfg, model_cfg)
+
+
+def baseline_train(d_model=256, n_layers=6, total_steps=10000):
+    """
+    标准Transformer对比实验（版本2的精确对照组）
+    与版本2完全相同的参数量和训练设置，仅关闭所有洛伦兹组件。
+    用于得到干净的洛伦兹 vs 标准 对比数字。
+    """
+    model_cfg = LorentzConfig(
+        vocab_size=50257,
+        d_model=d_model,
+        n_heads=max(4, d_model//64),
+        n_layers=n_layers,
+        max_seq_len=512,
+        lorentz_alpha=0.0,              # 关闭Minkowski注意力
+        hess_warmup_steps=2000,
+        hess_update_freq=100,
+        hutchinson_k=10,
+        lambda_spacelike=0.0,
+        lambda_cone=0.0,
+        use_minkowski_norm=False,       # 关闭MinkowskiLayerNorm，用标准LayerNorm
+    )
+    lr = 3e-4 if d_model <= 256 else 1e-4
+    train_cfg = TrainConfig(
+        dataset='wikitext',
+        total_steps=total_steps, batch_size=16,
+        base_lr=lr,
+        scale_t=1.0, scale_s=1.0,      # Geodesic Adam无差异化（标准Adam等效）
+        lorentz_start=0.5,              # 与wikitext_train相同协议，Phase 2仅α=0不激活洛伦兹
+        eval_interval=1000, log_interval=200,
+        out_dir=f'./checkpoints_baseline_{d_model}',
+    )
+    return train(train_cfg, model_cfg)
+
+
 def wikitext_train(d_model=256, n_layers=6, total_steps=10000,
                    lorentz_alpha=0.25):
     """
@@ -1875,21 +2314,23 @@ def wikitext_train(d_model=256, n_layers=6, total_steps=10000,
     需要: pip install datasets transformers
     """
     model_cfg = LorentzConfig(
-        vocab_size=50257,               # GPT-2词表
+        vocab_size=50257,
         d_model=d_model,
         n_heads=max(4, d_model//64),
         n_layers=n_layers,
-        max_seq_len=512,                # 512토큰으로 고정
+        max_seq_len=512,
         lorentz_alpha=lorentz_alpha,
-        hess_warmup_steps=2000,         # 실제 언어 데이터는 더 긴 warmup
+        hess_warmup_steps=2000,
         hess_update_freq=100,
         hutchinson_k=10,
         lambda_spacelike=0.0,
+        lambda_cone=0.0,                # 版本2：关闭光锥损失
+        use_minkowski_norm=True,        # 版本2：MinkowskiLayerNorm开启
     )
     lr = 3e-4 if d_model <= 256 else 1e-4
     train_cfg = TrainConfig(
         dataset='wikitext',
-        total_steps=total_steps, batch_size=16,  # 256维用更大batch
+        total_steps=total_steps, batch_size=16,
         base_lr=lr,
         scale_t=2.0, scale_s=0.5,
         lorentz_start=0.5,
@@ -1907,6 +2348,7 @@ def quick_train(n_hops=2, total_steps=2000, d_model=128,
         max_seq_len=32, lorentz_alpha=lorentz_alpha,
         hess_warmup_steps=100, hess_update_freq=40,
         hutchinson_k=20,
+        lambda_cone=0.01,
     )
     train_cfg = TrainConfig(
         dataset='synthetic', n_hops=n_hops,
@@ -1943,17 +2385,21 @@ def full_train(n_hops=2, total_steps=10000, d_model=128,
 
 if __name__ == '__main__':
     # ══════════════════════════════════════════════
-    # 直接运行配置（在Colab里点击运行即可）
-    # 修改下面的参数来切换模式：
-    #
-    #   quick_train()  → 128维/4层/2000步  快速验证
-    #   scale_train()  → 256维/6层/5000步  规模验证  ← 当前
-    #   wikitext_train() → 真实语言数据
+    # 当前：洛伦兹版本2（正式对比实验）
+    # 对照组已完成：baseline best_val_loss = 6.6794
     # ══════════════════════════════════════════════
 
+    # ── 洛伦兹版本2 ──
     log = wikitext_train(
-        d_model      = 256,    # 256维：4.7M参数，wikitext-2足够支撑
+        d_model      = 256,
         n_layers     = 6,
-        total_steps  = 10000,  # Phase1=5000收敛，Phase2=5000洛伦兹
+        total_steps  = 10000,
         lorentz_alpha= 0.25,
     )
+
+    # ── 对照组（已完成，best=6.6794）──
+    # log = baseline_train(
+    #     d_model     = 256,
+    #     n_layers    = 6,
+    #     total_steps = 10000,
+    # )
