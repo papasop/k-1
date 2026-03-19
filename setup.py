@@ -10,7 +10,11 @@ from setuptools import find_packages, setup
 
 
 ROOT = Path(__file__).parent
-long_description = (ROOT / "README.md").read_text(encoding="utf-8")
+
+try:
+    long_description = (ROOT / "README.md").read_text(encoding="utf-8")
+except FileNotFoundError:
+    long_description = "Minkowski Geometry in Transformer Attention"
 
 
 setup(
