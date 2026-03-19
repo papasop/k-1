@@ -204,7 +204,7 @@ class LorentzMultiHeadAttention(nn.Module):
         self.alpha = float(getattr(config, "lorentz_alpha", 0.25))
         dropout = float(getattr(config, "dropout", 0.0))
 
-        # 验证d_model能被n_heads整除
+        # Verify that d_model is divisible by n_heads.
         assert (
             self.d_model % self.n_heads == 0
         ), f"d_model={self.d_model} 必须被 n_heads={self.n_heads} 整除"

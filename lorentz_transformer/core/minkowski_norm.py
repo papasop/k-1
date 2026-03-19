@@ -152,7 +152,7 @@ class MinkowskiLayerNormStable(_BaseMinkowskiLayerNorm):
         elementwise_affine=True,
         use_mean_shift=False,
         use_minkowski=True,
-        minkowski_fallback_threshold=0.5,
+        minkowski_fallback_threshold=0.1,
     ):
         super().__init__(
             d_model=d_model,
