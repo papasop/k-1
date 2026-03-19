@@ -85,6 +85,7 @@ K_q = Φ_q / H_q
 ```
 
 输入张量形状为 `(B, H, L, L)`，输出为一个标量张量。
+当前实现对所有 query 位置取均值，便于不同序列长度之间做稳定比较。
 
 ## `hutchinson_diag_hessian(loss_fn, param, n_samples=20)`
 

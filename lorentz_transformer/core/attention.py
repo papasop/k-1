@@ -29,6 +29,8 @@ def compute_dt2_info(attn_w: torch.Tensor) -> torch.Tensor:
 
     dt²_info = mean_q K_q = mean_q (Φ_q / H_q)
 
+    为了便于不同序列长度之间比较，这里的实现返回 query 维度上的均值。
+
     其中：
       H_q = Shannon熵（注意力分布的不确定性）
       Φ_q = Σ_j a_qj² （注意力集中度）
@@ -116,12 +118,12 @@ def hutchinson_diag_hessian(
         >>> G = hutchinson_diag_hessian(loss_fn, W_Q, n_samples=20)
         >>> is_timelike = (G < 0)  # bool mask
     """
-    if n_samples <= 0:
+    if not isinstance(n_samples, int) or n_samples <= 0:
         raise ValueError(f"n_samples 必须为正整数，实际收到 {n_samples}")
     if not param.requires_grad:
         raise ValueError("param.requires_grad 必须为 True")
 
-    G = torch.zeros_like(param)
+    G = torch.zeros_like(param.data)
     successful_samples = 0
 
     for _ in range(n_samples):
@@ -133,7 +135,7 @@ def hutchinson_diag_hessian(
         # 第一阶梯度（保留计算图）
         loss = loss_fn()
         g1 = torch.autograd.grad(
-            loss, param, create_graph=True, retain_graph=True
+            loss, param, create_graph=True, retain_graph=True, allow_unused=True
         )[0]
 
         if g1 is None:
@@ -141,7 +143,7 @@ def hutchinson_diag_hessian(
 
         # Hessian-向量乘积: H·v
         Hv = torch.autograd.grad(
-            (g1 * v.detach()).sum(), param, retain_graph=False
+            (g1 * v.detach()).sum(), param, retain_graph=False, allow_unused=True
         )[0]
 
         if Hv is None:
@@ -157,7 +159,9 @@ def hutchinson_diag_hessian(
         successful_samples += 1
 
     if successful_samples == 0:
-        raise RuntimeError("Hutchinson Hessian 对角估计失败：没有成功的样本")
+        raise RuntimeError(
+            "Hutchinson Hessian 对角估计失败：所有样本的梯度或 Hessian-向量乘积都不可用"
+        )
 
     return G / successful_samples
 
