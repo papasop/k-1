@@ -1345,15 +1345,24 @@ class LorentzCosineScheduler:
         return self.min_lr + (self.base_lr - self.min_lr) * cosine
 
     def get_alpha(self, step: int) -> float:
-        """计算当前步的洛伦兹强度α"""
+        """计算当前步的洛伦兹强度α
+        
+        两阶段激活（避免norm blend和attn同时冲击）：
+          Phase 2 进入后 0~1000步: blend warmup, α=0 (norm先适应)
+          Phase 2 进入后 1000~2000步: α线性增加到lorentz_alpha (attn后激活)
+        """
         if step < self.phase1_end:
             return 0.0   # Phase 1：纯标准注意力
 
         if step < self.phase2_end:
-            # Phase 2 进入后1000步内线性增加（避免激活冲击）
             phase2_steps = step - self.phase1_end
-            warmup = min(1.0, phase2_steps / 1000.0)
-            return self.lorentz_alpha * warmup
+            if phase2_steps < 1000:
+                # Stage A: norm blend warmup 단계, α=0 유지
+                return 0.0
+            else:
+                # Stage B: α warmup (blend는 이미 1.0)
+                alpha_warmup = min(1.0, (phase2_steps - 1000) / 1000.0)
+                return self.lorentz_alpha * alpha_warmup
 
         # Phase 3：α余弦退火到0
         progress = (step - self.phase2_end) / max(
@@ -1938,36 +1947,22 @@ def train(train_cfg: TrainConfig, model_cfg: LorentzConfig):
             lmins = model.probe.lambda_mins
             print(f"  类时比例: {[round(f,3) for f in fracs]}")
             print(f"  λ_min:    {[f'{l:.2e}' for l in lmins]}")
-            print(f"  位置编码/Norm warmup: 前1000步线性混合（避免激活冲击）")
+            print(f"  MinkowskiLayerNorm: blend=0固定（标准norm），Minkowski效果仅通过attn的α实现")
             print(f"{'='*55}\n")
 
-        # 位置编码/Norm blend（仅洛伦兹模式，200步线性warmup避免激活冲击）
-        if is_lorentz_active:
-            if _phase2_entered:
-                phase2_steps = step - lorentz_start_step
-                blend = min(1.0, phase2_steps / 1000.0)
-                model.pos_enc.set_blend(blend)
-                # MinkowskiLayerNorm同步warmup
-                for blk in model.blocks:
-                    if hasattr(blk.norm1, 'set_blend'):
-                        blk.norm1.set_blend(blend)
-                    if hasattr(blk.norm2, 'set_blend'):
-                        blk.norm2.set_blend(blend)
-                if hasattr(model.norm_f, 'set_blend'):
-                    model.norm_f.set_blend(blend)
-            else:
-                model.pos_enc.set_blend(0.0)
-                for blk in model.blocks:
-                    if hasattr(blk.norm1, 'set_blend'):
-                        blk.norm1.set_blend(0.0)
-                    if hasattr(blk.norm2, 'set_blend'):
-                        blk.norm2.set_blend(0.0)
-                if hasattr(model.norm_f, 'set_blend'):
-                    model.norm_f.set_blend(0.0)
-        else:
-            model.pos_enc.set_blend(0.0)
+        # blend 전체 비활성화:
+        # pos_enc blend, norm blend 모두 0.0 고정
+        # Minkowski 기하 효과는 오직 attention α로만 구현
+        # (pos_enc 전환도 수렴 후 충격 발생 확인)
+        model.pos_enc.set_blend(0.0)
         for blk in model.blocks:
-            blk.ff.set_blend(0.0)  # 版本2：FFN始终标准模式
+            if hasattr(blk.norm1, 'set_blend'):
+                blk.norm1.set_blend(0.0)
+            if hasattr(blk.norm2, 'set_blend'):
+                blk.norm2.set_blend(0.0)
+            blk.ff.set_blend(0.0)
+        if hasattr(model.norm_f, 'set_blend'):
+            model.norm_f.set_blend(0.0)
 
         # 调度器更新
         lr, alpha = scheduler.step(step, model)
