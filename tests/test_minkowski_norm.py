@@ -9,9 +9,17 @@ import math
 import pytest
 import torch
 
-from lorentz_transformer import MinkowskiLayerNorm
+from lorentz_transformer import (
+    MinkowskiLayerNorm,
+    MinkowskiLayerNormImproved,
+    MinkowskiLayerNormOptimized,
+    MinkowskiLayerNormStable,
+)
 from lorentz_transformer.core import (
     MinkowskiLayerNorm as CoreMinkowskiLayerNorm,
+    MinkowskiLayerNormImproved as CoreMinkowskiLayerNormImproved,
+    MinkowskiLayerNormOptimized as CoreMinkowskiLayerNormOptimized,
+    MinkowskiLayerNormStable as CoreMinkowskiLayerNormStable,
 )
 
 
@@ -34,6 +42,9 @@ class TestMinkowskiLayerNorm:
     def test_exported_from_core_and_package(self):
         """模块应该从 core 和顶层包导出。"""
         assert CoreMinkowskiLayerNorm == MinkowskiLayerNorm
+        assert CoreMinkowskiLayerNormImproved == MinkowskiLayerNormImproved
+        assert CoreMinkowskiLayerNormOptimized == MinkowskiLayerNormOptimized
+        assert CoreMinkowskiLayerNormStable == MinkowskiLayerNormStable
 
     def test_euclidean_norm_without_timelike_mask(self):
         """无类时mask时应退化为欧氏范数归一化。"""
@@ -127,3 +138,119 @@ class TestMinkowskiLayerNorm:
         """输入末维不匹配时应报错。"""
         with pytest.raises(ValueError):
             norm(torch.randn(2, 3, 5))
+
+    def test_optimized_variant_ignores_timelike_mask(self):
+        """Optimized 版本应始终使用 L2 范数。"""
+        eps = 1e-5
+        norm = MinkowskiLayerNormOptimized(
+            d_model=2,
+            eps=eps,
+            elementwise_affine=False,
+        )
+        x = torch.tensor([[3.0, 4.0]])
+
+        norm.set_timelike_mask([True, True])
+        output = norm(x)
+        expected = x / math.sqrt(25.0 + eps)
+
+        assert torch.allclose(output, expected, atol=1e-6)
+        assert norm._has_mask
+
+    def test_stable_variant_falls_back_to_l2_when_interval_degenerate(self):
+        """Stable 版本在退化区间上应回退到 L2。"""
+        eps = 1e-5
+        norm = MinkowskiLayerNormStable(
+            d_model=2,
+            eps=eps,
+            elementwise_affine=False,
+            minkowski_fallback_threshold=0.0,
+        )
+        norm.set_timelike_mask([True, False])
+        x = torch.tensor([[3.0, 3.0]])
+
+        output = norm(x)
+        expected = x / math.sqrt(18.0 + eps)
+
+        assert torch.allclose(output, expected, atol=1e-6)
+
+    def test_stable_variant_respects_fallback_threshold(self):
+        """Stable 版本应根据阈值决定是否整体回退。"""
+        eps = 1e-5
+        x = torch.tensor([[3.0, 3.0], [3.0, 0.0]])
+        low_threshold = MinkowskiLayerNormStable(
+            d_model=2,
+            eps=eps,
+            elementwise_affine=False,
+            minkowski_fallback_threshold=0.4,
+        )
+        high_threshold = MinkowskiLayerNormStable(
+            d_model=2,
+            eps=eps,
+            elementwise_affine=False,
+            minkowski_fallback_threshold=0.6,
+        )
+
+        low_threshold.set_timelike_mask([True, False])
+        high_threshold.set_timelike_mask([True, False])
+
+        low_output = low_threshold(x)
+        high_output = high_threshold(x)
+
+        low_expected_first = torch.tensor(
+            [3.0 / math.sqrt(18.0 + eps), 3.0 / math.sqrt(18.0 + eps)]
+        )
+        high_expected_first = torch.tensor(
+            [3.0 / math.sqrt(eps), 3.0 / math.sqrt(eps)]
+        )
+
+        assert torch.allclose(low_output[0], low_expected_first, atol=1e-6)
+        assert torch.allclose(high_output[0], high_expected_first, atol=1e-3)
+        assert not torch.allclose(low_output[0], high_output[0], atol=1e-3)
+
+    def test_stable_variant_can_disable_minkowski_path(self):
+        """Stable 版本可显式禁用 Minkowski 计算。"""
+        eps = 1e-5
+        norm = MinkowskiLayerNormStable(
+            d_model=2,
+            eps=eps,
+            elementwise_affine=False,
+            use_minkowski=False,
+        )
+        norm.set_timelike_mask([True, False])
+        x = torch.tensor([[3.0, 4.0]])
+
+        output = norm(x)
+        expected = x / math.sqrt(25.0 + eps)
+
+        assert torch.allclose(output, expected, atol=1e-6)
+
+    def test_improved_variant_uses_l2_without_mask(self):
+        """Improved 版本在没有 mask 时应使用 L2。"""
+        eps = 1e-5
+        norm = MinkowskiLayerNormImproved(
+            d_model=2,
+            eps=eps,
+            elementwise_affine=False,
+        )
+        x = torch.tensor([[5.0, 12.0]])
+
+        output = norm(x)
+        expected = x / math.sqrt(169.0 + eps)
+
+        assert torch.allclose(output, expected, atol=1e-6)
+
+    def test_improved_variant_falls_back_to_l2_for_small_intervals(self):
+        """Improved 版本在闵氏区间过小时应自动回退。"""
+        eps = 1e-5
+        norm = MinkowskiLayerNormImproved(
+            d_model=2,
+            eps=eps,
+            elementwise_affine=False,
+        )
+        norm.set_timelike_mask([True, False])
+        x = torch.tensor([[3.0, 3.0]])
+
+        output = norm(x)
+        expected = x / math.sqrt(18.0 + eps)
+
+        assert torch.allclose(output, expected, atol=1e-6)

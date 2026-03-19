@@ -76,6 +76,16 @@ class TestComputeDt2Info:
         expected = (dt2_info1.item() + dt2_info2.item()) / 2
         assert abs(dt2_info_combined.item() - expected) < 1e-5
 
+    def test_nan_values_are_safely_normalized(self):
+        """NaN 权重应被安全处理而不是传播。"""
+        attn_w = torch.full((1, 2, 4, 4), 0.25)
+        attn_w[0, 0, 0, 0] = float("nan")
+
+        dt2_info = compute_dt2_info(attn_w)
+
+        assert torch.isfinite(dt2_info)
+        assert dt2_info.item() >= 0
+
 
 class TestLorentzMultiHeadAttention:
     """Minkowski多头注意力的测试。"""
@@ -98,6 +108,22 @@ class TestLorentzMultiHeadAttention:
     def test_output_shape(self, attn_module, sample_input):
         """输出形状应该与输入相同。"""
         output, weights = attn_module(sample_input)
+        assert output.shape == sample_input.shape
+        assert weights.shape == (2, 8, 128, 128)
+
+    def test_accepts_num_heads_alias(self, sample_input):
+        """配置中的 num_heads 别名也应被接受。"""
+
+        @dataclass
+        class AliasConfig:
+            d_model: int = 256
+            num_heads: int = 8
+            lorentz_alpha: float = 0.25
+            dropout: float = 0.1
+
+        attn = LorentzMultiHeadAttention(AliasConfig())
+        output, weights = attn(sample_input)
+
         assert output.shape == sample_input.shape
         assert weights.shape == (2, 8, 128, 128)
 
@@ -153,6 +179,50 @@ class TestLorentzMultiHeadAttention:
 
         assert torch.allclose(output_lorentz, output_standard, atol=1e-5)
         assert torch.allclose(weights_lorentz, weights_standard, atol=1e-5)
+
+    def test_all_zero_timelike_mask_keeps_standard_attention(
+        self,
+        config,
+        sample_input,
+    ):
+        """全 False 的类时 mask 不应激活 Lorentz 修正。"""
+        attn_masked = LorentzMultiHeadAttention(config)
+        attn_standard = LorentzMultiHeadAttention(config)
+        attn_masked.load_state_dict(attn_standard.state_dict())
+        attn_masked.set_timelike_mask(
+            torch.zeros(config.d_model, dtype=torch.bool)
+        )
+        attn_masked.eval()
+        attn_standard.eval()
+
+        output_masked, weights_masked = attn_masked(sample_input)
+        output_standard, weights_standard = attn_standard(sample_input)
+
+        assert not attn_masked._has_mask
+        assert torch.allclose(output_masked, output_standard, atol=1e-5)
+        assert torch.allclose(weights_masked, weights_standard, atol=1e-5)
+
+    def test_all_one_timelike_mask_changes_attention_scores(
+        self,
+        config,
+        sample_input,
+    ):
+        """全 True 的类时 mask 应改变注意力结果。"""
+        attn_lorentz = LorentzMultiHeadAttention(config)
+        attn_standard = LorentzMultiHeadAttention(config)
+        attn_lorentz.load_state_dict(attn_standard.state_dict())
+        attn_lorentz.set_timelike_mask(
+            torch.ones(config.d_model, dtype=torch.bool)
+        )
+        attn_lorentz.eval()
+        attn_standard.eval()
+
+        output_lorentz, weights_lorentz = attn_lorentz(sample_input)
+        output_standard, weights_standard = attn_standard(sample_input)
+
+        assert attn_lorentz._has_mask
+        assert not torch.allclose(output_lorentz, output_standard, atol=1e-4)
+        assert not torch.allclose(weights_lorentz, weights_standard, atol=1e-4)
 
     def test_minkowski_scores_differ_from_standard(self, config, sample_input):
         """有mask时Minkowski scores应该与标准不同。"""
@@ -232,6 +302,39 @@ class TestLorentzMultiHeadAttention:
         repr_str = attn_module.extra_repr()
         assert "n_heads" in repr_str
         assert "alpha" in repr_str
+
+    def test_requires_d_model_in_config(self):
+        """缺少 d_model 时应报错。"""
+
+        @dataclass
+        class MissingDModelConfig:
+            n_heads: int = 8
+
+        with pytest.raises(AttributeError, match="d_model"):
+            LorentzMultiHeadAttention(MissingDModelConfig())
+
+    def test_requires_head_count_in_config(self):
+        """缺少头数配置时应报错。"""
+
+        @dataclass
+        class MissingHeadsConfig:
+            d_model: int = 256
+
+        with pytest.raises(AttributeError, match="n_heads"):
+            LorentzMultiHeadAttention(MissingHeadsConfig())
+
+    def test_requires_d_model_divisible_by_n_heads(self):
+        """d_model 必须能被 n_heads 整除。"""
+
+        @dataclass
+        class BadConfig:
+            d_model: int = 10
+            n_heads: int = 3
+            lorentz_alpha: float = 0.25
+            dropout: float = 0.1
+
+        with pytest.raises(AssertionError, match="整除"):
+            LorentzMultiHeadAttention(BadConfig())
 
 
 class TestHutchinsonDiagHessian:
