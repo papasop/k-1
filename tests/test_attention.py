@@ -144,6 +144,8 @@ class TestLorentzMultiHeadAttention:
         attn_lorentz = LorentzMultiHeadAttention(config_lorentz)
         attn_standard = LorentzMultiHeadAttention(config_standard)
         attn_lorentz.load_state_dict(attn_standard.state_dict())
+        attn_lorentz.eval()
+        attn_standard.eval()
 
         output_lorentz, weights_lorentz = attn_lorentz(sample_input)
         output_standard, weights_standard = attn_standard(sample_input)
