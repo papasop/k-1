@@ -148,7 +148,7 @@ lorentz_transformer.py    # 单文件完整实现（~2000行）
 信息时间度量 `dt²_info = Σ_q Φ_q/H_q` 在参数空间定义了伪黎曼度量。Theorem 4证明：当且仅当det G < 0（洛伦兹签名）时，系统存在非平凡稳定边界 dc > 0。这使洛伦兹几何、辛结构、因果结构同时成为代数结果而非独立假设。
 
 **参考：**
-- Li, Y.Y.N. *K=1 Chronogeometrodynamics*. Preprint, 2025.
+- Li, Y. Y. N. (2026). *K=1 Chronogeometrodynamics*. Zenodo. https://doi.org/10.5281/zenodo.19011128
 - Li, Y.Y.N. *Neural Null Cones: Zero-Curvature Channels in Loss Landscapes from Symplectic Hessian Decomposition*. Preprint, 2025.
 
 ---
@@ -181,9 +181,12 @@ MIT
 ## Citation
 
 ```bibtex
-@article{li2026k1,
+@misc{li2026k1,
   author  = {Li, Y. Y. N.},
-  title   = {K=1 Chronogeometrodynamics: Lorentzian Geometry from Information Time},
+  title   = {K=1 Chronogeometrodynamics},
   year    = {2026},
-  doi     = {10.5281/zenodo.18949565}
+  publisher = {Zenodo},
+  doi     = {10.5281/zenodo.19011128},
+  url     = {https://doi.org/10.5281/zenodo.19011128}
 }
+```
