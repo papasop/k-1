@@ -9,10 +9,18 @@ from .attention import (
     compute_dt2_info,
     hutchinson_diag_hessian,
 )
-from .minkowski_norm import MinkowskiLayerNorm
+from .minkowski_norm import (
+    MinkowskiLayerNorm,
+    MinkowskiLayerNormImproved,
+    MinkowskiLayerNormOptimized,
+    MinkowskiLayerNormStable,
+)
 
 __all__ = [
     "LorentzMultiHeadAttention",
+    "MinkowskiLayerNormOptimized",
+    "MinkowskiLayerNormStable",
+    "MinkowskiLayerNormImproved",
     "MinkowskiLayerNorm",
     "compute_dt2_info",
     "hutchinson_diag_hessian",
