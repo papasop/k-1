@@ -29,6 +29,7 @@ class MockConfig:
     n_heads: int = 8
     lorentz_alpha: float = 0.25
     dropout: float = 0.1
+    # 测试默认使用确定性注意力，避免dropout影响断言。
     deterministic_attention: bool = True
 
 

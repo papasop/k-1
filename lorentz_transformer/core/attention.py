@@ -214,7 +214,8 @@ class LorentzMultiHeadAttention(nn.Module):
         # 输出投影
         self.o_proj = nn.Linear(config.d_model, config.d_model, bias=False)
 
-        # 默认使用确定性的注意力权重，必要时可显式开启dropout
+        # 默认关闭attention dropout以保持确定性；旧配置可通过
+        # deterministic_attention=False 显式恢复随机dropout行为。
         self.dropout_p = float(config.dropout)
         self.deterministic_attention = getattr(
             config, "deterministic_attention", True
