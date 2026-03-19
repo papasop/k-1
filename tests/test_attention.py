@@ -91,9 +91,9 @@ class TestLorentzMultiHeadAttention:
         return LorentzMultiHeadAttention(config)
 
     @pytest.fixture
-    def sample_input(self):
+    def sample_input(self, config):
         """创建样本输入。"""
-        return torch.randn(2, 128, 256)
+        return torch.randn(2, 128, config.d_model)
 
     def test_output_shape(self, attn_module, sample_input):
         """输出形状应该与输入相同。"""
@@ -116,6 +116,7 @@ class TestLorentzMultiHeadAttention:
 
     def test_deterministic(self, attn_module, sample_input):
         """相同输入应该产生相同输出。"""
+        attn_module.eval()
         torch.manual_seed(42)
         output1, _ = attn_module(sample_input)
 
@@ -129,7 +130,7 @@ class TestLorentzMultiHeadAttention:
         attn = LorentzMultiHeadAttention(config)
         assert not attn._has_mask
 
-        mask = torch.randint(0, 2, (256,)).bool()
+        mask = torch.randint(0, 2, (config.d_model,)).bool()
         attn.set_timelike_mask(mask)
         assert attn._has_mask
 
@@ -157,11 +158,11 @@ class TestLorentzMultiHeadAttention:
         """有mask时Minkowski scores应该与标准不同。"""
         attn = LorentzMultiHeadAttention(config)
 
-        mask = torch.randint(0, 2, (256,)).bool()
+        mask = torch.randint(0, 2, (config.d_model,)).bool()
         attn.set_timelike_mask(mask)
         output_lorentz, _ = attn(sample_input)
 
-        attn.set_timelike_mask(torch.zeros(256, dtype=torch.bool))
+        attn.set_timelike_mask(torch.zeros(config.d_model, dtype=torch.bool))
         output_standard, _ = attn(sample_input)
 
         assert not torch.allclose(output_lorentz, output_standard, atol=1e-4)
@@ -197,9 +198,9 @@ class TestLorentzMultiHeadAttention:
             for j in range(L - pad_len, L):
                 assert weights[0, 0, i, j].item() < 0.01
 
-    def test_numerical_stability_with_large_values(self, attn_module):
+    def test_numerical_stability_with_large_values(self, attn_module, config):
         """大值输入不应该导致数值不稳定。"""
-        x = torch.randn(2, 128, 256) * 100
+        x = torch.randn(2, 128, config.d_model) * 100
         output, weights = attn_module(x)
 
         assert not torch.isnan(output).any()
@@ -277,8 +278,8 @@ class TestIntegration:
         config = MockConfig()
         attn = LorentzMultiHeadAttention(config)
 
-        x = torch.randn(2, 128, 256)
-        mask = torch.randint(0, 2, (256,)).bool()
+        x = torch.randn(2, 128, config.d_model)
+        mask = torch.randint(0, 2, (config.d_model,)).bool()
         attn.set_timelike_mask(mask)
 
         output, weights = attn(x)
@@ -294,7 +295,7 @@ class TestIntegration:
         attn = LorentzMultiHeadAttention(config)
 
         for batch_size in [1, 2, 4, 8]:
-            x = torch.randn(batch_size, 128, 256)
+            x = torch.randn(batch_size, 128, config.d_model)
             output, weights = attn(x)
             assert output.shape == x.shape
             assert weights.shape[0] == batch_size
@@ -305,7 +306,7 @@ class TestIntegration:
         attn = LorentzMultiHeadAttention(config)
 
         for seq_len in [32, 64, 128, 256]:
-            x = torch.randn(2, seq_len, 256)
+            x = torch.randn(2, seq_len, config.d_model)
             output, weights = attn(x)
             assert output.shape == x.shape
             assert weights.shape == (2, 8, seq_len, seq_len)
