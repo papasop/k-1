@@ -17,7 +17,7 @@ setup(
     name="lorentz-transformer",
     version="1.0.0",
     author="papasop",
-    author_email="your.email@example.com",
+    author_email="176181382+papasop@users.noreply.github.com",
     description="Minkowski Geometry in Transformer Attention",
     long_description=long_description,
     long_description_content_type="text/markdown",
