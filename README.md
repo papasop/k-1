@@ -125,6 +125,10 @@ log = quick_train(n_hops=2, total_steps=2000)
 ```
 lorentz_transformer.py    # 单文件完整实现（~2000行）
 │
+├── lorentz_transformer/        # 模块化组件目录
+│   └── core/
+│       └── attention.py        # Minkowski多头注意力（Component 1）
+│
 ├── LorentzConfig              # 配置
 ├── LorentzPositionalEncoding  # 洛伦兹位置编码
 ├── MinkowskiLayerNorm         # 闵可夫斯基归一化（Component 3）
