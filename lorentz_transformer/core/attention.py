@@ -44,7 +44,9 @@ def compute_dt2_info(attn_w: torch.Tensor) -> torch.Tensor:
         torch.Tensor: scalar，所有query位置的K_q均值
 
     Example:
-        >>> attn_w = torch.rand(2, 8, 128, 128)  # batch_size=2, heads=8, seq_len=128
+        >>> attn_w = torch.rand(
+        ...     2, 8, 128, 128
+        ... )  # batch_size=2, heads=8, seq_len=128
         >>> dt2_info = compute_dt2_info(attn_w)
         >>> print(dt2_info.item())  # scalar value
     """
@@ -153,69 +155,70 @@ def hutchinson_diag_hessian(
 
 class LorentzMultiHeadAttention(nn.Module):
     """
-    闵可夫斯基多头注意力机制。
+    Lorentz multi-head attention with optional Minkowski corrections.
 
-    核心计算：
-      scores_L = Q · η · K^T / √d_h
-      其中 η = I - 2α·P_t (Minkowski符号矩阵)
+    The module computes standard scaled dot-product attention and, when a
+    timelike mask has been injected, subtracts a timelike inner-product term:
 
-    展开形式：
-      scores_L = (QK^T)/√d_h - 2α·(Q_t K^T)/√d_h
-               = scores_std - 2α × 时间内积
+    ``scores_L = QK^T / sqrt(d_h) - 2 * alpha * (Q_t_scaled K^T) / sqrt(d_h)``
 
-    几何解释：
-      - scores_std: 标准欧氏内积（标准注意力）
-      - 时间内积: 沿类时方向的内积修正
-      - α控制几何效果强度（0=标准注意力，>0=洛伦兹修正）
+    Args:
+        config: Configuration object with the following attributes:
+            - ``d_model`` (int): model dimension
+            - ``n_heads`` or ``num_heads`` (int): number of attention heads
+            - ``lorentz_alpha`` (float, optional): correction strength
+            - ``dropout`` (float, optional): dropout probability
 
-    参数：
-      config (LorentzConfig): 配置对象，包含：
-        - d_model: 隐层维度
-        - n_heads: 注意力头数
-        - lorentz_alpha: Minkowski强度（默认0.25）
-        - dropout: Dropout概率
+    Forward:
+        Args:
+            x (torch.Tensor): Input tensor of shape
+                ``(batch, seq_len, d_model)``.
+            attention_mask (torch.Tensor, optional): Additive attention mask of
+                shape ``(B, 1, 1, L)`` or ``(B, 1, L, L)``.
+        Returns:
+            Tuple[torch.Tensor, torch.Tensor]:
+                - attention output of shape ``(B, L, d_model)``
+                - attention probabilities of shape ``(B, H, L, L)``
 
-    特点：
-      1. 完全兼容标准MultiHeadAttention（α=0时等价）
-      2. 类时mask未注入时自动回退到标准注意力
-      3. 可用于替换任何Transformer中的标准注意力
-
-    使用示例：
-        >>> from lorentz_transformer.core import LorentzMultiHeadAttention
-        >>> from lorentz_transformer.models import LorentzConfig
-        >>>
-        >>> config = LorentzConfig(d_model=256, n_heads=8, lorentz_alpha=0.25)
-        >>> attn = LorentzMultiHeadAttention(config)
-        >>>
-        >>> x = torch.randn(2, 128, 256)  # (batch, seq_len, d_model)
-        >>> output, weights = attn(x)
-        >>> print(output.shape)  # torch.Size([2, 128, 256])
+    Notes:
+        - ``alpha=0`` reproduces standard multi-head attention.
+        - Without a timelike mask, the layer automatically falls back to the
+          standard attention score computation.
     """
 
     def __init__(self, config):
-        """初始化Minkowski多头注意力。"""
+        """Initialize Lorentz attention from a lightweight config object."""
         super().__init__()
 
-        self.n_heads = config.n_heads
-        self.head_dim = config.d_model // config.n_heads
-        self.d_model = config.d_model
-        self.alpha = config.lorentz_alpha
+        if not hasattr(config, "d_model"):
+            raise AttributeError("config must define d_model")
+        n_heads = getattr(config, "n_heads", None)
+        if n_heads is None:
+            n_heads = getattr(config, "num_heads", None)
+        if n_heads is None:
+            raise AttributeError("config must define n_heads or num_heads")
 
-        # 验证d_model能被n_heads整除
+        self.d_model = int(config.d_model)
+        self.n_heads = int(n_heads)
+        self.head_dim = self.d_model // self.n_heads
+        self.alpha = float(getattr(config, "lorentz_alpha", 0.25))
+        dropout = float(getattr(config, "dropout", 0.0))
+
+        # Verify that d_model is divisible by n_heads.
         assert (
-            config.d_model % config.n_heads == 0
-        ), f"d_model={config.d_model} 必须被 n_heads={config.n_heads} 整除"
+            self.d_model % self.n_heads == 0
+        ), f"d_model={self.d_model} 必须被 n_heads={self.n_heads} 整除"
 
         # Q, K, V投影层（无bias，与GPT-2一致）
-        self.q_proj = nn.Linear(config.d_model, config.d_model, bias=False)
-        self.k_proj = nn.Linear(config.d_model, config.d_model, bias=False)
-        self.v_proj = nn.Linear(config.d_model, config.d_model, bias=False)
+        self.q_proj = nn.Linear(self.d_model, self.d_model, bias=False)
+        self.k_proj = nn.Linear(self.d_model, self.d_model, bias=False)
+        self.v_proj = nn.Linear(self.d_model, self.d_model, bias=False)
 
         # 输出投影
-        self.o_proj = nn.Linear(config.d_model, config.d_model, bias=False)
+        self.o_proj = nn.Linear(self.d_model, self.d_model, bias=False)
 
         # Dropout
-        self.drop = nn.Dropout(config.dropout)
+        self.drop = nn.Dropout(dropout)
 
         # 类时掩码：(d_model,) bool向量
         # True = 类时维度（G_ii<0）
@@ -223,7 +226,7 @@ class LorentzMultiHeadAttention(nn.Module):
         # 由外部TimeLikeProbe通过set_timelike_mask()注入
         self.register_buffer(
             "timelike_mask",
-            torch.zeros(config.d_model, dtype=torch.bool),
+            torch.zeros(self.d_model, dtype=torch.bool),
         )
 
         # 是否已注入mask
@@ -402,7 +405,10 @@ if __name__ == "__main__":
 
     output_lorentz, weights_lorentz = attn_lorentz(x)
     print(f"✓ Lorentz attention output shape: {output_lorentz.shape}")
-    print(f"✓ Timelike dimensions: {mask.sum().item()}/256 = {mask.float().mean():.1%}")
+    print(
+        "✓ Timelike dimensions: "
+        f"{mask.sum().item()}/256 = {mask.float().mean():.1%}"
+    )
     print(f"✓ Alpha: {attn_lorentz.alpha}")
     print("✓ Test 2 passed")
 
@@ -419,7 +425,10 @@ if __name__ == "__main__":
 
     # 验证因果性：future位置的权重应该为0
     future_weights = weights_masked[0, 0, 0, 1:]
-    print(f"✓ Future attention weights (should be ~0): {future_weights[:5].mean():.2e}")
+    print(
+        "✓ Future attention weights (should be ~0): "
+        f"{future_weights[:5].mean():.2e}"
+    )
     print("✓ Test 3 passed")
 
     # 测试4：dt²_info计算

@@ -61,33 +61,33 @@ dt²_info的Hessian由于可实现性条件，被强迫成不定矩阵，det G <
 
 ---
 
-## 架构组件
+## 当前 Python 包 API
 
-### Component 1：Minkowski注意力
+当前发布的 `lorentz_transformer` 包聚焦于可直接复用的核心模块：
+
+### `LorentzMultiHeadAttention`
 ```
 scores_L = QK^T/√d - 2α(Q_t_scaled)K^T/√d
 ```
-P_t动态更新，归一化确保修正幅度与标准scores同量级。Phase 2进入后200步线性warmup（避免激活冲击）。
+- 输入：`(batch, seq_len, d_model)`
+- 输出：`(attention_output, attention_weights)`
+- 配置字段：`d_model`、`n_heads`（或 `num_heads`）、`lorentz_alpha`、`dropout`
 
-### Component 2：Geodesic Adam
+### `MinkowskiLayerNorm` 系列
 ```
-g_t = P_t ⊙ grad   → 步长 × 2.0（类时方向）
-g_s = (I-P_t) ⊙ grad → 步长 × 0.5（类空方向）
-```
-类时方向步长是类空方向的4倍。
-
-### Component 3：MinkowskiLayerNorm（最关键）
-```
-标准LayerNorm:       x / sqrt(mean(x²) + ε)
+标准向量归一化:        x / sqrt(||x||² + ε)
 MinkowskiLayerNorm: x / sqrt(|<x,x>_η| + ε)
 <x,x>_η = ||x_s||² - ||x_t||²
 ```
-用闵可夫斯基η-范数替代欧氏L2范数，保持几何信息在block之间的传递。
+- `MinkowskiLayerNormOptimized`：纯 L2 版本
+- `MinkowskiLayerNormStable`：保守回退版本
+- `MinkowskiLayerNormImproved`：推荐版本
+- `MinkowskiLayerNorm`：`MinkowskiLayerNormImproved` 的向后兼容别名
 
-### P_t（动态类时投影矩阵）
-两阶段训练协议：
-- Phase 1（前50%步数）：标准Adam收敛
-- Phase 2（后50%步数）：激活P_t，每100步Hutchinson估计更新
+### 研究原型说明
+README 中提到的 `GeodesicAdam`、`LorentzFFN`、`LorentzPositionalEncoding`、
+`TimeLikeProbe` 以及训练入口函数目前未作为该 Python 包的一部分发布。
+本文档现在只展示仓库中实际可导入的模块。
 
 ---
 
@@ -108,35 +108,60 @@ MinkowskiLayerNorm是效果最显著的单一组件。
 ## 快速开始
 
 ```python
-# 对比实验（标准Transformer对照组）
-log = baseline_train(d_model=256, n_layers=6, total_steps=10000)
+from dataclasses import dataclass
 
-# 洛伦兹版本2
-log = wikitext_train(d_model=256, n_layers=6, total_steps=10000)
+import torch
 
-# 合成任务快速验证（~3分钟）
-log = quick_train(n_hops=2, total_steps=2000)
+from lorentz_transformer import (
+    LorentzMultiHeadAttention,
+    MinkowskiLayerNorm,
+)
+
+
+@dataclass
+class Config:
+    d_model: int = 256
+    n_heads: int = 8
+    lorentz_alpha: float = 0.25
+    dropout: float = 0.1
+
+
+config = Config()
+attn = LorentzMultiHeadAttention(config)
+norm = MinkowskiLayerNorm(config.d_model)
+
+x = torch.randn(2, 16, config.d_model)
+attn_out, attn_weights = attn(x)
+output = norm(attn_out)
+
+print(output.shape)       # torch.Size([2, 16, 256])
+print(attn_weights.shape) # torch.Size([2, 8, 16, 16])
 ```
+
+更多可运行示例见 `examples/` 目录。
 
 ---
 
 ## 文件结构
 
 ```
-lorentz_transformer.py    # 单文件完整实现（~2000行）
-│
-├── LorentzConfig              # 配置
-├── LorentzPositionalEncoding  # 洛伦兹位置编码
-├── MinkowskiLayerNorm         # 闵可夫斯基归一化（Component 3）
-├── LorentzMultiHeadAttention  # Minkowski注意力（Component 1）
-├── FeedForward                # 洛伦兹FFN（Component 4）
-├── TimeLikeProbe              # P_t动态更新管理器
-├── LorentzTransformer         # 主模型
-├── GeodesicAdam               # 测地线优化器（Component 2）
-├── LorentzCosineScheduler     # 学习率+α调度
-├── baseline_train()           # 标准Transformer对照组
-├── wikitext_train()           # 洛伦兹版本2（最优配置）
-└── quick_train()              # 快速验证
+lorentz_transformer/               # 主包
+├── __init__.py                    # 顶层导出
+└── core/                          # 核心组件
+    ├── __init__.py
+    ├── attention.py               # LorentzMultiHeadAttention 与诊断函数
+    └── minkowski_norm.py          # 3 个 MinkowskiLayerNorm 变体
+
+examples/                          # 最小可运行示例
+├── attention_example.py
+├── full_model_example.py
+├── norm_example.py
+└── quick_example.py
+
+tests/
+├── test_attention.py
+├── test_integration.py
+└── test_minkowski_norm.py
 ```
 
 ---
@@ -156,10 +181,15 @@ lorentz_transformer.py    # 单文件完整实现（~2000行）
 
 **已完成：**
 - ✅ 正式对比实验：洛伦兹比标准Transformer val_loss低0.21（2.74%）
-- ✅ Minkowski注意力 + MinkowskiLayerNorm + Geodesic Adam（三件套确认有效）
-- ✅ 洛伦兹FFN、洛伦兹位置编码（实现完成，需更多数据验证）
+- ✅ `LorentzMultiHeadAttention` 与 `MinkowskiLayerNorm` 核心模块已打包并带测试
 - ✅ 真实语言数据上的伪黎曼结构验证（wikitext-2）
 - ✅ 层深类时规律发现
+
+**研究原型（未随当前包发布）：**
+- 🧪 Geodesic Adam
+- 🧪 Lorentz FFN
+- 🧪 Lorentz 位置编码
+- 🧪 训练入口函数（`baseline_train()` / `wikitext_train()` / `quick_train()`）
 
 **进行中：**
 - 🔄 更大数据集（openwebtext）验证

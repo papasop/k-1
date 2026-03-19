@@ -11,6 +11,9 @@ from . import core
 from .core import (
     LorentzMultiHeadAttention,
     MinkowskiLayerNorm,
+    MinkowskiLayerNormImproved,
+    MinkowskiLayerNormOptimized,
+    MinkowskiLayerNormStable,
     compute_dt2_info,
     hutchinson_diag_hessian,
 )
@@ -18,6 +21,9 @@ from .core import (
 __all__ = [
     "core",
     "LorentzMultiHeadAttention",
+    "MinkowskiLayerNormOptimized",
+    "MinkowskiLayerNormStable",
+    "MinkowskiLayerNormImproved",
     "MinkowskiLayerNorm",
     "compute_dt2_info",
     "hutchinson_diag_hessian",
