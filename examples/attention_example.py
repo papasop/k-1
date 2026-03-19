@@ -17,7 +17,9 @@ class Config:
 
 config = Config()
 attention = LorentzMultiHeadAttention(config)
-timelike_mask = torch.tensor([idx < config.d_model // 4 for idx in range(config.d_model)])
+timelike_mask = torch.tensor(
+    [idx < config.d_model // 4 for idx in range(config.d_model)]
+)
 attention.set_timelike_mask(timelike_mask)
 
 x = torch.randn(1, 6, config.d_model)

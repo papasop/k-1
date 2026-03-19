@@ -44,7 +44,9 @@ def compute_dt2_info(attn_w: torch.Tensor) -> torch.Tensor:
         torch.Tensor: scalar，所有query位置的K_q均值
 
     Example:
-        >>> attn_w = torch.rand(2, 8, 128, 128)  # batch_size=2, heads=8, seq_len=128
+        >>> attn_w = torch.rand(
+        ...     2, 8, 128, 128
+        ... )  # batch_size=2, heads=8, seq_len=128
         >>> dt2_info = compute_dt2_info(attn_w)
         >>> print(dt2_info.item())  # scalar value
     """
@@ -169,7 +171,8 @@ class LorentzMultiHeadAttention(nn.Module):
 
     Forward:
         Args:
-            x (torch.Tensor): Input tensor of shape ``(batch, seq_len, d_model)``.
+            x (torch.Tensor): Input tensor of shape
+                ``(batch, seq_len, d_model)``.
             attention_mask (torch.Tensor, optional): Additive attention mask of
                 shape ``(B, 1, 1, L)`` or ``(B, 1, L, L)``.
         Returns:
@@ -402,7 +405,10 @@ if __name__ == "__main__":
 
     output_lorentz, weights_lorentz = attn_lorentz(x)
     print(f"✓ Lorentz attention output shape: {output_lorentz.shape}")
-    print(f"✓ Timelike dimensions: {mask.sum().item()}/256 = {mask.float().mean():.1%}")
+    print(
+        "✓ Timelike dimensions: "
+        f"{mask.sum().item()}/256 = {mask.float().mean():.1%}"
+    )
     print(f"✓ Alpha: {attn_lorentz.alpha}")
     print("✓ Test 2 passed")
 
@@ -419,7 +425,10 @@ if __name__ == "__main__":
 
     # 验证因果性：future位置的权重应该为0
     future_weights = weights_masked[0, 0, 0, 1:]
-    print(f"✓ Future attention weights (should be ~0): {future_weights[:5].mean():.2e}")
+    print(
+        "✓ Future attention weights (should be ~0): "
+        f"{future_weights[:5].mean():.2e}"
+    )
     print("✓ Test 3 passed")
 
     # 测试4：dt²_info计算

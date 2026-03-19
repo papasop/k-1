@@ -1,4 +1,4 @@
-"""Minimal Transformer-style block built from the packaged Lorentz components."""
+"""Minimal Transformer-style block built from packaged Lorentz components."""
 
 from dataclasses import dataclass
 

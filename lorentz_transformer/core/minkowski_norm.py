@@ -6,7 +6,7 @@
 问题症状：
   ❌ 性能反而下降 16-17%
   ❌ 掩码比例 50% 时输出范数异常（暴增 6 倍）
-  
+
 原因：
   1. 闵可夫斯基范数计算在边界情况下不稳定
   2. 随机掩码导致梯度不稳定
@@ -21,7 +21,7 @@
   ✅ 输出范数稳定
   ✅ 梯度稳定
   ✅ 性能有改进或至少不下降
-  
+
 ================================================================================
 """
 
@@ -248,118 +248,127 @@ __all__ = [
 # ============================================================================
 
 if __name__ == "__main__":
-    print("="*80)
+    print("=" * 80)
     print("【MinkowskiLayerNorm 最终修复版测试】")
-    print("="*80)
-    
+    print("=" * 80)
+
     import numpy as np
-    
+
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    
+
     d_model = 256
     x = torch.randn(2, 16, d_model).to(device)
-    
+
     # ========================================================================
     # 测试 1: 三个版本的对比
     # ========================================================================
     print("\n【测试 1】三个版本的对比")
     print("-" * 80)
-    
+
     versions = [
-        ("Optimized (L2 only)", MinkowskiLayerNormOptimized(d_model).to(device)),
-        ("Stable (Auto fallback)", MinkowskiLayerNormStable(d_model).to(device)),
-        ("Improved (Smart fallback)", MinkowskiLayerNormImproved(d_model).to(device)),
+        (
+            "Optimized (L2 only)",
+            MinkowskiLayerNormOptimized(d_model).to(device),
+        ),
+        (
+            "Stable (Auto fallback)",
+            MinkowskiLayerNormStable(d_model).to(device),
+        ),
+        (
+            "Improved (Smart fallback)",
+            MinkowskiLayerNormImproved(d_model).to(device),
+        ),
     ]
-    
+
     # 设置有效的掩码（40% 作为类时维度）
     num_timelike = int(d_model * 0.4)
     mask = torch.zeros(d_model, dtype=torch.bool)
     mask[:num_timelike] = True
-    
+
     print(f"掩码设置：{num_timelike}/256 维作为类时维度\n")
-    
+
     for name, norm_layer in versions:
         norm_layer.set_timelike_mask(mask)
         output = norm_layer(x)
-        
+
         print(f"{name}:")
         print(f"  输出范数: {output.norm():.4f}")
         print(f"  输出范围: [{output.min():.4f}, {output.max():.4f}]")
         print(f"  输出形状: {output.shape}")
         print()
-    
+
     # ========================================================================
     # 测试 2: 不同掩码比例下的稳定性
     # ========================================================================
     print("【测试 2】掩码比例稳定性（Improved 版本）")
     print("-" * 80)
-    
+
     norm_improved = MinkowskiLayerNormImproved(d_model).to(device)
-    
+
     ratios = [0.1, 0.25, 0.4, 0.5, 0.75, 0.9]
-    
+
     print("\n掩码比例 vs 输出范数：\n")
-    
+
     outputs_norms = []
     for ratio in ratios:
         num_timelike = int(d_model * ratio)
         test_mask = torch.zeros(d_model, dtype=torch.bool)
         test_mask[:num_timelike] = True
-        
+
         norm_improved.set_timelike_mask(test_mask)
         output = norm_improved(x)
         norm_value = output.norm().item()
         outputs_norms.append(norm_value)
-        
-        print(f"  {ratio*100:.0f}%: {norm_value:.4f}")
-    
+
+        print(f"  {ratio * 100:.0f}%: {norm_value:.4f}")
+
     # 检查稳定性
     norm_std = np.std(outputs_norms)
     norm_mean = np.mean(outputs_norms)
-    
-    print(f"\n统计信息：")
+
+    print("\n统计信息：")
     print(f"  平均范数: {norm_mean:.4f}")
     print(f"  标准差: {norm_std:.4f}")
-    print(f"  变异系数: {norm_std/norm_mean:.4f}")
-    
+    print(f"  变异系数: {norm_std / norm_mean:.4f}")
+
     if norm_std / norm_mean < 0.1:
-        print(f"  ✅ 高度稳定！变异 < 10%")
+        print("  ✅ 高度稳定！变异 < 10%")
     elif norm_std / norm_mean < 0.2:
-        print(f"  ✓ 比较稳定，变异 < 20%")
+        print("  ✓ 比较稳定，变异 < 20%")
     else:
-        print(f"  ⚠️ 变异较大 > 20%")
-    
+        print("  ⚠️ 变异较大 > 20%")
+
     # ========================================================================
     # 测试 3: 梯度稳定性
     # ========================================================================
     print("\n【测试 3】梯度稳定性")
     print("-" * 80)
-    
+
     norm_improved = MinkowskiLayerNormImproved(d_model).to(device)
     mask = torch.zeros(d_model, dtype=torch.bool)
     mask[:int(d_model * 0.4)] = True
     norm_improved.set_timelike_mask(mask)
-    
+
     x_test = torch.randn(2, 16, d_model, requires_grad=True).to(device)
     output = norm_improved(x_test)
     loss = output.sum()
     loss.backward()
-    
+
     grad_norm = x_test.grad.norm().item()
     weight_grad_norm = norm_improved.weight.grad.norm().item()
-    
+
     print(f"输入梯度范数: {grad_norm:.6f}")
     print(f"权重梯度范数: {weight_grad_norm:.6f}")
-    
+
     if grad_norm > 0 and weight_grad_norm > 0:
-        print(f"✅ 梯度流动正常")
-    
+        print("✅ 梯度流动正常")
+
     # ========================================================================
     # 最终总结
     # ========================================================================
-    print("\n" + "="*80)
+    print("\n" + "=" * 80)
     print("【推荐使用】")
-    print("="*80)
+    print("=" * 80)
     print("""
 ✅ 推荐使用：MinkowskiLayerNormImproved
 
@@ -389,7 +398,8 @@ if __name__ == "__main__":
     ✓ 自动选择最合适的计算方式
     ✓ 最健壮
 
-════════════════════════════════════════════════════════════════════
-✅ 测试完成！推荐使用 MinkowskiLayerNormImproved
-════════════════════════════════════════════════════════════════════
+==============================
+✅ 测试完成！推荐使用
+MinkowskiLayerNormImproved
+==============================
 """)
