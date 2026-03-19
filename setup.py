@@ -1,38 +1,24 @@
-from pathlib import Path
-import re
+"""
+setup.py
 
-from setuptools import find_namespace_packages, setup
+Package installation configuration
+"""
 
+from setuptools import setup, find_packages
 
-ROOT = Path(__file__).parent
-
-
-def read_readme() -> str:
-    readme_path = ROOT / "README.md"
-    return readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
-
-
-def read_version() -> str:
-    init_path = ROOT / "lorentz_transformer" / "__init__.py"
-    match = re.search(
-        r'^__version__\s*=\s*["\']([^"\']+)["\']',
-        init_path.read_text(encoding="utf-8"),
-        re.MULTILINE,
-    )
-    if not match:
-        raise RuntimeError("Unable to find package version.")
-    return match.group(1)
-
+with open("README.md", "r", encoding="utf-8") as f:
+    long_description = f.read()
 
 setup(
     name="lorentz-transformer",
-    version=read_version(),
+    version="1.0.0",
     author="papasop",
-    description="Lorentz Transformer based on K=1 information geometry",
-    long_description=read_readme(),
+    author_email="your.email@example.com",
+    description="Minkowski Geometry in Transformer Attention",
+    long_description=long_description,
     long_description_content_type="text/markdown",
-    packages=find_namespace_packages(include=["lorentz_transformer*"]),
-    include_package_data=True,
+    url="https://github.com/papasop/k-1",
+    packages=find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.8",
