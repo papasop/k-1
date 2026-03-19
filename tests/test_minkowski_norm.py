@@ -33,7 +33,7 @@ class TestMinkowskiLayerNorm:
 
     def test_exported_from_core_and_package(self):
         """模块应该从 core 和顶层包导出。"""
-        assert CoreMinkowskiLayerNorm is MinkowskiLayerNorm
+        assert CoreMinkowskiLayerNorm == MinkowskiLayerNorm
 
     def test_euclidean_norm_without_timelike_mask(self):
         """无类时mask时应退化为欧氏范数归一化。"""
