@@ -329,9 +329,9 @@ class LorentzMultiHeadAttention(nn.Module):
         # 保存诊断用（masked scores）
         self.last_intervals = scores.detach().clone()
 
-        # Softmax → attention weights
-        attn_w = F.softmax(scores, dim=-1).to(x.dtype)
-        attn_w = self.drop(attn_w)
+        # Softmax → attention probabilities
+        attn_probs = F.softmax(scores, dim=-1).to(x.dtype)
+        attn_w = self.drop(attn_probs)
 
         # 乘以V并合并head
         out = torch.matmul(attn_w, V)  # (B,H,L,d_h)
@@ -340,7 +340,7 @@ class LorentzMultiHeadAttention(nn.Module):
         # 输出投影
         out = self.o_proj(out)
 
-        return out, attn_w
+        return out, attn_probs
 
     def extra_repr(self) -> str:
         """模块的额外信息表示。"""
