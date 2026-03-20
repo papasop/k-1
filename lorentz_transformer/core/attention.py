@@ -1,14 +1,17 @@
-
 """
 lorentz_transformer/core/attention.py
 
-Component 1: Minkowski多头注意力机制
+Minkowski 多头注意力 — 三种公式统一接口
 
-核心公式：
-  scores_L = Q·η·K^T / √d_h
-  其中 η = I - 2α·P_t (闵可夫斯基符号矩阵)
+formula 选择指南:
+  'f1' 显式分离  : 推理 / 数学 / 物理仿真 / 机器人轨迹
+  'f2' 洛伦兹修正: 兼容旧版（有退化风险，不推荐新项目）
+  'f3' 结合版    : 大语言模型 / 视频 / 科学文本（推荐默认）
 
-这个模块可以独立使用，无需依赖其他洛伦兹组件。
+核心公式:
+  F1: score =  -Q_t Kt^T  +  Q_s Ks^T
+  F2: score =  QK^T/sqrt(d) - 2a*Q_t_scaled*K^T/sqrt(d)
+  F3: score =  -sigma*Q_t Kt^T  +  Q_s Ks^T  (sigma 可学习)
 """
 
 import math
@@ -20,58 +23,21 @@ import torch.nn.functional as F
 
 
 # ============================================================================
-# Part 1: 辅助函数
+# 辅助函数（保持与原版兼容）
 # ============================================================================
 
 def compute_dt2_info(attn_w: torch.Tensor) -> torch.Tensor:
     """
-    计算K=1信息时间度量。
-
-    dt²_info = Σ_q K_q = Σ_q (Φ_q / H_q)
-
-    其中：
-      H_q = Shannon熵（注意力分布的不确定性）
-      Φ_q = Σ_j a_qj² （注意力集中度）
-      K_q = Φ_q/H_q （信息时间密度）
-
-    该量用于诊断注意力的信息几何性质。
-
-    Args:
-        attn_w (torch.Tensor): 注意力权重，形状 (B, H, L, L)
-            其中 B=batch_size, H=num_heads, L=seq_len
-
-    Returns:
-        torch.Tensor: scalar，所有query位置的K_q均值
-
-    Example:
-        >>> attn_w = torch.rand(
-        ...     2, 8, 128, 128
-        ... )  # batch_size=2, heads=8, seq_len=128
-        >>> dt2_info = compute_dt2_info(attn_w)
-        >>> print(dt2_info.item())  # scalar value
+    计算 K=1 信息时间度量。
+    dt2_info = mean(Phi_q / H_q)
     """
-    # 对头维度求平均，得到每个样本的注意力分布
-    aw = attn_w.mean(dim=1).float()  # (B, L, L)
-
-    # 处理NaN值（防止log(0)）
+    aw = attn_w.mean(dim=1).float()
     aw = torch.nan_to_num(aw, nan=0.0)
-
-    # 行归一化，确保是有效的概率分布
     aw = aw / aw.sum(-1, keepdim=True).clamp(min=1e-8)
-
-    # 计算Shannon熵 H_q = -Σ_j a_qj * log(a_qj)
-    H = -(aw * torch.log(aw + 1e-8)).sum(-1)  # (B, L)
-
-    # 计算集中度 Φ_q = Σ_j a_qj²
-    Phi = (aw ** 2).sum(-1)  # (B, L)
-
-    # 避免除零
-    H = H.clamp(min=1e-8)
-
-    # 计算信息时间密度 K_q = Φ_q / H_q
-    K = Phi / H  # (B, L)
-
-    return K.mean()  # 返回所有位置的平均值
+    H   = -(aw * torch.log(aw + 1e-8)).sum(-1)
+    Phi = (aw ** 2).sum(-1)
+    H   = H.clamp(min=1e-8)
+    return (Phi / H).mean()
 
 
 def hutchinson_diag_hessian(
@@ -79,174 +45,153 @@ def hutchinson_diag_hessian(
     param: nn.Parameter,
     n_samples: int = 20,
 ) -> torch.Tensor:
-    """
-    用Hutchinson方法估计Hessian的对角元素。
-
-    用于识别参数空间中的类时方向（dt²_info的凹方向）。
-
-    数学原理：
-      G_ii ≈ (1/K) Σ_k v_k[i] · (H·v_k)[i]
-
-      其中：
-        v_k ~ Rademacher{±1} (随机符号向量)
-        H·v_k = ∂²loss/∂param² · v_k (Hessian-向量乘积)
-
-    解释：
-      G_ii < 0  ⟹  参数i是类时维度（凹方向）
-      G_ii > 0  ⟹  参数i是类空维度（凸方向）
-
-    Args:
-        loss_fn: 无参数的callable，返回scalar loss
-        param (nn.Parameter): 目标参数（通常是W_Q），requires_grad=True
-        n_samples (int): Rademacher采样数（默认20）
-
-    Returns:
-        torch.Tensor: 与param同形状的对角Hessian估计
-
-    Example:
-        >>> model = LorentzMultiHeadAttention(config)
-        >>> W_Q = model.q_proj.weight
-        >>> def loss_fn():
-        ...     x = torch.randn(2, 128, 256)
-        ...     _, _ = model(x)
-        ...     return compute_dt2_info(...)  # 某个loss
-        >>> G = hutchinson_diag_hessian(loss_fn, W_Q, n_samples=20)
-        >>> is_timelike = (G < 0)  # bool mask
-    """
+    """Hutchinson 方法估计 Hessian 对角元素。"""
     G = torch.zeros_like(param.data)
-
     for _ in range(n_samples):
-        # 生成Rademacher随机向量: {-1, +1}^shape
-        v = (
-            torch.randint(0, 2, param.shape, device=param.device) * 2 - 1
-        ).float()
-
-        # 第一阶梯度（保留计算图）
+        v  = (torch.randint(0, 2, param.shape,
+               device=param.device) * 2 - 1).float()
         loss = loss_fn()
-        g1 = torch.autograd.grad(
-            loss, param, create_graph=True, retain_graph=True
-        )[0]
-
+        g1  = torch.autograd.grad(
+            loss, param, create_graph=True, retain_graph=True)[0]
         if g1 is None:
             continue
-
-        # Hessian-向量乘积: H·v
         Hv = torch.autograd.grad(
-            (g1 * v.detach()).sum(), param, retain_graph=False
-        )[0]
-
+            (g1 * v.detach()).sum(), param, retain_graph=False)[0]
         if Hv is None:
             continue
-
-        # 清理数值错误
-        Hv = torch.nan_to_num(
-            Hv, nan=0.0, posinf=0.0, neginf=0.0
-        )
-
-        # 累积：G += v ⊙ (H·v)
-        G = G + (v * Hv).detach() / n_samples
-
+        Hv = torch.nan_to_num(Hv, nan=0.0, posinf=0.0, neginf=0.0)
+        G  = G + (v * Hv).detach() / n_samples
     return G
 
 
 # ============================================================================
-# Part 2: LorentzMultiHeadAttention
+# LorentzMultiHeadAttention
 # ============================================================================
+
+VALID_FORMULAS = ("f1", "f2", "f3")
+
 
 class LorentzMultiHeadAttention(nn.Module):
     """
-    Lorentz multi-head attention with optional Minkowski corrections.
+    Minkowski 多头注意力，支持三种公式。
 
-    The module computes standard scaled dot-product attention and, when a
-    timelike mask has been injected, subtracts a timelike inner-product term:
+    formula='f1'  显式时空分离，硬编码负号，不可退化
+                  适用: 数学推理 / 代码生成 / 物理仿真 / 机器人轨迹
 
-    ``scores_L = QK^T / sqrt(d_h) - 2 * alpha * (Q_t_scaled K^T) / sqrt(d_h)``
+    formula='f2'  洛伦兹修正（兼容旧版）
+                  适用: 加载已有 F2 权重时使用
+                  注意: alpha 可能学不动，退化为欧氏
+
+    formula='f3'  结合版，sigma 可学习（推荐默认）
+                  适用: 大语言模型 / 视频理解 / 科学文本
+                  特点: 不退化，sigma 自适应任务因果强度
 
     Args:
-        config: Configuration object with the following attributes:
-            - ``d_model`` (int): model dimension
-            - ``n_heads`` or ``num_heads`` (int): number of attention heads
-            - ``lorentz_alpha`` (float, optional): correction strength
-            - ``dropout`` (float, optional): dropout probability
+        config: 配置对象，需包含:
+            d_model       (int)   : 模型维度
+            n_heads       (int)   : 注意力头数（或 num_heads）
+            formula       (str)   : 'f1'|'f2'|'f3'，默认 'f3'
+            time_ratio    (float) : 时间头比例，默认 0.25（F1/F3）
+            lorentz_alpha (float) : 修正强度，默认 0.25（F2）
+            dropout       (float) : dropout，默认 0.0
 
-    Forward:
-        Args:
-            x (torch.Tensor): Input tensor of shape
-                ``(batch, seq_len, d_model)``.
-            attention_mask (torch.Tensor, optional): Additive attention mask of
-                shape ``(B, 1, 1, L)`` or ``(B, 1, L, L)``.
-        Returns:
-            Tuple[torch.Tensor, torch.Tensor]:
-                - attention output of shape ``(B, L, d_model)``
-                - attention probabilities of shape ``(B, H, L, L)``
-
-    Notes:
-        - ``alpha=0`` reproduces standard multi-head attention.
-        - Without a timelike mask, the layer automatically falls back to the
-          standard attention score computation.
+    Example:
+        >>> from dataclasses import dataclass
+        >>> @dataclass
+        ... class Cfg:
+        ...     d_model: int = 256
+        ...     n_heads: int = 8
+        ...     formula: str = 'f3'
+        ...     time_ratio: float = 0.25
+        >>> attn = LorentzMultiHeadAttention(Cfg())
+        >>> out, w = attn(torch.randn(2, 128, 256))
     """
 
     def __init__(self, config):
-        """Initialize Lorentz attention from a lightweight config object."""
         super().__init__()
 
         if not hasattr(config, "d_model"):
             raise AttributeError("config must define d_model")
-        n_heads = getattr(config, "n_heads", None)
-        if n_heads is None:
-            n_heads = getattr(config, "num_heads", None)
+
+        n_heads = getattr(config, "n_heads",
+                  getattr(config, "num_heads", None))
         if n_heads is None:
             raise AttributeError("config must define n_heads or num_heads")
 
-        self.d_model = int(config.d_model)
-        self.n_heads = int(n_heads)
+        self.d_model  = int(config.d_model)
+        self.n_heads  = int(n_heads)
         self.head_dim = self.d_model // self.n_heads
-        self.alpha = float(getattr(config, "lorentz_alpha", 0.25))
-        dropout = float(getattr(config, "dropout", 0.0))
+        dropout       = float(getattr(config, "dropout", 0.0))
 
-        # Verify that d_model is divisible by n_heads.
-        assert (
-            self.d_model % self.n_heads == 0
-        ), f"d_model={self.d_model} 必须被 n_heads={self.n_heads} 整除"
-
-        # Q, K, V投影层（无bias，与GPT-2一致）
-        self.q_proj = nn.Linear(self.d_model, self.d_model, bias=False)
-        self.k_proj = nn.Linear(self.d_model, self.d_model, bias=False)
-        self.v_proj = nn.Linear(self.d_model, self.d_model, bias=False)
-
-        # 输出投影
-        self.o_proj = nn.Linear(self.d_model, self.d_model, bias=False)
-
-        # Dropout
-        self.drop = nn.Dropout(dropout)
-
-        # 类时掩码：(d_model,) bool向量
-        # True = 类时维度（G_ii<0）
-        # False = 类空维度（G_ii>0）
-        # 由外部TimeLikeProbe通过set_timelike_mask()注入
-        self.register_buffer(
-            "timelike_mask",
-            torch.zeros(self.d_model, dtype=torch.bool),
+        assert self.d_model % self.n_heads == 0, (
+            f"d_model={self.d_model} must be divisible by n_heads={self.n_heads}"
         )
 
-        # 是否已注入mask
-        self._has_mask = False
+        # 公式选择
+        self.formula = str(getattr(config, "formula", "f3")).lower()
+        if self.formula not in VALID_FORMULAS:
+            raise ValueError(
+                f"formula must be one of {VALID_FORMULAS}, got '{self.formula}'"
+            )
 
-        # 诊断用：保存最近的注意力间隔（光锥分析）
-        self.last_intervals: Optional[torch.Tensor] = None
+        # 时间/空间头数（F1 / F3）
+        time_ratio = float(getattr(config, "time_ratio", 0.25))
+        self.n_t   = max(1, int(self.n_heads * time_ratio))
+        self.n_s   = self.n_heads - self.n_t
+        self.t_dim = self.n_t * self.head_dim
+        self.s_dim = self.n_s * self.head_dim
+
+        # F2 超参数
+        self.alpha = float(getattr(config, "lorentz_alpha", 0.25))
+
+        # 投影层
+        if self.formula == "f1":
+            self.q_t = nn.Linear(self.d_model, self.t_dim, bias=False)
+            self.k_t = nn.Linear(self.d_model, self.t_dim, bias=False)
+            self.q_s = nn.Linear(self.d_model, self.s_dim, bias=False)
+            self.k_s = nn.Linear(self.d_model, self.s_dim, bias=False)
+
+        elif self.formula == "f2":
+            self.q_proj   = nn.Linear(self.d_model, self.d_model, bias=False)
+            self.k_proj   = nn.Linear(self.d_model, self.d_model, bias=False)
+            self.q_t_proj = nn.Linear(self.d_model, self.d_model, bias=False)
+            self.register_buffer(
+                "timelike_mask",
+                torch.zeros(self.d_model, dtype=torch.bool),
+            )
+            self._has_mask = False
+
+        else:  # f3
+            self.q_t     = nn.Linear(self.d_model, self.t_dim, bias=False)
+            self.k_t     = nn.Linear(self.d_model, self.t_dim, bias=False)
+            self.q_s     = nn.Linear(self.d_model, self.s_dim, bias=False)
+            self.k_s     = nn.Linear(self.d_model, self.s_dim, bias=False)
+            # sigma=sigmoid(w_sigma) in (0,1), init 0 -> sigma=0.5
+            self.w_sigma = nn.Parameter(torch.zeros(1))
+
+        # 共享：V + 输出 + Dropout
+        self.v_proj = nn.Linear(self.d_model, self.d_model, bias=False)
+        self.o_proj = nn.Linear(self.d_model, self.d_model, bias=False)
+        self.drop   = nn.Dropout(dropout)
+
+        # 诊断
+        self.last_intervals:     Optional[torch.Tensor] = None
         self.last_intervals_raw: Optional[torch.Tensor] = None
 
+    # F2 专用：mask 注入（兼容旧版 TimeLikeProbe）
     def set_timelike_mask(self, mask: torch.Tensor) -> None:
-        """
-        注入类时掩码（由TimeLikeProbe调用）。
-
-        Args:
-            mask (torch.Tensor): (d_model,) bool或float张量
-                True/1.0 = 类时维度
-                False/0.0 = 类空维度
-        """
+        """注入类时掩码（仅 F2 有效）。"""
+        if self.formula != "f2":
+            return
         self.timelike_mask.copy_(mask.bool())
-        self._has_mask = mask.any().item()
+        self._has_mask = bool(mask.any().item())
+
+    @property
+    def sigma(self) -> Optional[float]:
+        """F3 当前的 Minkowski 强度 sigma in (0,1)。"""
+        if self.formula == "f3":
+            return float(torch.sigmoid(self.w_sigma).item())
+        return None
 
     def forward(
         self,
@@ -254,192 +199,151 @@ class LorentzMultiHeadAttention(nn.Module):
         attention_mask: Optional[torch.Tensor] = None,
     ) -> Tuple[torch.Tensor, torch.Tensor]:
         """
-        前向传播。
-
         Args:
-            x (torch.Tensor): 输入特征，形状 (B, L, d_model)
-            attention_mask (Optional[torch.Tensor]): 加性注意力掩码
-                形状 (B, 1, 1, L) 或 (B, 1, L, L)
-                pad位置设为-inf，有效位置设为0
+            x              : (B, L, d_model)
+            attention_mask : (B,1,1,L) 或 (B,1,L,L)，pad=-inf，有效=0
 
         Returns:
-            Tuple[torch.Tensor, torch.Tensor]:
-                - output: (B, L, d_model) 注意力输出
-                - attn_weights: (B, H, L, L) 注意力权重
-
-        计算流程：
-            1. 投影Q, K, V并split到多个head
-            2. 计算标准scores = QK^T / √d_h
-            3. 应用Minkowski修正（如果有mask和α>0）
-            4. 应用attention mask
-            5. Softmax + Dropout
-            6. 乘以V并合并head
-            7. 输出投影
+            output      : (B, L, d_model)
+            attn_weights: (B, H, L, L)
         """
         B, L, _ = x.shape
-        H, d_h = self.n_heads, self.head_dim
-        scale = math.sqrt(d_h)
+        scale   = math.sqrt(self.head_dim)
 
-        # 投影并分割head
-        # Q, K, V: (B, L, d_model) → (B, H, L, d_h)
-        Q = self.q_proj(x).view(B, L, H, d_h).transpose(1, 2).float()
-        K = self.k_proj(x).view(B, L, H, d_h).transpose(1, 2).float()
-        V = self.v_proj(x).view(B, L, H, d_h).transpose(1, 2)
+        if self.formula == "f1":
+            score = self._forward_f1(x, B, L, scale)
+        elif self.formula == "f2":
+            score = self._forward_f2(x, B, L, scale)
+        else:
+            score = self._forward_f3(x, B, L, scale)
 
-        # 标准注意力scores
-        scores = torch.matmul(Q, K.transpose(-2, -1)) / scale  # (B,H,L,L)
+        self.last_intervals_raw = score.detach().clone()
 
-        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        # Minkowski修正：scores_L = scores - 2α·time_inner
-        # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        if self._has_mask and self.alpha > 0:
-            # timelike_mask: (d_model,) → (H, d_h) per-head
-            mask_2d = self.timelike_mask.view(H, d_h).float()
-            mask_bcast = mask_2d.unsqueeze(0).unsqueeze(2).to(Q.device)
-
-            # 提取类时Q分量
-            Q_t = Q * mask_bcast  # (B,H,L,d_h)
-
-            # 幅度归一化：将Q_t缩放到与Q相同的幅度
-            # 避免类时分量太小或太大导致数值不稳定
-            q_norm = Q.norm(dim=-1, keepdim=True)  # (B,H,L,1)
-            qt_norm = Q_t.norm(dim=-1, keepdim=True)  # (B,H,L,1)
-
-            # 有类时分量时进行缩放
-            has_timelike = (qt_norm > 1e-6)
-            scale_factor = torch.where(
-                has_timelike,
-                q_norm / qt_norm.clamp(min=1e-8),
-                torch.zeros_like(qt_norm),
-            )
-            Q_t_scaled = Q_t * scale_factor
-
-            # 时间分量内积（与标准scores同量级）
-            time_inner = torch.matmul(
-                Q_t_scaled, K.transpose(-2, -1)
-            ) / scale  # (B,H,L,L)
-
-            # 洛伦兹修正：减去2α倍的时间分量
-            scores = scores - 2.0 * self.alpha * time_inner
-
-        # 保存诊断用（原始scores，causal mask前）
-        self.last_intervals_raw = scores.detach().clone()
-
-        # 应用attention mask
         if attention_mask is not None:
-            scores = scores + attention_mask.to(scores.dtype)
+            score = score + attention_mask.to(score.dtype)
 
-        # 保存诊断用（masked scores）
-        self.last_intervals = scores.detach().clone()
+        self.last_intervals = score.detach().clone()
 
-        # Softmax → attention probabilities
-        attn_probs = F.softmax(scores, dim=-1).to(x.dtype)
-        attn_w = self.drop(attn_probs)
+        attn_probs = F.softmax(score, dim=-1).to(x.dtype)
+        attn_w     = self.drop(attn_probs)
 
-        # 乘以V并合并head
-        out = torch.matmul(attn_w, V)  # (B,H,L,d_h)
-        out = out.transpose(1, 2).contiguous().view(B, L, -1)  # (B,L,d_model)
+        H, d_h = self.n_heads, self.head_dim
+        V   = self.v_proj(x).view(B, L, H, d_h).transpose(1, 2)
+        out = torch.matmul(attn_w, V)
+        out = out.transpose(1, 2).contiguous().view(B, L, -1)
+        return self.o_proj(out), attn_probs
 
-        # 输出投影
-        out = self.o_proj(out)
+    def _forward_f1(self, x, B, L, scale):
+        """F1: -Q_t Kt^T + Q_s Ks^T"""
+        d_h = self.head_dim
+        Qt = self.q_t(x).view(B, L, self.n_t, d_h)
+        Kt = self.k_t(x).view(B, L, self.n_t, d_h)
+        Qs = self.q_s(x).view(B, L, self.n_s, d_h)
+        Ks = self.k_s(x).view(B, L, self.n_s, d_h)
+        st = torch.einsum("bthd,bshd->bths", Qt, Kt)
+        ss = torch.einsum("bthd,bshd->bths", Qs, Ks)
+        return torch.cat([-st, ss], dim=2) / scale
 
-        return out, attn_probs
+    def _forward_f2(self, x, B, L, scale):
+        """F2: QK^T/sqrt(d) - 2a*Q_t_scaled*K^T/sqrt(d)"""
+        H, d_h = self.n_heads, self.head_dim
+        Q = self.q_proj(x).view(B,L,H,d_h).transpose(1,2).float()
+        K = self.k_proj(x).view(B,L,H,d_h).transpose(1,2).float()
+        scores = torch.matmul(Q, K.transpose(-2,-1)) / scale
+
+        if self._has_mask and self.alpha > 0:
+            mask_2d = self.timelike_mask.view(H, d_h).float()
+            mask_bc = mask_2d.unsqueeze(0).unsqueeze(2).to(Q.device)
+            Q_t     = Q * mask_bc
+            q_norm  = Q.norm(dim=-1, keepdim=True)
+            qt_norm = Q_t.norm(dim=-1, keepdim=True)
+            has_t   = qt_norm > 1e-6
+            sf      = torch.where(has_t,
+                                  q_norm / qt_norm.clamp(min=1e-8),
+                                  torch.zeros_like(qt_norm))
+            t_inner = torch.matmul(Q_t * sf,
+                                   K.transpose(-2,-1)) / scale
+            scores  = scores - 2.0 * self.alpha * t_inner
+
+        return scores
+
+    def _forward_f3(self, x, B, L, scale):
+        """F3: -sigma*Q_t Kt^T + Q_s Ks^T"""
+        d_h = self.head_dim
+        Qt = self.q_t(x).view(B, L, self.n_t, d_h)
+        Kt = self.k_t(x).view(B, L, self.n_t, d_h)
+        Qs = self.q_s(x).view(B, L, self.n_s, d_h)
+        Ks = self.k_s(x).view(B, L, self.n_s, d_h)
+        st    = torch.einsum("bthd,bshd->bths", Qt, Kt)
+        ss    = torch.einsum("bthd,bshd->bths", Qs, Ks)
+        sigma = torch.sigmoid(self.w_sigma)
+        return torch.cat([-sigma * st, ss], dim=2) / scale
 
     def extra_repr(self) -> str:
-        """模块的额外信息表示。"""
-        return (
-            f"n_heads={self.n_heads}, "
-            f"head_dim={self.head_dim}, "
-            f"alpha={self.alpha}, "
-            f"has_mask={self._has_mask}"
-        )
+        base = (f"formula={self.formula}, "
+                f"n_heads={self.n_heads}, head_dim={self.head_dim}")
+        if self.formula == "f1":
+            return base + f", n_t={self.n_t}, n_s={self.n_s}"
+        elif self.formula == "f2":
+            return base + f", alpha={self.alpha}, has_mask={self._has_mask}"
+        else:
+            s = self.sigma
+            return base + f", sigma={s:.3f}, n_t={self.n_t}, n_s={self.n_s}"
 
 
 # ============================================================================
-# Part 3: 单元测试
+# 测试
 # ============================================================================
 
 if __name__ == "__main__":
-    """
-    快速测试脚本（可在tests/test_attention.py中使用）。
-    """
-    print("=" * 70)
-    print("Testing LorentzMultiHeadAttention")
-    print("=" * 70)
-
-    # 测试1：基础前向传播
-    print("\n[Test 1] 基础前向传播（α=0, 无mask）")
-    print("-" * 70)
-
     from dataclasses import dataclass
 
     @dataclass
-    class Config:
-        d_model: int = 256
-        n_heads: int = 8
-        lorentz_alpha: float = 0.0
-        dropout: float = 0.1
+    class Cfg:
+        d_model:       int   = 256
+        n_heads:       int   = 8
+        formula:       str   = "f3"
+        time_ratio:    float = 0.25
+        lorentz_alpha: float = 0.25
+        dropout:       float = 0.0
 
-    config = Config()
-    attn = LorentzMultiHeadAttention(config)
     x = torch.randn(2, 128, 256)
-
-    output, weights = attn(x)
-    print(f"✓ Input shape: {x.shape}")
-    print(f"✓ Output shape: {output.shape}")
-    print(f"✓ Weights shape: {weights.shape}")
-    assert output.shape == x.shape, "输出形状不匹配"
-    assert weights.shape == (2, 8, 128, 128), "权重形状不匹配"
-    print("✓ Test 1 passed")
-
-    # 测试2：Minkowski修正激活
-    print("\n[Test 2] Minkowski修正（α=0.25, 有mask）")
-    print("-" * 70)
-
-    config_lorentz = Config(lorentz_alpha=0.25)
-    attn_lorentz = LorentzMultiHeadAttention(config_lorentz)
-
-    # 注入掩码
-    mask = torch.randint(0, 2, (256,)).bool()
-    attn_lorentz.set_timelike_mask(mask)
-
-    output_lorentz, weights_lorentz = attn_lorentz(x)
-    print(f"✓ Lorentz attention output shape: {output_lorentz.shape}")
-    print(
-        "✓ Timelike dimensions: "
-        f"{mask.sum().item()}/256 = {mask.float().mean():.1%}"
-    )
-    print(f"✓ Alpha: {attn_lorentz.alpha}")
-    print("✓ Test 2 passed")
-
-    # 测试3：注意力掩码
-    print("\n[Test 3] 注意力掩码（Causal mask）")
-    print("-" * 70)
-
-    causal_mask = torch.triu(
+    causal = torch.triu(
         torch.full((128, 128), float("-inf")), diagonal=1
     ).unsqueeze(0).unsqueeze(0)
 
-    output_masked, weights_masked = attn(x, causal_mask)
-    print(f"✓ Output with causal mask shape: {output_masked.shape}")
+    print("=" * 55)
+    print("LorentzMultiHeadAttention -- 三公式测试")
+    print("=" * 55)
 
-    # 验证因果性：future位置的权重应该为0
-    future_weights = weights_masked[0, 0, 0, 1:]
-    print(
-        "✓ Future attention weights (should be ~0): "
-        f"{future_weights[:5].mean():.2e}"
-    )
-    print("✓ Test 3 passed")
+    results = {}
+    for formula in ["f1", "f2", "f3"]:
+        cfg  = Cfg(formula=formula)
+        attn = LorentzMultiHeadAttention(cfg)
+        if formula == "f2":
+            attn.set_timelike_mask(torch.randint(0, 2, (256,)).bool())
+        params = sum(p.numel() for p in attn.parameters())
+        out, w = attn(x, causal)
+        assert out.shape == (2, 128, 256)
+        assert w.shape   == (2, 8, 128, 128)
+        extra = ""
+        if formula == "f3":
+            extra = f"  sigma={attn.sigma:.3f}"
+        elif formula == "f2":
+            extra = f"  alpha={attn.alpha}"
+        print(f"  {formula}: params={params:,}{extra}  OK")
+        results[formula] = attn
 
-    # 测试4：dt²_info计算
-    print("\n[Test 4] 信息时间度量（dt²_info）")
-    print("-" * 70)
-
-    dt2_info = compute_dt2_info(weights)
-    print(f"✓ dt²_info value: {dt2_info.item():.6f}")
-    print(f"✓ dt²_info is scalar: {dt2_info.shape == torch.Size([])}")
-    print("✓ Test 4 passed")
-
-    print("\n" + "=" * 70)
-    print("✅ All tests passed!")
-    print("=" * 70)
+    dt2 = compute_dt2_info(w)
+    print(f"  dt2_info={dt2.item():.6f}  OK")
+    print()
+    print("选择指南:")
+    guide = [
+        ("f1", "推理/数学/物理/机器人", "硬约束，不退化"),
+        ("f2", "加载旧版权重", "有退化风险，不推荐新项目"),
+        ("f3", "LLM/视频/科学文本", "推荐默认，sigma自适应"),
+    ]
+    for f, use, note in guide:
+        print(f"  [{f}] {use:20s}  -- {note}")
+    print()
+    print("All tests passed.")
