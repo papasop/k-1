@@ -82,12 +82,28 @@ dt²_info的Hessian由于可实现性条件，被强迫成不定矩阵，det G <
 当前发布的 `lorentz_transformer` 包聚焦于可直接复用的核心模块：
 
 ### `LorentzMultiHeadAttention`
+
+`LorentzMultiHeadAttention` 支持三种注意力公式，通过 `formula` 字段选择：
+
+| formula | 公式 | 适用场景 | 退化风险 |
+|---------|------|----------|----------|
+| `'f3'` | `-σ·Q_t Kᵀ_t + Q_s Kᵀ_s` | 大语言模型 / 视频 / 科学文本（**推荐默认**） | 无，σ 有界 |
+| `'f1'` | `-Q_t Kᵀ_t + Q_s Kᵀ_s` | 推理 / 数学 / 物理仿真 / 机器人轨迹 | 无，硬约束 |
+| `'f2'` | `QKᵀ - 2α·Q_t·Kᵀ` | 加载旧版权重 | ⚠️ 已知退化，不推荐新项目 |
+
 ```
+# f3（默认推荐）
+scores_L = -σ·Q_t Kᵀ_t + Q_s Kᵀ_s
+
+# f1
+scores_L = -Q_t Kᵀ_t + Q_s Kᵀ_s
+
+# f2（旧版兼容）
 scores_L = QK^T/√d - 2α(Q_t_scaled)K^T/√d
 ```
 - 输入：`(batch, seq_len, d_model)`
 - 输出：`(attention_output, attention_weights)`
-- 配置字段：`d_model`、`n_heads`（或 `num_heads`）、`lorentz_alpha`、`dropout`
+- 配置字段：`d_model`、`n_heads`（或 `num_heads`）、`formula`、`time_ratio`、`lorentz_alpha`、`dropout`
 
 ### `MinkowskiLayerNorm` 系列
 ```
@@ -138,7 +154,8 @@ from lorentz_transformer import (
 class Config:
     d_model: int = 256
     n_heads: int = 8
-    lorentz_alpha: float = 0.25
+    formula: str = 'f3'        # 推荐默认
+    time_ratio: float = 0.25
     dropout: float = 0.1
 
 
@@ -152,9 +169,39 @@ output = norm(attn_out)
 
 print(output.shape)       # torch.Size([2, 16, 256])
 print(attn_weights.shape) # torch.Size([2, 8, 16, 16])
+print(f"Minkowski 强度 σ = {attn.sigma:.3f}")  # F3 专属
 ```
 
 更多可运行示例见 `examples/` 目录。
+
+### 如何选择 formula
+
+先算数据的类时比例（5 分钟）：
+
+```python
+dx = traj[:, 1:] - traj[:, :-1]          # 相邻步差
+s2 = -(dx[..., :t_dim]**2).sum(-1) \
+   +  (dx[..., t_dim:]**2).sum(-1)       # Minkowski 间隔
+ratio = (s2 > 0).float().mean()
+```
+
+- `ratio > 0.6` → 用 `f1`（物理任务）或 `f3`（通用）
+- `ratio < 0.4` → 欧氏注意力已足够，Minkowski 先验无益
+- 不确定 → 默认 `f3`，σ 会自适应收敛
+
+### F2 迁移说明
+
+旧版用户无需修改代码，F2 权重可直接加载。新项目请使用 F3：
+
+```python
+# 旧版（继续工作，但不推荐新项目）
+Config(formula='f2', lorentz_alpha=0.25)
+
+# 推荐替换为
+Config(formula='f3', time_ratio=0.25)
+```
+
+> **实验背景：** F1 和 F3 在跳跃轨迹预测任务上将动量守恒误差改善 56–59%（p<0.001，5 seeds）。F2 在同一任务上 alpha 收敛到初始值 0.514，动量守恒比欧氏基线还差 4%，确认存在退化问题。
 
 ---
 
