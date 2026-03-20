@@ -361,7 +361,7 @@ if __name__ == "__main__":
           f"输出范数={out_sl.norm():.4f}")
     diff_geo = abs(out_tl.norm().item() - out_sl.norm().item())
     print(f"  几何差异: {diff_geo:.4f}  "
-          f"({'类时≠类空 OK，Minkowski几何有效' if diff_geo<0.01 else '归一化行为不同'})")
+          f"({'Minkowski几何有效' if diff_geo > 0.01 else '差异过小，检查t_dim'})")
 
     # ── 测试4：掩码比例稳定性 ─────────────────────────────────
     print("\n【测试4】掩码比例稳定性（t_dim 固定，检查输入分布）")
