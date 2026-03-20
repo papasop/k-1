@@ -35,17 +35,10 @@ class Cfg:
 class TestHutchinsonEdgeCases:
     """Cover the None-gradient continue paths and other edge cases."""
 
-    def test_none_first_gradient_is_handled(self):
-        """When grad w.r.t. param is None the sample should be skipped."""
+    def test_basic_gradient_produces_finite_result(self):
+        """Basic loss with a contributing param should produce finite output."""
         dummy = nn.Parameter(torch.randn(4))
-        unrelated = nn.Parameter(torch.randn(4))
 
-        # loss_fn depends only on *unrelated*, so grad w.r.t. dummy is None.
-        # torch.autograd.grad raises RuntimeError when allow_unused is False
-        # (the default). The current implementation does not pass allow_unused,
-        # so this path would raise rather than return None.
-        # We instead test with a param that partially contributes.
-        # Using n_samples=1 keeps it fast.
         G = hutchinson_diag_hessian(
             lambda: (dummy ** 2).sum(), dummy, n_samples=1
         )
