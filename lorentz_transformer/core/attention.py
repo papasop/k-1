@@ -124,11 +124,12 @@ class LorentzMultiHeadAttention(nn.Module):
         dropout       = float(getattr(config, "dropout", 0.0))
 
         assert self.d_model % self.n_heads == 0, (
-            f"d_model={self.d_model} must be divisible by n_heads={self.n_heads}"
+            f"d_model={self.d_model} 必须能被 n_heads={self.n_heads} 整除 "
+            f"(d_model must be divisible by n_heads)"
         )
 
-        # 公式选择
-        self.formula = str(getattr(config, "formula", "f3")).lower()
+        # 公式选择（默认 f2 保持向后兼容）
+        self.formula = str(getattr(config, "formula", "f2")).lower()
         if self.formula not in VALID_FORMULAS:
             raise ValueError(
                 f"formula must be one of {VALID_FORMULAS}, got '{self.formula}'"
@@ -245,24 +246,15 @@ class LorentzMultiHeadAttention(nn.Module):
         return torch.cat([-st, ss], dim=2) / scale
 
     def _forward_f2(self, x, B, L, scale):
-        """F2: QK^T/sqrt(d) - 2a*Q_t_scaled*K^T/sqrt(d)"""
+        """F2: QK^T/sqrt(d) - 2a*Q_t_proj*K^T/sqrt(d)"""
         H, d_h = self.n_heads, self.head_dim
         Q = self.q_proj(x).view(B,L,H,d_h).transpose(1,2).float()
         K = self.k_proj(x).view(B,L,H,d_h).transpose(1,2).float()
         scores = torch.matmul(Q, K.transpose(-2,-1)) / scale
 
         if self._has_mask and self.alpha > 0:
-            mask_2d = self.timelike_mask.view(H, d_h).float()
-            mask_bc = mask_2d.unsqueeze(0).unsqueeze(2).to(Q.device)
-            Q_t     = Q * mask_bc
-            q_norm  = Q.norm(dim=-1, keepdim=True)
-            qt_norm = Q_t.norm(dim=-1, keepdim=True)
-            has_t   = qt_norm > 1e-6
-            sf      = torch.where(has_t,
-                                  q_norm / qt_norm.clamp(min=1e-8),
-                                  torch.zeros_like(qt_norm))
-            t_inner = torch.matmul(Q_t * sf,
-                                   K.transpose(-2,-1)) / scale
+            Q_t     = self.q_t_proj(x).view(B, L, H, d_h).transpose(1, 2).float()
+            t_inner = torch.matmul(Q_t, K.transpose(-2, -1)) / scale
             scores  = scores - 2.0 * self.alpha * t_inner
 
         return scores
