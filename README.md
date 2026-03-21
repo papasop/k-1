@@ -44,7 +44,7 @@
 | 失败模式 | 分布外靠猜，不可预期 | sigma 退化为欧氏，优雅降级 |
 | 可解释性 | 黑盒 | Theorem 5 精确描述 |
 
-**一句话：** 传统 LLM 是读遍了所有物理书的文科生。LLCM 是在物理世界里长大的工程师——物理直觉编码在几何里，语言是后来学的工具。
+LLCM 是物理直觉编码在几何里，语言是后来学的工具。
 
 ---
 
@@ -305,9 +305,9 @@ joint_angle_experiment.py # 关节角度实验
 
 ## 理论背景
 
-**Realizability.pdf**（Li 2026）证明：若位移代价满足零阈值可实现性（Assumption R）和时间正代价（Assumption T），Hessian 必然不定，洛伦兹签名是唯一代数结果，光锥自然涌现。所有非洛伦兹签名被 Remark 11 明确排除。
+**Realizability and the Origin of Causality**（Li 2026）证明：若位移代价满足零阈值可实现性（Assumption R）和时间正代价（Assumption T），Hessian 必然不定，洛伦兹签名是唯一代数结果，光锥自然涌现。所有非洛伦兹签名被 Remark 11 明确排除。
 
-**k_1_v5.pdf** Theorem 4 证明：当且仅当 det G < 0 时，系统存在非平凡稳定边界 dc > 0，洛伦兹几何、辛结构、因果结构同时作为代数推论涌现，不是独立假设。
+**K=1 Chronogeometrodynamics** Theorem 4 证明：当且仅当 det G < 0 时，系统存在非平凡稳定边界 dc > 0，洛伦兹几何、辛结构、因果结构同时作为代数推论涌现，不是独立假设。
 
 ---
 
@@ -347,14 +347,6 @@ MIT
 
 ## Citation
 
-```bibtex
-@misc{li2026llcm,
-  author = {Li, Y. Y. N.},
-  title  = {Lorentz Light-Cone Model: Geometry-Native Physical Intelligence},
-  year   = {2026},
-  note   = {Based on K=1 Chronogeometrodynamics},
-  url    = {https://doi.org/10.5281/zenodo.19011128}
-}
 
 @misc{li2026k1,
   author    = {Li, Y. Y. N.},
