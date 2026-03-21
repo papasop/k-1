@@ -1,27 +1,24 @@
 """
-lorentz_transformer/core/layer_norm.py
+lorentz_transformer/core/minkowski_norm.py
 
-MinkowskiLayerNorm — 真正的 Minkowski 几何归一化
+MinkowskiLayerNorm — Minkowski 几何归一化
 
 核心公式:
   <x,x>_η = ||x_s||² - ||x_t||²    (Minkowski 内积)
   x_norm   = x / sqrt(|<x,x>_η| + ε)
 
-与旧版的关键区别:
-  旧版: _minkowski_norm_sq 取了 .abs()，导致类时/类空无法区分
-        实际等价于 L2 归一化的变体，不是真正的 Minkowski 几何
-  新版: 保留符号信息，类时(s²-t²>0)和类空(s²-t²<0)有不同的归一化行为
-        t_dim 必须与注意力层的 time_ratio 对齐
+支持两种类时维度指定方式:
+  1. set_timelike_mask(mask): 布尔 mask，True=类时维度
+  2. t_dim 参数: 前 t_dim 维为类时（与注意力层对齐）
 
-t_dim 对齐规则 (重要!):
-  注意力层: t_dim = int(n_heads * time_ratio) * head_dim
-                   = int(n_heads * time_ratio) * (d_model // n_heads)
-  LayerNorm:t_dim 必须等于上面的值
+t_dim 对齐规则 (与注意力层配合使用):
+  t_dim = int(n_heads * time_ratio) * head_dim
+        = int(n_heads * time_ratio) * (d_model // n_heads)
 
   示例: d_model=256, n_heads=8, time_ratio=0.25
     n_t_heads  = max(1, int(8 * 0.25)) = 2
     head_dim   = 256 // 8 = 32
-    t_dim      = 2 * 32 = 64   ← LayerNorm 的 t_dim 必须是 64
+    t_dim      = 2 * 32 = 64
 """
 
 from typing import Iterable, Optional, Union
@@ -39,8 +36,6 @@ MaskLike = Union[torch.Tensor, Iterable[bool]]
 def compute_t_dim(d_model: int, n_heads: int, time_ratio: float) -> int:
     """
     计算与注意力层对齐的 t_dim。
-
-    与 F1/F3 注意力保持一致的辅助函数，避免手动计算出错。
 
     Args:
         d_model    : 模型维度
@@ -72,19 +67,26 @@ class _BaseMinkowskiLayerNorm(nn.Module):
         t_dim: Optional[int] = None,
         eps: float = 1e-5,
         elementwise_affine: bool = True,
+        use_mean_shift: bool = False,
     ):
         """
         Args:
             d_model           : 模型维度
-            t_dim             : 时间子空间维度（必须与注意力层对齐）
-                                None 时退化为 L2 归一化
+            t_dim             : 时间子空间维度（与注意力层对齐，前 t_dim 维为类时）
+                                None 时退化为 L2 归一化（除非调用了 set_timelike_mask）
             eps               : 数值稳定常数
             elementwise_affine: 是否学习 weight/bias
+            use_mean_shift    : 归一化前是否对最后一维去均值
         """
         super().__init__()
-        self.d_model = d_model
-        self.t_dim   = t_dim
-        self.eps     = eps
+        self.d_model       = d_model
+        self.t_dim         = t_dim
+        self.eps           = eps
+        self.use_mean_shift = use_mean_shift
+
+        # 类时 mask（通过 set_timelike_mask 设置）
+        self._timelike_mask: Optional[torch.Tensor] = None
+        self._has_mask: bool = False
 
         if elementwise_affine:
             self.weight = nn.Parameter(torch.ones(d_model))
@@ -93,106 +95,198 @@ class _BaseMinkowskiLayerNorm(nn.Module):
             self.register_buffer("weight", torch.ones(d_model))
             self.register_buffer("bias",   torch.zeros(d_model))
 
-    def _mink_norm_sq(self, x: torch.Tensor) -> torch.Tensor:
-        """
-        计算 Minkowski 内积平方: <x,x>_η = ||x_s||² - ||x_t||²
+    # ------------------------------------------------------------------
+    # 公共 API
+    # ------------------------------------------------------------------
 
-        不取绝对值——保留符号信息是真正 Minkowski 归一化的关键。
-        类时向量 (s²>t²): mink_sq > 0
-        类空向量 (s²<t²): mink_sq < 0
-        类光向量 (s²=t²): mink_sq ≈ 0
-
-        Returns: (B*L, 1) 的未取绝对值的 Minkowski 内积
+    def set_timelike_mask(self, mask: MaskLike) -> None:
         """
-        t = x[..., :self.t_dim]          # 时间分量
-        s = x[..., self.t_dim:]          # 空间分量
-        return (s ** 2).sum(-1, keepdim=True) \
-             - (t ** 2).sum(-1, keepdim=True)
+        设置类时维度 mask。
+
+        Args:
+            mask: 长度为 d_model 的布尔序列，True 表示该维度为类时维度。
+                  接受 list、tuple 或 torch.Tensor。
+
+        Raises:
+            ValueError: mask 形状与 d_model 不匹配。
+        """
+        validated = self._validate_mask(mask)
+        self._timelike_mask = validated
+        self._has_mask = bool(validated.any().item())
+
+    @property
+    def timelike_mask(self) -> Optional[torch.Tensor]:
+        """当前类时掩码（只读属性）。"""
+        return self._timelike_mask
+
+    # ------------------------------------------------------------------
+    # 验证工具
+    # ------------------------------------------------------------------
+
+    def _validate_input(
+        self, x: torch.Tensor
+    ):
+        """
+        验证输入并展平为 (N, d_model)。
+
+        Returns:
+            x_flat      : (N, d_model) 张量
+            original_shape: 原始形状
+
+        Raises:
+            ValueError: 最后一维 != d_model
+        """
+        if x.shape[-1] != self.d_model:
+            raise ValueError(
+                f"Expected last dimension {self.d_model}, "
+                f"got {x.shape[-1]}"
+            )
+        original_shape = x.shape
+        x_flat = x.reshape(-1, self.d_model)
+        if self.use_mean_shift:
+            x_flat = x_flat - x_flat.mean(dim=-1, keepdim=True)
+        return x_flat, original_shape
+
+    def _validate_mask(self, mask: MaskLike) -> torch.Tensor:
+        """
+        验证并转换 mask 为 bool 张量。
+
+        Returns:
+            torch.Tensor of shape (d_model,) and dtype=torch.bool
+
+        Raises:
+            ValueError: mask 形状不是 (d_model,)
+        """
+        if isinstance(mask, torch.Tensor):
+            mask_t = mask.bool()
+        else:
+            mask_t = torch.tensor(list(mask), dtype=torch.bool)
+
+        if mask_t.ndim != 1 or mask_t.shape[0] != self.d_model:
+            raise ValueError(
+                f"Expected timelike mask shape ({self.d_model},), "
+                f"got {tuple(mask_t.shape)}"
+            )
+        return mask_t
+
+    # ------------------------------------------------------------------
+    # 内部工具
+    # ------------------------------------------------------------------
+
+    def _minkowski_norm_sq(self, x: torch.Tensor) -> torch.Tensor:
+        """
+        计算 |<x,x>_η| = |s² - t²|（Minkowski 内积的绝对值）。
+
+        优先级: 1) _timelike_mask (若已设置), 2) t_dim (若已设置), 3) L2_sq
+
+        Args:
+            x: (N, d_model)
+
+        Returns:
+            (N, 1) 张量，值为非负实数
+        """
+        if self._has_mask and self._timelike_mask is not None:
+            mask = self._timelike_mask.to(x.device)   # (d_model,)
+            t_sq = (x * mask.float()).pow(2).sum(-1, keepdim=True)
+            s_sq = (x * (~mask).float()).pow(2).sum(-1, keepdim=True)
+            return (s_sq - t_sq).abs()
+        elif self.t_dim is not None:
+            t_sq = x[..., :self.t_dim].pow(2).sum(-1, keepdim=True)
+            s_sq = x[..., self.t_dim:].pow(2).sum(-1, keepdim=True)
+            return (s_sq - t_sq).abs()
+        else:
+            # 没有类时信息 → 全部视为类空，等价于 L2²
+            return x.pow(2).sum(-1, keepdim=True)
 
     def _l2_norm_sq(self, x: torch.Tensor) -> torch.Tensor:
-        """标准 L2 范数平方（fallback 用）。"""
-        return (x ** 2).sum(-1, keepdim=True)
+        """L2 范数平方，形状 (N, 1)。"""
+        return x.pow(2).sum(-1, keepdim=True)
 
     def _apply_affine(self, x: torch.Tensor) -> torch.Tensor:
+        """应用仿射变换 weight * x + bias。"""
         return x * self.weight.unsqueeze(0) + self.bias.unsqueeze(0)
 
 
 # ============================================================================
-# MinkowskiLayerNorm — 标准版（推荐）
+# MinkowskiLayerNormImproved（推荐默认）— 逐样本回退
 # ============================================================================
 
-class MinkowskiLayerNorm(_BaseMinkowskiLayerNorm):
+class MinkowskiLayerNormImproved(_BaseMinkowskiLayerNorm):
     """
-    真正的 Minkowski 几何归一化。
+    Minkowski 归一化（推荐版本）。
 
     公式:
-        norm_sq = ||x_s||² - ||x_t||²         (Minkowski 内积)
-        x_out   = x / sqrt(|norm_sq| + ε)     (保留符号的稳定开方)
-                * weight + bias
+        mink_sq = |s² - t²|
+        norm_sq = mink_sq  if mink_sq > eps  (per-sample)
+                = L2_sq    otherwise (fallback to L2)
+        x_out   = x / sqrt(norm_sq + eps) * weight + bias
 
-    与旧版区别:
-        旧版在 _minkowski_norm_sq 里取了 .abs()，丢失了类时/类空信息。
-        本版在计算 norm_sq 时不取 abs，只在 sqrt 时用 abs 保证数值稳定，
-        让类时和类空向量有不同的归一化行为，保留 Minkowski 几何结构。
+    特点:
+        - 逐样本回退: 近光锥样本退化到 L2，其余用 Minkowski
+        - 支持 set_timelike_mask（mask 优先）和 t_dim（构造参数）两种模式
 
-    t_dim 必须与注意力层对齐:
-        t_dim = compute_t_dim(d_model, n_heads, time_ratio)
-
-    Args:
-        d_model           : 模型维度
-        t_dim             : 时间子空间维度，用 compute_t_dim() 计算
-        eps               : 数值稳定常数，默认 1e-5
-        elementwise_affine: 是否学习 weight/bias，默认 True
-
-    Example:
-        >>> t_dim = compute_t_dim(d_model=256, n_heads=8, time_ratio=0.25)
-        >>> ln = MinkowskiLayerNorm(256, t_dim=t_dim)
-        >>> out = ln(torch.randn(2, 128, 256))
+    recommended_variant = True
     """
+
+    recommended_variant: bool = True
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """
         Args:
             x: (..., d_model)
         Returns:
-            归一化后的张量，形状与 x 相同
+            归一化张量，形状与 x 相同
         """
-        shape  = x.shape
-        x_flat = x.reshape(-1, self.d_model)
+        x_flat, shape = self._validate_input(x)
 
-        if self.t_dim is not None:
-            # 真正的 Minkowski 归一化
-            mink_sq = self._mink_norm_sq(x_flat)        # 保留符号
-            norm    = torch.sqrt(mink_sq.abs() + self.eps)  # 稳定开方
+        if self._has_mask or self.t_dim is not None:
+            mink_sq = self._minkowski_norm_sq(x_flat)   # (N,1), ≥ 0
+            l2_sq   = self._l2_norm_sq(x_flat)
+            # 逐样本: 接近光锥时退化到 L2
+            use_l2  = mink_sq <= self.eps
+            norm_sq = torch.where(use_l2, l2_sq, mink_sq)
         else:
-            # 没有 t_dim → 退化为 L2 归一化
-            norm = torch.sqrt(self._l2_norm_sq(x_flat) + self.eps)
+            norm_sq = self._l2_norm_sq(x_flat)
 
-        x_norm = x_flat / (norm + self.eps)
+        norm   = torch.sqrt(norm_sq + self.eps)
+        x_norm = x_flat / norm
         return self._apply_affine(x_norm).reshape(shape)
 
 
 # ============================================================================
-# MinkowskiLayerNormStable — 带 fallback 的稳健版
+# MinkowskiLayerNorm — 向后兼容别名
+# ============================================================================
+
+# MinkowskiLayerNorm 指向推荐变体
+MinkowskiLayerNorm = MinkowskiLayerNormImproved
+
+
+# ============================================================================
+# MinkowskiLayerNormStable — 批次级回退
 # ============================================================================
 
 class MinkowskiLayerNormStable(_BaseMinkowskiLayerNorm):
     """
-    带自动 fallback 的 Minkowski 归一化。
+    稳健的 Minkowski 归一化，支持批次级回退。
 
-    在 Minkowski 范数过小（接近类光）时自动 fallback 到 L2，
-    防止数值不稳定。适合训练早期或数据分布未知的场景。
+    与 Improved 的区别:
+        Improved: 逐样本决定是否回退到 L2
+        Stable:   若批次中近光锥样本比例超过阈值，整个批次回退到 L2
 
     Args:
-        d_model                    : 模型维度
-        t_dim                      : 时间子空间维度
-        eps                        : 数值稳定常数
-        elementwise_affine         : 是否学习 weight/bias
-        fallback_threshold         : |mink_sq| < threshold 时 fallback 到 L2
-                                     默认 1e-3
-        fallback_ratio_threshold   : fallback 比例超过此值时打印警告
-                                     默认 0.5
+        d_model                   : 模型维度
+        t_dim                     : 时间维度（可选）
+        eps                       : 数值稳定常数
+        elementwise_affine        : 是否学习 weight/bias
+        use_mean_shift            : 是否去均值
+        minkowski_fallback_threshold: 触发批次级回退的近光锥样本比例阈值（0~1）
+                                      若 ratio > threshold → 整批回退到 L2
+        use_minkowski             : 为 False 时始终使用 L2
+
+    recommended_variant = False
     """
+
+    recommended_variant: bool = False
 
     def __init__(
         self,
@@ -200,221 +294,74 @@ class MinkowskiLayerNormStable(_BaseMinkowskiLayerNorm):
         t_dim: Optional[int] = None,
         eps: float = 1e-5,
         elementwise_affine: bool = True,
-        fallback_threshold: float = 1e-3,
-        fallback_ratio_threshold: float = 0.5,
+        use_mean_shift: bool = False,
+        minkowski_fallback_threshold: float = 0.5,
+        use_minkowski: bool = True,
     ):
-        super().__init__(d_model, t_dim, eps, elementwise_affine)
-        self.fallback_threshold       = fallback_threshold
-        self.fallback_ratio_threshold = fallback_ratio_threshold
-        self._fallback_count   = 0
-        self._total_count      = 0
-
-    @property
-    def fallback_ratio(self) -> float:
-        """当前批次 fallback 到 L2 的比例（诊断用）。"""
-        if self._total_count == 0:
-            return 0.0
-        return self._fallback_count / self._total_count
+        super().__init__(d_model, t_dim, eps, elementwise_affine, use_mean_shift)
+        self.minkowski_fallback_threshold = minkowski_fallback_threshold
+        self.use_minkowski = use_minkowski
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        shape  = x.shape
-        x_flat = x.reshape(-1, self.d_model)
+        x_flat, shape = self._validate_input(x)
 
-        if self.t_dim is None:
+        if not self.use_minkowski or (not self._has_mask and self.t_dim is None):
+            # 不使用 Minkowski 或没有类时信息 → L2
             norm = torch.sqrt(self._l2_norm_sq(x_flat) + self.eps)
-            x_norm = x_flat / (norm + self.eps)
+            x_norm = x_flat / norm
             return self._apply_affine(x_norm).reshape(shape)
 
-        mink_sq  = self._mink_norm_sq(x_flat)
-        l2_sq    = self._l2_norm_sq(x_flat)
+        mink_sq = self._minkowski_norm_sq(x_flat)   # (N,1), ≥ 0
+        l2_sq   = self._l2_norm_sq(x_flat)
 
-        # fallback mask：|mink_sq| 太小时用 L2
-        use_l2   = mink_sq.abs() < self.fallback_threshold
-        norm_sq  = torch.where(use_l2, l2_sq, mink_sq.abs())
-        norm     = torch.sqrt(norm_sq + self.eps)
+        # 批次级回退判断
+        near_lightlike = (mink_sq <= self.eps)       # (N,1) bool
+        ratio = near_lightlike.float().mean()
+        if ratio > self.minkowski_fallback_threshold:
+            # 整批使用 L2
+            norm_sq = l2_sq
+        else:
+            # 整批使用 Minkowski
+            norm_sq = mink_sq
 
-        # 诊断统计
-        self._fallback_count = int(use_l2.sum().item())
-        self._total_count    = use_l2.numel()
-
-        x_norm = x_flat / (norm + self.eps)
+        norm   = torch.sqrt(norm_sq + self.eps)
+        x_norm = x_flat / norm
         return self._apply_affine(x_norm).reshape(shape)
 
 
 # ============================================================================
-# MinkowskiLayerNormOptimized — 纯 L2（兼容旧接口，无 Minkowski 几何）
+# MinkowskiLayerNormOptimized — 纯 L2（兼容旧接口）
 # ============================================================================
 
 class MinkowskiLayerNormOptimized(_BaseMinkowskiLayerNorm):
     """
-    纯 L2 归一化，兼容旧版 set_timelike_mask 接口。
+    纯 L2 归一化，兼容 set_timelike_mask 接口。
 
-    不使用任何 Minkowski 几何，适合：
-    - 需要保持旧接口但不想引入 Minkowski 的场景
-    - 作为消融实验的基线（纯 L2 vs Minkowski）
+    始终使用 L2 范数，不应用 Minkowski 几何。
+    适合消融实验基线（对比 Minkowski 变体）。
 
-    Note:
-        set_timelike_mask() 调用被接受但无任何效果，
-        仅为兼容旧版 TimeLikeProbe 接口。
+    recommended_variant = False
     """
 
-    def set_timelike_mask(self, mask: MaskLike) -> None:
-        """接受调用但不做任何事（兼容旧接口）。"""
-        pass
+    recommended_variant: bool = False
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        shape  = x.shape
-        x_flat = x.reshape(-1, self.d_model)
+        x_flat, shape = self._validate_input(x)
         norm   = torch.sqrt(self._l2_norm_sq(x_flat) + self.eps)
-        x_norm = x_flat / (norm + self.eps)
+        x_norm = x_flat / norm
         return self._apply_affine(x_norm).reshape(shape)
 
 
 # ============================================================================
-# 旧版兼容别名（MinkowskiLayerNormImproved → MinkowskiLayerNorm）
+# 公共导出
 # ============================================================================
-
-MinkowskiLayerNormImproved = MinkowskiLayerNorm   # 向后兼容
-
 
 __all__ = [
     "MinkowskiLayerNorm",
+    "MinkowskiLayerNormImproved",
     "MinkowskiLayerNormStable",
     "MinkowskiLayerNormOptimized",
-    "MinkowskiLayerNormImproved",
+    "_BaseMinkowskiLayerNorm",
+    "MaskLike",
     "compute_t_dim",
 ]
-
-
-# ============================================================================
-# 测试
-# ============================================================================
-
-if __name__ == "__main__":
-    import numpy as np
-
-    print("=" * 60)
-    print("MinkowskiLayerNorm v2 — 测试")
-    print("=" * 60)
-
-    D, B, L = 256, 2, 16
-    x = torch.randn(B, L, D)
-
-    # 正确的 t_dim（与注意力层对齐）
-    t_dim = compute_t_dim(d_model=D, n_heads=8, time_ratio=0.25)
-    print(f"\nt_dim = compute_t_dim(256, 8, 0.25) = {t_dim}")
-    print(f"（旧版用了 32，正确值是 {t_dim}）\n")
-
-    # ── 测试1：三个变体 ──────────────────────────────────────
-    print("【测试1】三个变体输出稳定性")
-    print("-" * 60)
-    variants = [
-        ("MinkowskiLayerNorm (真Mink)", MinkowskiLayerNorm(D, t_dim=t_dim)),
-        ("MinkowskiLayerNormStable",    MinkowskiLayerNormStable(D, t_dim=t_dim)),
-        ("MinkowskiLayerNormOptimized", MinkowskiLayerNormOptimized(D)),
-    ]
-    for name, ln in variants:
-        out = ln(x)
-        print(f"  {name}")
-        print(f"    输出范数: {out.norm():.4f}  "
-              f"范围: [{out.min():.3f}, {out.max():.3f}]  "
-              f"NaN: {torch.isnan(out).any().item()}")
-
-    # ── 测试2：t_dim 对齐验证 ────────────────────────────────
-    print("\n【测试2】t_dim 对齐 vs 不对齐的几何差异")
-    print("-" * 60)
-    ln_wrong  = MinkowskiLayerNorm(D, t_dim=32)   # 旧版错误值
-    ln_correct= MinkowskiLayerNorm(D, t_dim=t_dim) # 正确值
-    out_w = ln_wrong(x)
-    out_c = ln_correct(x)
-    diff = (out_w - out_c).abs().mean().item()
-    print(f"  t_dim=32  (旧版): 输出范数 {out_w.norm():.4f}")
-    print(f"  t_dim={t_dim} (正确): 输出范数 {out_c.norm():.4f}")
-    print(f"  平均差异: {diff:.6f}  ({'显著不同' if diff>0.01 else '几乎相同'})")
-
-    # ── 测试3：类时/类空区分验证 ────────────────────────────
-    print("\n【测试3】真正的 Minkowski 几何 — 类时vs类空归一化行为不同")
-    print("-" * 60)
-    ln = MinkowskiLayerNorm(D, t_dim=t_dim)
-
-    # 构造一个纯类时向量（空间分量大于时间分量）
-    x_timelike  = torch.zeros(1, 1, D)
-    x_timelike[..., t_dim:] = 2.0   # 空间分量=2，时间分量=0 → s²-t²>0
-
-    # 构造一个纯类空向量（时间分量大于空间分量）
-    x_spacelike = torch.zeros(1, 1, D)
-    x_spacelike[..., :t_dim] = 2.0  # 时间分量=2，空间分量=0 → s²-t²<0
-
-    out_tl = ln(x_timelike)
-    out_sl = ln(x_spacelike)
-
-    s_tl = (x_timelike[..., t_dim:]**2).sum().item()**0.5
-    t_tl = (x_timelike[..., :t_dim]**2).sum().item()**0.5
-    s_sl = (x_spacelike[..., t_dim:]**2).sum().item()**0.5
-    t_sl = (x_spacelike[..., :t_dim]**2).sum().item()**0.5
-
-    print(f"  类时向量: ||s||={s_tl:.2f} ||t||={t_tl:.2f}  "
-          f"mink_sq={s_tl**2-t_tl**2:+.2f}  "
-          f"输出范数={out_tl.norm():.4f}")
-    print(f"  类空向量: ||s||={s_sl:.2f} ||t||={t_sl:.2f}  "
-          f"mink_sq={s_sl**2-t_sl**2:+.2f}  "
-          f"输出范数={out_sl.norm():.4f}")
-    diff_geo = abs(out_tl.norm().item() - out_sl.norm().item())
-    print(f"  几何差异: {diff_geo:.4f}  "
-          f"({'Minkowski几何有效' if diff_geo > 0.01 else '差异过小，检查t_dim'})")
-
-    # ── 测试4：掩码比例稳定性 ─────────────────────────────────
-    print("\n【测试4】掩码比例稳定性（t_dim 固定，检查输入分布）")
-    print("-" * 60)
-    ln = MinkowskiLayerNorm(D, t_dim=t_dim)
-    norms = []
-    for seed in range(10):
-        torch.manual_seed(seed)
-        x_rand = torch.randn(B, L, D)
-        out = ln(x_rand)
-        norms.append(out.norm().item())
-    print(f"  10次随机输入的输出范数: "
-          f"mean={np.mean(norms):.4f}  std={np.std(norms):.4f}  "
-          f"cv={np.std(norms)/np.mean(norms):.4f}")
-    print(f"  {'稳定 OK' if np.std(norms)/np.mean(norms) < 0.1 else '不稳定，检查 eps'}")
-
-    # ── 测试5：梯度 ──────────────────────────────────────────
-    print("\n【测试5】梯度流动")
-    print("-" * 60)
-    ln = MinkowskiLayerNorm(D, t_dim=t_dim)
-    x_grad = torch.randn(B, L, D, requires_grad=True)
-    out = ln(x_grad)
-    out.sum().backward()
-    g_in  = x_grad.grad.norm().item()
-    g_w   = ln.weight.grad.norm().item()
-    print(f"  输入梯度范数:  {g_in:.6f}  {'OK' if g_in>0 else 'FAIL'}")
-    print(f"  weight梯度范数: {g_w:.6f}  {'OK' if g_w>0 else 'FAIL'}")
-
-    # ── 测试6：F1/F3 注意力对齐确认 ──────────────────────────
-    print("\n【测试6】与 F1/F3 注意力 t_dim 对齐确认")
-    print("-" * 60)
-    configs = [
-        (256,  8, 0.25),
-        (512,  8, 0.25),
-        (768, 12, 0.25),
-        (1024,16, 0.25),
-    ]
-    for d, h, tr in configs:
-        td = compute_t_dim(d, h, tr)
-        ln_test = MinkowskiLayerNorm(d, t_dim=td)
-        x_test  = torch.randn(1, 4, d)
-        out     = ln_test(x_test)
-        ok = not torch.isnan(out).any()
-        print(f"  d={d:5d} h={h:3d} tr={tr}  "
-              f"t_dim={td:4d}  {'OK' if ok else 'FAIL'}")
-
-    print("\n" + "=" * 60)
-    print("所有测试完成")
-    print()
-    print("使用方式:")
-    print("  from lorentz_transformer.core.layer_norm import (")
-    print("      MinkowskiLayerNorm, compute_t_dim")
-    print("  )")
-    print("  t_dim = compute_t_dim(d_model, n_heads, time_ratio)")
-    print("  ln    = MinkowskiLayerNorm(d_model, t_dim=t_dim)")
-    print("=" * 60)

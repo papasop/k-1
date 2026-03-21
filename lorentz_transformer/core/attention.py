@@ -124,11 +124,11 @@ class LorentzMultiHeadAttention(nn.Module):
         dropout       = float(getattr(config, "dropout", 0.0))
 
         assert self.d_model % self.n_heads == 0, (
-            f"d_model={self.d_model} must be divisible by n_heads={self.n_heads}"
+            f"d_model={self.d_model} 必须能被 n_heads={self.n_heads} 整除"
         )
 
-        # 公式选择
-        self.formula = str(getattr(config, "formula", "f3")).lower()
+        # 公式选择（默认 f2，保持向后兼容）
+        self.formula = str(getattr(config, "formula", "f2")).lower()
         if self.formula not in VALID_FORMULAS:
             raise ValueError(
                 f"formula must be one of {VALID_FORMULAS}, got '{self.formula}'"
@@ -159,7 +159,6 @@ class LorentzMultiHeadAttention(nn.Module):
                 "timelike_mask",
                 torch.zeros(self.d_model, dtype=torch.bool),
             )
-            self._has_mask = False
 
         else:  # f3
             self.q_t     = nn.Linear(self.d_model, self.t_dim, bias=False)
@@ -168,6 +167,9 @@ class LorentzMultiHeadAttention(nn.Module):
             self.k_s     = nn.Linear(self.d_model, self.s_dim, bias=False)
             # sigma=sigmoid(w_sigma) in (0,1), init 0 -> sigma=0.5
             self.w_sigma = nn.Parameter(torch.zeros(1))
+
+        # _has_mask 对所有公式均有效
+        self._has_mask = False
 
         # 共享：V + 输出 + Dropout
         self.v_proj = nn.Linear(self.d_model, self.d_model, bias=False)
@@ -178,13 +180,18 @@ class LorentzMultiHeadAttention(nn.Module):
         self.last_intervals:     Optional[torch.Tensor] = None
         self.last_intervals_raw: Optional[torch.Tensor] = None
 
-    # F2 专用：mask 注入（兼容旧版 TimeLikeProbe）
     def set_timelike_mask(self, mask: torch.Tensor) -> None:
-        """注入类时掩码（仅 F2 有效）。"""
-        if self.formula != "f2":
-            return
-        self.timelike_mask.copy_(mask.bool())
-        self._has_mask = bool(mask.any().item())
+        """
+        注入类时掩码。
+
+        F2 公式将 mask 用于 Lorentz 修正计算；
+        F1/F3 公式记录 _has_mask 状态（mask 不影响内部计算）。
+        接受 float/bool tensor 或布尔序列，自动转换为 bool。
+        """
+        mask_bool = mask.bool() if isinstance(mask, torch.Tensor) else torch.tensor(list(mask), dtype=torch.bool)
+        self._has_mask = bool(mask_bool.any().item())
+        if self.formula == "f2":
+            self.timelike_mask.copy_(mask_bool)
 
     @property
     def sigma(self) -> Optional[float]:
@@ -234,18 +241,24 @@ class LorentzMultiHeadAttention(nn.Module):
         return self.o_proj(out), attn_probs
 
     def _forward_f1(self, x, B, L, scale):
-        """F1: -Q_t Kt^T + Q_s Ks^T"""
+        """F1: -Q_t Kt^T + Q_s Ks^T, output shape (B, H, L, L)"""
         d_h = self.head_dim
+        # (B, L, n_t, d_h)
         Qt = self.q_t(x).view(B, L, self.n_t, d_h)
         Kt = self.k_t(x).view(B, L, self.n_t, d_h)
         Qs = self.q_s(x).view(B, L, self.n_s, d_h)
         Ks = self.k_s(x).view(B, L, self.n_s, d_h)
-        st = torch.einsum("bthd,bshd->bths", Qt, Kt)
-        ss = torch.einsum("bthd,bshd->bths", Qs, Ks)
-        return torch.cat([-st, ss], dim=2) / scale
+        # Transpose to (B, H, L, d_h) for batched matmul
+        Qt = Qt.permute(0, 2, 1, 3)   # (B, n_t, L, d_h)
+        Kt = Kt.permute(0, 2, 1, 3)
+        Qs = Qs.permute(0, 2, 1, 3)   # (B, n_s, L, d_h)
+        Ks = Ks.permute(0, 2, 1, 3)
+        st = torch.matmul(Qt, Kt.transpose(-2, -1))  # (B, n_t, L, L)
+        ss = torch.matmul(Qs, Ks.transpose(-2, -1))  # (B, n_s, L, L)
+        return torch.cat([-st, ss], dim=1) / scale   # (B, H, L, L)
 
     def _forward_f2(self, x, B, L, scale):
-        """F2: QK^T/sqrt(d) - 2a*Q_t_scaled*K^T/sqrt(d)"""
+        """F2: QK^T/sqrt(d) - 2a*Q_t*K^T/sqrt(d)"""
         H, d_h = self.n_heads, self.head_dim
         Q = self.q_proj(x).view(B,L,H,d_h).transpose(1,2).float()
         K = self.k_proj(x).view(B,L,H,d_h).transpose(1,2).float()
@@ -254,38 +267,33 @@ class LorentzMultiHeadAttention(nn.Module):
         if self._has_mask and self.alpha > 0:
             mask_2d = self.timelike_mask.view(H, d_h).float()
             mask_bc = mask_2d.unsqueeze(0).unsqueeze(2).to(Q.device)
-            Q_t     = Q * mask_bc
-            q_norm  = Q.norm(dim=-1, keepdim=True)
-            qt_norm = Q_t.norm(dim=-1, keepdim=True)
-            has_t   = qt_norm > 1e-6
-            sf      = torch.where(has_t,
-                                  q_norm / qt_norm.clamp(min=1e-8),
-                                  torch.zeros_like(qt_norm))
-            t_inner = torch.matmul(Q_t * sf,
-                                   K.transpose(-2,-1)) / scale
+            Q_t     = self.q_t_proj(x).view(B,L,H,d_h).transpose(1,2).float()
+            Q_t     = Q_t * mask_bc
+            t_inner = torch.matmul(Q_t, K.transpose(-2,-1)) / scale
             scores  = scores - 2.0 * self.alpha * t_inner
 
         return scores
 
     def _forward_f3(self, x, B, L, scale):
-        """F3: -sigma*Q_t Kt^T + Q_s Ks^T"""
+        """F3: -sigma*Q_t Kt^T + Q_s Ks^T, output shape (B, H, L, L)"""
         d_h = self.head_dim
-        Qt = self.q_t(x).view(B, L, self.n_t, d_h)
-        Kt = self.k_t(x).view(B, L, self.n_t, d_h)
-        Qs = self.q_s(x).view(B, L, self.n_s, d_h)
-        Ks = self.k_s(x).view(B, L, self.n_s, d_h)
-        st    = torch.einsum("bthd,bshd->bths", Qt, Kt)
-        ss    = torch.einsum("bthd,bshd->bths", Qs, Ks)
+        Qt = self.q_t(x).view(B, L, self.n_t, d_h).permute(0, 2, 1, 3)  # (B, n_t, L, d_h)
+        Kt = self.k_t(x).view(B, L, self.n_t, d_h).permute(0, 2, 1, 3)
+        Qs = self.q_s(x).view(B, L, self.n_s, d_h).permute(0, 2, 1, 3)  # (B, n_s, L, d_h)
+        Ks = self.k_s(x).view(B, L, self.n_s, d_h).permute(0, 2, 1, 3)
+        st    = torch.matmul(Qt, Kt.transpose(-2, -1))  # (B, n_t, L, L)
+        ss    = torch.matmul(Qs, Ks.transpose(-2, -1))  # (B, n_s, L, L)
         sigma = torch.sigmoid(self.w_sigma)
-        return torch.cat([-sigma * st, ss], dim=2) / scale
+        return torch.cat([-sigma * st, ss], dim=1) / scale  # (B, H, L, L)
 
     def extra_repr(self) -> str:
         base = (f"formula={self.formula}, "
-                f"n_heads={self.n_heads}, head_dim={self.head_dim}")
+                f"n_heads={self.n_heads}, head_dim={self.head_dim}, "
+                f"alpha={self.alpha}")
         if self.formula == "f1":
             return base + f", n_t={self.n_t}, n_s={self.n_s}"
         elif self.formula == "f2":
-            return base + f", alpha={self.alpha}, has_mask={self._has_mask}"
+            return base + f", has_mask={self._has_mask}"
         else:
             s = self.sigma
             return base + f", sigma={s:.3f}, n_t={self.n_t}, n_s={self.n_s}"
