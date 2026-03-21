@@ -23,6 +23,7 @@ from lorentz_transformer.core.attention import (
 class Cfg:
     d_model: int = 64
     n_heads: int = 4
+    formula: str = 'f2'
     lorentz_alpha: float = 0.25
     dropout: float = 0.0
 

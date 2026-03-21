@@ -27,6 +27,7 @@ class MockConfig:
 
     d_model: int = 256
     n_heads: int = 8
+    formula: str = 'f2'
     lorentz_alpha: float = 0.25
     dropout: float = 0.1
 
