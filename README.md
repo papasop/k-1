@@ -371,14 +371,6 @@ MIT
 
 ## Citation
 
-```bibtex
-@misc{li2026llcm,
-  author = {Li, Y. Y. N.},
-  title  = {Lorentz Light-Cone Model: Geometry-Native Physical Intelligence},
-  year   = {2026},
-  note   = {Based on K=1 Chronogeometrodynamics},
-  url    = {https://doi.org/10.5281/zenodo.19011128}
-}
 
 @misc{li2026k1,
   author    = {Li, Y. Y. N.},
