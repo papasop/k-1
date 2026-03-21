@@ -62,6 +62,7 @@ class _BaseMinkowskiLayerNorm(nn.Module):
         eps: float = 1e-5,
         elementwise_affine: bool = True,
         use_mean_shift: bool = False,
+        t_dim: Optional[int] = None,
     ):
         """
         Args:
@@ -69,6 +70,9 @@ class _BaseMinkowskiLayerNorm(nn.Module):
             eps               : 数值稳定常数
             elementwise_affine: 是否学习 weight/bias
             use_mean_shift    : 是否在归一化前先对最后一维去均值
+            t_dim             : 类时维度数（前 t_dim 个维度视为类时）。
+                                等价于调用 set_timelike_mask，方便与
+                                compute_t_dim / F1/F3 注意力层对齐。
         """
         super().__init__()
         self.d_model        = d_model
@@ -88,6 +92,15 @@ class _BaseMinkowskiLayerNorm(nn.Module):
             "timelike_mask",
             torch.zeros(d_model, dtype=torch.bool),
         )
+
+        if t_dim is not None:
+            if not (0 < t_dim < d_model):
+                raise ValueError(
+                    f"t_dim must satisfy 0 < t_dim < d_model={d_model}, got {t_dim}"
+                )
+            mask = torch.zeros(d_model, dtype=torch.bool)
+            mask[:t_dim] = True
+            self.set_timelike_mask(mask)
 
     # ------------------------------------------------------------------
     # Mask 管理
@@ -236,8 +249,9 @@ class MinkowskiLayerNormStable(_BaseMinkowskiLayerNorm):
         use_mean_shift: bool = False,
         minkowski_fallback_threshold: float = 0.5,
         use_minkowski: bool = True,
+        t_dim: Optional[int] = None,
     ):
-        super().__init__(d_model, eps, elementwise_affine, use_mean_shift)
+        super().__init__(d_model, eps, elementwise_affine, use_mean_shift, t_dim)
         self.minkowski_fallback_threshold = minkowski_fallback_threshold
         self.use_minkowski                = use_minkowski
         self._fallback_count = 0

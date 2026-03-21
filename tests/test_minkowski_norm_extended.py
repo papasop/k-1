@@ -558,3 +558,78 @@ class TestNormEdgeCases:
         norm.set_timelike_mask((False, True, False))
         assert norm._has_mask
         assert norm.timelike_mask[1].item() is True
+
+
+# ======================================================================
+# t_dim constructor parameter
+# ======================================================================
+
+
+class TestTDimConstructor:
+    """Verify t_dim parameter auto-sets the timelike mask correctly."""
+
+    def test_t_dim_sets_mask_improved(self):
+        norm = MinkowskiLayerNormImproved(d_model=8, t_dim=2)
+        assert norm._has_mask
+        assert norm.timelike_mask[:2].all()
+        assert not norm.timelike_mask[2:].any()
+
+    def test_t_dim_sets_mask_stable(self):
+        norm = MinkowskiLayerNormStable(d_model=8, t_dim=2)
+        assert norm._has_mask
+        assert norm.timelike_mask[:2].all()
+        assert not norm.timelike_mask[2:].any()
+
+    def test_t_dim_sets_mask_optimized(self):
+        norm = MinkowskiLayerNormOptimized(d_model=8, t_dim=2)
+        # Optimized accepts t_dim but ignores it in forward
+        assert norm._has_mask
+
+    def test_t_dim_alias_minkowski_layer_norm(self):
+        norm = MinkowskiLayerNorm(d_model=8, t_dim=3)
+        assert norm._has_mask
+        assert norm.timelike_mask[:3].all()
+        assert not norm.timelike_mask[3:].any()
+
+    def test_t_dim_zero_raises(self):
+        with pytest.raises(ValueError, match="t_dim"):
+            MinkowskiLayerNormImproved(d_model=8, t_dim=0)
+
+    def test_t_dim_equals_d_model_raises(self):
+        with pytest.raises(ValueError, match="t_dim"):
+            MinkowskiLayerNormImproved(d_model=8, t_dim=8)
+
+    def test_t_dim_greater_than_d_model_raises(self):
+        with pytest.raises(ValueError, match="t_dim"):
+            MinkowskiLayerNormImproved(d_model=8, t_dim=9)
+
+    def test_t_dim_none_no_mask(self):
+        norm = MinkowskiLayerNormImproved(d_model=8, t_dim=None)
+        assert not norm._has_mask
+
+    def test_t_dim_forward_shape(self):
+        norm = MinkowskiLayerNorm(d_model=16, t_dim=4)
+        x = torch.randn(2, 10, 16)
+        out = norm(x)
+        assert out.shape == (2, 10, 16)
+        assert torch.isfinite(out).all()
+
+    def test_t_dim_gradient_flows(self):
+        norm = MinkowskiLayerNorm(d_model=16, t_dim=4)
+        x = torch.randn(2, 4, 16, requires_grad=True)
+        out = norm(x)
+        out.sum().backward()
+        assert x.grad is not None
+        assert torch.isfinite(x.grad).all()
+
+    def test_t_dim_compute_t_dim_alignment(self):
+        """t_dim from compute_t_dim should match attention layer t_dim."""
+        from lorentz_transformer.core.layer_norm import compute_t_dim
+        d_model, n_heads, time_ratio = 128, 8, 0.25
+        t_dim = compute_t_dim(d_model, n_heads, time_ratio)
+        norm = MinkowskiLayerNorm(d_model, t_dim=t_dim)
+        assert norm.timelike_mask[:t_dim].all()
+        assert not norm.timelike_mask[t_dim:].any()
+        x = torch.randn(2, 8, d_model)
+        out = norm(x)
+        assert out.shape == (2, 8, d_model)

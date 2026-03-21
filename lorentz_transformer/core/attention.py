@@ -244,7 +244,8 @@ class LorentzMultiHeadAttention(nn.Module):
         Ks = self.k_s(x).view(B, L, self.n_s, d_h)
         st = torch.einsum("bthd,bshd->bths", Qt, Kt)
         ss = torch.einsum("bthd,bshd->bths", Qs, Ks)
-        return torch.cat([-st, ss], dim=2) / scale
+        # (B, L_q, n_heads, L_k) → (B, n_heads, L_q, L_k)
+        return torch.cat([-st, ss], dim=2).permute(0, 2, 1, 3) / scale
 
     def _forward_f2(self, x, B, L, scale):
         """F2: QK^T/sqrt(d) - 2a*Q_t_proj*K^T/sqrt(d)"""
@@ -270,7 +271,8 @@ class LorentzMultiHeadAttention(nn.Module):
         st    = torch.einsum("bthd,bshd->bths", Qt, Kt)
         ss    = torch.einsum("bthd,bshd->bths", Qs, Ks)
         sigma = torch.sigmoid(self.w_sigma)
-        return torch.cat([-sigma * st, ss], dim=2) / scale
+        # (B, L_q, n_heads, L_k) → (B, n_heads, L_q, L_k)
+        return torch.cat([-sigma * st, ss], dim=2).permute(0, 2, 1, 3) / scale
 
     def extra_repr(self) -> str:
         base = (f"formula={self.formula}, "

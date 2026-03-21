@@ -46,12 +46,18 @@
 | 失败模式 | 分布外靠猜，不可预期 | sigma 退化为欧氏，优雅降级 |
 | 可解释性 | 黑盒 | Theorem 5 精确描述 |
 
+**一句话：** 传统 LLM 是读遍了所有物理书的文科生。LLCM 是在物理世界里长大的工程师——物理直觉编码在几何里，语言是后来学的工具。
 
 ---
 
 ## 已验证的实验结果
 
-### 机器人运动轨迹（主要贡献）
+验证链条分两层，层1建立在层0的基础上。
+
+### 层0：洛伦兹几何让物理守恒更好
+
+> 验证问题：F3 光锥注意力是否让物理运动数据的动量守恒更好？
+> 复现脚本：`cmu_real_bvh_experiment.py`、`joint_angle_experiment.py`
 
 | 数据 | 输入类型 | 类时比例 | 物理一致性改善 | p值 | d |
 |------|---------|---------|--------------|-----|---|
@@ -62,9 +68,11 @@
 
 **5/5 seed 方向一致。仅替换注意力层度量，参数量增加不足 0.001%。**
 
-关节旋转角实验最重要：90 维旋转角没有哪个维度是"时间"或"空间"，光锥注意力仍然显著。LLCM 捕捉的是运动序列本身的因果时序结构，不是物理坐标的特殊性质。
+关节旋转角实验最重要：90 维旋转角没有哪个维度是"时间"或"空间"，光锥注意力仍然显著。这排除了"结果来自物理坐标的特殊性质"的质疑——LLCM 捕捉的是运动序列的因果时序结构。
 
 ### 语言建模（wikitext-2）
+
+> 复现脚本：见 `examples/` 目录
 
 | 模型 | val_loss | 参数量 | 步数 |
 |------|---------|-------|------|
@@ -73,16 +81,28 @@
 
 改善 2.74%，完全控制变量。
 
-### 婴儿说话机制初步验证
+### 层1：洛伦兹空间更容易被语言索引
 
-| 实验 | 欧氏 | LLCM | 差异 |
-|------|------|------|------|
-| 方向A：动量变化识别 | 75.0% | **100%** | +25% |
-| 方向A：周期性运动识别 | 53.5% | **70.7%** | +17.2% |
-| 方向B：语言→物理（待完整验证） | — | — | 实验进行中 |
+> 验证问题：洛伦兹表示空间里，物理嵌入是否与对应语言描述的余弦相似度更高？
+> 结论：**p=0.020，d=4.04，3 seeds，4/4 消融验证通过**
+> 复现脚本：`layer1_minimal_test.py`（主实验）、`layer1_verify.py`（消融验证）
 
+| 指标 | 欧氏 | LLCM F3 | 差异 | p值 | d |
+|------|------|---------|------|-----|---|
+| 语言对齐得分（3 seeds） | 0.234±0.023 | **0.294±0.012** | +0.060 | 0.020 | 4.04 |
 
-> ⚠️ 方向A结果来自 `physics_first_model.py` 单次实验（seed=0），尚未做多seed统计检验。方向指标支持猜想，但统计强度低于 CMU MoCap 实验（p=0.0002）。
+**4/4 消融验证通过，结果可信。**
+
+| 消融验证 | 结果 | 排除的质疑 |
+|---------|------|----------|
+| Test1 随机基线 | 两者均接近0 | 架构无固有偏差 |
+| Test2 无CLIP损失 | F3仍高 +0.039 | backbone几何是真实来源，非CLIP循环 |
+| Test3 打乱语言嵌入 | 0.294→0.081 | 语言语义内容是必要条件 |
+| Test4 逐标签 | stable优势+0.230 > changing+0.121 | 符合类时测地线理论预测 |
+
+> 层1建立在层0之上：层0证明洛伦兹几何让物理守恒更好，
+> 层1证明这个几何结构让语言更容易索引物理属性。
+> 两者合在一起是婴儿说话机制的前两步：感知流形存在 → 语言可以贴标签。
 
 ---
 
@@ -320,9 +340,107 @@ tests/
 # 研究原型（不随包发布）
 baby_language_llcm.py     # 婴儿说话模型（物理→语言双向对齐）
 bidirectional_verify.py   # 双向验证脚本
-physics_first_model.py       # 物理优先基础模型
-joint_angle_experiment.py    # 关节角度实验
+physics_first_model.py    # 物理优先基础模型
+joint_angle_experiment.py # 关节角度实验
 ```
+
+---
+
+## 复现配置
+
+层0和层1使用以下配置。参数分两类：**理论必须**和**工程调参**。
+
+### 层0 复现（机器人动量守恒实验）
+
+```python
+# 复现脚本：cmu_real_bvh_experiment.py
+# 数据：CMU MoCap BVH 文件（subject 01/02，walk 类）
+# 输入格式：[x, y, z, vx, vy, vz]（6维物理坐标）或关节旋转角（90维）
+
+# 关键配置
+formula     = 'f3'     # 光锥注意力
+time_ratio  = 0.25     # 类时头比例
+n_traj      = 87       # CMU MoCap 行走轨迹段数
+T_IN        = 20       # 输入帧数
+T_OUT       = 20       # 预测帧数
+N_EPOCHS    = 80       # 预训练 epoch
+LR          = 3e-4     # AdamW
+
+# 评估指标：动量变化率（越低越守恒）
+mom_change = np.linalg.norm(np.diff(vel, axis=0), axis=-1).mean()
+# F3 改善: (euc_mom - f3_mom) / euc_mom = 69.9%
+```
+
+层0没有语言嵌入，只有物理预训练。关键变量是 `formula='f3'` 和 `time_ratio=0.25`。
+
+### 层1 复现（语言对齐实验）
+
+### 理论必须参数（改了会破坏洛伦兹几何）
+
+| 参数 | 值 | 原因 |
+|------|-----|------|
+| `formula` | `'f3'` | 负号是洛伦兹几何的唯一来源 |
+| `time_ratio` | `0.25` | 类时头比例，对应可实现性条件 T_DIM=32 |
+| `MinkowskiLN` | 旧版 `mq.abs()` | 符号修复版在 MSE 预训练任务上梯度不稳定 |
+
+> ⚠️ `MinkowskiLN` 的符号修复版（`sign * sqrt(...)`）在理论上更正确，
+> 但在轨迹预测（MSE）任务上 `w_sigma` 梯度只有 0.0003，
+> 洛伦兹几何无法激活。**旧版虽然退化为 L2 归一化变体，
+> 但注意力层的光锥几何（F3 公式）仍然有效**，实验结果来自注意力层而非 LayerNorm。
+> 符号修复版 LayerNorm 的稳定训练是开放研究问题。
+
+### 工程调参参数（影响性能，不影响几何）
+
+```python
+# 层1语言对齐实验复现配置
+EMBED_DIM  = 128    # 可以调大，效果通常更好
+N_HEADS    = 4      # 与 time_ratio 共同决定 T_DIM
+N_LAYERS   = 3
+TIME_RATIO = 0.25   # ← 理论必须，不要改
+STATE_DIM  = 6      # [x, y, z, vx, vy, vz]
+LANG_DIM   = 384    # sentence-transformers all-MiniLM-L6-v2 输出维度
+
+# 预训练（建立感知流形）
+LR_PRE     = 3e-4   # AdamW + CosineAnnealingLR
+EP_PRE     = 60     # MSE 轨迹预测
+
+# 微调（语言对齐）
+LR_FT      = 1e-4   # Adam
+EP_FT      = 100    # 分类损失 + 0.3 × CLIP 对齐损失
+BS         = 16
+
+# 语言模型
+LANG_MODEL = 'sentence-transformers/all-MiniLM-L6-v2'
+```
+
+### 损失函数
+
+```python
+# 预训练
+loss = F.mse_loss(pred_traj, true_traj)
+
+# 微调
+loss_cls   = F.cross_entropy(logits, labels)
+loss_align = CLIP(normalize(lang_gen(x)), normalize(lang_emb))
+loss       = loss_cls + 0.3 * loss_align
+```
+
+### 数据隔离（统计有效性）
+
+```python
+X_test = build_dataset(seed=42)           # 固定测试集，所有seed共用
+X_train = build_dataset(seed=seed + 100)  # 每个seed独立训练集
+pretrain(model, seed=seed * 1000)         # 预训练数据与微调数据完全分开
+```
+
+### 消融验证结果（4/4 通过）
+
+| 验证 | 结果 | 结论 |
+|------|------|------|
+| Test1 随机基线 | 欧氏=0.047，F3=-0.025，均接近0 | 架构无固有偏差 |
+| Test2 无CLIP损失 | 差异=+0.039，F3仍然更高 | backbone几何是真实来源 |
+| Test3 打乱语言嵌入 | 0.294→0.081 | 语言语义内容是必要条件 |
+| Test4 逐标签 | stable优势+0.230 > changing+0.121 | 符合类时测地线理论预测 |
 
 ---
 
@@ -344,11 +462,12 @@ joint_angle_experiment.py    # 关节角度实验
 - ✅ F2 退化 5 seed 统计确认，F1/F3 从根本上修复
 - ✅ 方向A：动量变化识别 F3=100% vs 欧氏=75%
 - ✅ 核心模块打包：`LorentzMultiHeadAttention` + `MinkowskiLayerNorm`
+- ✅ 层1语言对齐：p=0.020，d=4.04，4/4 消融验证通过
 
 **猜想（待完整验证）：**
 - 🔬 零损失函数动量守恒（语言指令 → 几何本能 → 守恒自动成立）
 - 🔬 双向语言对齐（方向B：语言→物理 完整验证）
-- 🔬 婴儿说话机制层次3（物理感知流形与语言空间双向对齐）
+- �� 婴儿说话机制层次3（物理感知流形与语言空间双向对齐）
 
 **进行中：**
 - 🔄 `baby_language_llcm.py` 实验运行中
@@ -370,6 +489,14 @@ MIT
 
 ## Citation
 
+```bibtex
+@misc{li2026llcm,
+  author = {Li, Y. Y. N.},
+  title  = {Lorentz Light-Cone Model: Geometry-Native Physical Intelligence},
+  year   = {2026},
+  note   = {Based on K=1 Chronogeometrodynamics},
+  url    = {https://doi.org/10.5281/zenodo.19011128}
+}
 
 @misc{li2026k1,
   author    = {Li, Y. Y. N.},

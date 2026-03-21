@@ -428,3 +428,106 @@ class TestLorentzAttentionExtended:
         out, w = attn(x)
         assert out.shape == (2, 1, cfg.d_model)
         assert w.shape == (2, cfg.n_heads, 1, 1)
+
+
+# ======================================================================
+# F1 and F3 formula — output shape and gradient coverage
+# ======================================================================
+
+
+@dataclass
+class CfgF1F3:
+    d_model: int = 64
+    n_heads: int = 4
+    formula: str = 'f1'
+    time_ratio: float = 0.25
+    dropout: float = 0.0
+
+
+class TestF1Formula:
+    """Verify F1 formula produces correctly shaped outputs and gradients."""
+
+    def test_output_shape(self):
+        cfg = CfgF1F3(formula='f1')
+        attn = LorentzMultiHeadAttention(cfg)
+        x = torch.randn(2, 8, cfg.d_model)
+        out, w = attn(x)
+        assert out.shape == (2, 8, cfg.d_model)
+        assert w.shape == (2, cfg.n_heads, 8, 8)
+
+    def test_weights_sum_to_one(self):
+        cfg = CfgF1F3(formula='f1')
+        attn = LorentzMultiHeadAttention(cfg)
+        x = torch.randn(2, 8, cfg.d_model)
+        _, w = attn(x)
+        assert torch.allclose(w.sum(dim=-1), torch.ones(2, cfg.n_heads, 8), atol=1e-5)
+
+    def test_gradient_flow(self):
+        cfg = CfgF1F3(formula='f1')
+        attn = LorentzMultiHeadAttention(cfg)
+        x = torch.randn(2, 4, cfg.d_model, requires_grad=True)
+        out, _ = attn(x)
+        out.sum().backward()
+        assert x.grad is not None
+        assert torch.isfinite(x.grad).all()
+
+    def test_sigma_property_is_none(self):
+        cfg = CfgF1F3(formula='f1')
+        attn = LorentzMultiHeadAttention(cfg)
+        assert attn.sigma is None
+
+
+class TestF3Formula:
+    """Verify F3 formula produces correctly shaped outputs and gradients."""
+
+    def test_output_shape(self):
+        cfg = CfgF1F3(formula='f3')
+        attn = LorentzMultiHeadAttention(cfg)
+        x = torch.randn(2, 8, cfg.d_model)
+        out, w = attn(x)
+        assert out.shape == (2, 8, cfg.d_model)
+        assert w.shape == (2, cfg.n_heads, 8, 8)
+
+    def test_weights_sum_to_one(self):
+        cfg = CfgF1F3(formula='f3')
+        attn = LorentzMultiHeadAttention(cfg)
+        x = torch.randn(2, 8, cfg.d_model)
+        _, w = attn(x)
+        assert torch.allclose(w.sum(dim=-1), torch.ones(2, cfg.n_heads, 8), atol=1e-5)
+
+    def test_gradient_flow(self):
+        cfg = CfgF1F3(formula='f3')
+        attn = LorentzMultiHeadAttention(cfg)
+        x = torch.randn(2, 4, cfg.d_model, requires_grad=True)
+        out, _ = attn(x)
+        out.sum().backward()
+        assert x.grad is not None
+        assert torch.isfinite(x.grad).all()
+
+    def test_sigma_property_in_zero_one(self):
+        cfg = CfgF1F3(formula='f3')
+        attn = LorentzMultiHeadAttention(cfg)
+        sigma = attn.sigma
+        assert sigma is not None
+        assert 0.0 < sigma < 1.0
+
+    def test_sigma_gradient_flows(self):
+        cfg = CfgF1F3(formula='f3')
+        attn = LorentzMultiHeadAttention(cfg)
+        x = torch.randn(2, 4, cfg.d_model)
+        out, _ = attn(x)
+        out.sum().backward()
+        assert attn.w_sigma.grad is not None
+        assert torch.isfinite(attn.w_sigma.grad).all()
+
+    def test_causal_mask(self):
+        cfg = CfgF1F3(formula='f3')
+        attn = LorentzMultiHeadAttention(cfg)
+        L = 6
+        x = torch.randn(1, L, cfg.d_model)
+        mask = torch.full((1, 1, L, L), float('-inf'))
+        mask = torch.triu(mask, diagonal=1)
+        out, w = attn(x, attention_mask=mask)
+        assert out.shape == (1, L, cfg.d_model)
+        # future positions should have ~0 weight
+        assert w[0, 0, 0, 1:].abs().max().item() < 1e-5
