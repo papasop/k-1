@@ -125,13 +125,14 @@ class _BaseMinkowskiLayerNorm(nn.Module):
 
     def _validate_input(
         self, x: torch.Tensor
-    ):
+    ) -> tuple:
         """
         验证输入并展平为 (N, d_model)。
 
         Returns:
-            x_flat      : (N, d_model) 张量
-            original_shape: 原始形状
+            Tuple[torch.Tensor, torch.Size]:
+                x_flat       — (N, d_model) 张量
+                original_shape — 原始形状
 
         Raises:
             ValueError: 最后一维 != d_model
