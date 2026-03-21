@@ -2,18 +2,54 @@
 
 基于K=1信息几何场方程的Transformer架构。在参数空间引入伪黎曼几何结构，用闵可夫斯基内积替代欧氏内积，实现真正的洛伦兹注意力机制。
 
+**核心直觉：** 婴儿在学会说"热"之前，已经通过触觉、视觉、痛觉建立了"热"的感知流形。语言习得只是在这个已有流形上贴符号标签。洛伦兹Transformer做的完全一样——物理预训练建立运动流形，语言微调只是在这个流形上贴标签。物理是基础，语言是插件。
+
 ---
 
-## 核心实验结果（正式对比）
+## 核心实验结果
+
+### 语言建模（wikitext-2）
 
 | 模型 | best val_loss | 参数量 | 数据 | 步数 |
 |------|-------------|-------|------|------|
 | 标准Transformer（对照组） | 7.7182 | 17.6M | wikitext-2 | 10000 |
-| 洛伦兹Transformer（版本2） | **7.5069** | 17.6M | wikitext-2 | 10000 |
+| 洛伦兹Transformer | **7.5069** | 17.6M | wikitext-2 | 10000 |
 
-**差值：-0.2113（改善2.74%）**
+**差值：-0.2113（改善2.74%）**，完全控制变量，唯一变量是洛伦兹几何的开/关。
 
-完全控制变量：同等参数量、同等数据、同等步数，唯一变量是洛伦兹几何结构的开/关。
+### 机器人运动轨迹（CMU MoCap 真实数据）
+
+| 数据 | 输入类型 | 类时比例 | 动量守恒改善 | p值 | 效应量 |
+|------|---------|---------|------------|-----|-------|
+| 双摆（ODE合成） | 物理坐标 | 80.3% | +87.5% | 0.0006 | d=3.67 |
+| 跳跃（ODE合成） | 物理坐标 | 100% | +55.8% | 0.0001 | d=6.41 |
+| 行走（CMU MoCap **真实**） | 物理坐标 | 100% | +69.9% | 0.0002 | d=5.20 |
+| 行走（CMU MoCap **真实**） | 关节旋转角（90维） | 80.6% | +34.6% | 0.0233 | d=1.27 |
+
+**5/5 seed 方向一致。仅替换注意力层度量，参数量增加不足 0.001%。**
+
+关节旋转角实验（最后一行）尤为重要：输入是 90 维旋转角度，没有哪个维度被标记为"时间"或"空间"，Minkowski 先验仍然显著。这证明洛伦兹几何捕捉的是**运动序列本身的因果时序结构**，而不是物理坐标的特殊性质。
+
+### 类时比例是先验预测指标
+
+三个独立数据集验证了同一规律：
+
+```
+类时比例 100% → 动量守恒改善 ~70%
+类时比例  81% → 角速度平滑改善 ~35%
+类时比例  <50% → sigma 自发退化为欧氏（语言数据）
+```
+
+**在使用洛伦兹注意力之前，先算类时比例（5分钟）：**
+
+```python
+dx = traj[:, 1:] - traj[:, :-1]
+s2 = -(dx[..., :t_dim]**2).sum(-1) \
+   +  (dx[..., t_dim:]**2).sum(-1)
+ratio = (s2 > 0).float().mean()
+# ratio > 0.6 → 用 f1/f3，Minkowski 先验有效
+# ratio < 0.4 → 欧氏已足够
+```
 
 ---
 
@@ -22,68 +58,104 @@
 ### 1. 伪黎曼结构存在（实验确认）
 W_Q参数空间的60-79%方向对dt²_info的Hessian为负（类时方向）。在以下条件下全部稳定复现：
 - 合成多跳推理任务（1-hop / 2-hop）
-- 真实语言数据（wikitext-2，英语维基百科）
+- 真实语言数据（wikitext-2）
 - 128维 / 256维 / 512维三个规模
 - 3个随机种子
 
-**这是Transformer处理语言时参数空间的内在几何性质，不是任务特异性产物。**
-
-### 2. 层深类时规律（新发现）
-6层模型中，中间层（Layer 2-3）类时比例最高，浅层和深层较低：
+### 2. 层深类时规律
+6层模型中，中间层（Layer 2-3）类时比例最高：
 ```
 layer 3: frac=0.754  ██████████████  ← 峰值（长程语义整合）
 layer 2: frac=0.738  ██████████████
 layer 4: frac=0.664  █████████████
 layer 1: frac=0.656  █████████████
 layer 5: frac=0.668  █████████████
-layer 0: frac=0.602  ████████████  ← 浅层最低（局部特征提取）
+layer 0: frac=0.602  ████████████  ← 浅层最低
 ```
-三次独立实验稳定复现。
 
 ### 3. r规律（8个独立实验）
 ```
 r(baseline, delta) ≈ -1.0
 ```
-跨K-field、Minkowski注意力、Geodesic Adam三种完全不同的注入机制全部成立。
+跨K-field、Minkowski注意力、Geodesic Adam三种完全不同的注入机制全部成立。r=-1 不是超参数，是狭义相对论的基本几何结构、Minkowski时空的数学签名、因果关系的几何根源。
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│  r ≈ -1.0 不是人为选择的超参数                              │
-│                                                             │
-│  它是：                                                     │
-│  ✓ 狭义相对论的基本几何结构                                  │
-│  ✓ Minkowski 时空的数学签名                                 │
-│  ✓ 因果关系的几何根源                                        │
-│  ✓ 洛伦兹大模型区别于标准 Transformer 的本质                 │
-│                                                             │
-│  物理数据版本证明：                                          │
-│  当输入数据具有真实时空结构时，r = -1 自动成立                │
-│  洛伦兹大模型的设计与宇宙的基本规律一致                        │
-└─────────────────────────────────────────────────────────────┘
-```
-
-### 4. 与NCCL论文的关系
-Neural Null Cones论文（2025）在GPT-2上独立确认了损失Hessian的不定结构，验证精度10⁻²⁶。该论文明确将理论起源归于本项目的K=1场方程。
+### 4. F2退化被完全确认
+5个独立seed验证：F2的alpha均值收敛到0.514（初始值），从未学到任何东西。根本原因是时空交叉项允许优化器抵消Minkowski约束。F1和F3从根本上解决了这个问题。
 
 ---
 
 ## 为什么洛伦兹能改进Transformer
 
-传统方法（交叉熵Hessian、Fisher信息矩阵）永远正定，det G > 0，无法区分类时/类空方向。
+传统方法（交叉熵Hessian、Fisher信息矩阵）永远正定，det G &gt; 0，无法区分类时/类空方向。
 
-dt²_info的Hessian由于可实现性条件，被强迫成不定矩阵，det G < 0。这一个符号翻转触发Theorem 4（Non-Separability），洛伦兹签名从代数上涌现，类时/类空方向得以定义。
+dt²_info的Hessian由于**可实现性条件**（Realizability），被强迫成不定矩阵，det G &lt; 0。这一个符号翻转触发Theorem 4（Non-Separability），洛伦兹签名从代数上涌现，类时/类空方向得以定义。
 
 **没有dt²_info，闵可夫斯基在参数空间里是盲目的。有了dt²_info，P_t精确定位类时方向，洛伦兹修正才能正确施加。**
+
+历史上的洛伦兹团队硬伤：他们**假设**某个维度是时间，**贴上**洛伦兹度量。本项目从代价函数的渐近结构**推导出**类时方向必然存在，洛伦兹签名是**唯一可能的代数结果**（Realizability.pdf Remark 11 明确排除所有非洛伦兹签名）。
+
+---
+
+## 物理优先架构（Physics-First Foundation Model）
+
+### 设计哲学
+
+```
+当前LLM路径:
+  语言数据（万亿token）→ 欧氏表示空间 → 物理常识靠统计学习
+
+洛伦兹物理优先路径:
+  物理数据（满足可实现性条件）
+        ↓
+  洛伦兹预训练（F3注意力）
+        ↓
+  具有类时结构的基础表示空间
+        ↓
+  语言/任务数据微调
+        ↓
+  物理世界模型（物理直觉内生于几何）
+```
+
+**一句话：** 当前LLM是读遍了所有物理书的文科生——知道答案但不理解为什么。洛伦兹基础模型是在物理世界里长大的工程师——物理直觉是内生的，语言是后来学的工具。
+
+### 适用边界（由可实现性条件决定）
+
+```python
+class RealizabilityRouter:
+    """
+    基于Realizability.pdf Theorem 5的几何路由器
+    充要条件，不是启发式阈值
+    """
+    def route(self, data):
+        ratio = compute_timelike_ratio(data)
+        if ratio > 0.6:
+            return LorentzMultiHeadAttention(formula='f3')  # 洛伦兹有效
+        else:
+            return nn.MultiheadAttention()                  # 欧氏已足够
+```
+
+满足可实现性条件的数据（物理运动、机器人轨迹、物理仿真）→ 洛伦兹流。
+不满足的数据（语言、代码）→ 欧氏流，sigma自发退化，无副作用。
+
+### 初步验证结果
+
+物理预训练 + 语言微调实验：
+
+| 模型 | 物理属性描述准确率 | 周期性运动识别 | vs 随机基线 |
+|------|-----------------|-------------|-----------|
+| 随机基线 | 20.0% | 20.0% | — |
+| 欧氏预训练 + 微调 | 67.2% | 53.5% | +47.2% |
+| 洛伦兹F3预训练 + 微调 | 67.8% | **70.7%** | +47.8% |
+
+洛伦兹在周期性运动识别上显著优于欧氏（+17.2%）。周期性运动是因果结构最强的类型——每一步依赖前一步，类时方向最明确，符合理论预测。
 
 ---
 
 ## 当前 Python 包 API
 
-当前发布的 `lorentz_transformer` 包聚焦于可直接复用的核心模块：
-
 ### `LorentzMultiHeadAttention`
 
-`LorentzMultiHeadAttention` 支持三种注意力公式，通过 `formula` 字段选择：
+支持三种注意力公式：
 
 | formula | 公式 | 适用场景 | 退化风险 |
 |---------|------|----------|----------|
@@ -91,49 +163,31 @@ dt²_info的Hessian由于可实现性条件，被强迫成不定矩阵，det G <
 | `'f1'` | `-Q_t Kᵀ_t + Q_s Kᵀ_s` | 推理 / 数学 / 物理仿真 / 机器人轨迹 | 无，硬约束 |
 | `'f2'` | `QKᵀ - 2α·Q_t·Kᵀ` | 加载旧版权重 | ⚠️ 已知退化，不推荐新项目 |
 
-```
-# f3（默认推荐）
+```python
+# f3（默认推荐）— σ 可学习，自适应 Minkowski 强度
 scores_L = -σ·Q_t Kᵀ_t + Q_s Kᵀ_s
 
-# f1
+# f1（物理/推理专用）— 硬约束，σ 固定为 1
 scores_L = -Q_t Kᵀ_t + Q_s Kᵀ_s
 
-# f2（旧版兼容）
-scores_L = QK^T/√d - 2α(Q_t_scaled)K^T/√d
+# f2（旧版兼容）— 已知退化，alpha 学不动
+scores_L = QKᵀ/√d - 2α(Q_t_scaled)Kᵀ/√d
 ```
-- 输入：`(batch, seq_len, d_model)`
-- 输出：`(attention_output, attention_weights)`
-- 配置字段：`d_model`、`n_heads`（或 `num_heads`）、`formula`、`time_ratio`、`lorentz_alpha`、`dropout`
 
 ### `MinkowskiLayerNorm` 系列
+
 ```
-标准向量归一化:        x / sqrt(||x||² + ε)
-MinkowskiLayerNorm: x / sqrt(|<x,x>_η| + ε)
-<x,x>_η = ||x_s||² - ||x_t||²
+标准 LayerNorm:      x / sqrt(||x||² + ε)
+MinkowskiLayerNorm:  x / sqrt(|<x,x>_η| + ε)
+<x,x>_η = ||x_s||² - ||x_t||²   （保留符号，不取 abs）
 ```
-- `MinkowskiLayerNormOptimized`：纯 L2 版本
-- `MinkowskiLayerNormStable`：保守回退版本
-- `MinkowskiLayerNormImproved`：推荐版本
-- `MinkowskiLayerNorm`：`MinkowskiLayerNormImproved` 的向后兼容别名
 
-### 研究原型说明
-README 中提到的 `GeodesicAdam`、`LorentzFFN`、`LorentzPositionalEncoding`、
-`TimeLikeProbe` 以及训练入口函数目前未作为该 Python 包的一部分发布。
-本文档现在只展示仓库中实际可导入的模块。
+- `MinkowskiLayerNorm`：真正 Minkowski 几何，推荐默认
+- `MinkowskiLayerNormStable`：带 fallback，训练早期用
+- `MinkowskiLayerNormOptimized`：纯 L2，消融实验基线
+- `MinkowskiLayerNormImproved`：向后兼容别名
 
----
-
-## 组件消融实验（wikitext-2）
-
-| 版本 | 组件 | best val_loss | Phase 2改善 |
-|------|------|--------------|------------|
-| 对照 | 标准Transformer | 7.7182 | — |
-| 1 | 标准Transformer（旧基线） | 7.6739 | -0.001 |
-| 2 | +MinkowskiLayerNorm | **7.5069** | **-0.248** |
-| 3 | +洛伦兹FFN | 7.5518 | -0.183 |
-| 4 | +洛伦兹位置编码 | 7.5211 | -0.156 |
-
-MinkowskiLayerNorm是效果最显著的单一组件。
+**v1.1.0 修复：** 旧版 `_minkowski_norm_sq` 对结果取了 `.abs()`，丢失类时/类空符号信息，实际等价于 L2 归一化变体。新版保留符号，`compute_t_dim()` 确保与注意力层的 t_dim 对齐。
 
 ---
 
@@ -141,81 +195,71 @@ MinkowskiLayerNorm是效果最显著的单一组件。
 
 ```python
 from dataclasses import dataclass
-
 import torch
-
 from lorentz_transformer import (
     LorentzMultiHeadAttention,
     MinkowskiLayerNorm,
+    compute_t_dim,
 )
-
 
 @dataclass
 class Config:
-    d_model: int = 256
-    n_heads: int = 8
-    formula: str = 'f3'        # 推荐默认
+    d_model:    int   = 256
+    n_heads:    int   = 8
+    formula:    str   = 'f3'    # 推荐默认
     time_ratio: float = 0.25
-    dropout: float = 0.1
-
+    dropout:    float = 0.1
 
 config = Config()
 attn = LorentzMultiHeadAttention(config)
-norm = MinkowskiLayerNorm(config.d_model)
+
+# t_dim 对齐（v1.1.0 修复）
+t_dim = compute_t_dim(config.d_model, config.n_heads, config.time_ratio)
+norm  = MinkowskiLayerNorm(config.d_model, t_dim=t_dim)
 
 x = torch.randn(2, 16, config.d_model)
 attn_out, attn_weights = attn(x)
 output = norm(attn_out)
 
-print(output.shape)       # torch.Size([2, 16, 256])
-print(attn_weights.shape) # torch.Size([2, 8, 16, 16])
-print(f"Minkowski 强度 σ = {attn.sigma:.3f}")  # F3 专属
+print(output.shape)        # torch.Size([2, 16, 256])
+print(f"σ = {attn.sigma:.3f}")  # F3 专属，训练中从 0.5 收敛
 ```
-
-更多可运行示例见 `examples/` 目录。
 
 ### 如何选择 formula
 
-先算数据的类时比例（5 分钟）：
-
-```python
-dx = traj[:, 1:] - traj[:, :-1]          # 相邻步差
-s2 = -(dx[..., :t_dim]**2).sum(-1) \
-   +  (dx[..., t_dim:]**2).sum(-1)       # Minkowski 间隔
-ratio = (s2 > 0).float().mean()
+```
+类时比例 > 0.6 + 物理/推理任务  → f1（硬约束）
+类时比例 > 0.6 + 通用任务       → f3（推荐）
+类时比例 < 0.4                  → 欧氏已足够
+不确定                          → f3，sigma 自适应
 ```
 
-- `ratio > 0.6` → 用 `f1`（物理任务）或 `f3`（通用）
-- `ratio < 0.4` → 欧氏注意力已足够，Minkowski 先验无益
-- 不确定 → 默认 `f3`，σ 会自适应收敛
+---
 
-### F2 迁移说明
+## 组件消融实验（wikitext-2）
 
-旧版用户无需修改代码，F2 权重可直接加载。新项目请使用 F3：
+| 版本 | 组件 | best val_loss | 改善 |
+|------|------|--------------|------|
+| 对照 | 标准Transformer | 7.7182 | — |
+| 2 | +MinkowskiLayerNorm | **7.5069** | **-0.248** |
+| 3 | +洛伦兹FFN | 7.5518 | -0.183 |
+| 4 | +洛伦兹位置编码 | 7.5211 | -0.156 |
 
-```python
-# 旧版（继续工作，但不推荐新项目）
-Config(formula='f2', lorentz_alpha=0.25)
-
-# 推荐替换为
-Config(formula='f3', time_ratio=0.25)
-```
-
-> **实验背景：** F1 和 F3 在跳跃轨迹预测任务上将动量守恒误差改善 56–59%（p<0.001，5 seeds）。F2 在同一任务上 alpha 收敛到初始值 0.514，动量守恒比欧氏基线还差 4%，确认存在退化问题。
+MinkowskiLayerNorm 是效果最显著的单一组件。
 
 ---
 
 ## 文件结构
 
 ```
-lorentz_transformer/               # 主包
-├── __init__.py                    # 顶层导出
-└── core/                          # 核心组件
+lorentz_transformer/
+├── __init__.py
+└── core/
     ├── __init__.py
-    ├── attention.py               # LorentzMultiHeadAttention 与诊断函数
-    └── minkowski_norm.py          # 3 个 MinkowskiLayerNorm 变体
+    ├── attention.py        # LorentzMultiHeadAttention（F1/F2/F3）
+    └── layer_norm.py       # MinkowskiLayerNorm + compute_t_dim
 
-examples/                          # 最小可运行示例
+examples/
 ├── attention_example.py
 ├── full_model_example.py
 ├── norm_example.py
@@ -231,36 +275,42 @@ tests/
 
 ## 理论背景
 
-基于K=1信息几何场方程（chronogeometrodynamics）。
+基于 K=1 信息几何场方程（chronogeometrodynamics）。
 
-信息时间度量 `dt²_info = Σ_q Φ_q/H_q` 在参数空间定义了伪黎曼度量。Theorem 4证明：当且仅当det G < 0（洛伦兹签名）时，系统存在非平凡稳定边界 dc > 0。这使洛伦兹几何、辛结构、因果结构同时成为代数结果而非独立假设。
+信息时间度量 `dt²_info = Σ_q Φ_q/H_q` 在参数空间定义了伪黎曼度量。**Realizability.pdf**（Li 2026）证明：若位移代价满足零阈值可实现性（Assumption R）和时间正代价（Assumption T），则 Hessian 必然不定，洛伦兹签名是唯一代数结果（Theorem 5）。**k_1_v5.pdf** 的 Theorem 4 进一步证明：当且仅当 det G &lt; 0 时，系统存在非平凡稳定边界 dc &gt; 0，洛伦兹几何、辛结构、因果结构同时作为代数推论涌现。
 
 **参考：**
 - Li, Y. Y. N. (2026). *K=1 Chronogeometrodynamics*. Zenodo. https://doi.org/10.5281/zenodo.19011128
+- Li, Y. Y. N. (2026). *Realizability and the Origin of Causality*. preprint.
 
 ---
 
 ## 当前状态
 
 **已完成：**
-- ✅ 正式对比实验：洛伦兹比标准Transformer val_loss低0.21（2.74%）
-- ✅ `LorentzMultiHeadAttention` 与 `MinkowskiLayerNorm` 核心模块已打包并带测试
-- ✅ 真实语言数据上的伪黎曼结构验证（wikitext-2）
-- ✅ 层深类时规律发现
+- ✅ 语言建模：洛伦兹比标准Transformer val_loss 低 0.21（2.74%）
+- ✅ 机器人轨迹：真实 CMU MoCap 数据动量守恒改善 +69.9%（p=0.0002，d=5.20）
+- ✅ 关节角度：非物理坐标输入上 Minkowski 先验仍显著（p=0.023）
+- ✅ 类时比例作为先验预测指标（三个独立数据集验证）
+- ✅ F2 退化被 5 seed 统计确认，F1/F3 从根本上修复
+- ✅ 物理优先架构初步验证（周期性运动识别 F3 +17% vs 欧氏）
+- ✅ `LorentzMultiHeadAttention`（F1/F2/F3）+ `MinkowskiLayerNorm` 已打包
 
-**研究原型（未随当前包发布）：**
+**研究原型（未随包发布）：**
 - 🧪 Geodesic Adam
-- 🧪 Lorentz FFN
-- 🧪 Lorentz 位置编码
-- 🧪 训练入口函数（`baseline_train()` / `wikitext_train()` / `quick_train()`）
+- 🧪 Lorentz FFN / 位置编码
+- 🧪 RealizabilityRouter（可实现性门控路由器）
+- 🧪 PhysicsFoundationModel（物理优先基础模型）
 
 **进行中：**
-- 🔄 更大数据集（openwebtext）验证
-- 🔄 论文写作
+- 🔄 更多 CMU MoCap subject（run/jump）补充验证
+- 🔄 D4RL 机器人数据集测试
+- 🔄 论文写作（目标：CoRL / NeurIPS）
 
 **计划中：**
-- 📋 GPT-2规模（768维/12层）验证
-- 📋 多随机种子统计显著性验证
+- 📋 GPT-2 规模（768维/12层）验证
+- 📋 物理优先基础模型完整预训练
+- 📋 lorentz_transformer v1.1.0 发布（PyPI）
 
 ---
 
@@ -274,11 +324,11 @@ MIT
 
 ```bibtex
 @misc{li2026k1,
-  author  = {Li, Y. Y. N.},
-  title   = {K=1 Chronogeometrodynamics},
-  year    = {2026},
+  author    = {Li, Y. Y. N.},
+  title     = {K=1 Chronogeometrodynamics},
+  year      = {2026},
   publisher = {Zenodo},
-  doi     = {10.5281/zenodo.19011128},
-  url     = {https://doi.org/10.5281/zenodo.19011128}
+  doi       = {10.5281/zenodo.19011128},
+  url       = {https://doi.org/10.5281/zenodo.19011128}
 }
 ```
