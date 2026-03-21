@@ -95,7 +95,7 @@ r(baseline, delta) ≈ -1.0
 
 ---
 
-## 为什么洛伦兹能改进Transformer
+## 为什么洛伦兹
 
 传统方法（交叉熵Hessian、Fisher信息矩阵）永远正定，det G &gt; 0，无法区分类时/类空方向。
 
