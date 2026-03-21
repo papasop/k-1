@@ -1,204 +1,178 @@
-Lorentz Light-Cone Model
+# Lorentz Light-Cone Model (LLCM)
 
+**几何原生物理智能 — Geometry-Native Physical Intelligence**
 
+---
 
-**核心直觉：** 婴儿在学会说"热"之前，已经通过触觉、视觉、痛觉建立了"热"的感知流形。语言习得只是在这个已有流形上贴符号标签。洛伦兹Transformer做的完全一样——物理预训练建立运动流形，语言微调只是在这个流形上贴标签。物理是基础，语言是插件。
+## 核心直觉
 
-它是怎么工作的：
-第一阶段，用机器人运动数据（跳跃、跑步、行走、匀速）预训练一个洛伦兹 backbone。这个阶段不接触任何语言。模型学到的是一个几何空间——类时方向对应因果演化，动量守恒的轨迹落在类时测地线上，冲量运动落在类时突变区域。这是感知流形，和婴儿通过触觉视觉建立的"热"的流形是同一个概念，只是这里的感知是物理运动，几何结构是显式的洛伦兹光锥。
-第二阶段，冻结 backbone，用物理-语言平行数据微调。每条轨迹配对一句自然语言描述——"平稳匀速运动，动量保持守恒"，"存在冲量，速度发生突变"。微调的损失函数同时优化三件事：轨迹能识别出正确的物理属性标签，轨迹的洛伦兹嵌入和对应语言描述的嵌入在余弦相似度上接近，语言描述的嵌入能重建出具有对应物理属性的轨迹。
+人类婴儿学会说"烫"，不是从词典里学的。
 
-两个方向：
-方向A是感知到语言。机器人传感器捕捉到一段运动，模型提取洛伦兹嵌入，生成文字描述——"这段运动动量变化明显，存在外力作用"。这是婴儿感到烫然后说"烫"。
-方向B是语言到感知。工程师输入"让机器人做平稳守恒的圆周运动"，sentence-transformers 把这句话编码成 384 维向量，对齐层把它映射到洛伦兹空间的类时测地线区域，物理解码器沿这个区域生成轨迹。这是婴儿听到"烫"然后缩手。
+是因为手碰到热水壶时，神经系统建立了一个感知流形——温度的连续变化、肌肉收缩的时序、手臂后缩的轨迹。某一天有人说出"烫"这个声音，婴儿把这个符号贴在已有的流形上。从那以后，听到"烫"会缩手，烫到了会说"烫"。双向的。
 
-和传统方法最本质的区别：
-传统方法在生成轨迹时加动量守恒损失函数——告诉模型"你违反了物理，扣分"。这是外部约束，是惩罚。
-模型如果猜想成立——语言指令"动量守恒"直接激活洛伦兹空间里对应的几何区域，生成的轨迹自动守恒，因为那个几何区域的所有路径本来就是类时测地线，违反守恒的路径在几何上不可达。这不是惩罚，是结构。不是教模型不违反物理，是让违反物理的路径不存在。
+**LLCM 做的完全一样：**
 
+```
+第一阶段：物理预训练
+机器人运动数据（跳跃/跑步/行走/匀速）
+        ↓
+洛伦兹光锥预训练
+        ↓
+具有类时因果结构的感知流形
+（动量守恒的轨迹落在类时测地线上
+ 违反物理守恒的路径在几何上不可达）
 
-## 核心实验结果
+第二阶段：语言对齐
+"平稳守恒运动" → sentence-transformers → 对齐层 → 洛伦兹空间
+        ↓
+找到感知流形中对应的类时区域
+        ↓
+生成轨迹沿类时测地线演化 → 动量守恒自动成立
+```
 
-### 语言建模（wikitext-2）
+**婴儿的感知流形是隐式的黑盒。LLCM 的感知流形是显式的——可实现性条件保证类时方向必然存在，Theorem 5 保证洛伦兹签名是唯一代数结果。感知流形的几何结构可以写成方程。**
 
-| 模型 | best val_loss | 参数量 | 数据 | 步数 |
-|------|-------------|-------|------|------|
-| 标准Transformer（对照组） | 7.7182 | 17.6M | wikitext-2 | 10000 |
-| 洛伦兹Transformer | **7.5069** | 17.6M | wikitext-2 | 10000 |
+---
 
-**差值：-0.2113（改善2.74%）**，完全控制变量，唯一变量是洛伦兹几何的开/关。
+## 与传统大模型的根本区别
 
-### 机器人运动轨迹（CMU MoCap 真实数据）
+| | 传统 LLM | LLCM |
+|--|---------|------|
+| 物理直觉来源 | 语料统计 | 洛伦兹几何内生 |
+| 物理守恒保证 | 损失函数惩罚 | 几何上不可达 |
+| 因果方向 | 对称（正反可互换） | 类时方向单向 |
+| 失败模式 | 分布外靠猜，不可预期 | sigma 退化为欧氏，优雅降级 |
+| 可解释性 | 黑盒 | Theorem 5 精确描述 |
 
-| 数据 | 输入类型 | 类时比例 | 动量守恒改善 | p值 | 效应量 |
-|------|---------|---------|------------|-----|-------|
-| 双摆（ODE合成） | 物理坐标 | 80.3% | +87.5% | 0.0006 | d=3.67 |
-| 跳跃（ODE合成） | 物理坐标 | 100% | +55.8% | 0.0001 | d=6.41 |
-| 行走（CMU MoCap **真实**） | 物理坐标 | 100% | +69.9% | 0.0002 | d=5.20 |
-| 行走（CMU MoCap **真实**） | 关节旋转角（90维） | 80.6% | +34.6% | 0.0233 | d=1.27 |
+**一句话：** 传统 LLM 是读遍了所有物理书的文科生。LLCM 是在物理世界里长大的工程师——物理直觉编码在几何里，语言是后来学的工具。
+
+---
+
+## 已验证的实验结果
+
+### 机器人运动轨迹（主要贡献）
+
+| 数据 | 输入类型 | 类时比例 | 物理一致性改善 | p值 | d |
+|------|---------|---------|--------------|-----|---|
+| 双摆（ODE合成） | 物理坐标 | 80.3% | +87.5% 动量守恒 | 0.0006 | 3.67 |
+| 跳跃（ODE合成） | 物理坐标 | 100% | +55.8% 动量守恒 | 0.0001 | 6.41 |
+| 行走（CMU MoCap 真实） | 物理坐标 | 100% | +69.9% 动量守恒 | 0.0002 | 5.20 |
+| 行走（CMU MoCap 真实） | 关节旋转角（90维） | 80.6% | +34.6% 角速度平滑 | 0.0233 | 1.27 |
 
 **5/5 seed 方向一致。仅替换注意力层度量，参数量增加不足 0.001%。**
 
-关节旋转角实验（最后一行）尤为重要：输入是 90 维旋转角度，没有哪个维度被标记为"时间"或"空间"，Minkowski 先验仍然显著。这证明洛伦兹几何捕捉的是**运动序列本身的因果时序结构**，而不是物理坐标的特殊性质。
+关节旋转角实验最重要：90 维旋转角没有哪个维度是"时间"或"空间"，光锥注意力仍然显著。LLCM 捕捉的是运动序列本身的因果时序结构，不是物理坐标的特殊性质。
 
-### 类时比例是先验预测指标
+### 语言建模（wikitext-2）
 
-三个独立数据集验证了同一规律：
+| 模型 | val_loss | 参数量 | 步数 |
+|------|---------|-------|------|
+| 标准 Transformer | 7.7182 | 17.6M | 10000 |
+| LLCM | **7.5069** | 17.6M | 10000 |
+
+改善 2.74%，完全控制变量。
+
+### 婴儿说话机制初步验证
+
+| 实验 | 欧氏 | LLCM | 差异 |
+|------|------|------|------|
+| 方向A：动量变化识别 | 75.0% | **100%** | +25% |
+| 方向A：周期性运动识别 | 53.5% | **70.7%** | +17.2% |
+| 方向B：语言→物理（待完整验证） | — | — | 实验进行中 |
+
+---
+
+## 核心猜想（待完整验证）
+
+### 零损失函数动量守恒
 
 ```
-类时比例 100% → 动量守恒改善 ~70%
-类时比例  81% → 角速度平滑改善 ~35%
-类时比例  <50% → sigma 自发退化为欧氏（语言数据）
+"平稳守恒运动" → 洛伦兹空间类时区域激活
+                        ↓
+           生成轨迹沿类时测地线演化
+                        ↓
+           动量守恒自动成立
+           不需要任何物理损失函数
 ```
 
-**在使用洛伦兹注意力之前，先算类时比例（5分钟）：**
+**猜想成立条件：**
 
 ```python
-dx = traj[:, 1:] - traj[:, :-1]
-s2 = -(dx[..., :t_dim]**2).sum(-1) \
-   +  (dx[..., t_dim:]**2).sum(-1)
+mom_f3_zero_loss <= mom_euc_with_loss
+# LLCM 零损失  <=  欧氏有动量守恒损失函数
+```
+
+这不是工程改进，而是物理不可达性——违反守恒的路径在洛伦兹几何上根本不存在。
+
+### 双向语言对齐（层次3）
+
+```
+物理世界 ←→ 洛伦兹光锥空间 ←→ 自然语言空间
+
+感知→语言: 机器人检测到动量突变 → "这个动作太猛了"
+语言→感知: "平稳移动" → 动量守恒轨迹自动生成
+```
+
+**这个猜想目前没有完整实验验证，是开放的研究问题。**
+
+---
+
+## 类时比例：使用 LLCM 的先验指标
+
+三个独立数据集验证同一规律：
+
+```
+类时比例 100% → 物理一致性改善 ~70%
+类时比例  81% → 物理一致性改善 ~35%
+类时比例 <50% → sigma 自发退化为欧氏（优雅降级）
+```
+
+**5 分钟决定是否使用 LLCM：**
+
+```python
+dx    = data[:, 1:] - data[:, :-1]
+t_dim = max(1, int(data.shape[-1] * 0.25))
+s2    = -(dx[..., :t_dim]**2).sum(-1) \
+      +  (dx[..., t_dim:]**2).sum(-1)
 ratio = (s2 > 0).float().mean()
-# ratio > 0.6 → 用 f1/f3，Minkowski 先验有效
-# ratio < 0.4 → 欧氏已足够
+# ratio > 0.6 → LLCM 有效
+# ratio < 0.4 → 欧氏已足够，sigma 会自动退化
 ```
 
 ---
 
-## 核心发现
+## 为什么光锥注意力有效
 
-### 1. 伪黎曼结构存在（实验确认）
-W_Q参数空间的60-79%方向对dt²_info的Hessian为负（类时方向）。在以下条件下全部稳定复现：
-- 合成多跳推理任务（1-hop / 2-hop）
-- 真实语言数据（wikitext-2）
-- 128维 / 256维 / 512维三个规模
-- 3个随机种子
-
-### 2. 层深类时规律
-6层模型中，中间层（Layer 2-3）类时比例最高：
+**标准注意力：**
 ```
-layer 3: frac=0.754  ██████████████  ← 峰值（长程语义整合）
-layer 2: frac=0.738  ██████████████
-layer 4: frac=0.664  █████████████
-layer 1: frac=0.656  █████████████
-layer 5: frac=0.668  █████████████
-layer 0: frac=0.602  ████████████  ← 浅层最低
+score = QKᵀ / √d
+# 所有方向等价，时间和空间没有区别
 ```
 
-### 3. r规律（8个独立实验）
+**LLCM 光锥注意力（F3）：**
 ```
-r(baseline, delta) ≈ -1.0
+score = cat(-σ·Q_t Kᵀ_t,  Q_s Kᵀ_s) / √d
+# 时间头取负 → 类时方向互相排斥 → 信息沿光锥边界传播
+# σ = sigmoid(w)，训练中自适应收敛
 ```
-跨K-field、Minkowski注意力、Geodesic Adam三种完全不同的注入机制全部成立。r=-1 不是超参数，是狭义相对论的基本几何结构、Minkowski时空的数学签名、因果关系的几何根源。
 
-### 4. F2退化被完全确认
-5个独立seed验证：F2的alpha均值收敛到0.514（初始值），从未学到任何东西。根本原因是时空交叉项允许优化器抵消Minkowski约束。F1和F3从根本上解决了这个问题。
+这一个负号是所有物理性质的来源。
+
+**理论保证：** 传统方法的 Fisher 信息矩阵永远正定，det G > 0，光锥不存在。`dt²_info` 的 Hessian 由于可实现性条件被迫成不定矩阵，det G < 0，触发 Theorem 4，洛伦兹签名从代数上涌现，类时/类空方向得以定义，光锥边界确立。
+
+历史上的洛伦兹 Transformer 假设某个维度是时间——盲目的。LLCM 从代价函数渐近结构推导出类时方向必然存在，洛伦兹签名是唯一可能的代数结果。
 
 ---
 
-## 为什么洛伦兹
-
-传统方法（交叉熵Hessian、Fisher信息矩阵）永远正定，det G &gt; 0，无法区分类时/类空方向。
-
-dt²_info的Hessian由于**可实现性条件**（Realizability），被强迫成不定矩阵，det G &lt; 0。这一个符号翻转触发Theorem 4（Non-Separability），洛伦兹签名从代数上涌现，类时/类空方向得以定义。
-
-**没有dt²_info，闵可夫斯基在参数空间里是盲目的。有了dt²_info，P_t精确定位类时方向，洛伦兹修正才能正确施加。**
-
-历史上的洛伦兹团队硬伤：他们**假设**某个维度是时间，**贴上**洛伦兹度量。本项目从代价函数的渐近结构**推导出**类时方向必然存在，洛伦兹签名是**唯一可能的代数结果**（Realizability.pdf Remark 11 明确排除所有非洛伦兹签名）。
-
----
-
-## 物理优先架构（Physics-First Foundation Model）
-
-### 设计哲学
-
-```
-当前LLM路径:
-  语言数据（万亿token）→ 欧氏表示空间 → 物理常识靠统计学习
-
-洛伦兹物理优先路径:
-  物理数据（满足可实现性条件）
-        ↓
-  洛伦兹预训练（F3注意力）
-        ↓
-  具有类时结构的基础表示空间
-        ↓
-  语言/任务数据微调
-        ↓
-  物理世界模型（物理直觉内生于几何）
-```
-
-**一句话：** 当前LLM是读遍了所有物理书的文科生——知道答案但不理解为什么。洛伦兹基础模型是在物理世界里长大的工程师——物理直觉是内生的，语言是后来学的工具。
-
-### 适用边界（由可实现性条件决定）
-
-```python
-class RealizabilityRouter:
-    """
-    基于Realizability.pdf Theorem 5的几何路由器
-    充要条件，不是启发式阈值
-    """
-    def route(self, data):
-        ratio = compute_timelike_ratio(data)
-        if ratio > 0.6:
-            return LorentzMultiHeadAttention(formula='f3')  # 洛伦兹有效
-        else:
-            return nn.MultiheadAttention()                  # 欧氏已足够
-```
-
-满足可实现性条件的数据（物理运动、机器人轨迹、物理仿真）→ 洛伦兹流。
-不满足的数据（语言、代码）→ 欧氏流，sigma自发退化，无副作用。
-
-### 初步验证结果
-
-物理预训练 + 语言微调实验：
-
-| 模型 | 物理属性描述准确率 | 周期性运动识别 | vs 随机基线 |
-|------|-----------------|-------------|-----------|
-| 随机基线 | 20.0% | 20.0% | — |
-| 欧氏预训练 + 微调 | 67.2% | 53.5% | +47.2% |
-| 洛伦兹F3预训练 + 微调 | 67.8% | **70.7%** | +47.8% |
-
-洛伦兹在周期性运动识别上显著优于欧氏（+17.2%）。周期性运动是因果结构最强的类型——每一步依赖前一步，类时方向最明确，符合理论预测。
-
----
-
-## 当前 Python 包 API
-
-### `LorentzMultiHeadAttention`
-
-支持三种注意力公式：
+## 三种注意力公式
 
 | formula | 公式 | 适用场景 | 退化风险 |
 |---------|------|----------|----------|
-| `'f3'` | `-σ·Q_t Kᵀ_t + Q_s Kᵀ_s` | 大语言模型 / 视频 / 科学文本（**推荐默认**） | 无，σ 有界 |
-| `'f1'` | `-Q_t Kᵀ_t + Q_s Kᵀ_s` | 推理 / 数学 / 物理仿真 / 机器人轨迹 | 无，硬约束 |
-| `'f2'` | `QKᵀ - 2α·Q_t·Kᵀ` | 加载旧版权重 | ⚠️ 已知退化，不推荐新项目 |
+| `'f3'` | `-σ·Q_t Kᵀ_t + Q_s Kᵀ_s` | 通用 / LLM / 视频（推荐） | 无，σ 有界 |
+| `'f1'` | `-Q_t Kᵀ_t + Q_s Kᵀ_s` | 物理仿真 / 机器人 / 推理 | 无，硬约束 |
+| `'f2'` | `QKᵀ/√d - 2α·Q_t·Kᵀ/√d` | 旧版权重兼容 | 已确认退化 |
 
-```python
-# f3（默认推荐）— σ 可学习，自适应 Minkowski 强度
-scores_L = -σ·Q_t Kᵀ_t + Q_s Kᵀ_s
-
-# f1（物理/推理专用）— 硬约束，σ 固定为 1
-scores_L = -Q_t Kᵀ_t + Q_s Kᵀ_s
-
-# f2（旧版兼容）— 已知退化，alpha 学不动
-scores_L = QKᵀ/√d - 2α(Q_t_scaled)Kᵀ/√d
-```
-
-### `MinkowskiLayerNorm` 系列
-
-```
-标准 LayerNorm:      x / sqrt(||x||² + ε)
-MinkowskiLayerNorm:  x / sqrt(|<x,x>_η| + ε)
-<x,x>_η = ||x_s||² - ||x_t||²   （保留符号，不取 abs）
-```
-
-- `MinkowskiLayerNorm`：真正 Minkowski 几何，推荐默认
-- `MinkowskiLayerNormStable`：带 fallback，训练早期用
-- `MinkowskiLayerNormOptimized`：纯 L2，消融实验基线
-- `MinkowskiLayerNormImproved`：向后兼容别名
-
-**v1.1.0 修复：** 旧版 `_minkowski_norm_sq` 对结果取了 `.abs()`，丢失类时/类空符号信息，实际等价于 L2 归一化变体。新版保留符号，`compute_t_dim()` 确保与注意力层的 t_dim 对齐。
+F2 退化根因：时空交叉项允许优化器抵消光锥约束，5 个 seed 全部确认 alpha 收敛到初始值 0.514。
 
 ---
 
@@ -217,14 +191,12 @@ from lorentz_transformer import (
 class Config:
     d_model:    int   = 256
     n_heads:    int   = 8
-    formula:    str   = 'f3'    # 推荐默认
+    formula:    str   = 'f3'
     time_ratio: float = 0.25
     dropout:    float = 0.1
 
 config = Config()
-attn = LorentzMultiHeadAttention(config)
-
-# t_dim 对齐（v1.1.0 修复）
+attn  = LorentzMultiHeadAttention(config)
 t_dim = compute_t_dim(config.d_model, config.n_heads, config.time_ratio)
 norm  = MinkowskiLayerNorm(config.d_model, t_dim=t_dim)
 
@@ -232,31 +204,72 @@ x = torch.randn(2, 16, config.d_model)
 attn_out, attn_weights = attn(x)
 output = norm(attn_out)
 
-print(output.shape)        # torch.Size([2, 16, 256])
-print(f"σ = {attn.sigma:.3f}")  # F3 专属，训练中从 0.5 收敛
+print(output.shape)            # torch.Size([2, 16, 256])
+print(f"σ = {attn.sigma:.3f}") # 光锥强度，训练中自适应收敛
 ```
 
-### 如何选择 formula
+### 机器人 / 物理场景
 
+```python
+# 先算类时比例，再决定是否用 LLCM
+dx    = traj[:, 1:] - traj[:, :-1]
+t_dim = max(1, int(traj.shape[-1] * 0.25))
+s2    = -(dx[..., :t_dim]**2).sum(-1) + (dx[..., t_dim:]**2).sum(-1)
+ratio = (s2 > 0).float().mean()
+print(f"类时比例: {ratio:.1%}")
+
+# 物理任务用 f1（硬约束）
+config = Config(formula='f1', time_ratio=0.25)
+attn   = LorentzMultiHeadAttention(config)
 ```
-类时比例 > 0.6 + 物理/推理任务  → f1（硬约束）
-类时比例 > 0.6 + 通用任务       → f3（推荐）
-类时比例 < 0.4                  → 欧氏已足够
-不确定                          → f3，sigma 自适应
+
+### 婴儿说话模型（研究原型）
+
+```python
+# 需要: !pip install sentence-transformers -q
+exec(open('baby_language_llcm.py').read())
+
+# 自测
+self_test()
+
+# 完整实验（物理预训练 + 语言对齐 + 双向验证 + 零损失猜想）
+results = run_baby_language_test(n_seeds=3)
 ```
 
 ---
 
-## 组件消融实验（wikitext-2）
+## API 文档
 
-| 版本 | 组件 | best val_loss | 改善 |
-|------|------|--------------|------|
-| 对照 | 标准Transformer | 7.7182 | — |
-| 2 | +MinkowskiLayerNorm | **7.5069** | **-0.248** |
-| 3 | +洛伦兹FFN | 7.5518 | -0.183 |
-| 4 | +洛伦兹位置编码 | 7.5211 | -0.156 |
+### `LorentzMultiHeadAttention`
+- 输入：`(batch, seq_len, d_model)`
+- 输出：`(attn_output, attn_weights)`
+- 字段：`d_model`、`n_heads`、`formula`、`time_ratio`、`dropout`
+- 属性：`sigma`（F3 专属，当前光锥强度）
 
-MinkowskiLayerNorm 是效果最显著的单一组件。
+### `MinkowskiLayerNorm`
+
+```
+标准 LayerNorm:   x / sqrt(||x||² + ε)
+光锥 LayerNorm:   x / sqrt(|⟨x,x⟩_η| + ε)
+⟨x,x⟩_η = ||x_s||² - ||x_t||²   （保留符号，不取 abs）
+```
+
+### `compute_t_dim(d_model, n_heads, time_ratio)`
+
+确保注意力层和 LayerNorm 的 t_dim 对齐（v1.1.0 修复旧版硬编码问题）。
+
+---
+
+## 消融实验（wikitext-2）
+
+| 版本 | 组件 | val_loss | 改善 |
+|------|------|---------|------|
+| 对照 | 标准 Transformer | 7.7182 | — |
+| 2 | + 光锥 LayerNorm | **7.5069** | **-0.248** |
+| 3 | + 光锥 FFN | 7.5518 | -0.183 |
+| 4 | + 光锥位置编码 | 7.5211 | -0.156 |
+
+光锥 LayerNorm 是效果最显著的单一组件。
 
 ---
 
@@ -267,8 +280,8 @@ lorentz_transformer/
 ├── __init__.py
 └── core/
     ├── __init__.py
-    ├── attention.py        # LorentzMultiHeadAttention（F1/F2/F3）
-    └── layer_norm.py       # MinkowskiLayerNorm + compute_t_dim
+    ├── attention.py      # LorentzMultiHeadAttention（F1/F2/F3）
+    └── layer_norm.py     # MinkowskiLayerNorm + compute_t_dim
 
 examples/
 ├── attention_example.py
@@ -280,52 +293,53 @@ tests/
 ├── test_attention.py
 ├── test_integration.py
 └── test_minkowski_norm.py
+
+# 研究原型（不随包发布）
+baby_language_llcm.py     # 婴儿说话模型（物理→语言双向对齐）
+bidirectional_verify.py   # 双向验证脚本
+physics_first_model.py    # 物理优先基础模型
+joint_angle_experiment.py # 关节角度实验
 ```
 
 ---
 
 ## 理论背景
 
-基于 K=1 信息几何场方程（chronogeometrodynamics）。
+**Realizability.pdf**（Li 2026）证明：若位移代价满足零阈值可实现性（Assumption R）和时间正代价（Assumption T），Hessian 必然不定，洛伦兹签名是唯一代数结果，光锥自然涌现。所有非洛伦兹签名被 Remark 11 明确排除。
 
-信息时间度量 `dt²_info = Σ_q Φ_q/H_q` 在参数空间定义了伪黎曼度量。**Realizability.pdf**（Li 2026）证明：若位移代价满足零阈值可实现性（Assumption R）和时间正代价（Assumption T），则 Hessian 必然不定，洛伦兹签名是唯一代数结果（Theorem 5）。**k_1_v5.pdf** 的 Theorem 4 进一步证明：当且仅当 det G &lt; 0 时，系统存在非平凡稳定边界 dc &gt; 0，洛伦兹几何、辛结构、因果结构同时作为代数推论涌现。
-
-**参考：**
-- Li, Y. Y. N. (2026). *K=1 Chronogeometrodynamics*. Zenodo. https://doi.org/10.5281/zenodo.19011128
-- Li, Y. Y. N. (2026). *Realizability and the Origin of Causality*. preprint.
+**k_1_v5.pdf** Theorem 4 证明：当且仅当 det G < 0 时，系统存在非平凡稳定边界 dc > 0，洛伦兹几何、辛结构、因果结构同时作为代数推论涌现，不是独立假设。
 
 ---
 
 ## 当前状态
 
-**已完成：**
-- ✅ 语言建模：洛伦兹比标准Transformer val_loss 低 0.21（2.74%）
-- ✅ 机器人轨迹：真实 CMU MoCap 数据动量守恒改善 +69.9%（p=0.0002，d=5.20）
-- ✅ 关节角度：非物理坐标输入上 Minkowski 先验仍显著（p=0.023）
-- ✅ 类时比例作为先验预测指标（三个独立数据集验证）
-- ✅ F2 退化被 5 seed 统计确认，F1/F3 从根本上修复
-- ✅ 物理优先架构初步验证（周期性运动识别 F3 +17% vs 欧氏）
-- ✅ `LorentzMultiHeadAttention`（F1/F2/F3）+ `MinkowskiLayerNorm` 已打包
+**已验证：**
+- ✅ 语言建模 val_loss 改善 2.74%（wikitext-2）
+- ✅ 真实 CMU MoCap 动量守恒改善 +69.9%（p=0.0002，d=5.20）
+- ✅ 关节旋转角（非物理坐标）光锥注意力显著（p=0.023）
+- ✅ 类时比例作为先验预测指标（三个独立数据集）
+- ✅ F2 退化 5 seed 统计确认，F1/F3 从根本上修复
+- ✅ 方向A：动量变化识别 F3=100% vs 欧氏=75%
+- ✅ 核心模块打包：`LorentzMultiHeadAttention` + `MinkowskiLayerNorm`
 
-**研究原型（未随包发布）：**
-- 🧪 Geodesic Adam
-- 🧪 Lorentz FFN / 位置编码
-- 🧪 RealizabilityRouter（可实现性门控路由器）
-- 🧪 PhysicsFoundationModel（物理优先基础模型）
+**猜想（待完整验证）：**
+- 🔬 零损失函数动量守恒（语言指令 → 几何本能 → 守恒自动成立）
+- 🔬 双向语言对齐（方向B：语言→物理 完整验证）
+- 🔬 婴儿说话机制层次3（物理感知流形与语言空间双向对齐）
 
 **进行中：**
-- 🔄 更多 CMU MoCap subject（run/jump）补充验证
-- 🔄 D4RL 机器人数据集测试
+- 🔄 `baby_language_llcm.py` 实验运行中
+- 🔄 CMU MoCap run/jump 补充验证
 - 🔄 论文写作（目标：CoRL / NeurIPS）
 
 **计划中：**
-- 📋 GPT-2 规模（768维/12层）验证
-- 📋 物理优先基础模型完整预训练
-- 📋 lorentz_transformer v1.1.0 发布（PyPI）
+- 📋 GPT-2 规模验证（768维/12层）
+- 📋 D4RL 机器人数据集
+- 📋 v1.1.0 PyPI 发布
 
 ---
 
-*洛伦兹项目 — 2025-2026*
+*Lorentz Light-Cone Model — 2025-2026*
 
 ## License
 
@@ -334,12 +348,26 @@ MIT
 ## Citation
 
 ```bibtex
+@misc{li2026llcm,
+  author = {Li, Y. Y. N.},
+  title  = {Lorentz Light-Cone Model: Geometry-Native Physical Intelligence},
+  year   = {2026},
+  note   = {Based on K=1 Chronogeometrodynamics},
+  url    = {https://doi.org/10.5281/zenodo.19011128}
+}
+
 @misc{li2026k1,
   author    = {Li, Y. Y. N.},
   title     = {K=1 Chronogeometrodynamics},
   year      = {2026},
   publisher = {Zenodo},
-  doi       = {10.5281/zenodo.19011128},
-  url       = {https://doi.org/10.5281/zenodo.19011128}
+  doi       = {10.5281/zenodo.19011128}
+}
+
+@misc{li2026realizability,
+  author = {Li, Y. Y. N.},
+  title  = {Realizability and the Origin of Causality},
+  year   = {2026},
+  note   = {preprint}
 }
 ```
