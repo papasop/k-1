@@ -129,8 +129,8 @@ class LorentzMultiHeadAttention(nn.Module):
             f"(d_model must be divisible by n_heads)"
         )
 
-        # 公式选择（默认 f2 保持向后兼容）
-        self.formula = str(getattr(config, "formula", "f2")).lower()
+        # 公式选择（默认 f3：sigma 自适应，通用场景推荐；f2 有退化风险，仅用于兼容旧版权重）
+        self.formula = str(getattr(config, "formula", "f3")).lower()
         if self.formula not in VALID_FORMULAS:
             raise ValueError(
                 f"formula must be one of {VALID_FORMULAS}, got '{self.formula}'"
@@ -242,9 +242,9 @@ class LorentzMultiHeadAttention(nn.Module):
         Kt = self.k_t(x).view(B, L, self.n_t, d_h)
         Qs = self.q_s(x).view(B, L, self.n_s, d_h)
         Ks = self.k_s(x).view(B, L, self.n_s, d_h)
-        st = torch.einsum("bthd,bshd->bths", Qt, Kt)
-        ss = torch.einsum("bthd,bshd->bths", Qs, Ks)
-        return torch.cat([-st, ss], dim=2) / scale
+        st = torch.einsum("bthd,bshd->bhts", Qt, Kt)
+        ss = torch.einsum("bthd,bshd->bhts", Qs, Ks)
+        return torch.cat([-st, ss], dim=1) / scale
 
     def _forward_f2(self, x, B, L, scale):
         """F2: QK^T/sqrt(d) - 2a*Q_t_proj*K^T/sqrt(d)"""
@@ -267,10 +267,10 @@ class LorentzMultiHeadAttention(nn.Module):
         Kt = self.k_t(x).view(B, L, self.n_t, d_h)
         Qs = self.q_s(x).view(B, L, self.n_s, d_h)
         Ks = self.k_s(x).view(B, L, self.n_s, d_h)
-        st    = torch.einsum("bthd,bshd->bths", Qt, Kt)
-        ss    = torch.einsum("bthd,bshd->bths", Qs, Ks)
+        st    = torch.einsum("bthd,bshd->bhts", Qt, Kt)
+        ss    = torch.einsum("bthd,bshd->bhts", Qs, Ks)
         sigma = torch.sigmoid(self.w_sigma)
-        return torch.cat([-sigma * st, ss], dim=2) / scale
+        return torch.cat([-sigma * st, ss], dim=1) / scale
 
     def extra_repr(self) -> str:
         base = (f"formula={self.formula}, "
