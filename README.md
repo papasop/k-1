@@ -181,11 +181,11 @@ core.py                      ← 所有模块共用（MinkowskiLN, Attn, LLCMBac
 
 | 模块 | 验证内容 | 脚本 | 关键结果 |
 |------|---------|------|---------|
-| 模块1 | 物理预训练 loss F3 &lt;&lt; 欧氏 | `layer3_zero_loss_B.py` | F3=0.025 欧氏=0.275 ×10倍 |
-| 模块2 | 语言编码器语义质量 | `baby_talk_full_test.py` verify_module2() | 中文同类&gt;跨类 ✅ |
+| 模块1 | 物理预训练 loss F3 << 欧氏 | `layer3_zero_loss_B.py` | F3=0.025 欧氏=0.275 ×10倍 |
+| 模块2 | 语言编码器语义质量 | `baby_talk_full_test.py` verify_module2() | 中文同类>跨类 ✅ |
 | 模块3 | 方向A：物理→语言对齐 | `layer1_minimal_test.py` | p=0.0302 d=1.47 5/5 |
-| 模块4a | 类时比例 F3&gt;欧氏 | `layer1_minimal_test.py` 层2测量 | mq差距72倍 5/5 |
-| 模块4b | Law II 在线收敛速度 | `online_interaction_test.py` | dc&gt;0 验证中 |
+| 模块4a | 类时比例 F3>欧氏 | `layer1_minimal_test.py` 层2测量 | mq差距72倍 5/5 |
+| 模块4b | Law II 在线收敛速度 | `online_interaction_test.py` | dc>0 验证中 |
 | 模块5 | 方向B：语言→守恒轨迹 | `baby_talk_full_test.py` | p=0.041 弱版本 |
 | 完整 | 五模块联合验证 | `baby_talk_full_test.py` | 待全部通过 |
 
@@ -364,8 +364,8 @@ ratio = (s2 > 0).float().mean()
 | 机器人物理坐标 [x,y,z,vx,vy,vz] | 80-100% | ✅ 强烈推荐 |
 | 关节旋转角（BVH） | 80% | ✅ 推荐 |
 | 物理仿真（ODE） | 80-100% | ✅ 推荐 |
-| 自然语言 token | <50% | ❌ sigma 退化 |
-| 视频像素 | <50% | ❌ sigma 退化 |
+| 自然语言 token | <50% | ❌ sigma退化 |
+| 视频像素 | <50% | ❌ sigma退化 |
 | 传感器时序（IMU/力矩） | 待测量 | 先算类时比例 |
 
 ---
@@ -658,6 +658,9 @@ loss = F.mse_loss(pred_traj, true_traj) + 0.3 * (dp**2).mean()
 
 ## 消融实验（wikitext-2）
 
+以下消融实验验证各组件对语言建模的独立贡献，
+与层0/层1的物理实验是互补关系而非依赖关系。
+
 | 版本 | 组件 | val_loss | 改善 |
 |------|------|---------|------|
 | 对照 | 标准 Transformer | 7.7182 | — |
@@ -691,8 +694,6 @@ tests/
 └── test_minkowski_norm.py
 
 # 研究原型（不随包发布）
-core.py                      ← 所有模块共用（MinkowskiLN, Attn, LLCMBackbone,
-                                simulate, build_dataset, pretrain）
 baby_language_llcm.py     # 婴儿说话模型（物理→语言双向对齐）
 bidirectional_verify.py   # 双向验证脚本
 physics_first_model.py    # 物理优先基础模型
