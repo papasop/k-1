@@ -11,7 +11,9 @@ LLCM（Lorentz Light-Cone Model）核心模块
   from llcm.core import (
       MinkowskiLN, Attn, LLCMBackbone,
       stable_ode, running_ode, simulate, build_dataset,
-      momentum_change, encode, pretrain
+      momentum_change, encode, pretrain,
+      EuclideanBackbone, pretrain_euc,
+      compute_dc, compute_K, compute_kappa, online_step,
   )
 
 模块对应关系：
@@ -20,6 +22,7 @@ LLCM（Lorentz Light-Cone Model）核心模块
   模块3（方向A）：    LLCMBackbone.forward_A_gen() + lang_gen 头
   模块4（lang_aligner）：LLCMBackbone.lang_aligner
   模块5（phys_decoder）：LLCMBackbone.phys_decoder
+  在线交互：          EuclideanBackbone + compute_dc/compute_K/compute_kappa/online_step
 """
 
 import torch
@@ -361,3 +364,230 @@ def pretrain(model, seed=0, epochs=EP_PRE, lr=LR_PRE, bs=BS):
             opt.step()
         sch.step()
     return model
+
+
+# ── 在线交互（Law II）──────────────────────────────────────────
+
+class _EuclideanBlock(nn.Module):
+    """标准 Transformer 块（欧氏度量，无 Minkowski 修正）"""
+
+    def __init__(self):
+        super().__init__()
+        self.attn  = nn.MultiheadAttention(EMBED_DIM, N_HEADS, batch_first=True)
+        self.norm1 = nn.LayerNorm(EMBED_DIM)
+        self.ffn   = nn.Sequential(
+            nn.Linear(EMBED_DIM, EMBED_DIM * 4),
+            nn.GELU(),
+            nn.Linear(EMBED_DIM * 4, EMBED_DIM),
+        )
+        self.norm2 = nn.LayerNorm(EMBED_DIM)
+
+    def forward(self, x):
+        a, _ = self.attn(x, x, x)
+        x    = self.norm1(x + a)
+        x    = self.norm2(x + self.ffn(x))
+        return x
+
+
+class EuclideanBackbone(nn.Module):
+    """
+    欧氏基线骨干网络（对照组）。
+
+    与 LLCMBackbone 接口相同，但使用标准多头注意力（det G = 1 > 0，dc = 0）。
+    按 Theorem 3：欧氏几何 dc = 0，在线学习收敛速度低于洛伦兹模型。
+
+    子模块结构与 LLCMBackbone 相同：
+      embed, blocks, phys_decoder, lang_aligner, lang_gen, cls_head
+    """
+
+    def __init__(self):
+        super().__init__()
+        self.embed        = nn.Linear(STATE_DIM, EMBED_DIM)
+        self.blocks       = nn.ModuleList(
+            [_EuclideanBlock() for _ in range(N_LAYERS)]
+        )
+        self.phys_decoder = nn.Linear(EMBED_DIM, STATE_DIM)
+        self.lang_aligner = nn.Linear(EMBED_DIM, LANG_DIM)
+        self.lang_gen     = nn.Linear(EMBED_DIM, LANG_DIM)
+        self.cls_head     = nn.Linear(EMBED_DIM, N_LABELS)
+
+    def encode_phys(self, x):
+        """
+        物理序列编码。
+
+        Args:
+            x : (B, T, STATE_DIM)
+
+        Returns:
+            h : (B, T, EMBED_DIM)
+        """
+        h = self.embed(x)
+        for block in self.blocks:
+            h = block(h)
+        return h
+
+    def forward(self, x):
+        """
+        分类前向（返回 logits）。
+
+        Args:
+            x : (B, T, STATE_DIM)
+
+        Returns:
+            logits : (B, N_LABELS)
+        """
+        h = self.encode_phys(x)
+        return self.cls_head(h.mean(dim=1))
+
+    def forward_A_gen(self, x):
+        """
+        方向A生成：物理序列 → 语言嵌入（L2 归一化）。
+
+        Args:
+            x : (B, T, STATE_DIM)
+
+        Returns:
+            lang_out : (B, LANG_DIM)，已 L2 归一化
+        """
+        h = self.encode_phys(x)
+        return F.normalize(self.lang_gen(h.mean(dim=1)), dim=-1)
+
+
+def pretrain_euc(model, seed=0, epochs=EP_PRE, lr=LR_PRE, bs=BS):
+    """
+    欧氏骨干预训练：与 pretrain() 相同的 ODE 轨迹 MSE 损失。
+
+    Args:
+        model  : EuclideanBackbone 实例
+        seed   : 预训练数据随机种子
+        epochs : 训练轮数（默认 EP_PRE=80）
+        lr     : 学习率（默认 LR_PRE=3e-4，AdamW）
+        bs     : 批大小（默认 BS=16）
+
+    Returns:
+        model : 训练后的 EuclideanBackbone（已移至 device）
+    """
+    model.to(device).train()
+    X, _ = build_dataset(seed=seed)
+    X_t  = torch.from_numpy(X).to(device)
+    ds   = TensorDataset(X_t[:, :T_IN], X_t[:, T_IN:])
+    dl   = DataLoader(ds, batch_size=bs, shuffle=True, drop_last=False)
+    opt  = torch.optim.AdamW(model.parameters(), lr=lr)
+    sch  = torch.optim.lr_scheduler.CosineAnnealingLR(opt, T_max=epochs)
+    for _ in range(epochs):
+        for x_in, x_out in dl:
+            opt.zero_grad()
+            h    = model.encode_phys(x_in)
+            pred = model.phys_decoder(h)
+            F.mse_loss(pred, x_out).backward()
+            opt.step()
+        sch.step()
+    return model
+
+
+def compute_dc(model):
+    """
+    计算 dc（几何修正项）。
+
+    Theorem 4: dc > 0 ⟺ det G < 0（洛伦兹签名必要条件）。
+
+    F3（LLCMBackbone）:
+        dc = σ̄·(1-σ̄)/2，其中 σ̄ 为各注意力块 sigma 的均值。
+        当 σ̄ ∈ (0,1) 时 dc > 0，对应 det G < 0（洛伦兹几何）。
+
+    欧氏（EuclideanBackbone，Theorem 3）:
+        dc = 0，对应 det G = 1 > 0（欧氏几何，无洛伦兹修正）。
+
+    Args:
+        model : LLCMBackbone 或 EuclideanBackbone 实例
+
+    Returns:
+        dc : float，几何修正项（F3 > 0，欧氏 = 0）
+    """
+    if isinstance(model, LLCMBackbone):
+        sigmas = np.array([b.attn.sigma for b in model.blocks], dtype=np.float64)
+        s = float(sigmas.mean())
+        return s * (1.0 - s) / 2.0
+    return 0.0
+
+
+def compute_K(model, x_phys):
+    """
+    计算 K(x) = x⊤Gx（Law III 统计吸引子量）。
+
+    F3（LLCMBackbone）:
+        G = diag(-1,…,-1, +1,…,+1)（前 T_DIM 维类时）
+        K = -‖x_t‖² + ‖x_s‖²，其中 x = normalize(lang_aligner(encode(x_phys)))
+        K → 1 时 x 趋向纯类空嵌入（Law III 吸引子）
+
+    欧氏（EuclideanBackbone）:
+        K = ‖x‖² = 1（归一化后恒为 1，不体现洛伦兹收敛动力学）
+
+    Args:
+        model  : LLCMBackbone 或 EuclideanBackbone 实例
+        x_phys : (B, T_IN, STATE_DIM) 物理状态张量
+
+    Returns:
+        K : float，批均值 K(x)
+    """
+    model.eval()
+    with torch.no_grad():
+        h = model.encode_phys(x_phys)
+        x = F.normalize(model.lang_aligner(h.mean(dim=1)), dim=-1)
+        if isinstance(model, LLCMBackbone):
+            K = (-x[:, :T_DIM].pow(2).sum(-1)
+                 + x[:, T_DIM:].pow(2).sum(-1))
+        else:
+            K = x.pow(2).sum(-1)   # 归一化后恒为 1
+    return float(K.mean())
+
+
+def compute_kappa(loss_history):
+    """
+    从训练损失历史估计收敛速度 κK（Theorem 6：κK = 4dc）。
+
+    假设在线损失满足指数衰减：
+        V(t) ≈ V₀·exp(−κK·t)
+        log V(t) = log V₀ − κK·t
+
+    通过线性回归 log V(t) ~ t 的斜率得到 κK = −slope（正值表示收敛）。
+
+    Args:
+        loss_history : 长度 ≥ 2 的损失值序列（每轮在线交互的平均损失）
+
+    Returns:
+        kappa : float，估计收敛速度（非负）
+    """
+    from scipy import stats as _stats
+    vals = np.clip(np.array(loss_history, dtype=np.float64), 1e-8, None)
+    t    = np.arange(len(vals))
+    if len(t) < 2:
+        return 0.0
+    slope, _, _, _, _ = _stats.linregress(t, np.log(vals))
+    return max(0.0, -slope)
+
+
+def online_step(model, x_phys, v_ref, optimizer):
+    """
+    Law II 在线更新步：dx/dt = (JG − D)∇V_total。
+
+    离散化（D 耗散项）：w ← w − lr·∇_w V_lang。
+    V_lang = 1 − cos_sim(x_aligned, v_lang_ref)（人类语言反馈代价信号）。
+
+    Args:
+        model     : LLCMBackbone 或 EuclideanBackbone 实例
+        x_phys    : (B, T_IN, STATE_DIM) 物理状态张量
+        v_ref     : (B, LANG_DIM) 语言反馈参考嵌入（已 L2 归一化）
+        optimizer : 仅更新 lang_aligner 参数的优化器
+
+    Returns:
+        loss : float，本步 V_lang 值
+    """
+    model.train()
+    optimizer.zero_grad()
+    h = model.encode_phys(x_phys)
+    x = F.normalize(model.lang_aligner(h.mean(dim=1)), dim=-1)
+    V = 1.0 - (x * v_ref).sum(dim=-1).mean()
+    V.backward()
+    optimizer.step()
+    return float(V.item())
