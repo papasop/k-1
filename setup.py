@@ -34,6 +34,7 @@ setup(
     install_requires=[
         "torch>=1.12.0",
         "numpy>=1.20.0",
+        "scipy>=1.7.0",
     ],
     extras_require={
         "dev": ["pytest>=6.0", "black>=22.0", "flake8>=4.0"],
