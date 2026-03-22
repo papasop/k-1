@@ -224,11 +224,13 @@ def momentum_change(traj):
 
 class _LLCMCfg:
     """传递给 LorentzMultiHeadAttention 的最小配置对象"""
-    d_model    = EMBED_DIM
-    n_heads    = N_HEADS
-    formula    = 'f3'
-    time_ratio = TIME_RATIO
-    dropout    = 0.0
+
+    def __init__(self, formula='f3'):
+        self.d_model    = EMBED_DIM
+        self.n_heads    = N_HEADS
+        self.formula    = formula
+        self.time_ratio = TIME_RATIO
+        self.dropout    = 0.0
 
 
 # ── LLCM 变换块 ────────────────────────────────────────────────
@@ -236,9 +238,9 @@ class _LLCMCfg:
 class _LLCMBlock(nn.Module):
     """单个 LLCM 变换块：光锥注意力 + Minkowski LayerNorm + FFN"""
 
-    def __init__(self):
+    def __init__(self, formula='f3'):
         super().__init__()
-        self.attn  = Attn(_LLCMCfg())
+        self.attn  = Attn(_LLCMCfg(formula=formula))
         self.norm1 = MinkowskiLN(EMBED_DIM, t_dim=T_DIM)
         self.ffn   = nn.Sequential(
             nn.Linear(EMBED_DIM, EMBED_DIM * 4),
@@ -267,13 +269,18 @@ class LLCMBackbone(nn.Module):
       lang_aligner : EMBED_DIM → LANG_DIM  语言对齐投影（模块4）
       lang_gen     : EMBED_DIM → LANG_DIM  生成方向A语言头（模块3）
       cls_head     : EMBED_DIM → N_LABELS  分类头
+
+    Args:
+        formula : 注意力公式 'f1' | 'f2' | 'f3'（默认 'f3'）
+                  'f1' 显式分离（欧氏对照基线）
+                  'f3' sigma 自适应洛伦兹（推荐默认，已验证）
     """
 
-    def __init__(self):
+    def __init__(self, formula='f3'):
         super().__init__()
         self.embed        = nn.Linear(STATE_DIM, EMBED_DIM)
         self.blocks       = nn.ModuleList(
-            [_LLCMBlock() for _ in range(N_LAYERS)]
+            [_LLCMBlock(formula=formula) for _ in range(N_LAYERS)]
         )
         self.phys_decoder = nn.Linear(EMBED_DIM, STATE_DIM)
         self.lang_aligner = nn.Linear(EMBED_DIM, LANG_DIM)
