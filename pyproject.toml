@@ -3,14 +3,14 @@ requires = ["setuptools>=61", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "lorentz-transformer"
-version = "1.1.0"
-description = "Minkowski Geometry in Transformer Attention"
+name = "k-1"
+version = "2.0.0"
+description = "K=1 Chronogeometrodynamics — LLCM Research Prototype"
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.8"
 authors = [{ name = "papasop" }]
-keywords = ["lorentz", "transformer", "minkowski", "attention", "physics"]
+keywords = ["lorentz", "transformer", "minkowski", "attention", "physics", "llcm"]
 classifiers = [
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.8",
@@ -34,10 +34,10 @@ dev = ["pytest>=6.0", "black>=22.0", "flake8>=4.0"]
 Homepage = "https://github.com/papasop/k-1"
 
 [tool.setuptools.packages.find]
-include = ["lorentz_transformer*"]
+include = ["llcm*", "experiments*"]
 
 [tool.coverage.run]
-source = ["lorentz_transformer"]
+source = ["llcm", "experiments"]
 
 [tool.coverage.report]
 exclude_lines = [
