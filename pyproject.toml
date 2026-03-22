@@ -1,46 +1,40 @@
 [build-system]
-requires = ["setuptools>=61", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.backends.legacy:build"
 
 [project]
-name = "k-1"
-version = "2.0.0"
-description = "K=1 Chronogeometrodynamics — LLCM Research Prototype"
+name = "llcm"
+version = "1.0.0"
+description = "Lorentz Light-Cone Model: Geometry-Native Physical Intelligence"
 readme = "README.md"
-license = "MIT"
 requires-python = ">=3.8"
-authors = [{ name = "papasop" }]
-keywords = ["lorentz", "transformer", "minkowski", "attention", "physics", "llcm"]
+license = {text = "MIT"}
+authors = [
+  {name = "Y. Y. N. Li"}
+]
+keywords = [
+  "lorentz", "transformer", "physics", "robotics",
+  "causal", "information-geometry", "baby-talk"
+]
 classifiers = [
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Operating System :: OS Independent",
-    "Intended Audience :: Science/Research",
-    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+  "Topic :: Scientific/Engineering :: Physics",
 ]
 dependencies = [
-    "torch>=1.12.0",
-    "numpy>=1.20.0",
-    "scipy>=1.7.0",
+  "torch>=2.0",
+  "numpy>=1.24",
+  "scipy>=1.10",
+  "sentence-transformers>=2.2",
 ]
 
 [project.optional-dependencies]
-dev = ["pytest>=6.0", "black>=22.0", "flake8>=4.0"]
+dev = ["pytest", "black", "flake8"]
 
 [project.urls]
-Homepage = "https://github.com/papasop/k-1"
+Repository = "https://github.com/papasop/k-1"
 
 [tool.setuptools.packages.find]
-include = ["llcm*", "experiments*"]
-
-[tool.coverage.run]
-source = ["llcm", "experiments"]
-
-[tool.coverage.report]
-exclude_lines = [
-    'if __name__ == "__main__"',
-    "pragma: no cover",
-]
+where = ["."]
+include = ["llcm*", "experiments*", "lorentz_transformer*"]
