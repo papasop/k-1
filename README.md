@@ -170,6 +170,65 @@ F2 退化根因：时空交叉项允许优化器抵消光锥约束，5 个 seed 
 
 ---
 
+## 模块验证文件清单
+
+每个模块有独立的验证脚本，可直接复现。所有脚本共享 `core.py` 的模型定义。
+
+```
+core.py                      ← 所有模块共用（MinkowskiLN, Attn, LLCMBackbone,
+                                simulate, build_dataset, pretrain）
+```
+
+| 模块 | 验证内容 | 脚本 | 关键结果 |
+|------|---------|------|---------|
+| 模块1 | 物理预训练 loss F3 &lt;&lt; 欧氏 | `layer3_zero_loss_B.py` | F3=0.025 欧氏=0.275 ×10倍 |
+| 模块2 | 语言编码器语义质量 | `baby_talk_full_test.py` verify_module2() | 中文同类&gt;跨类 ✅ |
+| 模块3 | 方向A：物理→语言对齐 | `layer1_minimal_test.py` | p=0.0302 d=1.47 5/5 |
+| 模块4a | 类时比例 F3&gt;欧氏 | `layer1_minimal_test.py` 层2测量 | mq差距72倍 5/5 |
+| 模块4b | Law II 在线收敛速度 | `online_interaction_test.py` | dc&gt;0 验证中 |
+| 模块5 | 方向B：语言→守恒轨迹 | `baby_talk_full_test.py` | p=0.041 弱版本 |
+| 完整 | 五模块联合验证 | `baby_talk_full_test.py` | 待全部通过 |
+
+### 复现命令
+
+```python
+# 模块1（结构效应×10倍）
+exec(open('layer3_zero_loss_B.py').read())
+
+# 模块3（方向A，p=0.0302）
+exec(open('layer1_minimal_test.py').read())
+
+# 模块4b（Law II 在线交互）
+exec(open('online_interaction_test.py').read())
+
+# 完整五模块
+exec(open('baby_talk_full_test.py').read())
+```
+
+### 从 core.py import
+
+```python
+from core import (
+    LLCMBackbone, pretrain,          # 模型和预训练
+    build_dataset, simulate,          # 数据生成
+    momentum_change, encode,          # 评估工具
+    stable_ode, running_ode,          # 物理 ODE
+    real_physics_baseline,            # 真实物理基准
+    device, EMBED_DIM, T_DIM,         # 超参数
+    LABELS, DESCRIPTIONS,             # 标签定义
+)
+
+# 使用示例
+model = LLCMBackbone(mode='f3').to(device)
+pretrain(model, seed=0)
+X, L = build_dataset(seed=42)
+lorentz = model.embed_seq(X.to(device))
+geo = model.measure_lorentz(lorentz)
+print(f"类时比例: {geo['tl_ratio']:.1%}  mq均值: {geo['mq_mean']:+.3f}")
+```
+
+---
+
 ## 为什么光锥注意力有效
 
 **标准注意力：**
@@ -632,6 +691,8 @@ tests/
 └── test_minkowski_norm.py
 
 # 研究原型（不随包发布）
+core.py                      ← 所有模块共用（MinkowskiLN, Attn, LLCMBackbone,
+                                simulate, build_dataset, pretrain）
 baby_language_llcm.py     # 婴儿说话模型（物理→语言双向对齐）
 bidirectional_verify.py   # 双向验证脚本
 physics_first_model.py    # 物理优先基础模型
