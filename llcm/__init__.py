@@ -14,6 +14,7 @@ from .core import (  # noqa: F401
     momentum_change,
     encode,
     pretrain,
+    MOM_WEIGHT,
 )
 
 __all__ = [
@@ -27,4 +28,5 @@ __all__ = [
     "momentum_change",
     "encode",
     "pretrain",
+    "MOM_WEIGHT",
 ]

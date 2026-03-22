@@ -21,6 +21,7 @@ from llcm.core import (
     build_dataset,
     momentum_change,
     pretrain,
+    MOM_WEIGHT,
     T_DIM,
     EMBED_DIM,
     N_HEADS,
@@ -290,3 +291,63 @@ class TestPretrain:
             for p, pb in zip(model.parameters(), params_before)
         )
         assert changed, "预训练未更新任何参数"
+
+    def test_pretrain_with_mom_weight_returns_model(self):
+        """mom_weight > 0 时 pretrain 仍应返回同一 LLCMBackbone 实例"""
+        model = LLCMBackbone()
+        result = pretrain(model, seed=999, epochs=1, bs=4, mom_weight=0.3)
+        assert result is model
+
+    def test_pretrain_mom_weight_updates_params(self):
+        """mom_weight > 0 时预训练应更新模型参数"""
+        model = LLCMBackbone()
+        params_before = [p.clone() for p in model.parameters()]
+        pretrain(model, seed=7, epochs=2, bs=4, mom_weight=0.3)
+        changed = any(
+            not torch.equal(p, pb)
+            for p, pb in zip(model.parameters(), params_before)
+        )
+        assert changed, "带动量守恒损失的预训练未更新任何参数"
+
+    def test_pretrain_mom_weight_zero_matches_default(self):
+        """mom_weight=0.0 时不添加动量守恒项（总损失等于纯 MSE）"""
+        import torch.nn.functional as F
+        model = LLCMBackbone()
+        x_in = torch.randn(2, T_IN, STATE_DIM)
+        x_out = torch.randn(2, T_OUT, STATE_DIM)
+        h = model.encode_phys(x_in)
+        pred = model.phys_decoder(h)
+        mse = F.mse_loss(pred, x_out)
+        vel = pred[:, :, 3:]
+        dp = vel[:, 1:, :] - vel[:, :-1, :]
+        mom_loss = (dp ** 2).mean()
+        # mom_weight=0.0：总损失应等于纯 MSE，不含动量守恒项
+        expected_zero_weight = mse + 0.0 * mom_loss
+        assert torch.allclose(mse, expected_zero_weight), \
+            "mom_weight=0.0 时损失应等于纯 MSE"
+        # 验证 mom_weight=0.0 时 pretrain 可正常完成
+        pretrain(model, seed=13, epochs=1, bs=4, mom_weight=0.0)
+
+    def test_pretrain_no_nan_with_mom_weight(self):
+        """mom_weight > 0 时预训练后模型参数不应含 NaN"""
+        model = LLCMBackbone()
+        pretrain(model, seed=5, epochs=2, bs=4, mom_weight=MOM_WEIGHT)
+        for p in model.parameters():
+            assert not torch.isnan(p).any(), "预训练后参数含 NaN"
+
+
+# ── MOM_WEIGHT 常量测试 ────────────────────────────────────────
+
+class TestMomWeightConstant:
+    def test_mom_weight_value(self):
+        """MOM_WEIGHT 应为 0.3"""
+        assert MOM_WEIGHT == pytest.approx(0.3)
+
+    def test_mom_weight_positive(self):
+        """MOM_WEIGHT 应为正数"""
+        assert MOM_WEIGHT > 0.0
+
+    def test_mom_weight_exported_from_llcm(self):
+        """MOM_WEIGHT 应可从 llcm 包直接导入"""
+        from llcm import MOM_WEIGHT as mw
+        assert mw == pytest.approx(0.3)
