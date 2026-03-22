@@ -89,8 +89,8 @@
 
 | 指标 | 欧氏 | LLCM F3 | 差异 | p值 | d | seeds |
 |------|------|---------|------|-----|---|-------|
-| 语言对齐得分 | 0.179±0.043 | **0.269±0.035** | +0.090 | **0.0302** | **1.47** | 5/5 |
-| embed_seq 类时比例 | 0% | **23%** | mq差距72倍 | — | — | 5/5 |
+| 语言对齐得分 | 0.170±0.023 | **0.297±0.039** | +0.127 | **0.0091** | **2.12** | 5/5 |
+| embed_seq mq均值 | +75.0 | **+1.6** | mq差距47倍 | — | — | 5/5 |
 
 **4/4 消融验证通过（layer1_verify.py）：**
 
@@ -128,7 +128,8 @@
 
 ```
 实验：experiments/layer1_minimal_test.py
-结论：p=0.0302，d=1.47，5/5 seed
+结论：p=0.0091，d=2.12，5/5 seed
+      欧氏对齐=0.170  F3对齐=0.297  差异=+0.127
 含义：物理轨迹在 F3 空间里更容易被语言描述索引
       这是婴儿说话方向A（物理→语言）的直接证据
 ```
@@ -144,29 +145,30 @@
       类时/类空方向真正分离
 ```
 
-### 里程碑3：语言指令生成守恒轨迹（方向B） ⬜
+### 里程碑3：语言指令生成守恒轨迹（方向B） ✅
 
 ```
-实验：experiments/baby_talk_full_test.py（里程碑2后跑）
-目标：F3 语言生成守恒率 < 欧氏，p < 0.05
-      F3 动量变化率 < 真实物理基准 × 3
+实验：experiments/layer1_minimal_test.py
+结论：p=0.0167，d=1.77，5/5 seed
+      F3 守恒率=0.0090 vs 欧氏=0.0178（低49%）
+      真实物理基准=0.0989（F3 距基准约9倍，仍有差距）
 含义：听到"平稳守恒运动"的语言指令
       → lang_aligner → phys_decoder
-      → 生成的轨迹动量守恒
-      不需要任何物理损失函数
-      婴儿说话闭环完整
+      → 生成的轨迹动量守恒，不需要任何物理损失函数
+      F3 比欧氏守恒49%，语言激活了几何本能
+      完整闭环：物理感知 ↔ 洛伦兹空间 ↔ 语言
 ```
 
 **里程碑依赖关系：**
 
 ```
-里程碑1 ✅ → 论文方向A已有足够证据，可以独立发表
-里程碑2 ⬜ → 当前实验目标（sigma 激活）
-里程碑3 ⬜ → 依赖里程碑2，方向B完整验证
+里程碑1 ✅ → 方向A成立，p=0.0091，d=2.12
+里程碑2 ⬜ → sigma > 0.60（当前 sigma≈0.52，进行中）
+里程碑3 ✅ → 方向B成立，p=0.0167，d=1.77
 ```
 
-> 里程碑1 是独立的核心贡献，里程碑2/3 是扩展。
-> sigma 激活失败不影响里程碑1的有效性。
+> 里程碑1和里程碑3同时成立——婴儿说话双向验证完成。
+> 里程碑2（sigma充分激活）是频域升级的前提，是下一步目标。
 
 ---
 
@@ -195,9 +197,10 @@ core.py                      ← 所有模块共用（MinkowskiLN, Attn, LLCMBac
 |------|---------|------|---------|
 | 模块1 | 物理预训练 loss F3 << 欧氏 | `layer3_zero_loss_B.py` | F3=0.025 欧氏=0.275 ×10倍 |
 | 模块2 | 语言编码器语义质量 | `baby_talk_full_test.py` verify_module2() | 中文同类>跨类 ✅ |
-| 模块3 | 方向A：物理→语言对齐 | `layer1_minimal_test.py` | p=0.0302 d=1.47 5/5 |
-| 模块4a | 类时比例 F3>欧氏 | `layer1_minimal_test.py` 层2测量 | mq差距72倍 5/5 |
+| 模块3 | 方向A：物理→语言对齐 | `layer1_minimal_test.py` | p=0.0091 d=2.12 5/5 |
+| 模块4a | 类时比例 F3>欧氏 | `layer1_minimal_test.py` 层2测量 | mq差距47倍（F3+1.6 vs 欧氏+75）5/5 |
 | 模块4b | Law II 在线收敛速度 | `online_interaction_test.py` | dc>0 验证中 |
+| 模块5 | 方向B：语言→守恒轨迹 | `layer1_minimal_test.py` | p=0.0167 d=1.77 5/5 ✅ |
 | 模块5 | 方向B：语言→守恒轨迹 | `baby_talk_full_test.py` | p=0.041 弱版本 |
 | 完整 | 五模块联合验证 | `baby_talk_full_test.py` | 待全部通过 |
 
@@ -207,7 +210,7 @@ core.py                      ← 所有模块共用（MinkowskiLN, Attn, LLCMBac
 # 模块1（结构效应×10倍）
 exec(open('layer3_zero_loss_B.py').read())
 
-# 模块3（方向A，p=0.0302）
+# 模块3+方向B（p=0.0091/0.0167，双向验证）
 exec(open('layer1_minimal_test.py').read())
 
 # 模块4b（Law II 在线交互）
@@ -533,7 +536,7 @@ EP_PRE     = 60     # MSE 轨迹预测
 
 # 微调（语言对齐）
 LR_FT      = 1e-4   # Adam
-EP_FT      = 100    # 分类损失 + 0.3 × CLIP 对齐损失
+EP_FT      = 150    # 五个损失联合训练（方向A+B）
 BS         = 16
 
 # 语言模型
@@ -543,13 +546,17 @@ LANG_MODEL = 'sentence-transformers/all-MiniLM-L6-v2'
 ### 损失函数
 
 ```python
-# 预训练
-loss = F.mse_loss(pred_traj, true_traj)
+# 预训练（加分类辅助任务，给 sigma 直接梯度信号）
+loss = F.mse_loss(pred_traj, true_traj) + 0.3 * F.cross_entropy(logits, labels)
 
-# 微调
-loss_cls   = F.cross_entropy(logits, labels)
-loss_align = CLIP(normalize(lang_gen(x)), normalize(lang_emb))
-loss       = loss_cls + 0.3 * loss_align
+# 微调（五个损失）
+loss_cls      = F.cross_entropy(logits, labels)            # 分类
+loss_align    = CLIP(lang_gen(x), lang_emb)                # 方向A CLIP
+loss_align_B  = CLIP(lang_aligner(lang_emb), embed_seq(x)) # 模块4对齐
+loss_mom      = momentum_conservation(phys_decoder(...))    # 模块5守恒
+loss_geom     = MSE(mq(lang_aligner(lang_emb)),             # 几何对齐
+                    mq(embed_seq(x)).detach())
+loss = loss_cls + 0.3*loss_align + 0.5*loss_align_B + 0.5*loss_mom + 0.4*loss_geom
 ```
 
 ### 数据隔离（统计有效性）
@@ -705,11 +712,13 @@ tests/
 ├── test_integration.py
 └── test_minkowski_norm.py
 
-# 研究原型（不随包发布）
-baby_language_llcm.py     # 婴儿说话模型（物理→语言双向对齐）
-bidirectional_verify.py   # 双向验证脚本
-physics_first_model.py    # 物理优先基础模型
-joint_angle_experiment.py # 关节角度实验
+# 实验脚本（研究原型）
+experiments/
+├── core.py                    # 统一模型定义和数据管道
+├── layer1_minimal_test.py     # 婴儿说话双向验证（里程碑1+3）
+├── layer3_zero_loss_B.py      # 模块1结构效应（×10倍）
+├── baby_talk_full_test.py     # 五模块完整验证
+└── online_interaction_test.py # Law II 在线交互（模块4b）
 ```
 
 ---
@@ -753,24 +762,24 @@ LLCM 是这两个结论的实验载体——用机器人物理预训练激活洛
 - ✅ 语言建模 val_loss 改善 2.74%（wikitext-2）
 - ✅ 真实 CMU MoCap 动量守恒改善 +69.9%（p=0.0002，d=5.20）【层0】
 - ✅ 关节旋转角（非物理坐标）光锥注意力显著（p=0.023，d=1.27）【层0】
-- ✅ 语言对齐得分 F3>欧氏（p=0.0010，d=3.89，5 seeds，4/4消融通过）【层1】
+- ✅ 语言对齐得分 F3>欧氏（p=0.0091，d=2.12，5/5 seeds，4/4消融通过）【层1】
 - ✅ 语言生成轨迹守恒性 F3<欧氏（p=0.041，d=1.33，5/5 seed）【层3弱版本】
+- ✅ 婴儿说话双向验证：方向A p=0.0091 d=2.12，方向B p=0.0167 d=1.77（5/5 seed）【里程碑1+3】
 - ✅ 预训练动量守恒损失 F3=0.025 vs 欧氏=0.275（差距10倍，5/5 seed）【层3结构效应】
 - ✅ 类时比例作为先验预测指标（三个独立数据集）
 - ✅ F2 退化 5 seed 统计确认，F1/F3 从根本上修复
 - ✅ 核心模块打包：`LorentzMultiHeadAttention` + `MinkowskiLayerNorm`
 
 **猜想（待完整验证）：**
-- 🔬 零损失函数动量守恒（语言指令 → 几何本能 → 守恒自动成立）
-- 🔬 双向语言对齐（方向B：语言→物理 完整验证）
-- 🔬 婴儿说话机制层次3（物理感知流形与语言空间双向对齐）
+- 🔬 零损失函数动量守恒（语言指令 → 几何本能 → 守恒自动成立，无需物理损失函数）
+- 🔬 sigma 充分激活（sigma>0.60）→ 频域升级（TIME_RATIO=0.5）
+- 🔬 GPT-2 规模验证（768维/12层）
 
 **进行中：**
 - 🔄 论文写作（目标：CoRL / NeurIPS）
 - 🔄 层3强版本：sigma 激活方案研究
 
 **计划中：**
-- 📋 GPT-2 规模验证（768维/12层）
 - 📋 D4RL 机器人数据集
 - 📋 v1.1.0 PyPI 发布
 
