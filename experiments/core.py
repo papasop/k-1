@@ -1,517 +1,450 @@
 """
-core.py — LLCM 研究原型共用模块
+llcm/core.py
+============
+LLCM（Lorentz Light-Cone Model）核心模块
 
-所有实验脚本共享此模块的模型定义、数据生成、预训练、评估工具。
+理论基础：
+  Realizability.pdf（Li 2026）— Theorem 5：洛伦兹签名从代价函数唯一涌现
+  K=1 Chronogeometrodynamics（Li 2026）— Theorem 4：det G < 0 ⟺ dc > 0
 
-从 core.py import:
-    from core import (
-        LLCMBackbone, pretrain,          # 模型和预训练
-        build_dataset, simulate,          # 数据生成
-        momentum_change, encode,          # 评估工具
-        stable_ode, running_ode,          # 物理 ODE
-        real_physics_baseline,            # 真实物理基准
-        device, EMBED_DIM, T_DIM,         # 超参数
-        LABELS, DESCRIPTIONS,             # 标签定义
-    )
+所有实验从这里 import，避免重复定义：
+  from core import (
+      MinkowskiLN, Attn, LLCMBackbone,
+      stable_ode, running_ode, simulate, build_dataset,
+      momentum_change, encode, pretrain
+  )
 
-使用示例:
-    model = LLCMBackbone(mode='f3').to(device)
-    pretrain(model, seed=0)
-    X, L = build_dataset(seed=42)
-    lorentz = model.embed_seq(X.to(device))
-    geo = model.measure_lorentz(lorentz)
-    print(f"类时比例: {geo['tl_ratio']:.1%}  mq均值: {geo['mq_mean']:+.3f}")
+模块对应关系：
+  模块1（物理预训练）：LLCMBackbone + pretrain()
+  模块2（语言编码器）：encode()，基于 sentence-transformers
+  模块3（方向A）：    LLCMBackbone.forward_A_gen() + lang_gen 头
+  模块4（lang_aligner）：LLCMBackbone.lang_aligner
+  模块5（phys_decoder）：LLCMBackbone.phys_decoder
 """
 
-import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from dataclasses import dataclass
+import numpy as np
+from scipy.integrate import solve_ivp
+from torch.utils.data import DataLoader, TensorDataset
+import warnings; warnings.filterwarnings('ignore')
 
-from lorentz_transformer import (
-    LorentzMultiHeadAttention,
-    MinkowskiLayerNorm,
-    compute_t_dim,
-)
+# ── 默认超参数（实验文件可覆盖） ───────────────────────────────
+EMBED_DIM  = 128
+N_HEADS    = 4
+N_LAYERS   = 3
+TIME_RATIO = 0.25
+T_IN       = 20
+T_OUT      = 20
+STATE_DIM  = 6
+LANG_DIM   = 384
+N_LABELS   = 2
+N_PER      = 50
+EP_PRE     = 80
+LR_PRE     = 3e-4
+BS         = 16
+T_DIM      = max(1, int(N_HEADS*TIME_RATIO)) * (EMBED_DIM//N_HEADS)
 
-# ============================================================================
-# 设备 / 超参数
-# ============================================================================
-
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
-EMBED_DIM  = 128      # 嵌入维度
-N_HEADS    = 4        # 注意力头数
-N_LAYERS   = 3        # Transformer 层数
-TIME_RATIO = 0.25     # 时间头比例（理论必须，不要改）
-STATE_DIM  = 6        # 物理状态维度 [x, y, z, vx, vy, vz]
-
-T_IN  = 20            # 输入帧数
-T_OUT = 20            # 预测帧数
-T_DIM = compute_t_dim(EMBED_DIM, N_HEADS, TIME_RATIO)   # 时间维度数
-
-# ============================================================================
-# 标签定义
-# ============================================================================
-
-LABELS = ["stable", "running", "walking", "jumping"]
-
+LABELS = {0:'momentum_stable', 1:'momentum_changing'}
 DESCRIPTIONS = {
-    "stable":  "平稳守恒运动，匀速直线，动量完全守恒",
-    "running": "跑步运动，速度较快，有轻微波动",
-    "walking": "行走运动，速度适中，周期性模式",
-    "jumping": "跳跃运动，有明显的垂直速度变化",
+    0: ["平稳匀速运动，动量保持守恒",
+        "smooth constant velocity motion with conserved momentum",
+        "steady movement without any acceleration"],
+    1: ["动量持续变化，存在外力作用",
+        "changing momentum with continuous force application",
+        "accelerating or decelerating movement"],
 }
+STABLE_INSTRUCTIONS = [
+    "平稳匀速运动，动量保持守恒",
+    "机器人以恒定速度移动，没有加速或减速",
+    "smooth constant velocity motion with conserved momentum",
+    "steady movement without acceleration changes",
+]
 
-# ============================================================================
-# 物理 ODE（数据生成）
-# ============================================================================
+# ── 设备 ──────────────────────────────────────────────────────
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
+# ── 语言编码器（模块2） ────────────────────────────────────────
+_lang_enc = None
 
-def stable_ode(n_steps: int = 60, dt: float = 0.1, seed: int = 0) -> np.ndarray:
+def get_lang_enc():
+    global _lang_enc
+    if _lang_enc is None:
+        from sentence_transformers import SentenceTransformer
+        _lang_enc = SentenceTransformer('all-MiniLM-L6-v2')
+    return _lang_enc
+
+def encode(texts, dev=None):
+    """语言嵌入，懒加载"""
+    if dev is None: dev=device
+    return get_lang_enc().encode(
+        texts, convert_to_tensor=True,
+        show_progress_bar=False).to(dev)
+
+# ── 物理数据 ───────────────────────────────────────────────────
+def stable_ode(t, y):
     """
-    匀速直线运动 ODE（动量完全守恒）。
-
-    Returns:
-        traj: (n_steps, 6) — [x, y, z, vx, vy, vz]
+    稳定匀速运动 ODE（动量守恒）
+    Assumption R 满足：沿速度方向的位移代价趋向零
     """
-    rng = np.random.RandomState(seed)
-    v0  = rng.randn(3) * 0.5
-    x0  = rng.randn(3)
-    traj = np.zeros((n_steps, 6))
-    traj[0] = np.concatenate([x0, v0])
-    for i in range(1, n_steps):
-        traj[i, :3] = traj[i - 1, :3] + v0 * dt
-        traj[i, 3:] = v0
-    return traj.astype(np.float32)
+    x,yp,z,vx,vy,vz=y
+    return [vx, 0, vz, -0.001*vx, 0, -0.001*vz]
 
-
-def running_ode(n_steps: int = 60, dt: float = 0.1, seed: int = 0) -> np.ndarray:
+def running_ode(t, y):
     """
-    跑步运动 ODE（速度有随机扰动）。
-
-    Returns:
-        traj: (n_steps, 6) — [x, y, z, vx, vy, vz]
+    奔跑运动 ODE（动量不守恒）
+    外力驱动，速度持续变化
     """
-    rng = np.random.RandomState(seed)
-    v   = rng.randn(3) * 1.0
-    x   = rng.randn(3)
-    traj = np.zeros((n_steps, 6))
-    traj[0] = np.concatenate([x, v])
-    for i in range(1, n_steps):
-        v = v + rng.randn(3) * 0.05
-        x = x + v * dt
-        traj[i, :3] = x
-        traj[i, 3:] = v
-    return traj.astype(np.float32)
+    x,yp,z,vx,vy,vz=y; g=9.81; m=70.0
+    phase=(3.0*t)%1.0; L=0.95+0.12*abs(np.sin(3.0*np.pi*t))
+    pen=max(0,L-yp)
+    Fv=(2000*pen-30*vy) if (phase<0.4 and yp<L) else 0
+    return [vx,vy,vz,
+            m*0.002*2000*(3.5-vx)/m,
+            (Fv-m*g)/m,
+            (-80*z-15*vz)/m]
 
-
-def walking_ode(n_steps: int = 60, dt: float = 0.1, seed: int = 0) -> np.ndarray:
+def simulate(ic, ode_fn, seed=0, total_frames=80):
     """
-    行走运动 ODE（周期性速度模式）。
-
-    Returns:
-        traj: (n_steps, 6) — [x, y, z, vx, vy, vz]
+    ODE 仿真，返回 (total_frames, STATE_DIM) 轨迹
+    失败返回 None
     """
-    rng  = np.random.RandomState(seed)
-    v0   = rng.randn(3) * 0.5
-    x    = rng.randn(3)
-    traj = np.zeros((n_steps, 6))
-    traj[0] = np.concatenate([x, v0])
-    for i in range(1, n_steps):
-        phase = i * dt * 2 * np.pi / 0.8
-        v     = v0 + np.array([0.0, 0.0, 0.1 * np.sin(phase)])
-        x     = x + v * dt
-        traj[i, :3] = x
-        traj[i, 3:] = v
-    return traj.astype(np.float32)
+    rng=np.random.RandomState(seed)
+    sol=solve_ivp(ode_fn,(0,total_frames*0.033),ic,
+                  t_eval=np.linspace(0,total_frames*0.033,total_frames),
+                  method='RK45',rtol=1e-6,atol=1e-8)
+    if not sol.success: return None
+    traj=sol.y.T.astype(np.float32)
+    if np.any(np.isnan(traj)) or np.any(np.abs(traj)>200): return None
+    pos=traj[:,:3]+rng.randn(total_frames,3)*0.002
+    vel=np.zeros_like(pos)
+    vel[1:-1]=(pos[2:]-pos[:-2])/(2*0.033)
+    vel[0]=(pos[1]-pos[0])/0.033
+    vel[-1]=(pos[-1]-pos[-2])/0.033
+    return np.concatenate([pos,vel],axis=1)
 
-
-def jumping_ode(n_steps: int = 60, dt: float = 0.1, seed: int = 0) -> np.ndarray:
+def build_dataset(seed=0, n_per=None, t_in=None, verbose=True):
     """
-    跳跃运动 ODE（有明显垂直速度变化，含弹性碰地）。
-
-    Returns:
-        traj: (n_steps, 6) — [x, y, z, vx, vy, vz]
+    构建物理数据集
+    X: (N, T_IN, STATE_DIM) 归一化轨迹
+    L: (N,) 标签 0=stable 1=changing
     """
-    rng  = np.random.RandomState(seed)
-    v    = rng.randn(3) * 0.3
-    v[2] = 2.0   # 初始垂直速度
-    x    = rng.randn(3)
-    x[2] = abs(x[2])   # 起点在地面以上
-    g    = np.array([0.0, 0.0, -9.8])
-    traj = np.zeros((n_steps, 6))
-    traj[0] = np.concatenate([x, v])
-    for i in range(1, n_steps):
-        v = v + g * dt
-        x = x + v * dt
-        if x[2] < 0:
-            x[2] = 0.0
-            v[2] = abs(v[2]) * 0.7   # 弹性碰撞
-        traj[i, :3] = x
-        traj[i, 3:] = v
-    return traj.astype(np.float32)
+    if n_per is None: n_per=N_PER
+    if t_in  is None: t_in=T_IN
+    rng=np.random.RandomState(seed)
+    X_list,L_list=[],[]
+    odes=[(stable_ode, [0,1.0,0,1.0,0,0],[0.3,0,0,0.1,0,0]),
+          (running_ode,[0,1.0,0,2.0,0,0],[0.5,0,0,0.3,0,0])]
+    for lbl,(ode_fn,ic_base,ic_noise) in enumerate(odes):
+        count=0; i=0
+        while count<n_per and i<5000:
+            ic=[b+rng.randn()*n for b,n in zip(ic_base,ic_noise)]
+            ic[1]=1.0; ic[2]=0.0; ic[4]=0.0; ic[5]=0.0
+            traj=simulate(ic,ode_fn,seed=seed*1000+i); i+=1
+            if traj is None or len(traj)<t_in+5: continue
+            seg=traj[:t_in]
+            mu=seg.mean(0); sig=seg.std(0)+1e-8
+            X_list.append(((seg-mu)/sig).astype(np.float32))
+            L_list.append(lbl); count+=1
+    X=torch.from_numpy(np.stack(X_list))
+    L=torch.tensor(L_list,dtype=torch.long)
+    if verbose:
+        print(f'  数据集: {len(X)} 样本  '
+              f'stable={(L==0).sum()}  changing={(L==1).sum()}')
+    return X,L
 
-
-def simulate(
-    label: str,
-    n_steps: int = 60,
-    dt: float = 0.1,
-    seed: int = 0,
-) -> np.ndarray:
+def momentum_change(traj):
     """
-    按标签生成物理轨迹。
-
-    Args:
-        label  : 'stable' | 'running' | 'walking' | 'jumping'
-        n_steps: 帧数
-        dt     : 时间步长
-        seed   : 随机种子
-
-    Returns:
-        traj: (n_steps, STATE_DIM)
+    动量变化率（L2范数均值，越低越守恒）
+    traj: (T, STATE_DIM) 时域轨迹
     """
-    _ode_map = {
-        "stable":  stable_ode,
-        "running": running_ode,
-        "walking": walking_ode,
-        "jumping": jumping_ode,
-    }
-    if label not in _ode_map:
-        raise ValueError(f"Unknown label: '{label}'. Must be one of {LABELS}")
-    return _ode_map[label](n_steps, dt, seed)
+    vel=traj[:,3:]; dp=np.diff(vel,axis=0)
+    return float(np.linalg.norm(dp,axis=-1).mean())
 
-
-# ============================================================================
-# 数据集构建
-# ============================================================================
-
-
-def build_dataset(
-    n_per_label: int = 20,
-    n_steps: int = T_IN + T_OUT,
-    seed: int = 0,
-):
+def real_physics_baseline(n=50, seed=42):
     """
-    构建物理运动数据集。
-
-    Args:
-        n_per_label: 每个标签的轨迹数量
-        n_steps    : 每条轨迹的总帧数
-        seed       : 随机种子
-
-    Returns:
-        X: (N, T, STATE_DIM) 轨迹张量（float32）
-        L: (N,) 标签张量（int64）
+    真实物理基准：stable_ode 生成轨迹的动量变化率
+    用 t[T_IN:T_IN+T_OUT] 预测段，和模型输出量纲一致
     """
-    rng    = np.random.RandomState(seed)
-    trajs  = []
-    labels = []
+    rng=np.random.RandomState(seed); moms=[]
+    for i in range(n):
+        ic=[0,1.0,0,1.0+rng.randn()*0.1,0,0]
+        t=simulate(ic,stable_ode,seed=i)
+        if t is not None and len(t)>=T_IN+T_OUT:
+            moms.append(momentum_change(t[T_IN:T_IN+T_OUT]))
+    return float(np.mean(moms))
 
-    for label_idx, label in enumerate(LABELS):
-        for _ in range(n_per_label):
-            s    = int(rng.randint(0, 10000))
-            traj = simulate(label, n_steps=n_steps, seed=s)
-            trajs.append(traj)
-            labels.append(label_idx)
-
-    X = torch.tensor(np.stack(trajs), dtype=torch.float32)   # (N, T, 6)
-    L = torch.tensor(labels, dtype=torch.long)                # (N,)
-    return X, L
-
-
-# ============================================================================
-# 评估工具
-# ============================================================================
-
-
-def momentum_change(traj: np.ndarray) -> float:
+# ── 模型组件 ──────────────────────────────────────────────────
+class MinkowskiLN(nn.Module):
     """
-    计算轨迹的动量变化量（越低越守恒）。
-
-    Args:
-        traj: (T, STATE_DIM) 轨迹，后 3 维为速度
-
-    Returns:
-        mean momentum change rate
+    闵可夫斯基 LayerNorm（光锥归一化）
+    ⟨x,x⟩_η = ‖x_s‖² − ‖x_t‖²（保留符号）
+    t_dim：类时维度数量（对应 TIME_RATIO）
     """
-    vel = traj[:, 3:]
-    dp  = np.diff(vel, axis=0)
-    return float(np.linalg.norm(dp, axis=-1).mean())
-
-
-def real_physics_baseline(n_trajs: int = 50, seed: int = 0) -> float:
-    """
-    真实物理基准：匀速运动的动量变化率（理想值接近 0）。
-
-    Args:
-        n_trajs: 基准轨迹数
-        seed   : 随机种子
-
-    Returns:
-        mean momentum change rate
-    """
-    rng     = np.random.RandomState(seed)
-    changes = []
-    for _ in range(n_trajs):
-        s    = int(rng.randint(0, 10000))
-        traj = stable_ode(n_steps=T_IN + T_OUT, seed=s)
-        changes.append(momentum_change(traj))
-    return float(np.mean(changes))
-
-
-# ============================================================================
-# LLCMBackbone（内部构建块）
-# ============================================================================
-
-
-@dataclass
-class _BackboneConfig:
-    d_model:    int   = EMBED_DIM
-    n_heads:    int   = N_HEADS
-    formula:    str   = "f3"
-    time_ratio: float = TIME_RATIO
-    dropout:    float = 0.1
-
-
-class _LorentzBlock(nn.Module):
-    """单个 Lorentz Transformer 块（注意力 + LayerNorm + FFN）。"""
-
-    def __init__(self, config: _BackboneConfig):
+    def __init__(self, dim, t_dim, eps=1e-5):
         super().__init__()
-        t_dim      = compute_t_dim(config.d_model, config.n_heads, config.time_ratio)
-        self.attn  = LorentzMultiHeadAttention(config)
-        self.norm1 = MinkowskiLayerNorm(config.d_model, t_dim=t_dim)
-        self.norm2 = MinkowskiLayerNorm(config.d_model, t_dim=t_dim)
-        self.ffn   = nn.Sequential(
-            nn.Linear(config.d_model, config.d_model * 4),
-            nn.GELU(),
-            nn.Linear(config.d_model * 4, config.d_model),
-            nn.Dropout(config.dropout),
-        )
+        self.td=t_dim; self.eps=eps
+        self.pre=nn.LayerNorm(dim)
+        self.g=nn.Parameter(torch.ones(dim))
+        self.b=nn.Parameter(torch.zeros(dim))
 
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
-        a, _ = self.attn(x)
-        x    = self.norm1(x + a)
-        x    = self.norm2(x + self.ffn(x))
-        return x
+    def forward(self, x):
+        x=self.pre(x)
+        t=x[...,:self.td]; s=x[...,self.td:]
+        mq=(s**2).sum(-1,keepdim=True)-(t**2).sum(-1,keepdim=True)
+        eps=torch.clamp(0.01*mq.abs().mean(), min=self.eps)
+        return self.g*(x/(torch.sqrt(mq.abs()+eps)+eps))+self.b
 
+class Attn(nn.Module):
+    """
+    光锥注意力（F3公式）
+    F3: score = cat(−σ·Q_t Kᵀ_t, Q_s Kᵀ_s) / √d
+    负号让类时方向互相排斥 → 信息沿光锥边界传播
+    σ = sigmoid(w_sigma)，训练中自适应收敛
+    """
+    def __init__(self, dim, n_heads, time_ratio, mode='f3'):
+        super().__init__()
+        self.nh=n_heads; self.hd=dim//n_heads
+        self.mode=mode; self.scale=self.hd**-0.5
+        self.nt=max(1,int(n_heads*time_ratio))
+        self.ns=n_heads-self.nt
+        if mode=='euclidean':
+            self.q=nn.Linear(dim,dim,bias=False)
+            self.k=nn.Linear(dim,dim,bias=False)
+        else:
+            self.qt=nn.Linear(dim,self.nt*self.hd,bias=False)
+            self.kt=nn.Linear(dim,self.nt*self.hd,bias=False)
+            self.qs=nn.Linear(dim,self.ns*self.hd,bias=False)
+            self.ks=nn.Linear(dim,self.ns*self.hd,bias=False)
+            if mode=='f3':
+                self.w_sigma=nn.Parameter(torch.zeros(1))
+        self.v=nn.Linear(dim,dim,bias=False)
+        self.out=nn.Linear(dim,dim)
 
-# ============================================================================
-# LLCMBackbone
-# ============================================================================
+    def forward(self, x):
+        B,T,D=x.shape; hd=self.hd
+        if self.mode=='euclidean':
+            Q=self.q(x).view(B,T,self.nh,hd)
+            K=self.k(x).view(B,T,self.nh,hd)
+            score=torch.einsum('bthd,bshd->bths',Q,K)*self.scale
+        else:
+            Qt=self.qt(x).view(B,T,self.nt,hd)
+            Kt=self.kt(x).view(B,T,self.nt,hd)
+            Qs=self.qs(x).view(B,T,self.ns,hd)
+            Ks=self.ks(x).view(B,T,self.ns,hd)
+            st=torch.einsum('bthd,bshd->bths',Qt,Kt)
+            ss=torch.einsum('bthd,bshd->bths',Qs,Ks)
+            if self.mode=='f3':
+                score=torch.cat(
+                    [-torch.sigmoid(self.w_sigma)*st, ss],
+                    dim=2)*self.scale
+            else:
+                score=torch.cat([-st,ss],dim=2)*self.scale
+        attn=F.softmax(score,dim=-1)
+        V=self.v(x).view(B,T,self.nh,hd)
+        return self.out(
+            torch.einsum('bths,bshd->bthd',attn,V).reshape(B,T,D))
 
+    @property
+    def sigma(self):
+        if self.mode=='f3':
+            return float(torch.sigmoid(self.w_sigma).item())
+        return None
 
 class LLCMBackbone(nn.Module):
     """
-    LLCM 物理感知流形主干网络。
+    LLCM 完整模型（五模块）
+    ─────────────────────────────────────────────
+    模块1: embed + blocks + norm（物理预训练 backbone）
+    模块3: lang_gen（方向A：物理→语言）
+           cls（分类头）
+    模块4: lang_aligner（方向B第一步：语言→洛伦兹）
+    模块5: phys_decoder（方向B第二步：洛伦兹→轨迹）
 
-    Architecture:
-        input_proj  : STATE_DIM → d_model
-        blocks      : N_LAYERS × LorentzBlock (attn + norm + ffn)
-        output_proj : d_model → STATE_DIM （轨迹预测头）
-
-    Args:
-        mode    : 注意力公式 'f1' | 'f2' | 'f3'（默认 'f3'）
-        d_model : 嵌入维度（默认 EMBED_DIM=128）
-        n_heads : 注意力头数（默认 N_HEADS=4）
-        n_layers: Transformer 层数（默认 N_LAYERS=3）
-
-    Example:
-        >>> model = LLCMBackbone(mode='f3').to(device)
-        >>> pretrain(model, seed=0)
-        >>> X, L = build_dataset(seed=42)
-        >>> lorentz = model.embed_seq(X.to(device))
-        >>> geo = model.measure_lorentz(lorentz)
-        >>> print(f"类时比例: {geo['tl_ratio']:.1%}  mq均值: {geo['mq_mean']:+.3f}")
+    参数：
+      mode: 'f3'（默认）| 'euclidean' | 'f1'
+      embed_dim, n_heads, n_layers, time_ratio：架构参数
+      state_dim, lang_dim, t_in, t_out：数据参数
     """
-
-    def __init__(
-        self,
-        mode:     str = "f3",
-        d_model:  int = EMBED_DIM,
-        n_heads:  int = N_HEADS,
-        n_layers: int = N_LAYERS,
-    ):
+    def __init__(self,
+                 mode='f3',
+                 embed_dim=EMBED_DIM,
+                 n_heads=N_HEADS,
+                 n_layers=N_LAYERS,
+                 time_ratio=TIME_RATIO,
+                 state_dim=STATE_DIM,
+                 lang_dim=LANG_DIM,
+                 n_labels=N_LABELS,
+                 t_in=T_IN,
+                 t_out=T_OUT):
         super().__init__()
-        config = _BackboneConfig(
-            d_model=d_model,
-            n_heads=n_heads,
-            formula=mode,
-            time_ratio=TIME_RATIO,
-        )
-        self.t_dim       = compute_t_dim(d_model, n_heads, TIME_RATIO)
-        self.input_proj  = nn.Linear(STATE_DIM, d_model)
-        self.blocks      = nn.ModuleList([_LorentzBlock(config) for _ in range(n_layers)])
-        self.output_proj = nn.Linear(d_model, STATE_DIM)
+        dim=embed_dim
+        td=max(1,int(n_heads*time_ratio))*(dim//n_heads)
+        use_mln=(mode!='euclidean')
+        self.mode=mode; self.t_dim=td; self.t_out=t_out
+        self.state_dim=state_dim; self.lang_dim=lang_dim
 
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        # 模块1: backbone
+        self.embed=nn.Linear(state_dim, dim)
+        self.pos=nn.Embedding(t_in+t_out, dim)
+        NC=lambda:(MinkowskiLN(dim,td) if use_mln else nn.LayerNorm(dim))
+        self.blocks=nn.ModuleList([nn.ModuleDict({
+            'attn': Attn(dim, n_heads, time_ratio, mode),
+            'n1':   NC(), 'n2': NC(),
+            'ff':   nn.Sequential(
+                        nn.Linear(dim,dim*4), nn.GELU(),
+                        nn.Linear(dim*4,dim)),
+        }) for _ in range(n_layers)])
+        self.norm=NC()
+        self.traj_head=nn.Linear(dim, state_dim*t_out)
+
+        # 模块3: 方向A
+        self.lang_gen=nn.Sequential(
+            nn.Linear(dim,dim*2), nn.GELU(),
+            nn.LayerNorm(dim*2), nn.Linear(dim*2,lang_dim))
+        self.cls=nn.Sequential(
+            nn.Linear(dim,dim//2), nn.GELU(),
+            nn.LayerNorm(dim//2), nn.Linear(dim//2,n_labels))
+
+        # 模块4: 方向B 第一步
+        self.lang_aligner=nn.Sequential(
+            nn.Linear(lang_dim,dim*2), nn.GELU(),
+            nn.LayerNorm(dim*2),
+            nn.Linear(dim*2,dim), nn.GELU(), nn.LayerNorm(dim))
+
+        # 模块5: 方向B 第二步
+        self.phys_decoder=nn.Sequential(
+            nn.Linear(dim,dim*2), nn.GELU(),
+            nn.LayerNorm(dim*2),
+            nn.Linear(dim*2, state_dim*t_out))
+
+    # ── 前向方法 ─────────────────────────────────────────────
+    def embed_seq(self, x):
+        """物理轨迹 → 洛伦兹嵌入（核心表示）"""
+        B,T,_=x.shape
+        h=self.embed(x)+self.pos(torch.arange(T,device=x.device))
+        for blk in self.blocks:
+            h=h+blk['attn'](blk['n1'](h))
+            h=h+blk['ff'](blk['n2'](h))
+        return self.norm(h)[:,-1,:]
+
+    def forward_pretrain(self, x):
+        """模块1：轨迹预测（多步 MSE 预训练）"""
+        return self.traj_head(self.embed_seq(x)).view(
+            x.shape[0], self.t_out, self.state_dim)
+
+    def forward_A_gen(self, x):
+        """模块3：物理嵌入 → 语言空间（方向A）"""
+        return self.lang_gen(self.embed_seq(x))
+
+    def forward_A_cls(self, x):
+        """模块3：物理嵌入 → 分类标签"""
+        return self.cls(self.embed_seq(x))
+
+    def forward_B(self, lang_emb):
+        """模块4+5：语言 → 洛伦兹 → 时域轨迹（方向B完整路径）"""
+        return self.phys_decoder(
+            self.lang_aligner(lang_emb)).view(
+            -1, self.t_out, self.state_dim)
+
+    # ── 层2测量 ───────────────────────────────────────────────
+    def measure_lorentz(self, x_emb):
         """
-        轨迹预测前向传播。
-
-        Args:
-            x: (B, T, STATE_DIM)
-
-        Returns:
-            pred: (B, T, STATE_DIM)
+        测量物理嵌入的洛伦兹几何量
+        返回：tl_ratio（类时比例），mq_mean（平均 mq 值）
+        mq = ‖s‖² − ‖t‖²，mq<0 = 类时区域
+        对应 K=1 Chronogeometrodynamics 的 K = x⊤Gx
         """
-        h = self.input_proj(x)
-        for block in self.blocks:
-            h = block(h)
-        return self.output_proj(h)
-
-    def embed_seq(self, x: torch.Tensor) -> torch.Tensor:
-        """
-        将状态序列嵌入到洛伦兹潜在空间。
-
-        Args:
-            x: (B, T, STATE_DIM)
-
-        Returns:
-            lorentz: (B, T, d_model) 洛伦兹嵌入
-        """
-        h = self.input_proj(x)
-        for block in self.blocks:
-            h = block(h)
-        return h
-
-    def measure_lorentz(self, lorentz: torch.Tensor) -> dict:
-        """
-        测量洛伦兹嵌入的几何统计量。
-
-        Args:
-            lorentz: (B, T, d_model)
-
-        Returns:
-            dict with keys:
-                'tl_ratio' : 类时向量比例（mq > 0 的比例）
-                'mq_mean'  : Minkowski 内积均值
-                'tl_count' : 类时向量数量
-                'total'    : 总向量数量
-        """
-        flat   = lorentz.reshape(-1, lorentz.shape[-1]).detach()
-        t_comp = flat[:, :self.t_dim]
-        s_comp = flat[:, self.t_dim:]
-        # LLCM 约定（与 README 5分钟检测一致）：
-        #   mq = ||s||² - ||t||²
-        #   mq > 0 → 类时向量（spacelike维平方和大于timelike维平方和）
-        mq      = s_comp.pow(2).sum(-1) - t_comp.pow(2).sum(-1)
-        tl_mask = mq > 0
+        t_p=x_emb[:,:self.t_dim]; s_p=x_emb[:,self.t_dim:]
+        mq=(s_p**2).sum(-1)-(t_p**2).sum(-1)
         return {
-            "tl_ratio": float(tl_mask.float().mean().item()),
-            "mq_mean":  float(mq.mean().item()),
-            "tl_count": int(tl_mask.sum().item()),
-            "total":    int(tl_mask.numel()),
+            'tl_ratio': (mq<0).float().mean().item(),
+            'mq_mean':  mq.mean().item(),
+            'mq_std':   mq.std().item(),
         }
 
+    def compute_dc(self, x_emb):
+        """
+        计算局部稳定边界 dc（Theorem 2）
+        dc = α·√(−1/det G)，det G < 0 → dc > 0（洛伦兹）
+        使用对角近似 G = diag(−‖t‖², ‖s‖²)
+        """
+        t_norm=(x_emb[:,:self.t_dim]**2).sum(-1).mean().item()
+        s_norm=(x_emb[:,self.t_dim:]**2).sum(-1).mean().item()
+        det_G=(-t_norm)*s_norm  # 对角近似
+        if det_G<0:
+            return float(np.sqrt(-1.0/det_G))
+        return 0.0  # 欧氏退化（Theorem 3）
 
-# ============================================================================
-# encode — 将原始轨迹编码为归一化嵌入
-# ============================================================================
+    # ── 权重管理 ──────────────────────────────────────────────
+    def freeze_backbone(self):
+        """冻结 backbone，只训练头部模块"""
+        for name,p in self.named_parameters():
+            if not any(k in name for k in
+                       ['lang_gen','cls','lang_aligner','phys_decoder']):
+                p.requires_grad_(False)
 
+    def freeze_all_except_B(self):
+        """只训练方向B（模块4+5）"""
+        for name,p in self.named_parameters():
+            if not any(k in name for k in
+                       ['lang_aligner','phys_decoder']):
+                p.requires_grad_(False)
 
-def encode(model: LLCMBackbone, X: torch.Tensor) -> torch.Tensor:
+    def unfreeze_all(self):
+        for p in self.parameters(): p.requires_grad_(True)
+
+    @property
+    def sigma(self):
+        """当前光锥强度（F3 专属）"""
+        if self.mode=='f3':
+            return float(torch.sigmoid(
+                self.blocks[0]['attn'].w_sigma).item())
+        return None
+
+# ── 标准预训练流程 ─────────────────────────────────────────────
+def pretrain(model, seed=0, ep=None, lr=None, verbose=True):
     """
-    将轨迹数据集编码为洛伦兹嵌入（序列均值池化后 L2 归一化）。
-
-    Args:
-        model: LLCMBackbone，已预训练
-        X    : (N, T, STATE_DIM) 轨迹数据
-
-    Returns:
-        emb: (N, d_model) 归一化嵌入（每条轨迹一个向量）
+    模块1：多步轨迹预测预训练
+    建立洛伦兹感知流形，激活 F3 的光锥几何
     """
-    model.eval()
-    with torch.no_grad():
-        lorentz = model.embed_seq(X.to(device))   # (N, T, d_model)
-        emb     = lorentz.mean(dim=1)              # (N, d_model)
-        emb     = F.normalize(emb, dim=-1)
-    return emb
-
-
-# ============================================================================
-# pretrain — 轨迹预测预训练（建立感知流形）
-# ============================================================================
-
-
-def pretrain(
-    model: LLCMBackbone,
-    seed:        int   = 0,
-    n_epochs:    int   = 60,
-    lr:          float = 3e-4,
-    n_per_label: int   = 30,
-    verbose:     bool  = False,
-) -> float:
-    """
-    在合成物理运动数据上预训练 LLCMBackbone（轨迹预测任务，MSE 损失）。
-
-    Args:
-        model      : LLCMBackbone
-        seed       : 随机种子（决定训练数据，与微调数据完全分开）
-        n_epochs   : 训练 epoch 数
-        lr         : AdamW 学习率
-        n_per_label: 每标签轨迹数
-        verbose    : 是否打印训练进度
-
-    Returns:
-        final_loss: 最终训练损失
-    """
-    torch.manual_seed(seed)
-    np.random.seed(seed)
-
-    X_train, _ = build_dataset(n_per_label=n_per_label, seed=seed + 100)
-    X_train    = X_train.to(device)             # (N, T_IN+T_OUT, 6)
-    x_in       = X_train[:, :T_IN, :]           # 前 T_IN 帧输入
-    x_out      = X_train[:, T_IN:T_IN + T_OUT, :]  # 后 T_OUT 帧标签
-
-    optimizer = torch.optim.AdamW(model.parameters(), lr=lr)
-    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, n_epochs)
-
+    if ep is None:  ep=EP_PRE
+    if lr is None:  lr=LR_PRE
+    model.unfreeze_all()
+    rng=np.random.RandomState(seed)
+    odes=[(stable_ode,[0,1.0,0,1.0,0,0]),
+          (running_ode,[0,1.0,0,2.0,0,0])]
+    trajs=[]
+    for i in range(200):
+        ode_fn,ic_base=odes[i%2]; ic=list(ic_base)
+        ic[0]+=rng.randn()*0.5; ic[3]+=rng.randn()*0.2; ic[1]=1.0
+        t=simulate(ic,ode_fn,seed=seed+i)
+        if t is not None: trajs.append(t)
+    total=T_IN+T_OUT; X_list,Y_list=[],[]
+    for traj in trajs:
+        for s in range(0,len(traj)-total,4):
+            seg=traj[s:s+total]
+            if seg.shape[0]<total: break
+            mu=seg.mean(0); sig=seg.std(0)+1e-8; sn=(seg-mu)/sig
+            X_list.append(sn[:T_IN].astype(np.float32))
+            Y_list.append(sn[T_IN:].astype(np.float32))
+    X=torch.from_numpy(np.stack(X_list))
+    Y=torch.from_numpy(np.stack(Y_list))
+    opt=torch.optim.AdamW(model.parameters(),lr=lr)
+    sched=torch.optim.lr_scheduler.CosineAnnealingLR(opt,ep)
+    loader=DataLoader(TensorDataset(X,Y),BS,shuffle=True)
     model.train()
-    final_loss = float("inf")
-    for epoch in range(n_epochs):
-        optimizer.zero_grad()
-        pred       = model(x_in)[:, :T_OUT, :]   # (N, T_OUT, 6)
-        loss       = F.mse_loss(pred, x_out)
-        loss.backward()
-        nn.utils.clip_grad_norm_(model.parameters(), 1.0)
-        optimizer.step()
-        scheduler.step()
-        final_loss = float(loss.item())
-        if verbose and (epoch + 1) % 20 == 0:
-            print(f"  epoch {epoch + 1:3d}/{n_epochs}  loss={final_loss:.4f}")
-
-    model.eval()
-    return final_loss
-
-
-# ============================================================================
-# 公开接口
-# ============================================================================
-
-__all__ = [
-    # 模型和预训练
-    "LLCMBackbone",
-    "pretrain",
-    # 数据生成
-    "build_dataset",
-    "simulate",
-    # 评估工具
-    "momentum_change",
-    "encode",
-    # 物理 ODE
-    "stable_ode",
-    "running_ode",
-    "walking_ode",
-    "jumping_ode",
-    # 真实物理基准
-    "real_physics_baseline",
-    # 超参数
-    "device",
-    "EMBED_DIM",
-    "T_DIM",
-    # 标签定义
-    "LABELS",
-    "DESCRIPTIONS",
-]
+    for e in range(ep):
+        tl=0
+        for xb,yb in loader:
+            xb,yb=xb.to(device),yb.to(device); opt.zero_grad()
+            loss=F.mse_loss(model.forward_pretrain(xb),yb)
+            loss.backward()
+            torch.nn.utils.clip_grad_norm_(model.parameters(),0.3)
+            opt.step(); tl+=loss.item()
+        sched.step()
+    s=f'  sigma={model.sigma:.3f}' if model.sigma else ''
+    if verbose:
+        print(f'  预训练完成  loss={tl/len(loader):.4f}{s}')
+    return tl/len(loader)
