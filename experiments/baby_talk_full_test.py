@@ -41,6 +41,7 @@ EP_FT      = 100
 EP_PRE     = 60
 MOM_WEIGHT = 0.3
 N_SEEDS    = 5
+WEAK_THRESHOLD = 0.1   # 弱版本显著性阈值（放宽至 0.10）
 
 
 # ─── 懒加载语言编码器 ──────────────────────────────────────────────────────
@@ -389,7 +390,7 @@ def verify_module5(n_seeds: int = N_SEEDS, verbose: bool = True) -> dict:
         'f3_mean': float(f3_arr.mean()),
         'euc_mean':float(euc_arr.mean()),
         'p_value': p,
-        'pass':    bool(p < 0.1),   # 弱版本阈值放宽
+        'pass':    bool(p < WEAK_THRESHOLD),   # 弱版本阈值放宽
     }
 
     if verbose:
