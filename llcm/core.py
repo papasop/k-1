@@ -51,6 +51,7 @@ N_PER      = 50
 EP_PRE     = 80
 LR_PRE     = 3e-4
 BS         = 16
+MOM_WEIGHT = 0.3   # 动量守恒损失权重（预训练辅助信号）
 T_DIM      = compute_t_dim(EMBED_DIM, N_HEADS, TIME_RATIO)
 
 LABELS = {0: 'momentum_stable', 1: 'momentum_changing'}
@@ -326,7 +327,8 @@ class LLCMBackbone(nn.Module):
 
 # ── 物理预训练（模块1） ────────────────────────────────────────
 
-def pretrain(model, seed=0, epochs=EP_PRE, lr=LR_PRE, bs=BS):
+def pretrain(model, seed=0, epochs=EP_PRE, lr=LR_PRE, bs=BS,
+             mom_weight=0.0):
     """
     物理预训练：用 ODE 轨迹以 MSE 损失训练轨迹预测任务。
 
@@ -334,11 +336,15 @@ def pretrain(model, seed=0, epochs=EP_PRE, lr=LR_PRE, bs=BS):
     预训练数据通过 build_dataset 生成，与微调数据完全隔离。
 
     Args:
-        model  : LLCMBackbone 实例
-        seed   : 预训练数据随机种子（与微调数据种子不同）
-        epochs : 训练轮数（默认 EP_PRE=80）
-        lr     : 学习率（默认 LR_PRE=3e-4，AdamW）
-        bs     : 批大小（默认 BS=16）
+        model      : LLCMBackbone 实例
+        seed       : 预训练数据随机种子（与微调数据种子不同）
+        epochs     : 训练轮数（默认 EP_PRE=80）
+        lr         : 学习率（默认 LR_PRE=3e-4，AdamW）
+        bs         : 批大小（默认 BS=16）
+        mom_weight : 动量守恒损失权重（默认 0.0，即纯 MSE）。
+                     设为正值（如 MOM_WEIGHT=0.3）可在预训练中加入
+                     动量守恒信号，使 sigma 更快收敛并提升 F3 精度。
+                     动量守恒损失 = (dp²).mean()，dp 为预测速度差分。
 
     Returns:
         model : 训练后的 LLCMBackbone（已移至 device）
@@ -357,6 +363,11 @@ def pretrain(model, seed=0, epochs=EP_PRE, lr=LR_PRE, bs=BS):
             pred = model.phys_decoder(h)         # (B, T_IN, STATE_DIM)
             # T_IN == T_OUT so pred and x_out have identical shape (B, 20, 6)
             loss = F.mse_loss(pred, x_out)
+            if mom_weight > 0.0:
+                vel      = pred[:, :, 3:]        # (B, T_IN, 3) 速度分量
+                dp       = vel[:, 1:, :] - vel[:, :-1, :]  # (B, T_IN-1, 3)
+                mom_loss = (dp ** 2).mean()
+                loss     = loss + mom_weight * mom_loss
             loss.backward()
             opt.step()
         sch.step()
