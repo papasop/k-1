@@ -313,10 +313,11 @@ class LLCMBackbone(nn.Module):
         output_proj : d_model → STATE_DIM （轨迹预测头）
 
     Args:
-        mode    : 注意力公式 'f1' | 'f2' | 'f3'（默认 'f3'）
-        d_model : 嵌入维度（默认 EMBED_DIM=128）
-        n_heads : 注意力头数（默认 N_HEADS=4）
-        n_layers: Transformer 层数（默认 N_LAYERS=3）
+        mode       : 注意力公式 'f1' | 'f2' | 'f3'（默认 'f3'）
+        d_model    : 嵌入维度（默认 EMBED_DIM=128）
+        n_heads    : 注意力头数（默认 N_HEADS=4）
+        n_layers   : Transformer 层数（默认 N_LAYERS=3）
+        time_ratio : 类时头比例（默认 TIME_RATIO=0.25；层3用 0.5）
 
     Example:
         >>> model = LLCMBackbone(mode='f3').to(device)
@@ -329,19 +330,20 @@ class LLCMBackbone(nn.Module):
 
     def __init__(
         self,
-        mode:     str = "f3",
-        d_model:  int = EMBED_DIM,
-        n_heads:  int = N_HEADS,
-        n_layers: int = N_LAYERS,
+        mode:       str   = "f3",
+        d_model:    int   = EMBED_DIM,
+        n_heads:    int   = N_HEADS,
+        n_layers:   int   = N_LAYERS,
+        time_ratio: float = TIME_RATIO,
     ):
         super().__init__()
         config = _BackboneConfig(
             d_model=d_model,
             n_heads=n_heads,
             formula=mode,
-            time_ratio=TIME_RATIO,
+            time_ratio=time_ratio,
         )
-        self.t_dim       = compute_t_dim(d_model, n_heads, TIME_RATIO)
+        self.t_dim       = compute_t_dim(d_model, n_heads, time_ratio)
         self.input_proj  = nn.Linear(STATE_DIM, d_model)
         self.blocks      = nn.ModuleList([_LorentzBlock(config) for _ in range(n_layers)])
         self.output_proj = nn.Linear(d_model, STATE_DIM)
@@ -442,9 +444,10 @@ def pretrain(
     lr:          float = 3e-4,
     n_per_label: int   = 30,
     verbose:     bool  = False,
+    mom_weight:  float = 0.0,
 ) -> float:
     """
-    在合成物理运动数据上预训练 LLCMBackbone（轨迹预测任务，MSE 损失）。
+    在合成物理运动数据上预训练 LLCMBackbone（轨迹预测任务）。
 
     Args:
         model      : LLCMBackbone
@@ -453,6 +456,7 @@ def pretrain(
         lr         : AdamW 学习率
         n_per_label: 每标签轨迹数
         verbose    : 是否打印训练进度
+        mom_weight : 动量守恒损失权重（0=仅MSE，>0时加入速度差分L²惩罚）
 
     Returns:
         final_loss: 最终训练损失
@@ -473,7 +477,14 @@ def pretrain(
     for epoch in range(n_epochs):
         optimizer.zero_grad()
         pred       = model(x_in)[:, :T_OUT, :]   # (N, T_OUT, 6)
-        loss       = F.mse_loss(pred, x_out)
+        mse        = F.mse_loss(pred, x_out)
+        if mom_weight > 0.0:
+            vel      = pred[:, :, 3:]                    # (N, T_OUT, 3) 速度分量
+            dp       = vel[:, 1:, :] - vel[:, :-1, :]   # (N, T_OUT-1, 3) 速度差分
+            mom_loss = (dp ** 2).mean()
+            loss     = mse + mom_weight * mom_loss
+        else:
+            loss = mse
         loss.backward()
         nn.utils.clip_grad_norm_(model.parameters(), 1.0)
         optimizer.step()
@@ -511,6 +522,8 @@ __all__ = [
     "device",
     "EMBED_DIM",
     "T_DIM",
+    "T_IN",
+    "T_OUT",
     # 标签定义
     "LABELS",
     "DESCRIPTIONS",

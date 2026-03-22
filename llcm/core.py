@@ -326,19 +326,20 @@ class LLCMBackbone(nn.Module):
 
 # ── 物理预训练（模块1） ────────────────────────────────────────
 
-def pretrain(model, seed=0, epochs=EP_PRE, lr=LR_PRE, bs=BS):
+def pretrain(model, seed=0, epochs=EP_PRE, lr=LR_PRE, bs=BS, mom_weight=0.0):
     """
-    物理预训练：用 ODE 轨迹以 MSE 损失训练轨迹预测任务。
+    物理预训练：用 ODE 轨迹训练轨迹预测任务。
 
     模型以前 T_IN 帧为输入，预测后 T_OUT 帧（T_IN == T_OUT == 20）。
     预训练数据通过 build_dataset 生成，与微调数据完全隔离。
 
     Args:
-        model  : LLCMBackbone 实例
-        seed   : 预训练数据随机种子（与微调数据种子不同）
-        epochs : 训练轮数（默认 EP_PRE=80）
-        lr     : 学习率（默认 LR_PRE=3e-4，AdamW）
-        bs     : 批大小（默认 BS=16）
+        model      : LLCMBackbone 实例
+        seed       : 预训练数据随机种子（与微调数据种子不同）
+        epochs     : 训练轮数（默认 EP_PRE=80）
+        lr         : 学习率（默认 LR_PRE=3e-4，AdamW）
+        bs         : 批大小（默认 BS=16）
+        mom_weight : 动量守恒损失权重（0=仅MSE，>0时加入速度差分L²惩罚）
 
     Returns:
         model : 训练后的 LLCMBackbone（已移至 device）
@@ -356,8 +357,33 @@ def pretrain(model, seed=0, epochs=EP_PRE, lr=LR_PRE, bs=BS):
             h    = model.encode_phys(x_in)      # (B, T_IN, EMBED_DIM)
             pred = model.phys_decoder(h)         # (B, T_IN, STATE_DIM)
             # T_IN == T_OUT so pred and x_out have identical shape (B, 20, 6)
-            loss = F.mse_loss(pred, x_out)
+            mse  = F.mse_loss(pred, x_out)
+            if mom_weight > 0.0:
+                vel      = pred[:, :, 3:]                    # (B, T, 3) 速度分量
+                dp       = vel[:, 1:, :] - vel[:, :-1, :]   # (B, T-1, 3) 速度差分
+                mom_loss = (dp ** 2).mean()
+                loss     = mse + mom_weight * mom_loss
+            else:
+                loss = mse
             loss.backward()
             opt.step()
         sch.step()
     return model
+
+
+def real_physics_baseline(n_trajs: int = 50, seed: int = 0) -> float:
+    """
+    真实物理基准：稳定匀速运动的动量变化率（仿真得到的自然下界）。
+
+    使用 stable_ode 仿真 n_trajs 条轨迹，计算平均动量变化率。
+    结果接近零（稳定运动动量守恒），作为比较基准。
+
+    Args:
+        n_trajs: 仿真轨迹数
+        seed   : 随机种子
+
+    Returns:
+        mean momentum change rate（float）
+    """
+    X = simulate(stable_ode, T=T_IN + T_OUT, n=n_trajs, seed=seed)
+    return momentum_change(X)

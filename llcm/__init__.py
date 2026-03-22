@@ -12,6 +12,7 @@ from .core import (  # noqa: F401
     simulate,
     build_dataset,
     momentum_change,
+    real_physics_baseline,
     encode,
     pretrain,
 )
@@ -25,6 +26,7 @@ __all__ = [
     "simulate",
     "build_dataset",
     "momentum_change",
+    "real_physics_baseline",
     "encode",
     "pretrain",
 ]

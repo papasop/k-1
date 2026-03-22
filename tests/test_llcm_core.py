@@ -20,6 +20,7 @@ from llcm.core import (
     simulate,
     build_dataset,
     momentum_change,
+    real_physics_baseline,
     pretrain,
     T_DIM,
     EMBED_DIM,
@@ -290,3 +291,55 @@ class TestPretrain:
             for p, pb in zip(model.parameters(), params_before)
         )
         assert changed, "预训练未更新任何参数"
+
+    def test_pretrain_mom_weight_zero_equals_default(self):
+        """mom_weight=0.0 显式传入与不传入均应正常运行并更新参数"""
+        model = LLCMBackbone()
+        params_before = [p.clone() for p in model.parameters()]
+        result = pretrain(model, seed=42, epochs=1, bs=4, mom_weight=0.0)
+        assert result is model
+        changed = any(
+            not torch.equal(p, pb)
+            for p, pb in zip(model.parameters(), params_before)
+        )
+        assert changed, "mom_weight=0.0 预训练未更新任何参数"
+
+    def test_pretrain_mom_weight_updates_params(self):
+        """mom_weight>0 时预训练应正常更新参数"""
+        model = LLCMBackbone()
+        params_before = [p.clone() for p in model.parameters()]
+        pretrain(model, seed=11, epochs=2, bs=4, mom_weight=0.3)
+        changed = any(
+            not torch.equal(p, pb)
+            for p, pb in zip(model.parameters(), params_before)
+        )
+        assert changed, "mom_weight>0 预训练未更新任何参数"
+
+    def test_pretrain_mom_weight_returns_model(self):
+        """mom_weight>0 时仍应返回同一个 LLCMBackbone 实例"""
+        model = LLCMBackbone()
+        result = pretrain(model, seed=5, epochs=1, bs=4, mom_weight=0.3)
+        assert result is model
+
+
+# ── real_physics_baseline 测试 ─────────────────────────────────
+
+class TestRealPhysicsBaseline:
+    def test_returns_float(self):
+        """real_physics_baseline 应返回 float"""
+        assert isinstance(real_physics_baseline(n_trajs=5, seed=0), float)
+
+    def test_non_negative(self):
+        """动量变化率不能为负"""
+        assert real_physics_baseline(n_trajs=5, seed=0) >= 0.0
+
+    def test_stable_baseline_near_zero(self):
+        """稳定匀速运动基准应接近零（动量守恒）"""
+        baseline = real_physics_baseline(n_trajs=10, seed=0)
+        assert baseline < 0.01, f"稳定基准过大: {baseline}"
+
+    def test_reproducible(self):
+        """相同 seed 结果应可复现"""
+        b1 = real_physics_baseline(n_trajs=5, seed=7)
+        b2 = real_physics_baseline(n_trajs=5, seed=7)
+        assert b1 == pytest.approx(b2)
