@@ -691,8 +691,6 @@ tests/
 └── test_minkowski_norm.py
 
 # 研究原型（不随包发布）
-core.py                      ← 所有模块共用（MinkowskiLN, Attn, LLCMBackbone,
-                                simulate, build_dataset, pretrain）
 baby_language_llcm.py     # 婴儿说话模型（物理→语言双向对齐）
 bidirectional_verify.py   # 双向验证脚本
 physics_first_model.py    # 物理优先基础模型
