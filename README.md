@@ -404,6 +404,7 @@ dc > 0
 **计划中：**
 - 📋 里程碑4：动态交互验证（Law II）
 - 📋 Open X-Embodiment 真实机器人验证
+- 📋 论文写作（目标：CoRL/NeurIPS 2026）
 
 ---
 
