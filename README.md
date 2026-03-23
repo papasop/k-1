@@ -336,7 +336,7 @@ experiments/                 # 研究原型
 
 ## 理论背景
 
-**Realizability.pdf**（Li 2026）回答"为什么是洛伦兹"——从代价函数的三个可实现性条件推导，洛伦兹签名是唯一代数结果，Remark 11 明确排除所有非洛伦兹签名。
+**Realizability and the Origin of Causality*（Li 2026）回答"为什么是洛伦兹"——从代价函数的三个可实现性条件推导，洛伦兹签名是唯一代数结果，Remark 11 明确排除所有非洛伦兹签名。
 
 **K=1 Chronogeometrodynamics**（Li 2026）回答"洛伦兹意味着什么"——Theorem 4 证明洛伦兹签名等价于系统存在非平凡稳定边界（dc > 0），守恒律、辛结构、因果结构同时作为代数推论涌现。
 
