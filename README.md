@@ -301,6 +301,29 @@ x₀幅度差异验证 MinkowskiLN 对时间轴施加负权重。
 
 验证代码：`experiments/lorentz_riemannian_transformer.py`
 
+**当前实现的缺失部分：**
+
+| 组件 | 当前实现 | 缺失的原教旨组件 |
+|------|---------|----------------|
+| 度规 | 固定 diag(-1,+1,...,+1) | G = ∇²(dt²_info)（信息时间的 Hessian）|
+| Exp/Log | 平直时空标准公式 | 含克里斯托費尔符号的弯曲时空公式 |
+| 流形约束 | project 链硬投影 | Law II 动力学 dx/dt=(JG-D)∇V |
+| 信息时间 | 高斯近似 | dt_info = dΦ/H 精确计算 |
+| 度规动力学 | 静态固定 | K=1 场方程 G_μν=8πT_μν 数值求解 |
+
+**缺失的影响：**
+
+- 度规 G 是假设的，不是从感知代价函数推导的
+- x₀ 的物理意义（信息时间）在当前实现里是近似的
+- {K=1} 的维持依赖 project 链，不是 Law II 动力学的自然结果
+- 移除 project 链后 mq→+100（`law2_necessity_test.py` 验证）
+
+**实验结论的有效范围：**
+
+方向A（p=0.043）和层2几何分离（p=0.0002）在当前工程实现下成立。
+这些结论依赖洛伦兹签名的存在和 Log_μ 桥接，
+不依赖度规的精确来源或 Law II 动力学。
+
 ---
 
 ## 婴儿说话里程碑
@@ -444,8 +467,11 @@ experiments/                      # 研究原型
 ├── lorentz_riemannian_transformer.py  # 全黎曼 Transformer 里程碑
 │                                 # M1-M4全通过，MinkowskiLN消融，时间注入消融
 ├── llcm_first_principles.py      # 原教旨验证（Level 1）
-│                                 # dt_info=dΦ/H，动态度规，Theorem 4涌现
-│                                 # 3/3 seeds 无 loss_mf，mq=-1.000 自然成立
+│                                 # dt_info=dΦ/H，动态度规，project 链
+├── law2_necessity_test.py        # Law II 必要性验证
+│                                 # 无 project，无 loss_mf，mq→+100（发散）
+│                                 # 结论：Law II 是 {K=1} 涌现的必要条件
+│                                 # project 是反向传播下的工程替代
 └── online_interaction_test.py    # Law II 在线交互
 ```
 
@@ -490,11 +516,15 @@ dc > 0
 | ✅ 完成 | 里程碑 0/2/3/5：感知流形、sigma激活、方向B、Theorem 6 |
 | ✅ 完成 | 欧氏反转：d=16.24，d=2.53，R²=0.9997，4.88×放大 |
 | ✅ 完成 | 全黎曼里程碑 M1-M4：约束1e-7，类时100%，差距267x |
-| ✅ 完成 | Theorem 4 涌现验证：无 loss_mf，mq=-1.000，3/3 seeds（llcm_first_principles.py）|
+| ✅ 完成 | Law II 必要性验证：无 project mq→+100，有 project mq=-1.000（law2_necessity_test.py）|
+| 📋 发现 | project 是 Law II 在反向传播下的工程替代，Law II 是 {K=1} 涌现必要条件 |
 | ✅ 完成 | MinkowskiLN 对比：project链下等价，x₀幅度差异验证 |
 | ✅ 完成 | 里程碑1（方向A）：全黎曼 p=0.043，d=1.10（6 seeds合并，Log_μ桥接）|
 | ✅ 完成 | Log_μ 桥接发现：x₀幅度压缩让语言对齐提升117% |
 | 📋 计划 | 里程碑4：动态交互（Law II） |
+| 📋 未来 | 补全缺失1：G=∇²(dt²_info) 精确计算，替代固定度规 |
+| 📋 未来 | 补全缺失2：Law II 动力学实现，替代 project 链 |
+| 📋 未来 | 补全缺失3：K=1 场方程数值求解，替代静态度规 |
 | 📋 计划 | Open X-Embodiment 真实机器人 |
 | 📋 计划 | 论文写作（CoRL/NeurIPS 2026） |
 
