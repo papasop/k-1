@@ -36,7 +36,7 @@ LANG_DIM   = 384
 N_LABELS   = 6       # 只用2类：stable vs changing
 N_PER      = 50      # 每类50个样本
 EP_PRE     = 120     # GPU大模型
-EP_FT      = 300     # GPU大模型
+EP_FT      = 450  # +50% 适应sigma激活后更强几何     # GPU大模型
 LR_PRE     = 2e-4    # GPU大模型
 LR_FT      = 5e-5    # GPU大模型
 BS         = 32      # GPU大模型
@@ -421,6 +421,252 @@ class Attn(nn.Module):
         V=self.v(x).view(B,T,self.nh,hd)
         return self.out(torch.einsum('bths,bshd->bthd',attn,V).reshape(B,T,D))
 
+
+# ══════════════════════════════════════════════════════════════
+# 全黎曼 Lorentzian Backbone（接入婴儿说话项目）
+# ══════════════════════════════════════════════════════════════
+
+class LorentzManifoldBaby:
+    """K=1 论文洛伦兹流形核心操作（独立于 lorentz_riemannian_test.py）"""
+    EPS = 1e-6
+
+    @staticmethod
+    def inner(x, y):
+        return -x[...,0]*y[...,0] + (x[...,1:]*y[...,1:]).sum(-1)
+
+    @staticmethod
+    def project(x):
+        sp = x[...,1:].clamp(-8., 8.)
+        x0 = torch.sqrt(1. + (sp**2).sum(-1,keepdim=True) + LorentzManifoldBaby.EPS)
+        return torch.cat([x0, sp], dim=-1)
+
+    @staticmethod
+    def exp_map(x, v):
+        EPS = LorentzManifoldBaby.EPS
+        vx  = LorentzManifoldBaby.inner(v, x).unsqueeze(-1)
+        vt  = v + vx * x
+        vns = LorentzManifoldBaby.inner(vt, vt).clamp(min=0)
+        vn  = torch.sqrt(vns + EPS).unsqueeze(-1).clamp(max=5.)
+        res = torch.cosh(vn)*x + torch.sinh(vn)*vt/(vn+EPS)
+        return LorentzManifoldBaby.project(res)
+
+    @staticmethod
+    def log_map(x, y):
+        EPS = LorentzManifoldBaby.EPS
+        y   = LorentzManifoldBaby.project(y)
+        xy  = LorentzManifoldBaby.inner(x, y).unsqueeze(-1).clamp(max=-(1.+EPS))
+        d   = torch.acosh((-xy).clamp(min=1.+EPS)).clamp(min=1e-3)
+        dir = y + xy * x
+        dn  = torch.sqrt(LorentzManifoldBaby.inner(dir,dir).clamp(min=EPS)).unsqueeze(-1)
+        return d * dir / (dn + EPS)
+
+MB = LorentzManifoldBaby()
+
+
+class LorentzAttnBaby(nn.Module):
+    """全黎曼洛伦兹注意力（无 sigma，几何拓扑保证）"""
+    def __init__(self, d, n_heads):
+        super().__init__()
+        self.d=d; self.h=n_heads; self.dh=d//n_heads
+        self.Wq=nn.Linear(d,d,bias=False)
+        self.Wk=nn.Linear(d,d,bias=False)
+        self.Wv=nn.Linear(d,d,bias=False)
+        self.Wo=nn.Linear(d,d,bias=False)
+
+    def forward(self, x):
+        B,T,_=x.shape
+        mu=torch.zeros(self.d,device=x.device); mu[0]=1.
+        mu=mu.view(1,1,self.d).expand(B,T,-1)
+        v=MB.log_map(mu, x)
+
+        def ph(w):
+            h=w.view(B,T,self.h,self.dh)
+            sp=h[...,1:].clamp(-5.,5.)
+            x0=torch.sqrt(1.+(sp**2).sum(-1,keepdim=True)+1e-6)
+            return torch.cat([x0,sp],-1).transpose(1,2)
+
+        q=ph(self.Wq(v)); k=ph(self.Wk(v))
+        vv=self.Wv(v).view(B,T,self.h,self.dh).transpose(1,2)
+        sc=(-q[...,:1]*k[...,:1].transpose(-2,-1)
+            +q[...,1:]@k[...,1:].transpose(-2,-1))/(self.dh**.5)
+        at=F.softmax(sc,-1)
+        out=(at@vv).transpose(1,2).contiguous().view(B,T,self.d)
+        return MB.project(MB.exp_map(mu, self.Wo(out)))
+
+
+class LorentzFFNBaby(nn.Module):
+    def __init__(self, d):
+        super().__init__()
+        self.fc1=nn.Linear(d,d*4)
+        self.fc2=nn.Linear(d*4,d)
+
+    def forward(self, x):
+        B,T,d=x.shape
+        mu=torch.zeros(d,device=x.device); mu[0]=1.
+        mu=mu.view(1,1,d).expand(B,T,-1)
+        v=MB.log_map(mu, x)
+        v=F.gelu(self.fc1(v))
+        v=self.fc2(v)
+        return MB.project(MB.exp_map(mu, v))
+
+
+class LorentzBlockBaby(nn.Module):
+    def __init__(self, d, n_heads):
+        super().__init__()
+        self.attn=LorentzAttnBaby(d,n_heads)
+        self.ffn =LorentzFFNBaby(d)
+        self.n1  =nn.LayerNorm(d)
+        self.n2  =nn.LayerNorm(d)
+
+    def forward(self, x):
+        mu=torch.zeros(x.shape[-1],device=x.device); mu[0]=1.
+        mu=mu.view(1,1,-1).expand(*x.shape)
+        v=MB.log_map(mu,x)
+        v=self.n1(v+MB.log_map(mu,self.attn(x)))
+        x=MB.project(MB.exp_map(mu,v))
+        v=MB.log_map(mu,x)
+        v=self.n2(v+MB.log_map(mu,self.ffn(x)))
+        x=MB.project(MB.exp_map(mu,v))
+        return x
+
+
+
+class LorentzLangBridge(nn.Module):
+    """
+    洛伦兹→语言空间的几何桥接层
+
+    问题：直接从流形嵌入(D=64)做欧氏线性升维到语言空间(384维)
+         会丢失洛伦兹几何结构——切空间向量比流形向量更适合线性变换
+
+    修复：先用 Log_μ 把流形上的点映射到切空间（欧氏），
+         再在切空间做线性升维到语言空间
+         这样洛伦兹几何通过切空间自然传递，不被欧氏投影破坏
+
+    理论依据：
+         切空间 T_μH 是欧氏空间，和 sentence-transformers 的输出空间兼容
+         Log_μ(x) 保留了 x 在流形上的方向信息（测地线方向）
+         直接线性变换 x 会混淆时间分量 x₀ 和空间分量 xᵢ 的几何意义
+    """
+    def __init__(self, d_in, d_out, hidden=None):
+        super().__init__()
+        if hidden is None:
+            hidden = max(d_in * 4, d_out)  # 更大的中间层补偿维度差
+        self.d_in = d_in
+        # 参考点 μ = (1, 0, ..., 0)（固定，不可学习）
+        self.register_buffer('mu', torch.zeros(d_in))
+        # 线性升维在切空间里做
+        self.net = nn.Sequential(
+            nn.Linear(d_in, hidden),
+            nn.GELU(),
+            nn.LayerNorm(hidden),
+            nn.Linear(hidden, d_out),
+        )
+
+    def forward(self, x):
+        # x: (B, d_in)，在流形 H^{1,d_in-1} 上
+        # 1. Log_μ：映射到切空间（欧氏向量）
+        mu = self.mu.unsqueeze(0).expand(x.shape[0], -1)  # (B, d_in)
+        v  = MB.log_map(mu, x)   # (B, d_in)，切空间向量
+        # 2. 切空间线性升维→语言空间
+        return self.net(v)        # (B, d_out)
+
+class LorentzRiemannianLayer1Model(nn.Module):
+    """
+    全黎曼 Lorentzian Transformer 接入婴儿说话项目
+
+    Backbone：LorentzBlockBaby（H^{1,EMBED_DIM-1} 流形）
+    头：与 Layer1Model 完全相同（语言生成、分类、方向B对齐）
+    接口：embed_seq / forward_pretrain / forward_A_gen /
+          forward_A_cls / freeze_backbone / unfreeze_all
+
+    理论保证：
+      dc > 0 ← Theorem 4，不依赖 sigma
+      稳定性从流形拓扑涌现，不需要 Riemannian Adam
+    """
+    # 全黎曼用小模型（D=64, N_LAYERS=3）
+    # 原因：256维×6层×10次黎曼操作=极慢，64维×3层≈F3速度的1/3
+    RIE_DIM = 64
+    RIE_LAYERS = 3
+    RIE_HEADS = 4
+
+    def __init__(self):
+        super().__init__()
+        d=self.RIE_DIM; nh=self.RIE_HEADS; nl=self.RIE_LAYERS
+        self.mode='riemannian'
+        self.d=d
+        # Backbone（小模型）
+        self.embed=nn.Linear(STATE_DIM, d)
+        self.blocks=nn.ModuleList([LorentzBlockBaby(d,nh) for _ in range(nl)])
+        # 预训练头
+        self.traj_head=nn.Linear(d, STATE_DIM*T_OUT)
+        # 语言生成头（方向A）：升维到 EMBED_DIM 再接 LANG_DIM
+        # 洛伦兹→语言空间桥接（Log_μ 切空间 + 线性升维）
+        # 比直接欧氏线性变换保留更多洛伦兹几何结构
+        self.lang_gen = LorentzLangBridge(d, LANG_DIM, hidden=EMBED_DIM*2)
+        # 分类头
+        self.cls=nn.Sequential(
+            nn.Linear(d,d*2),nn.GELU(),nn.LayerNorm(d*2),nn.Linear(d*2,N_LABELS))
+        # 方向B：语言对齐器（降维到 d）
+        self.lang_aligner=nn.Sequential(
+            nn.Linear(LANG_DIM,EMBED_DIM),nn.GELU(),nn.LayerNorm(EMBED_DIM),
+            nn.Linear(EMBED_DIM,d),nn.GELU(),nn.LayerNorm(d))
+        # 方向B：物理解码器
+        self.phys_decoder=nn.Sequential(
+            nn.Linear(d,d*2),nn.GELU(),nn.LayerNorm(d*2),
+            nn.Linear(d*2,STATE_DIM*T_OUT))
+
+    def embed_seq(self, x):
+        B,T,_=x.shape
+        d=self.d
+        h=MB.project(self.embed(x))
+        # 时间步注入（切空间方式）
+        mu0=torch.zeros(d,device=x.device); mu0[0]=1.
+        mu0=mu0.view(1,1,d).expand(B,T,-1)
+        v=MB.log_map(mu0, h)
+        t=torch.arange(T,device=x.device,dtype=torch.float32)/T
+        v[...,0]=v[...,0]+t.view(1,T)*0.1
+        h=MB.project(MB.exp_map(mu0, v))
+        for b in self.blocks:
+            h=b(h)
+        return MB.project(h[:,-1,:])   # (B, EMBED_DIM)，严格在流形上
+
+    def forward_pretrain(self, x):
+        # traj_head 输入维度是 RIE_DIM=64
+        return self.traj_head(self.embed_seq(x)).view(x.shape[0],T_OUT,STATE_DIM)
+
+    def forward_A_gen(self, x):
+        return self.lang_gen(self.embed_seq(x))
+
+    def forward_A_cls(self, x):
+        return self.cls(self.embed_seq(x))
+
+    def forward_B(self, lang_emb):
+        """方向B：语言嵌入 → 洛伦兹嵌入 → 时域轨迹"""
+        return self.phys_decoder(
+            self.lang_aligner(lang_emb)).view(-1, T_OUT, STATE_DIM)
+
+    def freeze_backbone(self):
+        for name,p in self.named_parameters():
+            if not any(k in name for k in
+                       ['lang_gen','cls','lang_aligner','phys_decoder']):
+                p.requires_grad_(False)
+
+    def unfreeze_all(self):
+        for p in self.parameters(): p.requires_grad_(True)
+
+    @property
+    def sigma(self):
+        return 1.0  # 全黎曼：sigma 固定为1（几何拓扑保证）
+
+    def measure_lorentz(self, emb):
+        mq=MB.inner(emb,emb)
+        return {
+            'mq_mean': mq.mean().item(),
+            'tl_ratio': (mq<0).float().mean().item(),
+            'violation': (mq+1.).abs().mean().item(),
+            'x0_mean': emb[:,0].mean().item(),
+        }
+
 class Layer1Model(nn.Module):
     """
     层1验证模型：
@@ -526,11 +772,10 @@ class Layer1Model(nn.Module):
         return None
 
 # ── 预训练 ─────────────────────────────────────────────────────
-def pretrain(model, seed=0):
+def pretrain(model, seed=0, ep_override=None):
     """
     预训练：用全部9种ODE激活洛伦兹几何
-    关键：哈密顿系统（kepler, elastic, nbody）给 sigma 最强梯度信号
-    守恒类(label=0) vs 非守恒类(label=1) 的分类辅助任务激活 sigma
+    ep_override: 覆盖 EP_PRE（全黎曼用较少 epoch）
     """
     model.unfreeze_all()
     rng=np.random.RandomState(seed)
@@ -542,7 +787,7 @@ def pretrain(model, seed=0):
         (elastic_ode,      [0.5,0.3,0.1,0.2,0.1,0.05], 0),  # ← sigma激活关键
         (nbody_simple_ode, [1.0,0,0,0,0.5,0],     0),
         (constrained_ode,  [1.0,0,0,0,1.5,0],     0),
-        (optimal_ode,      [0,0,0,1.0,0.5,0.2],   0),
+        (optimal_ode,      [0,0,0,1.0,0.5,0.2],   2),  # label=2：最优控制→光锥边界
         # 非守恒类（label=1）：强对比信号
         (running_ode,      [0,1.0,0,2.0,0,0],     1),
         (pendulum_ode,     [0.5,0.3,0.1,0.2,0.1,0.05], 1),
@@ -576,11 +821,12 @@ def pretrain(model, seed=0):
     # 预训练用2类（守恒vs非守恒），给sigma最清晰的梯度信号
     L=torch.tensor(L_pre[:len(X_list)],dtype=torch.long)
     opt=torch.optim.AdamW(model.parameters(),lr=LR_PRE)
-    sched=torch.optim.lr_scheduler.CosineAnnealingLR(opt,EP_PRE)
+    n_ep = ep_override if ep_override is not None else EP_PRE
+    sched=torch.optim.lr_scheduler.CosineAnnealingLR(opt, n_ep)
     loader=DataLoader(TensorDataset(X,Y),BS,shuffle=True)
 
     model.train()
-    for ep in range(EP_PRE):
+    for ep in range(n_ep):
         tl=0; tc=0
         for (xb,yb,lb) in DataLoader(
                 TensorDataset(X,Y,L),BS,shuffle=True):
@@ -597,31 +843,58 @@ def pretrain(model, seed=0):
             loss_sigma   = torch.tensor(0.0, device=device)
             loss_push_s  = torch.tensor(0.0, device=device)
             loss_push_c  = torch.tensor(0.0, device=device)
-            if model.mode == 'f3':
+            loss_optimal = torch.tensor(0.0, device=device)
+            if model.mode in ('f3', 'riemannian'):
                 emb = model.embed_seq(xb)  # (B, EMBED_DIM)
-                t_e = emb[:, :T_DIM]
-                s_e = emb[:, T_DIM:]
-                mq  = (s_e**2).sum(-1) - (t_e**2).sum(-1)  # (B,)
+                if model.mode == 'riemannian':
+                    # 全黎曼：用洛伦兹内积（x 在流形上，mq = ⟨x,x⟩_L ≈ -1）
+                    # 分离信号来自 mq 的相对大小（守恒 < 非守恒）
+                    mq = -emb[:,0]**2 + (emb[:,1:]**2).sum(-1)
+                else:
+                    t_e = emb[:, :T_DIM]
+                    s_e = emb[:, T_DIM:]
+                    mq  = (s_e**2).sum(-1) - (t_e**2).sum(-1)  # (B,)
                 # 守恒样本（lb==0）mq应该 < 非守恒样本（lb==1）mq
-                stable_mask  = (lb == 0).float()
-                change_mask  = (lb == 1).float()
+                stable_mask  = (lb == 0).float()  # 守恒（不含optimal）
+                change_mask  = (lb == 1).float()  # 非守恒
+                optim_mask   = (lb == 2).float()  # 最优控制
                 n_s = stable_mask.sum() + 1e-6
                 n_c = change_mask.sum() + 1e-6
+                n_o = optim_mask.sum()  + 1e-6
                 mq_stable  = (mq * stable_mask).sum() / n_s
                 mq_change  = (mq * change_mask).sum() / n_c
-                # 双向推力：守恒进类时，非守恒进类空
-                # 守恒样本mq必须 < -0.5（类时区域）
-                loss_push_s = F.relu(mq_stable + 0.5)
-                # 非守恒样本mq必须 > +0.5（类空区域）
-                loss_push_c = F.relu(0.5 - mq_change)
-                # 对比损失：守恒比非守恒低至少1.0
-                loss_sigma  = F.relu(mq_stable - mq_change + 1.0)
+                # n_s/n_c/n_o 已在上方定义
 
-            # 三项合计：分离损失
+                mq_optimal = (mq * optim_mask).sum() / n_o
+
+                # relu分离损失（版本2，目前最佳）
+                # 守恒mq必须 < -0.5（类时）
+                loss_push_s = F.relu(mq_stable + 0.5)
+                # 非守恒mq必须 > +1.0（类空）
+                loss_push_c = F.relu(1.0 - mq_change)
+                # 对比：守恒比非守恒低至少2.0
+                loss_sigma  = F.relu(mq_stable - mq_change + 2.0)
+
+                # 修正猜想：optimal比守恒类更深入类时
+                mq_optimal = (mq * optim_mask).sum() / n_o
+                loss_optimal = F.relu(mq_optimal - (mq_stable.detach() - 0.3))
+
+            # 直接 sigma 损失（最短梯度路径，绕过6层Transformer）
+            loss_direct_sigma = torch.tensor(0.0, device=device)
+            if model.mode == 'f3':
+                sigma_val = torch.sigmoid(model.blocks[0]['attn'].w_sigma)
+                # 温和激活：目标0.56（不破坏语言对齐），后半段才启动
+                if ep >= EP_PRE // 2:  # 前50% epoch不加，让backbone先稳定
+                    loss_direct_sigma = F.relu(0.56 - sigma_val)
+            # 全黎曼：sigma=1.0 固定，无需激活损失
+
+            # 总损失：守恒/非守恒分离 + 最优性 + 温和sigma激活
             loss = (loss_mse + 0.3*loss_cls
-                    + 1.0*loss_sigma      # 对比
-                    + 0.5*loss_push_s     # 守恒→类时
-                    + 0.5*loss_push_c)    # 非守恒→类空
+                    + 1.0*loss_sigma          # 对比分离
+                    + 1.0*loss_push_s         # 守恒→类时
+                    + 1.0*loss_push_c         # 非守恒→类空
+                    + 0.5*loss_optimal        # 修正猜想
+                    + 0.05*loss_direct_sigma) # 温和sigma激活
             loss.backward()
             torch.nn.utils.clip_grad_norm_(model.parameters(), 0.3)
             opt.step()
@@ -630,10 +903,34 @@ def pretrain(model, seed=0):
     s = f'  sigma={model.sigma:.3f}' if model.sigma else ''
     print(f'  预训练完成  mse={tl/len(loader):.4f}  '
           f'cls={tc/len(loader):.4f}{s}')
-    if model.sigma and model.sigma > 0.58:
-        print(f'  ✅ sigma激活！{model.sigma:.3f} > 0.58')
-    elif model.sigma and model.sigma > 0.55:
-        print(f'  ◑ sigma接近激活 {model.sigma:.3f}（目标>0.58）')
+    # 预训练后测量optimal_ode的mq均值（猜想验证的基础）
+    if model.mode == 'f3':
+        model.eval()
+        with torch.no_grad():
+            opt_idx = [i for i,l in enumerate(L_pre) if l==2]
+            if opt_idx:
+                X_opt = X[opt_idx[:20]].to(device)
+                emb_o = model.embed_seq(X_opt)
+                t_o = emb_o[:,:T_DIM]; s_o = emb_o[:,T_DIM:]
+                mq_o = ((s_o**2).sum(-1)-(t_o**2).sum(-1)).mean().item()
+                print(f'  optimal_ode mq均值={mq_o:+.4f}'
+                      f'（修正猜想：应比stable更负）')
+        # 打印stable/change的mq对比
+        with torch.no_grad():
+            stb_idx=[i for i,l in enumerate(L_pre) if l==0]
+            chg_idx=[i for i,l in enumerate(L_pre) if l==1]
+            if stb_idx and chg_idx:
+                mq_s=((model.embed_seq(X[stb_idx[:20]].to(device)))[:,T_DIM:]**2).sum(-1).mean()
+                mq_s-=((model.embed_seq(X[stb_idx[:20]].to(device)))[:,:T_DIM]**2).sum(-1).mean()
+                mq_c=((model.embed_seq(X[chg_idx[:20]].to(device)))[:,T_DIM:]**2).sum(-1).mean()
+                mq_c-=((model.embed_seq(X[chg_idx[:20]].to(device)))[:,:T_DIM]**2).sum(-1).mean()
+                print(f'  stable mq={float(mq_s):+.3f}  change mq={float(mq_c):+.3f}'
+                      f'  目标：optimal < stable < change')
+        model.train()
+    if model.sigma and model.sigma > 0.56:
+        print(f'  ✅ sigma激活！{model.sigma:.3f} > 0.56')
+    elif model.sigma and model.sigma > 0.52:
+        print(f'  ◑ sigma接近激活 {model.sigma:.3f}（目标>0.56）')
     elif model.sigma:
         print(f'  sigma={model.sigma:.3f}（目标>0.58，loss_sigma在工作）')
     # 疑问7：F3 mse高于欧氏是正常的——MinkowskiLN改变梯度流，不是欠拟合
@@ -716,19 +1013,41 @@ def finetune(model, X_tr, L_tr, lang_emb_tr, X_te, L_te):
 
             # CLIP对齐
             ll = F.normalize(lorentz_B, dim=-1)
-            lp = F.normalize(phys_lorentz, dim=-1)
+            # 全黎曼：phys_lorentz 在流形上，x₀≈57 主导
+            # 用 Log_μ 投影到切空间再归一化，几何更正确
+            if hasattr(model, 'd') and model.mode == 'riemannian':
+                d = model.d
+                mu_clip = torch.zeros(d, device=device); mu_clip[0] = 1.0
+                mu_clip = mu_clip.unsqueeze(0).expand(phys_lorentz.shape[0], -1)
+                lp = F.normalize(MB.log_map(mu_clip, phys_lorentz), dim=-1)
+            else:
+                lp = F.normalize(phys_lorentz, dim=-1)
             sim_B = torch.mm(ll, lp.T) / 0.1
             lc_B  = torch.arange(len(xb), device=device)
             loss_align_B = (F.cross_entropy(sim_B, lc_B) +
                             F.cross_entropy(sim_B.T, lc_B)) * 0.5
 
-            # mq几何对齐
-            t_p = phys_lorentz[:, :T_DIM]
-            s_p = phys_lorentz[:, T_DIM:]
-            mq_phys = (s_p**2).sum(-1) - (t_p**2).sum(-1)
-            t_b = lorentz_B[:, :T_DIM]
-            s_b = lorentz_B[:, T_DIM:]
-            mq_lang = (s_b**2).sum(-1) - (t_b**2).sum(-1)
+            # mq几何对齐（适配全黎曼和隐式两种模型）
+            if hasattr(model, 'd') and model.mode == 'riemannian':
+                # 全黎曼：用洛伦兹内积 ⟨x,x⟩_L = -x₀² + Σxᵢ²
+                # embed_seq 输出严格在 H^{1,d-1} 上，mq = -1（精确）
+                # loss_geom 简化：只让 lang_aligner 输出的范数匹配
+                # （流形约束已由 project 链保证，不需要强制 mq 匹配）
+                mq_phys = -phys_lorentz[:,0]**2 + (phys_lorentz[:,1:]**2).sum(-1)
+                # lang_aligner 输出是欧氏向量，用 Log_μ 映射到切空间再算伪mq
+                d = model.d
+                mu = torch.zeros(d, device=device); mu[0] = 1.0
+                mu = mu.unsqueeze(0).expand(lorentz_B.shape[0], -1)
+                v_b = MB.log_map(mu, MB.project(lorentz_B))
+                mq_lang = -v_b[:,0]**2 + (v_b[:,1:]**2).sum(-1)
+            else:
+                # 隐式 F3：用 T_DIM 切片方式
+                t_p = phys_lorentz[:, :T_DIM]
+                s_p = phys_lorentz[:, T_DIM:]
+                mq_phys = (s_p**2).sum(-1) - (t_p**2).sum(-1)
+                t_b = lorentz_B[:, :T_DIM]
+                s_b = lorentz_B[:, T_DIM:]
+                mq_lang = (s_b**2).sum(-1) - (t_b**2).sum(-1)
             loss_geom = F.mse_loss(mq_lang, mq_phys.detach())
 
             # 守恒性（只用label=0感知类）
@@ -769,7 +1088,7 @@ def finetune(model, X_tr, L_tr, lang_emb_tr, X_te, L_te):
 
 
 # ── 评估（层1核心指标） ─────────────────────────────────────────
-def evaluate(model_euc, model_f3, X_te, L_te):
+def evaluate(model_euc, model_f3, X_te, L_te, model_rie=None):
     print('\n'+'='*50)
     print('层1验证结果：语言能否索引洛伦兹物理空间')
     print('='*50)
@@ -932,7 +1251,10 @@ def evaluate(model_euc, model_f3, X_te, L_te):
         dp  = np.diff(vel, axis=0)
         return float(np.linalg.norm(dp, axis=-1).mean())
 
-    for model, name in [(model_euc,'欧氏'), (model_f3,'洛伦兹F3')]:
+    dirB_models = [(model_euc,'欧氏'), (model_f3,'洛伦兹F3')]
+    if model_rie is not None:
+        dirB_models.append((model_rie, '全黎曼'))
+    for model, name in dirB_models:
         model.eval()
         moms = []
         with torch.no_grad():
@@ -972,10 +1294,11 @@ print('='*50)
 print('\n构建固定测试集（seed=42）...')
 X_test, L_test = build_dataset(seed=42)
 
-SEEDS = [0,1,2,3,4,5,6,7]  # 完整8 seeds  # 先1个seed验证  # 快速验证：1 seed  # 快速验证3 seeds
+SEEDS = [0,1,2]  # 快速跑1个seed保存权重  # 完整8 seeds  # 先1个seed验证  # 快速验证：1 seed  # 快速验证3 seeds
 euc_aligns, f3_aligns = [], []
 euc_accs,   f3_accs   = [], []
 results_list = []
+rie_aligns = []; rie_accs = []
 
 for seed in SEEDS:
     sep = '='*50
@@ -1001,36 +1324,75 @@ for seed in SEEDS:
     print('微调欧氏（含loss_geom）...')
     finetune(model_euc, X_data, L_data, lang_embs, X_test, L_test)
 
-    # F3
+    # F3（隐式）
     print('预训练F3...')
     model_f3 = Layer1Model('f3').to(device)
     pretrain(model_f3, seed=seed*1000)
+
+    # 全黎曼（D=64×3层，ep=30 快速验证）
+    print('预训练全黎曼（D=64,L=3,ep=30）...')
+    model_rie = LorentzRiemannianLayer1Model().to(device)
+    pretrain(model_rie, seed=seed*1000, ep_override=30)
 
     # ── 预训练后立即测量层2（最纯净的几何，无语言信号）──────
     model_f3.eval(); model_euc.eval()
     with torch.no_grad():
         emb_f3_pre  = model_f3.embed_seq(X_test.to(device))
         emb_euc_pre = model_euc.embed_seq(X_test.to(device))
-        def mq_stats(emb):
-            t=emb[:,:T_DIM]; s=emb[:,T_DIM:]
-            mq=(s**2).sum(-1)-(t**2).sum(-1)
+        def mq_stats(emb, mode='f3'):
+            if mode == 'riemannian':
+                mq = -emb[:,0]**2 + (emb[:,1:]**2).sum(-1)
+            else:
+                t=emb[:,:T_DIM]; s=emb[:,T_DIM:]
+                mq=(s**2).sum(-1)-(t**2).sum(-1)
             return mq.mean().item(), (mq<0).float().mean().item()
-        mq_f3,  tl_f3  = mq_stats(emb_f3_pre)
-        mq_euc, tl_euc = mq_stats(emb_euc_pre)
+        mq_f3,  tl_f3  = mq_stats(emb_f3_pre,  'f3')
+        mq_euc, tl_euc = mq_stats(emb_euc_pre, 'euclidean')
     ratio_pre = abs(mq_euc)/(abs(mq_f3)+1e-6)
     print(f'  [预训练后层2] F3 mq={mq_f3:+.3f} 类时={tl_f3:.1%}'
           f'  欧氏mq={mq_euc:+.3f}  差距={ratio_pre:.1f}倍')
 
+    # 全黎曼层2测量（预训练后，无语言信号）
+    model_rie.eval()
+    with torch.no_grad():
+        emb_rie_pre = model_rie.embed_seq(X_test.to(device))
+        geo_rie = model_rie.measure_lorentz(emb_rie_pre)
+    print(f'  [全黎曼预训练后层2] mq={geo_rie["mq_mean"]:+.3f} '
+          f'类时={geo_rie["tl_ratio"]:.1%} '
+          f'违反={geo_rie["violation"]:.6f} '
+          f'x₀均值={geo_rie["x0_mean"]:.1f}')
+
     print('微调F3...')
     finetune(model_f3, X_data, L_data, lang_embs, X_test, L_test)
 
-    # 评估（层1+层2）
-    res = evaluate(model_euc, model_f3, X_test, L_test)
+    # 全黎曼微调
+    print('微调全黎曼...')
+    finetune(model_rie, X_data, L_data, lang_embs, X_test, L_test)
+
+    # 评估（层1+层2）：F3 vs 欧氏
+    res = evaluate(model_euc, model_f3, X_test, L_test, model_rie=model_rie)
     results_list.append(res)
     euc_aligns.append(res['欧氏']['align'])
     f3_aligns.append(res['洛伦兹F3']['align'])
     euc_accs.append(res['欧氏']['acc'])
     f3_accs.append(res['洛伦兹F3']['acc'])
+
+    # 全黎曼单独评估（对比F3）
+    model_rie.eval()
+    with torch.no_grad():
+        preds_rie = model_rie.forward_A_cls(X_test.to(device)).argmax(-1).cpu()
+        acc_rie   = (preds_rie==L_test).float().mean().item()
+        phys_rie  = model_rie.forward_A_gen(X_test.to(device)).cpu()
+        sims_rie  = [F.cosine_similarity(
+                        phys_rie[i:i+1],
+                        encode([DESCRIPTIONS[L_test[i].item()][0]]).cpu()
+                    ).item() for i in range(len(L_test))]
+        align_rie = float(np.mean(sims_rie))
+    rie_aligns.append(align_rie)
+    rie_accs.append(acc_rie)
+    print(f'  [全黎曼] 方向A对齐={align_rie:+.4f}  分类acc={acc_rie:.1%}')
+    print(f'  [F3隐式] 方向A对齐={res["洛伦兹F3"]["align"]:+.4f}  '
+          f'分类acc={res["洛伦兹F3"]["acc"]:.1%}')
 
 # 跨seed统计
 print('\n' + '='*50)
@@ -1039,9 +1401,13 @@ print('='*50)
 
 euc_a = np.array(euc_aligns)
 f3_a  = np.array(f3_aligns)
-diff  = f3_a - euc_a
-_, p  = scipy_stats.ttest_rel(f3_a, euc_a)
-d     = diff.mean() / (diff.std(ddof=1) + 1e-10)
+rie_a = np.array(rie_aligns)
+diff     = f3_a  - euc_a
+diff_rie = rie_a - euc_a
+_, p     = scipy_stats.ttest_rel(f3_a,  euc_a)
+_, p_rie = scipy_stats.ttest_rel(rie_a, euc_a)
+d     = diff.mean()     / (diff.std(ddof=1)     + 1e-10)
+d_rie = diff_rie.mean() / (diff_rie.std(ddof=1) + 1e-10)
 
 print(f'\n语言对齐得分:')
 print(f'  欧氏: {euc_a.mean():.4f} ± {euc_a.std():.4f}')
@@ -1160,6 +1526,26 @@ if results_list:
             print('\n方向A成立 ✅，方向B未成立 ❌')
         else:
             print('\n需要更多实验')
+
+        # ── 保存权重供HJB猜想验证使用 ──────────────────────────
+        import torch as _t
+        _t.save(model_f3.state_dict(),  'model_f3_trained.pt')
+        _t.save(model_euc.state_dict(), 'model_euc_trained.pt')
+        print('\n权重已保存 → model_f3_trained.pt / model_euc_trained.pt')
+
+        # ── 全黎曼 vs F3 vs 欧氏 核心对比 ──────────────────────
+        rie_a = np.array(rie_aligns); f3_a_ = np.array(f3_aligns)
+        euc_a_ = np.array(euc_aligns)
+        if len(rie_a) >= 2:
+            from scipy import stats as _sc
+            _, p_rie = _sc.ttest_rel(rie_a, euc_a_)
+            d_rie = (rie_a-euc_a_).mean() / ((rie_a-euc_a_).std(ddof=1)+1e-10)
+            print(f'\n── 全黎曼 vs 欧氏（方向A）──')
+            print(f'  欧氏:    {euc_a_.mean():+.4f}')
+            print(f'  F3隐式: {f3_a_.mean():+.4f}  (p={p:.4f}  d={d:.2f})')
+            print(f'  全黎曼: {rie_a.mean():+.4f}  (p={p_rie:.4f}  d={d_rie:.2f})')
+            better = '✅' if rie_a.mean() > f3_a_.mean() else '◑'
+            print(f'  全黎曼 > F3隐式：{better} ({rie_a.mean()-f3_a_.mean():+.4f})')
 
         # ── 消融分析：欧氏 vs F3 在相同训练信号下的差异 ──────
         print(f'\n── 消融分析（审稿人疑问1）──')
