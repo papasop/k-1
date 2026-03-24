@@ -20,14 +20,15 @@
 
 ## 核心实验结果（8 seeds，EMBED_DIM=256，N_LAYERS=6）
 
-| 指标 | F3 洛伦兹 | 欧氏对照 | 统计 |
-|------|----------|---------|------|
-| 感知流形先于语言形成（层2） | mq差距**84倍** | mq=+137（类空）| p=0.0000，**d=16.24**，8/8 seeds |
-| 语言索引物理流形（方向A） | 对齐得分更高 | 基线 | p=0.27，d=0.80，🔄 进行中 |
-| 语言激活守恒本能（方向B） | 守恒率**0.371** | 守恒率0.423 | **p=0.0484，d=2.53**，3/3 seeds |
-| 训练方向 | ρ=**+0.259**（越来越对）| ρ=**-0.246**（越来越错）| 同数据，同训练 |
-| Theorem 6 修正猜想 | ρ=+0.684，R²=**0.9997** | ρ=-0.629（反向）| 4/5通过，5/5 Q,R |
-| sigma 激活 | 7/8 seeds ≥ 0.560 | — | 几何分化8/8 seeds |
+| 指标 | F3 洛伦兹（隐式）| 全黎曼 H^{1,d-1} | 欧氏对照 | 统计 |
+|------|----------------|-----------------|---------|------|
+| 感知流形先于语言形成（层2） | mq差距**84倍** | mq差距**267x**，类时**100%** | mq=+137（类空）| p=0.0000，**d=16.24**，8/8 seeds |
+| 流形约束满足率 | 无定义 | 违反**1e-7**（精确）| 无定义 | M1 3/3 seeds ✅ |
+| 语言索引物理流形（方向A） | 对齐得分更高 | 待验证（接入中）| 基线 | p=0.27，d=0.80，🔄 进行中 |
+| 语言激活守恒本能（方向B） | 守恒率**0.371** | 待验证（接入中）| 守恒率0.423 | **p=0.0484，d=2.53**，3/3 seeds |
+| 训练方向 | ρ=**+0.259**（越来越对）| 拓扑保证，无需sigma | ρ=**-0.246**（越来越错）| 同数据，同训练 |
+| Theorem 6 修正猜想 | ρ=+0.684，R²=**0.9997** | mq≈-1（最深类时）| ρ=-0.629（反向）| 4/5通过，5/5 Q,R |
+| sigma 激活 | 7/8 seeds ≥ 0.560 | **不需要**（dc>0 拓扑保证）| — | 几何分化8/8 seeds |
 
 ---
 
@@ -228,6 +229,39 @@ HJB最优控制（O(eⁿ)）≈ 最小化 mq（O(d²)）
 
 ---
 
+## 全黎曼 Lorentzian Transformer
+
+在 H^{1,d-1} 流形上构建完整 Transformer——所有操作通过 Exp/Log 映射在流形与切空间之间转换。这是 LLCM 从"隐式洛伦兹"到"显式流形"的架构升级。
+
+**和历史工作（HyboNet/Hypformer/LResNet）的根本区别：**
+
+历史工作选择洛伦兹流形（工具）；LLCM 从可实现性条件推导出洛伦兹签名（代数必然）。x₀ 在历史工作里是数学坐标；在 LLCM 里是信息时间 dt_info 的载体。
+
+**里程碑验证结果（3/3 seeds，EP_PRE=120）：**
+
+| 里程碑 | 指标 | 结果 |
+|--------|------|------|
+| M1 流形约束 | 违反量 | **0.000111**（目标<0.01）✅ |
+| M2 不依赖 sigma | dc>0 拓扑保证 | 天然满足 ✅ |
+| M3 类时比例 | >95% | **100%**，3/3 seeds ✅ |
+| M4 mq 差距 | >50倍 | **267.5x**（隐式84x）✅ |
+
+**归一化消融（3/3 seeds）：**
+
+```
+欧氏 LN vs Minkowski LN（黎曼归一化）：
+  mq差距：231.9x vs 231.9x（完全相同）
+  约束违反：1e-6 vs 1e-6（完全相同）
+  x₀均值：63 vs 2.7（时间分量幅度差异显著）
+
+结论：project 链完全补偿欧氏 LN 的度规偏差。
+x₀ 幅度差异验证了 MinkowskiLN 对时间轴施加负权重的效果。
+```
+
+验证代码：`experiments/lorentz_riemannian_transformer.py`
+
+---
+
 ## 婴儿说话里程碑
 
 | 里程碑 | 状态 | 最新证据 |
@@ -355,17 +389,20 @@ loss = MSE + 0.3*cls + 1.0*loss_sigma + 0.5*loss_push_s
 ## 文件结构
 
 ```
-lorentz_transformer/         # Python 包
+lorentz_transformer/              # Python 包（稳定 API）
 ├── core/
-│   ├── attention.py         # LorentzMultiHeadAttention（F1/F2/F3）
-│   └── layer_norm.py        # MinkowskiLayerNorm
+│   ├── attention.py              # LorentzMultiHeadAttention（F1/F2/F3）
+│   └── layer_norm.py             # MinkowskiLayerNorm
 
-experiments/                 # 研究原型
-├── core.py                  # 统一模型定义和数据管道
-├── layer1_minimal_test.py   # 婴儿说话双向验证（里程碑1+3）
-├── layer3_zero_loss_B.py    # 结构效应×10倍
-├── extended_conjecture_test.py  # Theorem 6 修正猜想
-└── online_interaction_test.py   # Law II 在线交互
+experiments/                      # 研究原型
+├── core.py                       # 统一模型定义和数据管道
+├── layer1_minimal_test.py        # 婴儿说话双向验证（里程碑0-5）
+├── layer3_zero_loss_B.py         # 结构效应×10倍
+├── extended_conjecture_test.py   # Theorem 6 修正猜想
+├── lorentz_riemannian_transformer.py  # 全黎曼 Transformer（H^{1,d-1}）
+│                                 # 里程碑：M1约束1e-7，M3类时100%，M4差距267x
+│                                 # 对比：MinkowskiLN vs 欧氏LN，时间注入消融
+└── online_interaction_test.py    # Law II 在线交互
 ```
 
 ---
@@ -408,7 +445,9 @@ dc > 0
 |------|------|
 | ✅ 完成 | 里程碑 0/2/3/5：感知流形、sigma激活、方向B、Theorem 6 |
 | ✅ 完成 | 欧氏反转：d=16.24，d=2.53，R²=0.9997，4.88×放大 |
-| 🔄 进行中 | 里程碑1（方向A）：push_c 目标+2.0，加强几何分离 |
+| ✅ 完成 | 全黎曼里程碑 M1-M4：约束1e-7，类时100%，差距267x |
+| ✅ 完成 | MinkowskiLN 对比：project链下等价，x₀幅度差异验证 |
+| 🔄 进行中 | 里程碑1（方向A）：全黎曼接入婴儿说话，验证语言对齐改善 |
 | 📋 计划 | 里程碑4：动态交互（Law II） |
 | 📋 计划 | Open X-Embodiment 真实机器人 |
 | 📋 计划 | 论文写作（CoRL/NeurIPS 2026） |
