@@ -527,7 +527,10 @@ class FirstPrinciplesBackbone(nn.Module):
             h = blk(h)
 
         # 返回最后一个时间步的嵌入
-        return DynamicLorentzManifold.project_static(h[:, -1, :])
+        # 注意：不调用 project_static
+        # 让 mq 自由演化，才能验证 Theorem 4 涌现
+        # 如果调用 project_static，mq=-1 是数学恒等式，不是涌现
+        return h[:, -1, :]   # 自由演化，不强制 mq=-1
 
     def forward(self, x: torch.Tensor,
                 x0_theory: torch.Tensor = None):
@@ -539,21 +542,37 @@ class FirstPrinciplesBackbone(nn.Module):
         return self.cls_head(v), emb
 
     def measure(self, emb: torch.Tensor) -> dict:
-        """测量流形指标（用动态度规）"""
-        # 固定度规的 mq（对比用）
-        mq_fixed = (-emb[:, 0]**2 +
-                    (emb[:, 1:]**2).sum(-1))
+        """
+        测量流形指标
+
+        Theorem 4 验证的核心指标：
+          mq_free：自由演化的 mq（不经过 project）
+          如果 mq_free 自然收敛到 -1 → Theorem 4 成立
+          如果 mq_free 偏离 -1 → Theorem 4 需要额外条件
+
+          mq_projected：投影后的 mq（数学恒等式，始终=-1）
+          这不能用于 Theorem 4 验证
+        """
+        # 自由演化的 mq（Theorem 4 验证的核心）
+        mq_free = (-emb[:, 0]**2 + (emb[:, 1:]**2).sum(-1))
+
+        # 投影后的 mq（参考用，始终=-1）
+        emb_proj = DynamicLorentzManifold.project_static(emb)
+        mq_proj  = (-emb_proj[:, 0]**2 +
+                    (emb_proj[:, 1:]**2).sum(-1))
 
         # 动态度规的 mq
         mq_dynamic = self.g_net.inner(emb, emb, emb)
 
-        viol = (mq_fixed + 1.0).abs().mean().item()
+        # 约束违反（相对于 mq=-1 的偏差）
+        viol_free = (mq_free + 1.0).abs().mean().item()
 
         return dict(
-            mq_mean_fixed   = mq_fixed.mean().item(),
-            mq_mean_dynamic = mq_dynamic.mean().item(),
-            tl_ratio        = (mq_fixed < 0).float().mean().item(),
-            violation       = viol,
+            mq_free         = mq_free.mean().item(),   # Theorem 4 核心
+            mq_proj         = mq_proj.mean().item(),   # 始终=-1（参考）
+            mq_dynamic      = mq_dynamic.mean().item(),
+            tl_ratio_free   = (mq_free < 0).float().mean().item(),
+            violation_free  = viol_free,               # 真实违反量
             x0_mean         = emb[:, 0].mean().item(),
             x0_std          = emb[:, 0].std().item(),
         )
@@ -690,10 +709,9 @@ def train_first_principles(model, X, L, X0, seed=0,
                 g = model.measure(emb_all)
             print(f"  ep={epoch+1:3d}  "
                   f"cls={total_cls/n_batch:.4f}  "
-                  f"met={total_met/n_batch:.4f}  "
-                  f"mq={g['mq_mean_fixed']:+.4f}  "
-                  f"tl={g['tl_ratio']:.0%}  "
-                  f"viol={g['violation']:.4f}  "
+                  f"mq_free={g['mq_free']:+.4f}  "
+                  f"tl_free={g['tl_ratio_free']:.0%}  "
+                  f"viol={g['violation_free']:.4f}  "
                   f"x₀={g['x0_mean']:.1f}±{g['x0_std']:.1f}")
             model.train()
 
@@ -763,24 +781,26 @@ def run():
             acc   = (preds == L_te).float().mean().item()
 
         print(f"\n  ── 结果 ──")
-        print(f"  mq（固定度规）：{g['mq_mean_fixed']:+.4f}  "
-              f"（目标≈-1，无 loss_mf）")
-        print(f"  mq（动态度规）：{g['mq_mean_dynamic']:+.4f}")
-        print(f"  类时比例：{g['tl_ratio']:.1%}")
-        print(f"  约束违反：{g['violation']:.6f}")
-        print(f"  x₀均值：{g['x0_mean']:.2f}±{g['x0_std']:.2f}"
-              f"（理论值，来自 dt_info）")
+        print(f"  mq_free（自由演化）：{g['mq_free']:+.4f}  "
+              f"← Theorem 4 核心指标（不经过 project）")
+        print(f"  mq_proj（投影后）：  {g['mq_proj']:+.4f}  "
+              f"← 数学恒等式，始终=-1（参考）")
+        print(f"  mq_dynamic（动态度规）：{g['mq_dynamic']:+.4f}")
+        print(f"  类时比例（自由）：{g['tl_ratio_free']:.1%}")
+        print(f"  约束违反（自由）：{g['violation_free']:.6f}")
+        print(f"  x₀均值：{g['x0_mean']:.2f}±{g['x0_std']:.2f}")
         print(f"  分类准确率：{acc:.1%}")
 
-        theorem4_ok = g['tl_ratio'] > 0.8
-        print(f"\n  Theorem 4 涌现（无 loss_mf，类时>80%）："
+        # Theorem 4 涌现：自由演化的 mq 是否自然接近 -1
+        theorem4_ok = abs(g['mq_free'] + 1.0) < 0.5  # 允许±0.5的误差
+        print(f"\n  Theorem 4 涌现（自由 mq 接近-1，误差<0.5）："
               f"{'✅' if theorem4_ok else '❌'} "
-              f"({g['tl_ratio']:.1%})")
+              f"(mq_free={g['mq_free']:+.4f})")
 
         results.append(dict(
-            mq=g['mq_mean_fixed'],
-            tl=g['tl_ratio'],
-            viol=g['violation'],
+            mq=g['mq_free'],              # 自由演化的 mq（Theorem 4 核心）
+            tl=g['tl_ratio_free'],
+            viol=g['violation_free'],
             x0=g['x0_mean'],
             acc=acc,
             theorem4=theorem4_ok,
@@ -792,10 +812,11 @@ def run():
     t4_ok = sum(r['theorem4'] for r in results)
     print(f"\n  Theorem 4 涌现（无 loss_mf）："
           f"{t4_ok}/{len(results)} seeds")
-    print(f"  平均 mq：{np.mean([r['mq'] for r in results]):+.4f}"
-          f"（工程原型：-1.000）")
-    print(f"  平均类时：{np.mean([r['tl'] for r in results]):.1%}"
-          f"（工程原型：100%）")
+    print(f"  平均 mq_free（自由演化）：{np.mean([r['mq'] for r in results]):+.4f}"
+          f"（工程原型 mq_proj：-1.000，数学恒等式）")
+    print(f"  平均类时（自由）：{np.mean([r['tl'] for r in results]):.1%}")
+    print(f"  如果 mq_free ≈ -1：Theorem 4 自然涌现 ✅")
+    print(f"  如果 mq_free ≠ -1：project 是必要的工程补丁 ⚠️")
     print(f"  平均 x₀：{np.mean([r['x0'] for r in results]):.2f}"
           f"（来自 dt_info，工程原型：≈57）")
     print(f"  平均 acc：{np.mean([r['acc'] for r in results]):.1%}")
