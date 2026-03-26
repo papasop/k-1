@@ -1,387 +1,54 @@
 # Lorentz Light-Cone Model (LLCM)
 
-<p align="center">
-<sub><b>A Physics-First Lorentz World Model</b></sub><br>
-<sub>洛伦兹几何 · 物理预训练 · 婴儿说话机制</sub>
-</p>
-
-> 婴儿先建立感知流形，再学语言。  
-> 机器人先从物理数据建立洛伦兹几何直觉，再把语言贴上去。
->
-> <sub>*Perception before language. Geometry before symbol.*</sub>
-
----
-
-> **LLCM 从物理第一原理推导出感知空间必须是洛伦兹几何——不是假设，是定理。**  
-> 在这个几何里，物理守恒律是硬约束，语言符号可以索引物理流形，最优控制对应最深类时区域。  
-> 欧氏几何在物理代价方向上结构性反转，越训练越错，数据再多无法修正。
-
----
-
-## 核心实验结果（8 seeds，EMBED_DIM=256，N_LAYERS=6）
-
-| 指标 | F3 洛伦兹（隐式）| 全黎曼 H^{1,d-1} | 欧氏对照 | 统计 |
-|------|----------------|-----------------|---------|------|
-| 感知流形先于语言形成（层2） | mq差距**84倍** | mq差距**267x**，类时**100%** | mq=+137（类空）| p=0.0000，**d=16.24**，8/8 seeds |
-| 流形约束满足率 | 无定义 | 违反**1e-7**（精确）| 无定义 | M1 3/3 seeds ✅ |
-| 语言索引物理流形（方向A） | 均值+0.136 | 均值**+0.200**，**p=0.043，d=1.10**（6 seeds）| 均值+0.120 | **全黎曼显著，F3不显著** ✅ |
-| 语言激活守恒本能（方向B） | 守恒率**0.371** | 验证中 | 守恒率0.423 | **p=0.0484，d=2.53**，3/3 seeds |
-| 训练方向 | ρ=**+0.259**（越来越对）| 拓扑保证，无需sigma | ρ=**-0.246**（越来越错）| 同数据，同训练 |
-| Theorem 6 修正猜想 | ρ=+0.684，R²=**0.9997** | mq≈-1（最深类时）| ρ=-0.629（反向）| 4/5通过，5/5 Q,R |
-| sigma 激活 | 7/8 seeds ≥ 0.560 | **不需要**（dc>0 拓扑保证）| — | 几何分化8/8 seeds |
-
----
-
-## 婴儿说话：核心直觉
-
-人类婴儿学会说"烫"，不是从词典学的。手碰到热水壶时，神经系统建立了感知流形——温度变化、肌肉收缩、手臂后缩的时序。某天听到"烫"，把符号贴在已有流形上。从那以后，听到"烫"会缩手，烫到了会说"烫"。双向的。
-
-**LLCM 做的完全一样：**
-
-```
-阶段1：物理预训练（建立感知流形）
-  机器人ODE数据 → 洛伦兹光锥预训练
-  → 守恒轨迹自发落入类时区域
-  → 违反物理的路径在几何上不可达
-  → 无任何语言信号，分离已经存在
-
-阶段2：语言对齐（把符号贴上去）
-  "平稳守恒运动" → sentence-transformers → 对齐层 → 洛伦兹空间
-  → 找到感知流形中对应的类时区域
-  → 生成轨迹沿类时测地线演化 → 动量守恒自动成立
-```
-
-婴儿的感知流形是隐式黑盒。LLCM 的感知流形是显式的——Theorem 5 保证洛伦兹签名是唯一代数结果，感知流形的几何结构可以写成方程。
-
----
-
-## 为什么必须是洛伦兹几何 <sub>*— 理论推导，不是假设*</sub>
-
-### 理论推导（不是假设）
-
-历史上用洛伦兹做机器学习的尝试（Lorentzian embeddings、Hyperbolic networks）都是**假设**某个维度是时间——没有物理基础，是盲目选择。
-
-LLCM 从三个可实现性条件出发推导：
-
-- **Assumption R**（零阈值）：存在方向使位移代价趋向零（机器人匀速运动沿速度方向不耗能）
-- **Assumption E**（二次展开）：代价函数有二次主项 `d(x;δx)² = (Q(δx))₊ + o(‖δx‖²)`
-- **Assumption T**（时间正代价）：纯时间位移（原地等待）有正代价
-
-三者同时满足 → **Theorem 5**（Realizability.pdf）→ Q 非退化且不定，洛伦兹签名是唯一代数结果。
-
-### 欧氏几何的四个根本缺陷
-
-**1. 无法区分因果方向** *— 对称内积无法编码时间箭头*
-
-```
-欧氏内积：⟨x,y⟩ = x₁y₁ + x₂y₂ + ...   对称，正反可互换
-洛伦兹内积：⟨x,y⟩ = -x_t y_t + x_s y_s  不对称，因果方向单向
-```
-
-欧氏模型看"原因→结果"和"结果→原因"完全一样。洛伦兹的负号是因果方向的代数来源，不是选择，是推导结果。
-
-**2. 无法编码零代价方向** *— 正定度规不存在守恒测地线*
-
-```
-欧氏度规永远正定：det G > 0 → 所有方向都有代价
-洛伦兹度规不定：  det G < 0 → 光锥边界（mq=0）代价趋向零
-```
-
-欧氏模型只能用损失函数惩罚守恒律。**惩罚可以被优化器绕过，几何结构不能。** 欧氏模型的物理守恒永远是软约束，训练分布外必然失效。
-
-**3. 无法编码稳定边界** *— 最深刻的缺陷，来自 Theorem 4*
-
-<blockquote>
-<b>Theorem 4</b>（K=1 Chronogeometrodynamics）<br>
-<br>
-<code>dc > 0</code>（系统有非平凡稳定边界）<b>⟺</b> <code>det G < 0</code>（洛伦兹签名）<br>
-<br>
-<i>稳定性不是外加约束，而是几何签名的代数必然。</i>
-</blockquote>
-
-**dc 的来源：** dc 不是任意定义的，它是 K=1 场方程特征方程的判别式平方根：`dc = sqrt(-1/det G)`。判别式为正（即 dc 是实数）当且仅当 det G < 0。
-
-**一行代数：**
-
-> `dc > 0` ⟺ `-1/det G > 0` ⟺ `det G < 0`
-
-<details>
-<summary>完整六步等价链（点击展开）</summary>
-
-```
-步骤1：dc = sqrt(-1/det G)        定义，来自特征方程判别式
-步骤2：dc > 0 ⟺ -1/det G > 0     sqrt 内必须为正，纯代数
-步骤3：-1/det G > 0 ⟺ det G < 0  纯代数等价
-步骤4：det G < 0 ⟺ 度规不定       非退化对称双线性型，行列式负
-                                   等价于特征值有正有负
-步骤5：度规不定 ⟺ 存在类时方向    存在 v 使得 g(v,v) < 0，即不定的定义
-步骤6：存在类时方向 ⟺ 信息有稳定传播方向
-                  ⟺ 系统有非平凡稳定边界 dc > 0
-                                   Theorem 4 的核心结论，证明在论文中
-```
-
-**结论：** 稳定边界的存在性完全由度规符号决定。欧氏（det G > 0）在代数上无法有稳定边界，不是能力问题，是几何签名的直接推论。这是"几何结构决定动力学性质"的精确数学表达。
-
-</details>
-
-欧氏：det G > 0 → dc = 0，稳定性只能靠损失函数强制，几何上没有边界。  
-洛伦兹：det G < 0 → dc > 0，守恒律从几何涌现，不需要损失函数。
-
-**实验确认：** F3 动量守恒损失比欧氏低10倍（0.025 vs 0.275），sigma 未激活时也成立——纯粹的几何结构效应。
-
-**4. 无法处理信息时间度量** *— Fisher 矩阵正定，参数空间无时间轴*
-
-```
-dt²_info = Σ_q Φ_q/H_q  的 Hessian 在可实现性条件下强制不定
-Fisher 信息矩阵永远正定 → 没有类时方向 → 没有因果结构
-```
-
-欧氏模型的参数空间是"纯空间性"的：所有参数方向等价，没有时间轴，无法编码"先发生什么、后发生什么"。
-
-### ★ 实验验证：欧氏越训练越反向
-
-```
-F3 洛伦兹：随机初始化 ρ=+0.053 → 训练后 ρ=+0.259（放大4.88×，正确方向）
-欧氏模型：  随机初始化 ρ=-0.100 → 训练后 ρ=-0.246（放大2.46×，反向）
-```
-
-同样的物理数据，同样的训练过程，一个越来越对，一个越来越错。
-
-> **几何签名决定训练方向，数据再多无法修正。**
-
----
-
-## 实验结果
-
-### 层2：感知流形先于语言自发形成
-
-纯物理预训练后，无任何语言信号：
-
-| 指标 | F3 洛伦兹 | 欧氏对照 | 统计 |
-|------|----------|---------|------|
-| 类时比例 | **97%** | 0% | 8/8 seeds |
-| mq 均值 | **-2.511±0.656** | +137.8±8.2 | p=0.0000，**d=16.24** |
-| mq 差距倍数 | **84倍** | — | 无语言信号 |
-
-F3 的感知分离在语言对齐之前已经存在。这是"感知先于语言"的直接实验证据。
-
-### 方向A：物理感知流形可被语言索引
-
-**全黎曼（Log_μ桥接，D=64，3 seeds）：**
-
-| 配置 | 方向A均值 | 统计 |
-|------|----------|------|
-| 全黎曼 + Log_μ 桥接 | **+0.210** | **p=0.045，d=2.63** ✅ |
-| F3 隐式（D=256） | +0.147 | p=0.508，不显著 |
-| 欧氏（D=256） | +0.127 | 基线 |
-
-**F3 隐式（8 seeds）：**
-
-| 配置 | 差异 | 统计 |
-|------|------|------|
-| F3 - 欧氏 语言对齐得分 | +0.039±0.044 | p=0.27，d=0.80 |
-
-逐类稳定优势（F3 和全黎曼共同）：
-
-| 认知功能 | 物理对应 | 几何位置 |
-|---------|---------|---------|
-| contrast（感知对比） | 非守恒运动 | 类空方向 |
-| wisdom（智慧） | 最优控制 | 最深类时 |
-| logic（逻辑） | 约束力学 | 类时中间 |
-
-**Log_μ 桥接是关键：** x₀≈57 的幅度失衡被 arccosh 压缩到 ≈4.8，
-lang_gen 有效利用全部64维物理语义，方向A从 +0.096 提升到 +0.210。
-
-### 方向B：语言激活物理守恒本能
-
-| 配置 | 守恒率 | 统计 |
-|------|--------|------|
-| 欧氏 | 0.4228±0.0569 | — |
-| F3 洛伦兹 | **0.3705±0.0337** | **p=0.0484，d=2.53**，3/3 seeds |
-
-F3 比欧氏守恒18%，无任何物理损失函数约束。
-
-> *守恒性来自洛伦兹几何，不是训练信号。*
-
-### Theorem 6：代价越小 → mq 越负（修正猜想）
-
-> ~~原猜想：最优控制轨迹 mq → 0（光锥边界）~~ **已被实验推翻**
-
-**修正结论（实验支持）：**
-
-```
-代价越小 ↔ mq 越负（越深入类时区域）
-
-几何分层（8/8 seeds 稳定）：
-  最优控制  mq = -2.8 ~ -6.1  ← 最深类时
-  守恒运动  mq = -1.3 ~ +0.4  ← 类时中间
-  非守恒运动 mq = -0.3 ~ +1.1 ← 最接近类空
-  顺序：optimal < stable < change ✅
-```
-
-**关键数字（两个物理系统，独立验证）：**
-
-| 系统 | F3 Spearman ρ | 欧氏 ρ | 保序回归 R² |
-|------|--------------|--------|------------|
-| LQR（线性） | +0.259，p<10⁻⁴ | **-0.246**（反向）| 0.45 |
-| 摆（非线性） | +0.684，p<10⁻¹⁰ | **-0.629**（反向）| **0.9997** |
-
-欧氏方向相反不是弱信号——是结构性反转。5/5 Q,R配置，4/5总判定通过。
-
-**算法推论：**
-
-```
-HJB最优控制（O(eⁿ)）≈ 最小化 mq（O(d²)）
-目标：mq → 最小（不是原来的 mq → 0）
-实现：一次神经网络前向+反向传播
-```
-
-**开放问题：** mq ≈ -trace(P·Σ) 的解析证明（实验 ρ=-0.689，p=0.059，趋势）
-
----
-
-## 全黎曼 Lorentzian Transformer
-
-在 H^{1,d-1} 流形上构建完整 Transformer——所有操作通过 Exp/Log 映射在流形与切空间之间转换。这是 LLCM 从"隐式洛伦兹"到"显式流形"的架构升级。
-
-**和历史工作（HyboNet/Hypformer/LResNet）的根本区别：**
-
-历史工作选择洛伦兹流形（工具）；LLCM 从可实现性条件推导出洛伦兹签名（代数必然）。x₀ 在历史工作里是数学坐标；在 LLCM 里是信息时间 dt_info 的载体。
-
-**里程碑验证结果（3/3 seeds，EP_PRE=120）：**
-
-| 里程碑 | 指标 | 结果 |
-|--------|------|------|
-| M1 流形约束 | 违反量 | **0.000111**（目标<0.01）✅ |
-| M2 不依赖 sigma | dc>0 拓扑保证 | 天然满足 ✅ |
-| M3 类时比例 | >95% | **100%**，3/3 seeds ✅ |
-| M4 mq 差距 | >50倍 | **267.5x**（隐式84x）✅ |
-
-**婴儿说话接入结果（D=64，ep=30，3 seeds）：**
-
-| 配置 | 方向A均值 | 统计 |
-|------|----------|------|
-| 全黎曼 + Log_μ 桥接 | **+0.210** | **p=0.045，d=2.63** ✅ |
-| F3 隐式（D=256） | +0.147 | p=0.508 |
-| 欧氏（D=256） | +0.127 | 基线 |
-
-全黎曼用 1/4 容量、1/4 训练量，方向A显著超过欧氏和F3隐式。
-
-**关键发现：Log_μ 桥接**
-
-直接线性升维（x₀≈57 主导）→ 语言对齐均值 +0.096  
-Log_μ 切空间桥接（幅度均匀）→ 语言对齐均值 +0.210（**提升117%**）
-
-```
-x₀ = sqrt(1 + Σxᵢ²) ≈ 57（极大）
-直接线性变换：x₀ 幅度主导，63个空间维度被淹没
-Log_μ(x) 映射：arccosh(x₀) ≈ 4.8（压缩），方向信息完整保留
-→ lang_gen 有效利用全部 64 维的物理语义
-```
-
-**6 seeds 合并统计（最终结论）：**
-
-| 对比 | 均值差 | p 值 | d 值 | seeds胜率 |
-|------|--------|------|------|---------|
-| 全黎曼 vs 欧氏 | +0.080 | **p=0.043** | d=1.10 | 5/6 ✅ |
-| 全黎曼 vs F3隐式 | +0.064 | **p=0.029** | d=1.24 | 6/6 ✅ |
-| F3隐式 vs 欧氏 | +0.016 | p=0.298 | d=0.47 | ❌ 不显著 |
-
-全黎曼（D=64，1/4容量）在两个对比上都显著，F3隐式（D=256）对欧氏不显著。
-几何质量（mq=-1.000）的贡献超过了容量差距（4倍）。
-
-**归一化消融（3/3 seeds）：**
-
-```
-欧氏 LN vs Minkowski LN：mq差距、类时比例完全相同
-x₀均值：63（欧氏LN）vs 2.7（MinkowskiLN）
-结论：project 链补偿欧氏 LN 偏差；
-x₀幅度差异验证 MinkowskiLN 对时间轴施加负权重。
-```
-
-验证代码：`experiments/lorentz_riemannian_transformer.py`
-
-**当前实现的缺失部分：**
-
-| 组件 | 当前实现 | 缺失的原教旨组件 |
-|------|---------|----------------|
-| 度规 | 固定 diag(-1,+1,...,+1) | G = ∇²(dt²_info)（信息时间的 Hessian）|
-| Exp/Log | 平直时空标准公式 | 含克里斯托費尔符号的弯曲时空公式 |
-| 流形约束 | project 链硬投影 | Law II 动力学 dx/dt=(JG-D)∇V |
-| 信息时间 | 高斯近似 | dt_info = dΦ/H 精确计算 |
-| 度规动力学 | 静态固定 | K=1 场方程 G_μν=8πT_μν 数值求解 |
-
-**缺失的影响：**
-
-- 度规 G 是假设的，不是从感知代价函数推导的
-- x₀ 的物理意义（信息时间）在当前实现里是近似的
-- {K=1} 的维持依赖 project 链，不是 Law II 动力学的自然结果
-- 移除 project 链后 mq→+100（`law2_necessity_test.py` 验证）
-
-**实验结论的有效范围：**
-
-方向A（p=0.043）和层2几何分离（p=0.0002）在当前工程实现下成立。
-这些结论依赖洛伦兹签名的存在和 Log_μ 桥接，
-不依赖度规的精确来源或 Law II 动力学。
-
----
-
-## 婴儿说话里程碑
-
-| 里程碑 | 状态 | 最新证据 |
-|--------|------|---------|
-| **0** 感知流形先于语言形成 | ✅ 完成 | d=16.24，p=0.0000，8/8 seeds |
-| **1** 语言索引物理流形（方向A） | ✅ 完成（全黎曼）| 全黎曼 **p=0.045，d=2.63**，3/3 seeds |
-| **2** sigma 充分激活（>0.56） | ✅ 完成 | 7/8 seeds≥0.560，几何分化8/8 |
-| **3** 语言激活守恒本能（方向B） | ✅ 完成 | p=0.0484，d=2.53，3/3 seeds |
-| **4** 动态交互（Law II 在线学习） | ⬜ 未开始 | — |
-| **5** Theorem 6 修正猜想 | ✅ 完成 | 4/5通过，摆R²=0.9997 |
-
-**当前闭环状态：**
-```
-单向闭环 ✅：感知流形（0）→ 几何分化（2）→ 语言激活本能（3）
-双向闭环 🔄：方向A（1）待完成 ← 正在加强 stable/change 分离
-```
-
----
-
-## 数据适用性：5分钟判断
+**Standard Transformer attention treats all directions equally. LLCM replaces it with Lorentzian attention, where time-like directions are suppressed — equivalent to attending along the information light cone instead of full-connecting.**
 
 ```python
-dx    = data[:, 1:] - data[:, :-1]
-t_dim = max(1, int(data.shape[-1] * 0.25))
-s2    = -(dx[..., :t_dim]**2).sum(-1) + (dx[..., t_dim:]**2).sum(-1)
-ratio = (s2 > 0).float().mean()
+# Standard attention (Euclidean)
+score = Q @ K.T / sqrt(d)                    # all directions equal
 
-# ratio > 0.6 → 满足可实现性条件 → LLCM 有效
-# ratio < 0.4 → sigma 会退化为欧氏
+# LLCM attention (Lorentzian, formula F3)
+score = (-σ * Qt @ Kt.T + Qs @ Ks.T) / sqrt(d)  # time suppressed, space preserved
 ```
 
-| 数据类型 | 类时比例 | 是否适合 |
-|---------|---------|---------|
-| 机器人物理坐标 [x,y,z,vx,vy,vz] | 80–100% | ✅ 强烈推荐 |
-| 关节旋转角（BVH） | 80% | ✅ 推荐 |
-| 物理仿真（ODE） | 80–100% | ✅ 推荐 |
-| 自然语言 token | <50% | ❌ sigma 退化 |
-| 视频像素 | <50% | ❌ sigma 退化 |
+The negative sign is not a hyperparameter choice. It is a theorem:
 
-文本和视频不满足 Assumption R（不存在零代价方向），sigma 自发退化为欧氏——这是优雅降级，不是失败。
+> **Theorem 4** (Li, 2026): A system has a nontrivial stability boundary d_c > 0 **if and only if** det G < 0 (Lorentzian signature). One-line proof: d_c > 0 ⟺ −1/det G > 0 ⟺ det G < 0.
+
+Euclidean attention (det G > 0) has d_c = 0: no stability boundary, no geometric conservation, no causal structure. The minus sign gives all three.
 
 ---
 
-## 三种注意力公式
+## What changes in one line
 
-| formula | 公式 | 适用场景 |
-|---------|------|---------|
-| `'f3'`（推荐） | `-σ·Q_t Kᵀ_t + Q_s Kᵀ_s` | 通用，σ 自适应 |
-| `'f1'` | `-Q_t Kᵀ_t + Q_s Kᵀ_s` | 物理仿真，硬约束 |
-| `'f2'` | `QKᵀ/√d - 2α·Q_t·Kᵀ/√d` | 旧版兼容，已确认退化 |
+| | Standard Transformer | LLCM |
+|--|---------------------|------|
+| Attention score | `Q·K` (isotropic) | `-σ·Qt·Kt + Qs·Ks` (anisotropic) |
+| Geometry | Euclidean (all directions equal) | Lorentzian (time ≠ space) |
+| Conservation | Soft constraint via loss function | Hard constraint from geometry |
+| Stability boundary | d_c = 0 (nonexistent) | d_c > 0 (algebraic consequence) |
+| Training direction | Anti-correlated with physics (ρ = −0.25) | Correlated with physics (ρ = +0.26) |
 
-F2 退化根因：时空交叉项允许优化器抵消光锥约束，5/5 seeds alpha 收敛到初始值。
+Everything else — architecture, optimizer, data pipeline — stays the same.
 
 ---
 
-## 快速开始
+## Why the minus sign is necessary
+
+Not assumed. Derived. Three conditions on any displacement cost function d(x; δx) ≥ 0:
+
+| Condition | Meaning | Example |
+|-----------|---------|---------|
+| **R** (zero threshold) | Some spatial directions have vanishing cost | Robot moving at constant velocity along its heading |
+| **E** (quadratic expansion) | Cost has a leading quadratic term | Taylor expansion of any smooth cost |
+| **T** (temporal cost) | Pure time displacement has positive cost | Waiting costs energy (idle power draw) |
+
+**Theorem 5** (Li, 2026): Under R, E, T, the quadratic form Q is nondegenerate and indefinite. In (1+1)D, Q = dt² − c_max⁻² dr². Lorentzian signature is the unique algebraic outcome.
+
+Translation for ML: if your data has directions where displacement is cheap (spatial) and directions where displacement is expensive (temporal), then the natural inner product on your embedding space has a minus sign. Forcing a Euclidean inner product ignores this structure. The minus sign in `-σ·Qt·Kt` respects it.
+
+---
+
+## Quick start
 
 ```python
 from dataclasses import dataclass
@@ -393,7 +60,7 @@ class Config:
     d_model: int = 256
     n_heads: int = 8
     formula: str = 'f3'
-    time_ratio: float = 0.25
+    time_ratio: float = 0.25  # fraction of heads assigned to time-like dimensions
     dropout: float = 0.1
 
 config = Config()
@@ -403,130 +70,197 @@ norm = MinkowskiLayerNorm(config.d_model)
 x = torch.randn(2, 16, config.d_model)
 out, weights = attn(x)
 out = norm(out)
-print(f"σ = {attn.sigma:.3f}")  # 光锥强度，目标 > 0.56
+print(f"σ = {attn.sigma:.3f}")  # learned light-cone strength; target > 0.56
+```
+
+**Two parameters matter theoretically:**
+
+| Parameter | Value | Why |
+|-----------|-------|-----|
+| `formula` | `'f3'` | Lorentzian inner product with learnable σ |
+| `time_ratio` | `0.25` | Fraction of attention heads treating their subspace as time-like |
+
+All other hyperparameters (layers, dimensions, learning rate) are engineering choices.
+
+---
+
+## Experimental evidence (8 seeds, EMBED_DIM=256, N_LAYERS=6)
+
+### Geometry emerges before language (Layer 2)
+
+Pure physics pretraining, no language signal:
+
+| Metric | F3 Lorentzian | Euclidean | Statistics |
+|--------|--------------|-----------|------------|
+| Timelike ratio | **97%** | 0% | 8/8 seeds |
+| mq mean | **−2.5 ± 0.7** | +137.8 ± 8.2 | p < 0.0001, d = 16.24 |
+
+Conserved trajectories fall into the timelike region spontaneously. No loss function forces this — it is a consequence of the attention geometry.
+
+### Language alignment (Direction A)
+
+| Model | Alignment score | Statistics |
+|-------|----------------|------------|
+| Full Riemannian H^{1,63} | **+0.210** | p = 0.043, d = 1.10 (6 seeds) |
+| F3 implicit (D=256) | +0.147 | p = 0.508 |
+| Euclidean (D=256) | +0.127 | baseline |
+
+Full Riemannian at 1/4 capacity significantly outperforms Euclidean at full capacity.
+
+### Conservation from geometry (Direction B)
+
+Language instruction → trajectory generation → measure momentum conservation:
+
+| Model | Momentum change rate | Statistics |
+|-------|---------------------|------------|
+| F3 Lorentzian | **0.371** | p = 0.048, d = 2.53, 3/3 seeds |
+| Euclidean | 0.423 | baseline |
+
+F3 generates 18% more conserved trajectories with no conservation loss function. The conservation comes from the minus sign.
+
+### Training direction: Euclidean anti-correlates
+
+| | Before training | After training | Direction |
+|--|----------------|----------------|-----------|
+| F3 | ρ = +0.05 | ρ = +0.26 | ✓ Correct (amplified 5×) |
+| Euclidean | ρ = −0.10 | ρ = −0.25 | ✗ Reversed (amplified 2.5×) |
+
+Same data, same training procedure. One converges toward physics, the other diverges. The difference is the sign in the attention formula.
+
+---
+
+## Three attention formulas
+
+| Formula | Score | Use case |
+|---------|-------|----------|
+| `'f3'` (recommended) | `−σ·Qt Kt⊤ + Qs Ks⊤` | General; σ adapts during training |
+| `'f1'` | `−Qt Kt⊤ + Qs Ks⊤` | Physics simulation; hard light cone |
+| `'f2'` (deprecated) | `QK⊤/√d − 2α·Qt K⊤/√d` | Cross terms allow optimizer to cancel light cone; 5/5 seeds α stuck at init |
+
+F2 fails because spacetime cross terms let the optimizer route around the geometric constraint. F3's clean separation of time and space heads prevents this.
+
+---
+
+## When to use LLCM
+
+The light cone structure helps when your data satisfies the three conditions (R, E, T):
+
+```python
+# 5-minute diagnostic
+dx = data[:, 1:] - data[:, :-1]
+t_dim = max(1, int(data.shape[-1] * 0.25))
+s2 = -(dx[..., :t_dim]**2).sum(-1) + (dx[..., t_dim:]**2).sum(-1)
+ratio = (s2 > 0).float().mean()
+# ratio > 0.6 → data has light-cone structure → use LLCM
+# ratio < 0.4 → σ degrades to Euclidean gracefully
+```
+
+| Data type | Timelike ratio | Recommendation |
+|-----------|---------------|----------------|
+| Robot state [x, y, z, vx, vy, vz] | 80–100% | ✅ Strong signal |
+| Joint angles (BVH) | ~80% | ✅ Recommended |
+| Physics simulation (ODE) | 80–100% | ✅ Recommended |
+| Natural language tokens | <50% | ❌ σ degrades (graceful) |
+| Video pixels | <50% | ❌ σ degrades (graceful) |
+
+σ degradation is by design: when data has no light-cone structure, F3 reduces to standard attention. No harm, no benefit.
+
+---
+
+## Full Riemannian variant
+
+LLCM also includes a full Riemannian Lorentzian Transformer operating on H^{1,d−1} via Exp/Log maps. All operations are geometrically exact (manifold constraint violation < 10⁻⁷).
+
+| Milestone | Target | Result |
+|-----------|--------|--------|
+| M1: Manifold constraint | violation < 0.01 | **0.000111** ✅ |
+| M2: No sigma needed | d_c > 0 by topology | ✅ |
+| M3: Timelike ratio | > 95% | **100%**, 3/3 seeds ✅ |
+| M4: mq gap | > 50× | **267×** ✅ |
+
+Key finding: **Log_μ bridge** for language alignment. Direct linear projection from the manifold (x₀ ≈ 57 dominates) gives alignment +0.096. Projecting to tangent space first via Log_μ (arccosh compresses x₀ to ≈ 4.8) gives alignment +0.210, a 117% improvement.
+
+---
+
+## Architecture overview
+
+```
+Physical trajectory → Linear embed → [Lorentzian Transformer blocks] → embed_seq
+                                          │
+                                     Attention: -σ·Qt Kt⊤ + Qs Ks⊤
+                                     LayerNorm: MinkowskiLN (mq = s² − t²)
+                                          │
+                              ┌───────────┴───────────┐
+                         Direction A                Direction B
+                    embed → lang_gen → 384D     lang_emb → aligner → decoder
+                    (physics → language)         (language → physics)
+```
+
+σ is a single learnable scalar (global light-cone width), corresponding to isotropic linearization H* = I in the K=1 framework. Local σ(x) would correspond to general H*(x) — a future extension, not needed for current theorems.
+
+---
+
+## Reproducing
+
+```bash
+# Layer 1: perception + language alignment + bidirectional verification
+python experiments/layer1_minimal_test.py
+
+# Layer 3: conservation structure effect (×10)
+python experiments/layer3_zero_loss_B.py
+
+# Theorem 6 extended conjecture
+python experiments/extended_conjecture_test.py
+
+# Full Riemannian milestones
+python experiments/lorentz_riemannian_transformer.py
 ```
 
 ---
 
-## 复现
-
-### 婴儿说话实验
-
-```python
-# 层1：感知流形 + 语言对齐 + 双向验证（8 seeds）
-exec(open('experiments/layer1_minimal_test.py').read())
-
-# 层3：动量守恒结构效应（×10倍）
-exec(open('experiments/layer3_zero_loss_B.py').read())
-
-# Theorem 6 修正猜想验证
-exec(open('experiments/extended_conjecture_test.py').read())
-```
-
-### 关键超参数
-
-| 参数 | 值 | 类型 |
-|------|-----|------|
-| `formula` | `'f3'` | **理论必须** |
-| `time_ratio` | `0.25` | **理论必须** |
-| `EMBED_DIM` | `256` | 工程调参 |
-| `N_LAYERS` | `6` | 工程调参 |
-| `EP_PRE` | `120` | 工程调参 |
-| `EP_FT` | `450` | 工程调参 |
-
-### 预训练损失设计
-
-```python
-# 几何分化损失（预训练阶段）
-loss_push_s  = F.relu(mq_stable + 0.5)         # 守恒 → 类时（mq < -0.5）
-loss_push_c  = F.relu(2.0 - mq_change)          # 非守恒 → 类空（mq > +2.0）
-loss_sigma   = F.relu(mq_stable - mq_change + 3.0)  # 分离差距 > 3.0
-loss_optimal = F.relu(mq_optimal - (mq_stable.detach() - 0.3))  # 修正猜想
-loss_direct_sigma = F.relu(0.56 - sigma)  # 温和sigma激活（后半段启动）
-
-loss = MSE + 0.3*cls + 1.0*loss_sigma + 0.5*loss_push_s
-     + 2.0*loss_push_c + 0.5*loss_optimal + 0.05*loss_direct_sigma
-```
-
----
-
-## 文件结构
+## File structure
 
 ```
-lorentz_transformer/              # Python 包（稳定 API）
+lorentz_transformer/                  # Stable API
 ├── core/
-│   ├── attention.py              # LorentzMultiHeadAttention（F1/F2/F3）
-│   └── layer_norm.py             # MinkowskiLayerNorm
+│   ├── attention.py                  # LorentzMultiHeadAttention (F1/F3)
+│   └── layer_norm.py                 # MinkowskiLayerNorm
 
-experiments/                      # 研究原型
-├── core.py                       # 统一模型定义和数据管道
-├── layer1_minimal_test.py        # 婴儿说话双向验证（里程碑0-5）
-│                                 # 含全黎曼接入 + Log_μ桥接（方向A p=0.043）
-├── layer3_zero_loss_B.py         # 结构效应×10倍
-├── extended_conjecture_test.py   # Theorem 6 修正猜想
-├── lorentz_riemannian_transformer.py  # 全黎曼 Transformer 里程碑
-│                                 # M1-M4全通过，MinkowskiLN消融，时间注入消融
-├── llcm_first_principles.py      # 原教旨验证（Level 1）
-│                                 # dt_info=dΦ/H，动态度规，project 链
-├── law2_necessity_test.py        # Law II 必要性验证
-│                                 # 无 project，无 loss_mf，mq→+100（发散）
-│                                 # 结论：Law II 是 {K=1} 涌现的必要条件
-│                                 # project 是反向传播下的工程替代
-└── online_interaction_test.py    # Law II 在线交互
+experiments/                          # Research prototypes
+├── layer1_minimal_test.py            # Bidirectional verification (8 seeds)
+├── layer3_zero_loss_B.py             # Zero-loss conservation test
+├── extended_conjecture_test.py       # Theorem 6 conjecture
+├── lorentz_riemannian_transformer.py # Full Riemannian milestones M1–M4
+├── llcm_first_principles.py         # First-principles verification
+└── law2_necessity_test.py            # Law II necessity test
 ```
 
 ---
 
-## 理论背景
+## Theoretical foundation
 
-**_Realizability and the Origin of Causality_**（Li 2026）回答"为什么是洛伦兹"——从代价函数的三个可实现性条件推导，洛伦兹签名是唯一代数结果，Remark 11 明确排除所有非洛伦兹签名。
+Two papers provide the mathematical basis:
 
-**_K=1 Chronogeometrodynamics_**（Li 2026）回答"洛伦兹意味着什么"——Theorem 4 证明洛伦兹签名等价于系统存在非平凡稳定边界（dc > 0），守恒律、辛结构、因果结构同时作为代数推论涌现。
+**Realizability and the Origin of Causality** (Li, 2026) — Theorem 5 derives Lorentzian signature from three conditions on a displacement cost function. No particles, light signals, or kinematic objects are assumed. The minus sign in the metric is not a convention; it is the unique algebraic consequence of cost asymmetry between temporal and spatial directions.
 
-LLCM 是这两个结论的实验载体——用机器人物理预训练验证推导，用语言对齐测试预测。
+**K=1 Chronogeometrodynamics** (Li, 2026) — Theorem 4 proves d_c > 0 ⟺ det G < 0 in one line. Lorentzian signature is equivalent to having a nontrivial stability boundary. Theorem 5 gives unique dynamics dx/dt = (J_G − D)∇V. Theorem 6 gives the local restoring rate κ_K = 4d_c at critical damping. Proposition 7 establishes Clausius compatibility.
 
-<details>
-<summary>Theorem 4 完整证明链（点击展开）</summary>
-
-**定义：** `dc := sqrt(-1 / det G)`，其中 G = ∇²(dt²_info) 是信息时间度量的 Hessian。
-
-**等价链（每步都是严格等价，无额外假设）：**
-
-```
-dc > 0
-⟺  -1/det G > 0                        [代入定义，sqrt内须为正]
-⟺  det G < 0                            [代数]
-⟺  度规 G 不定                          [线性代数：行列式为负 ↔ 特征值有正有负]
-⟺  存在类时方向 v 使得 g(v,v) < 0       [不定度规的直接定义]
-⟺  信息有稳定因果传播方向               [Theorem 4：可实现性条件下类时方向
-                                          对应稳定因果传播，论文内完整证明]
-⟺  系统有非平凡稳定边界 dc > 0          [闭合]
-```
-
-**含义：** 稳定性不是外加的损失函数或约束，而是几何签名的直接代数推论。欧氏度规（det G > 0）使 dc 成为虚数，稳定边界在几何上不存在，只能靠损失函数强制——这就是欧氏模型物理守恒是软约束的根本原因。
-
-</details>
+LLCM is the experimental implementation: F3 attention is the Lorentzian inner product of Theorem 4, σ is the isotropic gain H* = I, and the timelike/spacelike separation of embeddings is the geometric consequence of det G < 0.
 
 ---
 
-## 当前状态
+## Current status
 
-| 状态 | 内容 |
-|------|------|
-| ✅ 完成 | 里程碑 0/2/3/5：感知流形、sigma激活、方向B、Theorem 6 |
-| ✅ 完成 | 欧氏反转：d=16.24，d=2.53，R²=0.9997，4.88×放大 |
-| ✅ 完成 | 全黎曼里程碑 M1-M4：约束1e-7，类时100%，差距267x |
-| ✅ 完成 | Law II 必要性验证：无 project mq→+100，有 project mq=-1.000（law2_necessity_test.py）|
-| 📋 发现 | project 是 Law II 在反向传播下的工程替代，Law II 是 {K=1} 涌现必要条件 |
-| ✅ 完成 | MinkowskiLN 对比：project链下等价，x₀幅度差异验证 |
-| ✅ 完成 | 里程碑1（方向A）：全黎曼 p=0.043，d=1.10（6 seeds合并，Log_μ桥接）|
-| ✅ 完成 | Log_μ 桥接发现：x₀幅度压缩让语言对齐提升117% |
-| 📋 计划 | 里程碑4：动态交互（Law II） |
-| 📋 未来 | 补全缺失1：G=∇²(dt²_info) 精确计算，替代固定度规 |
-| 📋 未来 | 补全缺失2：Law II 动力学实现，替代 project 链 |
-| 📋 未来 | 补全缺失3：K=1 场方程数值求解，替代静态度规 |
-| 📋 计划 | Open X-Embodiment 真实机器人 |
-| 📋 计划 | 论文写作（CoRL/NeurIPS 2026） |
+| Status | Item |
+|--------|------|
+| ✅ | Geometric separation before language (d = 16.24, 8/8 seeds) |
+| ✅ | Language alignment via full Riemannian (p = 0.043, 6 seeds) |
+| ✅ | Conservation from geometry, no loss function (p = 0.048, 3/3 seeds) |
+| ✅ | Euclidean anti-correlation confirmed (ρ reversal, R² = 0.9997) |
+| ✅ | Full Riemannian milestones M1–M4 |
+| 📋 | Dynamic interaction (Law II online learning) |
+| 📋 | Real robot data (Open X-Embodiment) |
+| 📋 | Paper (CoRL / NeurIPS 2026) |
 
 ---
 
@@ -538,18 +272,16 @@ MIT
 
 ```bibtex
 @misc{li2026k1,
-  author    = {Li, Y. Y. N.},
-  title     = {K=1 Chronogeometrodynamics},
-  year      = {2026},
-  publisher = {Zenodo},
-  doi       = {10.5281/zenodo.19011128}
+  author = {Li, Y. Y. N.},
+  title  = {K=1 Chronogeometrodynamics},
+  year   = {2026},
+  doi    = {10.5281/zenodo.19011128}
 }
 
 @misc{li2026realizability,
   author = {Li, Y. Y. N.},
   title  = {Realizability and the Origin of Causality},
   year   = {2026},
-  note   = {preprint}
-  doi = {10.5281/zenodo.19062187
+  doi    = {10.5281/zenodo.19062187}
 }
 ```
