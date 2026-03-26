@@ -550,5 +550,6 @@ MIT
   title  = {Realizability and the Origin of Causality},
   year   = {2026},
   note   = {preprint}
+  doi = {10.5281/zenodo.19062187
 }
 ```
