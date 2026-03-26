@@ -24,7 +24,7 @@
 \newtheorem{theorem}{Theorem}
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{definition}[theorem]{Definition}
-\newtheorem*{remark}{Remark}
+\newtheorem{remark}[theorem]{Remark}
 
 \title{\textbf{Realizability and the Origin of Causality}}
 \author{Y.\,Y.\,N.\ Li}
@@ -81,7 +81,7 @@ The precise setup, statements, and proofs are given in Sections~2--4.
 \section{Setup}
 
 Work in an open $U\subset\mathbb{R}^{2}$ with chart $(t,r)$, and fix $x\in U$. For small $\delta x=(\delta t,\delta r)$ with $\delta t>0$, let
-$d(x;\delta x)\ge 0$ be a displacement cost at~$x$. The norm $\|\cdot\|$ denotes any norm on~$\mathbb{R}^{2}$; all conclusions
+$d(x;\delta x)\ge 0$ be a displacement cost at~$x$. The norm $\|\cdot \|$ denotes any norm on~$\mathbb{R}^{2}$; all conclusions
 are independent of the choice. The chart variables $t$ and~$r$ are a distinguished direction (carrying
 positive cost, Assumption~T) and its complement; no metric or causal structure on~$U$ is assumed
 at this stage.
@@ -98,7 +98,7 @@ and there exists a subsequence $v_{n_{k}}\to v=(v_{t},v_{r})$ with $v_{t}>0$ and
 Assumption~E formalises the leading-order structure of the cost function within which Assumption~R operates.
 
 \begin{definition}[E --- Quadratic expansion]
-There is a quadratic form $Q(\delta t,\delta r)=a\,\delta t^{2}+2\kappa\,\delta t\,\delta r+b\,\delta r^{2}$ such that
+There is a quadratic form $Q(dt,dr)=a\,dt^{2}+2\kappa\,dt\,dr+b\,dr^{2}$ such that
 \[
 d(x;\delta x)^{2} = \bigl(Q(\delta x)\bigr)_{+} + o\!\left(\|\delta x\|^{2}\right) \quad\text{as } \delta x\to 0 \text{ with } \delta t>0,
 \]
@@ -123,9 +123,9 @@ $Q(v)\le 0$ and $\delta x_{n}\to 0$ with $\delta x_{n}/\|\delta x_{n}\|\to v$, t
 \end{lemma}
 
 \begin{proof}
-\textit{Forward:} By~E, $(d/\|\delta x_{n_{k}}\|)^{2}=(Q(v_{n_{k}}))_{+}+o(1)\to 0$, so $(Q(v))_{+}=0$.
+\textit{Forward:} by~E, $(d/\|\delta x_{n_{k}}\|)^{2}=(Q(v_{n_{k}}))_{+}+o(1)\to 0$, so $(Q(v))_{+}=0$.
 
-\textit{Converse:} Let $v_{n}:=\delta x_{n}/\|\delta x_{n}\|$, so $v_{n}\to v$. Since $Q$ is continuous and $Q(v)\le 0$, we have
+\textit{Converse:} let $v_{n}:=\delta x_{n}/\|\delta x_{n}\|$, so $v_{n}\to v$. Since $Q$ is continuous and $Q(v)\le 0$, we have
 $(Q(v_{n}))_{+}\to 0$. By homogeneity of~$Q$,
 \[
 \bigl(Q(\delta x_{n})\bigr)_{+} = \|\delta x_{n}\|^{2}\bigl(Q(v_{n})\bigr)_{+} = o\!\left(\|\delta x_{n}\|^{2}\right).
@@ -154,7 +154,7 @@ contradicting~T. Hence $Q(1,0)>0$.
 \textbf{Step~3 (Null vector by IVT).}
 Define
 \[
-\gamma(s):=\frac{(1-s)(1,0)+s\,v}{\|(1-s)(1,0)+s\,v\|}, \qquad s\in[0,1].
+\gamma(s):=\frac{(1-s)(1,0)+sv}{\|(1-s)(1,0)+sv\|}, \qquad s\in[0,1].
 \]
 Since $v_{r}\neq 0$ (Assumption~R), the denominator is nonzero for all $s\in[0,1]$, so $\gamma$ is well-defined.
 Since $v_{t}>0$, the numerator has strictly positive $t$-component throughout, so $\gamma$ is a continuous
@@ -162,10 +162,7 @@ path in $S^{1}\cap\{u_{t}>0\}$. Then $Q(\gamma(0))=Q(1,0)>0$ and $Q(\gamma(1))=Q
 intermediate value theorem there exists~$s^{*}$ with $Q(\gamma(s^{*}))=0$. Set $w:=\gamma(s^{*})$; then $w_{t}>0$ and $w\neq(1,0)$, so $w_{r}\neq 0$.
 
 \textbf{Step~4 (Nondegeneracy).}
-Suppose $Q$ is degenerate, i.e.\
-\[
-\det\begin{pmatrix}a & \kappa \\ \kappa & b\end{pmatrix} = ab-\kappa^{2}=0,
-\]
+Suppose $Q$ is degenerate, i.e.\ $\det \bigl(\begin{smallmatrix}a & \kappa \\ \kappa & b\end{smallmatrix}\bigr) = ab-\kappa^{2}=0$,
 $Q\not\equiv 0$. Since $a=Q(1,0)>0$ (Step~2), the substitution $r'=r+(\kappa/a)t$ eliminates the cross
 term: $Q=a\,dt^{2}+b'\,dr'^{2}$ with $ab'=0$, hence $b'=0$. Then $Q=a\,dt^{2}$ and $Q(w)=0$ forces
 $w_{t}=0$, contradicting $w_{t}>0$ (Step~3).
