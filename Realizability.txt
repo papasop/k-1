@@ -81,7 +81,7 @@ The precise setup, statements, and proofs are given in Sections~2--4.
 \section{Setup}
 
 Work in an open $U\subset\mathbb{R}^{2}$ with chart $(t,r)$, and fix $x\in U$. For small $\delta x=(\delta t,\delta r)$ with $\delta t>0$, let
-$d(x;\delta x)\ge 0$ be a displacement cost at~$x$. The norm $\|\cdot \|$ denotes any norm on~$\mathbb{R}^{2}$; all conclusions
+$d(x;\delta x)\ge 0$ be a displacement cost at~$x$. The norm $\| \cdot \|$ denotes any norm on~$\mathbb{R}^{2}$; all conclusions
 are independent of the choice. The chart variables $t$ and~$r$ are a distinguished direction (carrying
 positive cost, Assumption~T) and its complement; no metric or causal structure on~$U$ is assumed
 at this stage.
@@ -128,7 +128,7 @@ $Q(v)\le 0$ and $\delta x_{n}\to 0$ with $\delta x_{n}/\|\delta x_{n}\|\to v$, t
 \textit{Converse:} let $v_{n}:=\delta x_{n}/\|\delta x_{n}\|$, so $v_{n}\to v$. Since $Q$ is continuous and $Q(v)\le 0$, we have
 $(Q(v_{n}))_{+}\to 0$. By homogeneity of~$Q$,
 \[
-\bigl(Q(\delta x_{n})\bigr)_{+} = \|\delta x_{n}\|^{2}\bigl(Q(v_{n})\bigr)_{+} = o\!\left(\|\delta x_{n}\|^{2}\right).
+(Q(\delta x_{n}))_{+} = \|\delta x_{n}\|^{2}(Q(v_{n}))_{+} = o(\|\delta x_{n}\|^{2}).
 \]
 Hence Assumption~E gives $d(x;\delta x_{n})^{2}=o(\|\delta x_{n}\|^{2})$, so $d(x;\delta x_{n})/\|\delta x_{n}\|\to 0$.
 \end{proof}
@@ -162,7 +162,7 @@ path in $S^{1}\cap\{u_{t}>0\}$. Then $Q(\gamma(0))=Q(1,0)>0$ and $Q(\gamma(1))=Q
 intermediate value theorem there exists~$s^{*}$ with $Q(\gamma(s^{*}))=0$. Set $w:=\gamma(s^{*})$; then $w_{t}>0$ and $w\neq(1,0)$, so $w_{r}\neq 0$.
 
 \textbf{Step~4 (Nondegeneracy).}
-Suppose $Q$ is degenerate, i.e.\ $\det \bigl(\begin{smallmatrix}a & \kappa \\ \kappa & b\end{smallmatrix}\bigr) = ab-\kappa^{2}=0$,
+Suppose $Q$ is degenerate, i.e.\ $\det \begin{pmatrix}a & \kappa \\ \kappa & b\end{pmatrix} = ab-\kappa^{2}=0$,
 $Q\not\equiv 0$. Since $a=Q(1,0)>0$ (Step~2), the substitution $r'=r+(\kappa/a)t$ eliminates the cross
 term: $Q=a\,dt^{2}+b'\,dr'^{2}$ with $ab'=0$, hence $b'=0$. Then $Q=a\,dt^{2}$ and $Q(w)=0$ forces
 $w_{t}=0$, contradicting $w_{t}>0$ (Step~3).
