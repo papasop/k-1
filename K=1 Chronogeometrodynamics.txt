@@ -1,0 +1,288 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage{mathpazo}
+\usepackage[T1]{fontenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue}
+\usepackage{titlesec}
+\titleformat{\section}{\normalfont\large\scshape}{\thesection .}{0.5em}{}
+\titleformat{\subsection}[runin]{\normalfont\bfseries\itshape}{}{0em}{}[.]
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\title{\textbf{$K=1$ Chronogeometrodynamics}\\[4pt]\large Lorentzian Geometry from Information Time}
+\author{Y.\,Y.\,N.\ Li}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+From Newton's absolute time through proper time in general relativity, time enters physical theory as a primitive. Here it is derived from the cost of structural change. The information time $dt_{\mathrm{info}}=d\Phi/H$ and its Hessian $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$ provide the metric. Combined with the realizability condition (positive temporal cost and zero-threshold spatial directions), this redefinition forces $G$ indefinite, making Lorentzian signature, symplectic structure, and a nontrivial stability boundary $d_{c}>0$ simultaneous algebraic consequences rather than independent assumptions (Theorem~4). The evolution law $\dot{x}=(J_{G}-D)\nabla V$ is the unique dynamics compatible with $GJ_{G}$ skew-symmetric (Theorem~5), and at critical damping the local effective restoring rate is $\kappa_{K}=4d_{c}$ at a normalised $G$-eigenvector base point (Theorem~6).
+
+Under the local thermal-equilibrium approximation, the Clausius relation is compatible with the noise-temperature matching condition $\sigma^{2}=2d_{c}\cdot T_{\mathrm{tol}}$ (Proposition~7). The It\^{o} correction to the $K$-dynamics shifts only the mean of the stationary distribution, leaving $\mathrm{Var}(K)=\sigma^{2}/(2d_{c})$ exact for any Lorentzian $G$. The $\{K=1\}$ manifold carries two geometrically distinct classes of fluctuation: thermodynamic fluctuations of $K$ perpendicular to $\{K=1\}$ (Class~A) and free diffusion in the boost direction (Class~B, a gauge degree of freedom). Within Class~A, given the Boltzmann stationary distribution, the Clausius relation $\delta Q=T_{\mathrm{eff}}\,\delta S$ follows algebraically from the stochastic Law~II; the local noise temperature has the structure of Tolman's law.
+
+The present framework is consistent with the Jacobson derivation of the Einstein equations~\cite{Jacobson} in the following limited sense: under the local-equilibrium approximation and the identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, the Clausius relation holds algebraically within the $2\times 2$ Ornstein--Uhlenbeck description. The extension to $(1+3)$-dimensional spacetime and the full Jacobson argument requires additional steps not contained here. The identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ is the sole external input; Gromov non-squeezing cannot replace it.
+\end{abstract}
+
+\section{The feedback loop}
+
+Consider a closed-loop system with scalar gain $K$. The operating point $K=1$ is where the loop is critically tuned: below unity the system underperforms; above unity it is unstable. We ask what geometric and dynamical structures are forced by the condition $K=1$ alone.
+
+Riemann's 1854 lecture posed the origin of the metric as an open problem. General relativity answers where curvature comes from (the Einstein equations) but not why the metric is Lorentzian in the first place. In every prior approach, either the metric signature is assumed or the derivation requires kinematic primitives. The Hessian of information time assumes neither: the metric arises from the second-order cost of structural change, and its signature is uniquely determined by realizability.
+
+In general relativity, the spacetime metric and its causal structure are prescribed independently of any dynamical principle. The Jacobson derivation~\cite{Jacobson} reverses this, obtaining the Einstein equations from thermodynamics on local Rindler horizons; but Lorentzian signature is still assumed. The EPS axiomatisation~\cite{EPS} derives causal structure from particle trajectories; the realizability condition of~\cite{Realizability} removes kinematic primitives entirely. The present work takes a different starting point: a scalar feedback loop whose gain condition $K=1$ determines a Hessian that is forced indefinite by realizability, making Lorentzian signature, symplectic structure, and a nontrivial stability boundary $d_{c}>0$ simultaneous algebraic consequences. The GENERIC formalism~\cite{GENERIC} provides the closest dynamical precedent; we show that it is the isotropic specialisation of the unique evolution law compatible with the Hessian (Theorem~5).
+
+The main results are: (i)~$d_{c}>0$ if and only if $\mathrm{Sig}(G)=(1,1)$ (Theorem~4); (ii)~the evolution law $\dot{x}=(J_{G}-D)\nabla V$ is unique (Theorem~5); (iii)~at critical damping $\kappa_{K}=4d_{c}$ at a normalised $G$-eigenvector (Theorem~6); (iv)~the Clausius relation follows algebraically from the stochastic dynamics within Class~A fluctuations (Proposition~7). The framework rests on three laws, introduced one at a time in \S\S2--6. The physical interpretation (\S7) requires a single external identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$; the scope and open questions are collected in~\S8.
+
+\medskip\noindent\textbf{Notation.} $\sigma(A)$: spectrum of $A$. $\mathrm{Sig}(G)=(p,q)$: inertia ($p$ positive, $q$ negative eigenvalues). $J=\bigl(\begin{smallmatrix}0&1\\-1&0\end{smallmatrix}\bigr)$ denotes the canonical symplectic matrix.
+
+\section{Metric from information time (Law~I)}
+
+\noindent\textbf{Law~I.} \textit{The metric $G$ arises as the Hessian of information time.}
+
+\medskip
+
+Define the information time by $dt_{\mathrm{info}}:=d\Phi/H$, where $\Phi$ parametrises structural variation and $H$ is an entropic resistance. The local quadratic approximation $dt_{\mathrm{info}}^{2}\approx \delta x^{\top}G\,\delta x$ defines a symmetric bilinear form $G=\nabla^{2}(dt_{\mathrm{info}}^{2})|_{K=1}$.
+
+Realizability forces $G$ indefinite~\cite{Realizability}: if the cost admits zero-threshold directions while pure temporal displacements retain positive cost, then $\mathrm{Sig}(G)=(1,1)$ is the unique possibility for a $2\times 2$ form, giving Lorentzian geometry with light cones, a causal structure, and a nontrivial stability boundary. The metric $G$ is proposed as an intrinsic alternative to a prescribed background time coordinate. In general relativity, time enters as a background coordinate and the spacetime metric is specified independently; here the logic is reversed --- $G$ and its causal structure are consequences of the information cost.
+
+\section{Symplectic structure from $G$}
+
+\begin{theorem}[Structural Uniqueness]
+Among all matrices $M$ satisfying \textup{(i)}~$GM$ is skew-symmetric and \textup{(ii)}~$M|_{G=I}=\alpha J$, the unique solution is $J_{G}=\alpha G^{-1}J$.
+\end{theorem}
+
+Here $\alpha>0$ is a normalisation constant fixed by condition~(ii); all subsequent results are homogeneous in $\alpha$, and the physical identification $\alpha=1$ is adopted wherever numerical values of $d_{c}$ are compared with thermal quantities. Since $G$ is dimensionless in the information-time parametrisation, $J_{G}=\alpha G^{-1}J$ is also dimensionless; the choice $\alpha=1$ is the natural normalisation in which $J_{G}|_{G=I}=J$.
+
+\begin{proof}
+$\dim(\mathrm{Skew}_{2})=1$, so condition~(i) gives $GM=\beta J$, hence $M=\beta G^{-1}J$; condition~(ii) fixes $\beta=\alpha$.\qed
+\end{proof}
+
+\begin{remark}[Non-degeneracy vs.\ signature]
+Theorem~1 requires only that $G$ be non-degenerate ($\det G\neq 0$); it holds for any signature. The unique-symplectic-generator property is therefore a consequence of non-degeneracy, not of Lorentzian signature specifically. The Lorentzian condition enters decisively only in Theorem~3 below, through the reality of the symplectic spectrum.
+\end{remark}
+
+\begin{theorem}[Spectral Survival]
+Let $\mathrm{Sig}(G)=(1,1)$. The characteristic polynomial of $G^{-1}J$ is $\lambda^{2}+1/\det G=0$. Since $\det G<0$, the roots are real: $\lambda=\pm\sqrt{-1/\det G}$. In the isotropic linearisation $H_{*}=I$, the stability boundary of $d(\delta x)/dt=(J_{G}-dI)\,\delta x$ is
+\begin{equation}
+d_{c}(\alpha)=\alpha\sqrt{-1/\det G}>0.\label{eq:dc}
+\end{equation}
+The dominant eigenvalue satisfies $\lambda_{\max}(d)=-(d-d_{c})$ and the convergence time $\tau\sim(d-d_{c})^{-1}$ near threshold.
+\end{theorem}
+
+\begin{proof}
+$\mathrm{tr}(G^{-1}J)=0$ (product of symmetric and skew-symmetric matrices) and $\det(G^{-1}J)=1/\det G$. For $H_{*}=I$, $\max\mathrm{Re}\,\sigma(J_{G}-dI)=0$ at $d=d_{c}=\alpha\sqrt{-1/\det G}$.\qed
+\end{proof}
+
+\begin{theorem}[Necessity of Lorentzian Signature]
+If $\mathrm{Sig}(G)=(2,0)$ or $(0,2)$, then $\det G>0$, so $\lambda^{2}+1/\det G=0$ has purely imaginary roots and $d_{c}=0$.
+\end{theorem}
+
+\section{The stability boundary}
+
+\begin{theorem}[Non-Separability]
+For non-degenerate symmetric $2\times 2$ real $G$, under the isotropic linearisation $H_{*}=I$, the following are equivalent:
+\begin{itemize}
+\item[\textup{(a)}] The closed-loop system admits a nontrivial stability boundary $d_{c}>0$.
+\item[\textup{(b)}] $\mathrm{Sig}(G)=(1,1)$ \textup{(Lorentzian)}, equivalently $\det G<0$.
+\end{itemize}
+The equivalence fails for general $H_{*}$ \textup{(Remark~8)}: $d_{c}$ is a signature invariant only within the isotropic class.
+\end{theorem}
+
+\begin{proof}
+$d_{c}>0 \Leftrightarrow -1/\det G>0 \Leftrightarrow \det G<0 \Leftrightarrow \mathrm{Sig}(G)=(1,1)$, via Theorems~2 and~3.\qed
+\end{proof}
+
+\begin{remark}
+The original statement of this theorem included a third equivalent condition (a$'$): existence of a unique $J_{G}$ with $GJ_{G}$ skew-symmetric. Theorem~1 shows that this holds for every non-degenerate $G$, regardless of signature. It is therefore a necessary structural prerequisite rather than an equivalence condition characterising Lorentzian signature. The core equivalence is (a)$\Leftrightarrow$(b).
+\end{remark}
+
+\begin{remark}[Isotropic scaling]
+The symbol $H_{*}$ denotes the cost-function weight matrix of the linearised closed-loop system $d(\delta x)/dt=(J_{G}-dI)H_{*}\,\delta x$; the canonical choice $H_{*}=I$ (isotropic linearisation) is the default unless otherwise stated. For $H_{*}=cI$ ($c>0$), the spectrum of $(J_{G}-dI)H_{*}=c(J_{G}-dI)$ is scaled by~$c$; the zero-crossing in $d$ is unchanged, so $d_{c}$ is invariant under isotropic $H_{*}$. For general $H_{*}>0$, the threshold may shift; see the counterexample below.
+\end{remark}
+
+\begin{remark}[Dependence on $H_{*}$]
+With $G=\mathrm{diag}(0.1,-10)$ and $H_{*}=\bigl(\begin{smallmatrix}1&0.9\\0.9&1\end{smallmatrix}\bigr)$, the isotropic prediction gives $d_{c}^{\mathrm{iso}}=1$, while the implicit threshold is $d_{c}(H_{*})=4.55$. This confirms that $d_{c}$ may depend on $H_{*}$ outside the isotropic class.
+\end{remark}
+
+\begin{remark}[Isotropy of $H_{*}$ for the Rindler metric]
+For the Rindler metric $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, the symmetric part of $J_{G}$ is nonzero: $S=(J_{G}+J_{G}^{\top})/2\neq 0$, so $d_{c}(H_{*})$ depends on $H_{*}$ in general. However, for diagonal $H_{*}$ (i.e.\ $h_{12}=0$), one has $\mathrm{tr}(J_{G}H_{*})=0$ identically, since the nonzero entries of $J_{G}$ lie entirely off-diagonal. The stability boundary then reduces to $\det(AH_{*})=0$, giving $d_{c}=\alpha/(\kappa\ell)$ independently of the diagonal entries of $H_{*}$. The isotropic prediction $d_{c}^{\mathrm{iso}}=\alpha\sqrt{-1/\det G}$ is therefore recovered for the entire class of diagonal $H_{*}$. The thermodynamic interpretation of \S\ref{sec:physical} assumes $H_{*}$ diagonal; this is a necessary scope condition, not an additional assumption.
+\end{remark}
+
+\medskip\noindent\textbf{Numerical verification.} All theorems were verified in Python/NumPy. Among 2000 random symmetric $2\times 2$ matrices: all 1420 with $\mathrm{Sig}=(1,1)$ had $d_{c}>0$; all 580 with definite signature had $d_{c}=0$; zero violations. The closed-form $d_{c}$ agreed with spectral computation to $<10^{-14}$ in every case.
+
+\medskip\noindent\textbf{What the theorem says.} Whether a system possesses a nontrivial stability boundary $d_{c}>0$ is determined at the level of the Hessian's inertia, before any controller is specified. The closed-form $d_{c}=\alpha\sqrt{-1/\det G}$ relies on $\dim(\mathrm{Skew}_{2})=1$. The $2\times 2$ case is the minimal realisation of the mechanism: Lorentzian signature forces real symplectic eigenvalues, and a nontrivial stability boundary follows algebraically. Higher-dimensional extensions require additional structure and are not part of the present paper.
+
+\section{Unique dynamics (Law~II)}
+
+\noindent\textbf{Law~II.} \textit{The closed-loop dynamics take the unique form $\dot{x}=(J_{G}-D)\nabla V_{\mathrm{total}}$, compatible with $GJ_{G}$ skew-symmetric and $D\ge 0$.}
+
+\begin{theorem}[Law~II Canonical Decomposition]
+Let $G$ be non-degenerate and let $J_{G}=\alpha G^{-1}J$ be the unique matrix satisfying $GJ_{G}=\alpha J$ \textup{(Theorem~1)}. Suppose the closed-loop generator $A$ is required to split as
+\begin{equation}
+GA = \alpha J - GD, \qquad D\ge 0,\label{eq:decomp}
+\end{equation}
+where $\alpha J$ is the metric-induced symplectic part and $-GD$ is the dissipative part. Then the evolution law is uniquely
+\[
+\frac{dx}{dt} = (J_{G}-D)\,\nabla V_{\mathrm{total}}.
+\]
+\end{theorem}
+
+\begin{proof}
+From~\eqref{eq:decomp}, $A=G^{-1}(\alpha J-GD)=\alpha G^{-1}J-D=J_{G}-D$. Uniqueness is immediate: $J_{G}$ is uniquely determined by Theorem~1, and $D\ge 0$ is prescribed, so no freedom remains.\qed
+\end{proof}
+
+The generator decomposes as $J_{G}=A_{\mathrm{skew}}+S$ where $S=(J_{G}+J_{G}^{\top})/2$. For Lorentzian $G$: $\sigma(J_{G})\subset\mathbb{R}$, $S\neq 0$, $\mathrm{tr}\,S=0$. For definite $G$: $\sigma(J_{G})\subset i\mathbb{R}$ and $S=0$ iff $G\propto I$.
+
+The GENERIC formalism~\cite{GENERIC} requires the Poisson operator $L$ to be Euclidean-antisymmetric ($L^{\top}=-L$). For $G=cI$, $J_{G}=(\alpha/c)J$ is antisymmetric and Law~II reduces to isothermal GENERIC. For Lorentzian $G$, $J_{G}$ is $G$-antisymmetric ($GJ_{G}\in\mathrm{Skew}$) but not Euclidean-antisymmetric ($S\neq 0$), so Law~II falls outside GENERIC.
+
+\section{Critical damping and fluctuation structure (Law~III)}\label{sec:lawIII}
+
+\noindent\textbf{Law~III.} \textit{$K=1$ acts as a statistical attractor via mean dissipativity, selecting the unique operating point at which $G$, $J_{G}$, and $d_{c}$ are simultaneously well-defined.}
+
+\medskip
+
+Two systems must be distinguished.
+
+\noindent\textit{Auxiliary linear drift.} The matrix $J_{G}-d_{c}I$ acts as a constant-coefficient linear drift in the auxiliary system $\dot{x}=(J_{G}-d_{c}I)x$. At $D=d_{c}$, the eigenvalues of $J_{G}-d_{c}I$ are $0$ and $-2d_{c}$: one direction is marginally stable (neutral) and the other decays at rate $2d_{c}$. The neutral direction is the eigenvector of $J_{G}$ with eigenvalue $+d_{c}$.
+
+\noindent\textit{Nonlinear $K$-dynamics.} Theorem~6 below concerns the nonlinear system $\dot{x}=(J_{G}-d_{c}I)\nabla V$, $V=\tfrac{1}{2}(K-1)^{2}$. On $\{K=1\}$ one has $\nabla V=0$, so $x_{*}$ is an equilibrium. The Jacobian at $x_{*}$ is $(J_{G}-d_{c}I)\nabla^{2}V(x_{*})$, which differs from $J_{G}-d_{c}I$ because $\nabla^{2}V(x_{*})$ is rank-1.
+
+\begin{theorem}[Local Effective Restoring Rate]
+Let $G$ be a $2\times 2$ Lorentzian metric and let $D=d_{c}$ \textup{(critical damping)}. Define $K(x)=x^{\top}Gx$, $V=\tfrac{1}{2}(K-1)^{2}$, with drift $\dot{x}=(J_{G}-d_{c}I)\nabla V$. The following exact identity holds for all $x\in\mathbb{R}^{2}$:
+\begin{equation}
+\dot{K} = 4(K-1)\bigl[\alpha\,x^{\top}(J{\cdot}G)\,x - d_{c}\,x^{\top}G^{2}x\bigr].\label{eq:Kdot}
+\end{equation}
+Here $J{\cdot}G$ denotes the matrix product $J$ times $G$ \textup{(distinct from the symplectic generator $J_{G}=\alpha G^{-1}J$ of Theorem~1)}. At any base point $x_{*}\in\{K=1\}$ that is a $G$-eigenvector \textup{(i.e.\ $Gx_{*}=\lambda x_{*}$)}, the term $x_{*}^{\top}JGx_{*}=0$, so~\eqref{eq:Kdot} reduces to
+\begin{equation}
+\dot{K}\big|_{x=x_{*}} = -4\,d_{c}\,x_{*}^{\top}G^{2}x_{*}\cdot(K-1).\label{eq:Kdot_eigen}
+\end{equation}
+Hence at a $G$-eigenvector base point satisfying the normalisation $x_{*}^{\top}G^{2}x_{*}=1$,
+\begin{equation}
+\dot{K} = -\kappa_{K}(K-1)+o(K-1),\qquad \kappa_{K}=4\,d_{c}.\label{eq:kappa}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+With $\nabla V=(K-1)\cdot 2Gx$ and $J_{G}=\alpha G^{-1}J$ (Theorem~1):
+\[
+\dot{K}=2x^{\top}G\dot{x}=4(K-1)\,x^{\top}G(J_{G}-d_{c}I)Gx = 4(K-1)\bigl[x^{\top}GJ_{G}Gx-d_{c}\,x^{\top}G^{2}x\bigr].
+\]
+Since $GJ_{G}=\alpha J$ (Theorem~1), right-multiplying by $G$ gives $GJ_{G}G=\alpha(JG)$, hence $x^{\top}GJ_{G}Gx=\alpha\,x^{\top}(J{\cdot}G)\,x$. Substituting gives~\eqref{eq:Kdot}. At a $G$-eigenvector $x_{*}$ with $Gx_{*}=\lambda x_{*}$, we have $x_{*}^{\top}JGx_{*}=\lambda\,x_{*}^{\top}Jx_{*}=0$ since $J$ is skew-symmetric, giving~\eqref{eq:Kdot_eigen}. The normalisation $x_{*}^{\top}G^{2}x_{*}=1$ then gives $\kappa_{K}=4d_{c}$.\qed
+\end{proof}
+
+\begin{remark}[Scope: base-point dependence]
+Equation~\eqref{eq:Kdot} is exact for all $x\in\mathbb{R}^{2}$. The term $\alpha\,x^{\top}(J{\cdot}G)\,x$ is generically nonzero; it vanishes at $x_{*}$ if and only if $x_{*}$ is a $G$-eigenvector. The local effective restoring rate is therefore $\kappa_{K}(x_{*})=4d_{c}\cdot x_{*}^{\top}G^{2}x_{*}$, and depends on the choice of base point unless condition~\eqref{eq:kappa} also holds.
+\end{remark}
+
+\begin{remark}[Geometric meaning of the normalisation]
+Condition~\eqref{eq:kappa} is equivalent to $\|Gx_{*}\|^{2}=x_{*}^{\top}G^{2}x_{*}=1$. For the Rindler metric $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, substituting the parametrisation $x_{*}=(\sinh\theta/\kappa\ell,\cosh\theta)$ of $\{K=1\}$ gives $x_{*}^{\top}G^{2}x_{*}=(\kappa\ell)^{2}\sinh^{2}\theta+\cosh^{2}\theta$. Condition~\eqref{eq:kappa} forces $\sinh\theta=0$, giving the unique solution $x_{*}=(0,1)$.
+\end{remark}
+
+\begin{remark}[Heuristic interpretation of the factor~4]
+The exact formula~\eqref{eq:Kdot} is the rigorous source of $\kappa_{K}=4d_{c}$. As a picture-level interpretation: the quadratic form $K=x^{\top}Gx$ couples both eigendirections of the auxiliary drift into the single observable $K$. The decaying direction (eigenvalue $-2d_{c}$) contributes $\sim 2d_{c}$ to $\dot{K}$ through the quadratic coupling; the neutral direction has eigenvalue~$0$, but the nonlinear coupling through the potential $V$ along this direction contributes a further $\sim 2d_{c}$, giving $\kappa_{K}\approx 4d_{c}$. This is a heuristic image consistent with~\eqref{eq:Kdot}; it is not an independent proof.
+\end{remark}
+
+\subsection*{Two classes of fluctuation on $\{K=1\}$}
+
+Adding isotropic noise $\sigma\,dW$ to Law~II gives the stochastic dynamics $dx=(J_{G}-D)\nabla V\,dt+\sigma\,dW$. At $D=d_{c}$ (critical damping), two geometrically distinct classes of fluctuation arise.
+
+\medskip\noindent\textit{Class~A \textup{(thermodynamic)}:} Fluctuations of $K$ perpendicular to the level set $\{K=1\}$, governed by the restoring rate $\kappa_{K}(x_{*})=4d_{c}\,x_{*}^{\top}G^{2}x_{*}$. The conditional distribution $P(K|x)$ at a fixed base point $x_{*}$ is Gaussian with variance $\sigma^{2}/(2d_{c})$, verified numerically across noise amplitudes $\sigma\in\{0.3,0.6,1.0\}$ for all Lorentzian~$G$.
+
+\medskip\noindent\textit{Class~B \textup{(gauge)}:} Free diffusion along the $\{K=1\}$ manifold in the tangential (boost) direction. For the Rindler metric $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$ the $\{K=1\}$ level set is the hyperbola $-(\kappa\ell)^{2}x_{1}^{2}+x_{2}^{2}=1$, parametrised by $x(t)=(\sinh t/(\kappa\ell),\cosh t)$ with tangent $\dot{x}(t)=(\cosh t/(\kappa\ell),\sinh t)$. (At the standard normalisation $\kappa\ell=1$ this reduces to $x=(\sinh t,\cosh t)$, tangent $(\cosh t,\sinh t)$.) The tangent direction is precisely the generator of Lorentz boosts: motion along $\{K=1\}$ changes the inertial observer, not the thermodynamic state. The Hessian of $V$ restricted to $\{K=1\}$ is the rank-one form $4\,Gx_{*}\otimes Gx_{*}$, whose null space contains the tangent direction (since $Gx_{*}\cdot\dot{x}(0)=0$), confirming that Class~B is a zero-mode with no restoring force. The boost parameter therefore performs an unbounded random walk; this diffusion is a gauge degree of freedom and carries no heat.
+
+The OU approximation of Proposition~7 correctly captures Class~A fluctuations (it implicitly fixes a single inertial observer). Mixing the two classes conflates thermodynamic and kinematic degrees of freedom and yields a marginal $K$-distribution that is not Boltzmann; this is a measurement artifact, not a failure of the Boltzmann hypothesis.
+
+\section{Spacetime thermodynamics}\label{sec:physical}
+
+The fluctuation structure established in \S\ref{sec:lawIII} provides the stochastic substrate; we now ask what thermodynamic relations it supports. The preceding sections establish the control-theoretic content of the framework without physical input. This section connects the algebraic structures to spacetime thermodynamics. In~\cite{GravityCost}, $d_{c}$ coincides with the Tolman-redshifted Hawking temperature and the Bekenstein--Hawking entropy $S=A/4$ emerges from the symplectic spectrum. Every connection below requires at least one external identification; these are marked explicitly.
+
+\subsection*{Clausius relation as FDT consequence within Class~A}
+
+Within the OU description of Class~A fluctuations (fixed inertial observer), the $K$-dynamics near $K=1$ is approximated as a one-dimensional Ornstein--Uhlenbeck process with stationary variance
+\begin{equation}
+\mathrm{Var}(K)\approx\frac{\sigma^{2}}{2d_{c}}.\label{eq:var}
+\end{equation}
+The effective temperature is $T_{\mathrm{eff}}=\sigma^{2}/(2d_{c})$. In~\cite{GravityCost}, the Tolman local temperature is $T_{\mathrm{tol}}=d_{c}\cdot T_{H}$, where $T_{H}=\kappa/(2\pi)$ is the Hawking temperature. The Near-Horizon Identity~\cite{NearHorizon} gives $d_{c}\cdot T_{H}=1/(2\pi\ell)$ with exact $\kappa$-cancellation.
+
+The fluctuation-dissipation relation gives $T_{\mathrm{eff}}=\sigma_{K}^{2}/(2\kappa_{K})=\sigma^{2}/(2d_{c})$, which equals the variance of the Boltzmann stationary distribution. This FDT self-consistency is verified algebraically from Law~II and Theorem~6 alone. The Clausius relation $\delta Q=T_{\mathrm{eff}}\,dS$ then follows as a consequence of the Boltzmann stationary distribution, not as an independent postulate. Concretely, define the internal energy increment from the stochastic Law~II:
+\[
+\delta Q := dV + \tfrac{1}{2}\sigma_{K}^{2}\,dt,
+\]
+where $\sigma_{K}=2\sigma\|Gx_{*}\|$ is derived from the It\^{o} chain rule and $V=(K-1)^{2}/2$. With $S=-\langle\log\rho\rangle$ the Boltzmann entropy, one verifies algebraically that $\delta Q=T_{\mathrm{eff}}\,dS$ holds identically for the OU process. The connection from FDT to Clausius rests on two steps: (i)~the FDT $\sigma_{K}^{2}=2\kappa_{K}T_{\mathrm{eff}}$ (internal, algebraic); (ii)~the Boltzmann stationary distribution (internal, from the Fokker--Planck equation of Law~II in the OU regime). The sole external input that remains is the physical identification $T_{\mathrm{eff}}(x_{*})=T_{\mathrm{tol}}(x_{*})$; once this naming is accepted, the Clausius relation is an internal deduction.
+
+The Boltzmann stationary distribution is a weaker and more fundamental assumption than the Clausius relation itself: for the OU process the two are equivalent, but Boltzmann follows from the maximum-entropy principle at fixed energy variance, whereas Clausius is a macroscopic thermodynamic postulate. The framework therefore reduces the external input from a thermodynamic axiom to a statistical-mechanical one.
+
+\begin{proposition}[Local Clausius Compatibility]
+Under the local thermal-equilibrium approximation and the identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ on local Rindler horizons, the Clausius relation $\delta Q=T\,\delta S$ is compatible with the noise-temperature matching condition
+\begin{equation}
+\sigma^{2} = 2\,d_{c}\cdot T_{\mathrm{tol}} = 2\,d_{c}^{2}\cdot T_{H}.\label{eq:noise}
+\end{equation}
+Conversely, if $\sigma^{2}=2d_{c}\cdot T_{\mathrm{tol}}$ holds, then $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ and the stochastic stationary state is compatible with the Clausius relation within the same approximation.
+\end{proposition}
+
+\begin{proof}
+Under the local thermal-equilibrium approximation, the Fokker--Planck equation for the $K=1$ dynamics at $D=d_{c}$ yields a Boltzmann stationary distribution $\rho\propto\exp(-V/T_{\mathrm{eff}})$. Any Boltzmann distribution satisfies $\delta Q=T_{\mathrm{eff}}\,\delta S$ for quasi-static processes. Setting $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ gives $\sigma^{2}/(2d_{c})=d_{c}\cdot T_{H}$, hence $\sigma^{2}=2d_{c}^{2}\cdot T_{H}$. The converse is immediate.\qed
+\end{proof}
+
+\begin{remark}[Status of the approximation]
+The derivation rests on inputs of three logically distinct kinds. The sole true external axiom is the physical identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$~(ii): it connects the stochastic model to Rindler horizon thermodynamics and cannot be derived within the present framework. The identification is not arbitrary: within Rindler thermodynamics, the unique temperature assignable to a stationary observer at proper distance $\ell$ from the horizon that is consistent with the Tolman redshift law and reduces to $T_{H}$ at $\ell\to\infty$ is $T_{\mathrm{tol}}=d_{c}T_{H}$; this singles out $T_{\mathrm{tol}}$ without reference to any quantity internal to the present framework. The remaining two inputs are of a different character: (i)~the one-dimensional OU approximation for $K$-dynamics near $K=1$ is a mathematical approximation whose leading-order error is controlled by the It\^{o} analysis below; the approximation is valid when $|K-1|\ll 1$ and the Class~B diffusion time is long compared to the Class~A relaxation time $\tau=1/(4d_{c})$; at strong noise ($\sigma^{2}\gg d_{c}^{2}T_{H}$) the Gaussian approximation breaks down and higher cumulants become non-negligible; and (iii)~the Tolman identity $T_{\mathrm{tol}}=d_{c}T_{H}$ from~\cite{NearHorizon} is an independently verifiable result in the companion paper, not an assumption of the present framework. Once~(ii) is accepted as the physical identification, Proposition~7 is an internal deduction rather than a compatibility check.
+\end{remark}
+
+The It\^{o} analysis together with the identification of two fluctuation classes (\S\ref{sec:lawIII} above) show that, within this approximation, the Clausius relation itself is an algebraic consequence of Law~II; the compatibility condition of Proposition~7 therefore reduces to the single physical identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$.
+
+\subsection*{It\^{o} correction and local temperature}
+
+Applying It\^{o}'s formula to $K=x^{\top}Gx$ under the full stochastic Law~II gives an additional drift term $\sigma^{2}\,\mathrm{tr}(G)\,dt$ beyond the deterministic part of~\eqref{eq:Kdot_eigen}. This correction is a constant (independent of $K-1$) and therefore shifts the mean of the stationary distribution of $K$ but leaves $\mathrm{Var}(K)$ unchanged. More precisely, at a $G$-eigenvector base point $x_{*}\in\{K=1\}$ with $\lambda_{+}:=x_{*}^{\top}G^{2}x_{*}$, the restoring rate and noise amplitude are $\kappa_{K}(x_{*})=4d_{c}\lambda_{+}$ and $\sigma_{K}(x_{*})^{2}=4\sigma^{2}\lambda_{+}$ respectively, so their FDT ratio $\sigma_{K}^{2}/(2\kappa_{K})$ cancels to $\sigma^{2}/(2d_{c})$ regardless of $\lambda_{+}$. Consequently, the variance formula~\eqref{eq:var} and the effective temperature $T_{\mathrm{eff}}=\sigma^{2}/(2d_{c})$ hold for any Lorentzian $G$ and any $G$-eigenvector base point on $\{K=1\}$.
+
+The leading-order relative error of the OU approximation for $\mathrm{Var}(K)$ is controlled by the tracelessness of~$G$. For the Rindler metric $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, the It\^{o} correction to $\dot{K}$ is $\sigma^{2}\,\mathrm{tr}(G)=\sigma^{2}(1-(\kappa\ell)^{2})$; this shifts the mean of $K$ but not its variance. The relative departure from the Gaussian approximation is of order $|\mathrm{tr}(G)|=|1-(\kappa\ell)^{2}|$, which vanishes identically at the standard normalisation $\kappa\ell=1$ and grows as $(\kappa\ell)$ departs from unity. The OU approximation is therefore exact at $\kappa\ell=1$ and remains accurate when $|(\kappa\ell)^{2}-1|\ll 1$.
+
+The numerical verification ($\kappa_{K}/d_{c}=4.000\pm 0.001$ on the Rindler metric) is consistent with Theorem~6: the tests were performed at $x_{*}=(0,1)$, which satisfies condition~\eqref{eq:kappa} for any value of $\kappa\ell$.
+
+The $K$-space noise amplitude $\sigma_{K}(x)=2\sigma\|Gx\|$ varies with position along $\{K=1\}$. A position-dependent temperature emerges when a fixed reference observer at $x_{*}$ measures the restoring rate $\kappa_{K}^{*}=4d_{c}\,x_{*}^{\top}G^{2}x_{*}$ while $\sigma_{K}(x)$ varies along the hyperbola:
+\begin{equation}
+T_{\mathrm{loc}}(x) := \frac{\sigma_{K}(x)^{2}}{2\kappa_{K}^{*}} = \frac{\sigma^{2}\,x^{\top}G^{2}x}{2d_{c}\,x_{*}^{\top}G^{2}x_{*}}.\label{eq:Tloc}
+\end{equation}
+For the Rindler metric with $\kappa\ell=1$ and $x(t)=(\sinh t,\cosh t)$: $T_{\mathrm{loc}}(t)=\sigma^{2}\cosh(2t)/(2d_{c})$, which has the structure of Tolman's law.
+
+\begin{remark}[Stability constraint]
+The choice $D=T_{\mathrm{tol}}$ ($\ll d_{c}$ for macroscopic black holes) renders the $K=1$ fixed point unstable, since the linearised dynamics has a positive eigenvalue $\lambda\approx d_{c}-T_{\mathrm{tol}}>0$. Stability requires $D\ge d_{c}$; critical damping $D=d_{c}$ is the unique marginally stable choice.
+\end{remark}
+
+\begin{remark}[Gromov bound]
+The quantum ground-state fluctuation at the Gromov bound~\cite{Gromov} $\sigma_{1}\ge\hbar/2$ gives $\sigma_{\mathrm{Gromov}}^{2}\sim\hbar\sigma_{1}\sim\ell$, scaling linearly with proper distance $\ell$. The Clausius constraint $\sigma^{2}=2d_{c}\cdot T_{\mathrm{tol}}$ requires $\sigma^{2}\sim 1/\ell^{2}$. These scale in opposite directions: Gromov provides a lower bound on fluctuations that is insufficient to produce thermal noise at the Tolman temperature. The Clausius relation thus remains an independent input, not derivable from symplectic topology alone.
+\end{remark}
+
+\section{A path from algebra to quantum gravity}
+
+The $2\times 2$ equivalence theorem is the first case of a structure that extends in stages.
+
+\noindent\textit{Stage~0: Origin.} The Lorentzian signature is not assumed but derived: realizability plus positive temporal cost forces $G$ indefinite (Theorem~4, \cite{Realizability}).
+
+\noindent\textit{Stage~1: Geometry.} The Hessian $G$ defines a Lorentzian metric on state space with light cones, causal structure, and a non-positive-definite distance function. The relationship to Fisher information geometry --- Riemannian by construction --- remains unexplored. A Lorentzian information geometry would place control theory and general relativity in the same metric category.
+
+\noindent\textit{Stage~2: Physics.} The counterexample ($d_{c}$ shifts under anisotropic $H_{*}$) shows that isotropic non-separability is not universal. For the Rindler metric, diagonal $H_{*}$ is the precise scope condition (Remark~8$'$). At critical damping, the restoring rate $\kappa_{K}=4d_{c}\,x_{*}^{\top}G^{2}x_{*}$ (Theorem~6) provides the first analytical consequence of Law~II + Law~III. The stochastic extension identifies two classes of fluctuation: thermodynamic (Class~A) and gauge/boost (Class~B). Within Class~A, the Clausius relation follows algebraically and the local noise temperature has the Tolman structure.
+
+\noindent\textit{Stage~3: Quantum.} The Gromov non-squeezing theorem~\cite{Gromov} implies $\sigma_{\min}\ge\hbar/2$. In~\cite{GravityCost}, the stabilizability cost is $d_{c}=1/\sigma_{1}$ for the Rindler metric. This relation follows algebraically: for $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, one has $d_{c}=\alpha/(\kappa\ell)$ and the minimum symplectic eigenvalue of $G$ is $\sigma_{1}=\kappa\ell/\alpha$ (the positive square root of $-\det G$ divided by $\alpha$), giving $d_{c}\,\sigma_{1}=1$ identically. Combining with $\sigma_{1}\ge\hbar/2$ then gives $d_{c}\le 2/\hbar$ --- an upper bound on temperature from symplectic topology alone, without quantum field theory, string theory, or holography. However, the Gromov bound gives quantum fluctuations scaling as $\sigma^{2}\sim\sigma_{1}$, opposite to the Clausius requirement $\sigma^{2}\sim 1/\sigma_{1}^{2}$ (Proposition~7). Whether a refinement of the non-squeezing bound, or an entirely different principle, can close this gap remains open. Whether the Gromov upper bound on $d_{c}$ coincides with, refines, or is independent of the Bekenstein bound is the question to which the entire framework points.
+
+\noindent\textit{Beyond GENERIC.} Theorem~5 shows that GENERIC is the isotropic specialisation of Law~II. For Lorentzian $G$, the symmetric part $S\neq 0$ departs from GENERIC while $d_{c}$ is controlled by $\det G$ alone, suggesting a Lorentzian extension of non-equilibrium thermodynamics. In this sense the framework may be viewed as a realisation of Wiener's programme~\cite{Wiener}: physical law as the consequence of feedback operating at a critical gain.
+
+The extension to $(1+3)$-dimensional spacetime, the full Jacobson argument~\cite{Jacobson} (which requires the Clausius relation to hold for all local Rindler horizons and invokes $S=A/4$ independently), and the identification of the $\{K=1\}$ area element with the Bekenstein--Hawking entropy all require additional steps not contained here. The present framework is consistent with the Jacobson derivation in the following limited sense: under the local-equilibrium approximation and the identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, the Clausius relation holds algebraically within the $2\times 2$ Ornstein--Uhlenbeck description of Class~A fluctuations. The identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ is the sole external input; Gromov non-squeezing cannot replace it.
+
+\begin{thebibliography}{8}
+\bibitem{GravityCost} Y.\,Y.\,N.~Li, \textit{Gravity as the Cost of Symplectic Stability}, preprint (2026).
+\bibitem{Realizability} Y.\,Y.\,N.~Li, \textit{Realizability and the Origin of Causality}, preprint (2026).
+\bibitem{EPS} J.~Ehlers, F.\,A.\,E.~Pirani, A.~Schild, \textit{The geometry of free fall and light propagation}, in \textit{General Relativity}, ed.\ L.~O'Raifeartaigh, Clarendon Press, Oxford, 1972, pp.~63--84. Republished: Gen.\ Rel.\ Grav.\ \textbf{44} (2012) 1587--1609.
+\bibitem{GENERIC} M.~Grmela and H.\,C.~\"Ottinger, \textit{Dynamics and thermodynamics of complex fluids.~I}, Phys.\ Rev.\ E \textbf{56}, 6620 (1997).
+\bibitem{NearHorizon} Y.\,Y.\,N.~Li, \textit{A Near-Horizon Identity: $T_{\mathrm{tol}}=d_{c}T_{H}$ and $\sigma_{1}=\kappa\ell$}, preprint (2026).
+\bibitem{Wiener} N.~Wiener, \textit{Cybernetics: or Control and Communication in the Animal and the Machine}, MIT Press (1948).
+\bibitem{Jacobson} T.~Jacobson, \textit{Thermodynamics of Spacetime: The Einstein Equation of State}, Phys.\ Rev.\ Lett.\ \textbf{75}, 1260 (1995).
+\bibitem{Gromov} M.~Gromov, \textit{Pseudoholomorphic curves in symplectic manifolds}, Invent.\ Math.\ \textbf{82}, 307 (1985).
+\end{thebibliography}
+
+\end{document}
