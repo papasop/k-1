@@ -93,6 +93,11 @@ with $\delta t_{n}>0$, $\delta r_{n}\neq 0$ such that
 and there exists a subsequence $v_{n_{k}}\to v=(v_{t},v_{r})$ with $v_{t}>0$ and $v_{r}\neq 0$, where $v_{n_{k}}:=\delta x_{n_{k}}/\|\delta x_{n_{k}}\|$.
 \end{definition}
 
+The condition $\delta t_{n}>0$ restricts attention to forward-in-time displacements.
+Requiring both $\delta t_{n}>0$ and $\delta t_{n}<0$ would strengthen the assumption without
+changing the conclusion: the proof uses only one null direction, which the
+single-sided condition already provides.
+
 Assumption~E formalises the leading-order structure of the cost function within which Assumption~R operates.
 
 \begin{definition}[E --- Quadratic expansion]
@@ -187,6 +192,14 @@ global constant $c_{\max}$ would follow from additional homogeneity assumptions 
 which are not required here.
 \end{remark}
 
+\begin{remark}[Physical interpretation of $d$]
+The cost function $d(x;\delta x)$ is treated here as an abstract primitive.
+Its physical identification---whether as an information-theoretic cost, a
+thermodynamic work function, or something else---lies outside the present scope.
+The derivation requires only the three structural properties R, E, and~T,
+not a specific physical origin.
+\end{remark}
+
 \section{Extension to $(1{+}3)$ dimensions}
 
 For the four-dimensional extension, let $U\subset\mathbb{R}^{4}$ be open, fix $x\in U$, and consider the chart
@@ -208,7 +221,10 @@ Q(w)\le 0 \quad\text{for all } w\in W.
 The seminegative condition on~$W$ strengthens the spanning requirement: it guarantees a
 three-dimensional subspace on which $Q$ is seminegative definite, thereby ruling out signatures
 such as $(2,2)$. This condition is strictly stronger than pointwise vanishing at the three directions~$v^{(i)}$: it requires $Q\le 0$ on all linear combinations of those directions, a coherence condition on
-the spatial sector as a whole. The question of why physical spacetime satisfies this coherence
+the spatial sector as a whole.
+In $(1{+}1)$ dimensions, Assumption~R alone suffices; the seminegative condition is the additional
+price of extending to $(1{+}3)$.
+The question of why physical spacetime satisfies this coherence
 condition, and why it has precisely three spatial directions rather than more or fewer, lies outside
 the scope of the present paper.
 
