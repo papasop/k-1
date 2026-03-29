@@ -80,7 +80,7 @@ The precise setup, statements, and proofs are given in Sections~2--4.
 
 Let $U\subset\mathbb{R}^{2}$ be open with chart $(t,r)$, and fix $x\in U$. For small $\delta x=(\delta t,\delta r)$ with $\delta t>0$, let
 $d(x;\delta x)\ge 0$ be a displacement cost at~$x$. The norm $\|\cdot\|$ denotes any norm on~$\mathbb{R}^{2}$; all conclusions
-are independent of the choice. The chart variables $t$ and~$r$ label a distinguished direction (carrying
+are independent of the choice. Write $S^{1}=\{u\in\mathbb{R}^{2}:\|u\|=1\}$. The chart variables $t$ and~$r$ label a distinguished direction (carrying
 positive cost, Assumption~T) and its complement; no metric or causal structure on~$U$ is assumed
 at this stage.
 
@@ -203,7 +203,7 @@ not a specific physical origin.
 \section{Extension to $(1{+}3)$ dimensions}
 
 For the four-dimensional extension, let $U\subset\mathbb{R}^{4}$ be open, fix $x\in U$, and consider the chart
-$(t,x^{1},x^{2},x^{3})$. The two-dimensional case is the minimal realisation: a single spatial direction
+$(t,x^{1},x^{2},x^{3})$; write $e_{t}=(1,0,0,0)$ for the temporal basis vector. The two-dimensional case is the minimal realisation: a single spatial direction
 suffices. In physical spacetime, the condition must be imposed along all three independent
 spatial directions.
 
@@ -251,7 +251,7 @@ Assumption~T implies $Q(e_{t})>0$ by the same
 argument as Step~2 of Theorem~5: if $Q(e_{t})\le 0$ then $d(x;(\Delta t,0,0,0))=o(\Delta t)$, contradicting~T.
 Hence the positive inertia index of~$Q$ is at least~1.
 
-\textbf{Step~2 (Seminegative spatial subspace).}
+\textbf{Step~2 (Negative-semidefinite spatial subspace).}
 By Definition~7, the limiting directions
 $\{v^{(1)},v^{(2)},v^{(3)}\}$ span a three-dimensional subspace $W\subset\mathbb{R}^{4}$ on which
 \[
