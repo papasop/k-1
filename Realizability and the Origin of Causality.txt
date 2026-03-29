@@ -107,7 +107,7 @@ d(x;\delta x)^{2} = \bigl(Q(\delta x)\bigr)_{+} + o\!\left(\|\delta x\|^{2}\righ
 \]
 where $(u)_{+}:=\max\{u,0\}$.
 The positive part ensures compatibility with $d\ge0$: the quadratic form~$Q$ may take negative
-values along spacelike directions, but the squared cost~$d^{2}$ cannot.
+values along directions where $Q<0$, but the squared cost~$d^{2}$ cannot.
 \end{definition}
 
 The notation $\mathrm{Sig}(Q)=(p,q)$ denotes the inertia of~$Q$: $p$~positive and $q$~negative eigenvalues.
@@ -128,7 +128,7 @@ $Q(v)\le 0$ and $\delta x_{n}\to 0$ with $\delta x_{n}/\|\delta x_{n}\|\to v$, t
 \end{lemma}
 
 \begin{proof}
-\textit{Forward:} By~E, $(d/\|\delta x_{n_{k}}\|)^{2}=(Q(v_{n_{k}}))_{+}+o(1)\to 0$, so $(Q(v))_{+}=0$.
+\textit{Forward:} By~E, $(d(x;\delta x_{n_{k}})/\|\delta x_{n_{k}}\|)^{2}=(Q(v_{n_{k}}))_{+}+o(1)\to 0$, so $(Q(v))_{+}=0$.
 
 \textit{Converse:} Let $v_{n}:=\delta x_{n}/\|\delta x_{n}\|$, so $v_{n}\to v$. Since $Q$ is continuous and $Q(v)\le 0$, we have
 $(Q(v_{n}))_{+}\to 0$. By homogeneity of~$Q$,
@@ -289,6 +289,7 @@ In $(1{+}3)$ dimensions (Theorem~8):
 \item[(iv)] The split signature $(2,2)$ is excluded by the negative-semidefinite subspace condition of~R4: that
 condition forces the negative inertia index of~$Q$ to be at least~3, which is incompatible with $(2,2)$.
 \end{itemize}
+The remaining non-Lorentzian signatures are excluded by the inertia count of Steps~1--3.
 Lorentzian signature is therefore not merely compatible with the cost asymmetry --- it is the unique outcome.
 \end{remark}
 
