@@ -223,7 +223,7 @@ three-dimensional subspace on which $Q$ is seminegative definite, thereby ruling
 such as $(2,2)$. This condition is strictly stronger than pointwise vanishing at the three directions~$v^{(i)}$: it requires $Q\le 0$ on all linear combinations of those directions, a coherence condition on
 the spatial sector as a whole.
 In $(1{+}1)$ dimensions, Assumption~R alone suffices; the seminegative condition is the additional
-price of extending to $(1{+}3)$.
+structural condition required for $(1{+}3)$.
 The question of why physical spacetime satisfies this coherence
 condition, and why it has precisely three spatial directions rather than more or fewer, lies outside
 the scope of the present paper.
