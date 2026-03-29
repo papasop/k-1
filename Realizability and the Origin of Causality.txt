@@ -139,7 +139,7 @@ Hence Assumption~E gives $d(x;\delta x_{n})^{2}=o(\|\delta x_{n}\|^{2})$, so $d(
 \end{proof}
 
 \begin{theorem}[Lorentzian signature from realizability]
-Assume R, E, and~T. Then $Q$ is nondegenerate and indefinite, and after rescaling~$t$ so that $Q(dt,0)=dt^{2}$ and applying an invertible
+Assume R, E, and~T. Then $Q$ is nondegenerate and indefinite, and after rescaling~$t$ so that $Q(1,0)=1$ and applying an invertible
 linear change of variables,
 \[
 Q = dt^{2} - c_{\max}^{-2}\,dr^{2}
@@ -167,11 +167,11 @@ path in $S^{1}\cap\{u_{t}>0\}$. Then $Q(\gamma(0))=Q(1,0)>0$ and $Q(\gamma(1))=Q
 intermediate value theorem there exists~$s^{*}$ with $Q(\gamma(s^{*}))=0$. Set $w:=\gamma(s^{*})$; then $w_{t}>0$. Since $Q(w)=0$ but $Q(1,0)>0$, $w\neq(1,0)$, so $w_{r}\neq 0$.
 
 \textbf{Step~4 (Nondegeneracy).}
-Suppose $Q$ is degenerate, i.e.\
+Suppose $Q$ is degenerate but not identically zero, i.e.\
 \[
-\det\begin{pmatrix}a & \kappa \\ \kappa & b\end{pmatrix} = ab-\kappa^{2}=0,
+\det\begin{pmatrix}a & \kappa \\ \kappa & b\end{pmatrix} = ab-\kappa^{2}=0.
 \]
-$Q\not\equiv 0$. Since $a=Q(1,0)>0$ (Step~2), the substitution $r'=r+(\kappa/a)t$ eliminates the cross
+Since $a=Q(1,0)>0$ (Step~2), the substitution $r'=r+(\kappa/a)t$ eliminates the cross
 term: $Q=a\,dt^{2}+b'\,dr'^{2}$ with $ab'=0$, hence $b'=0$. Then $Q=a\,dt^{2}$ and $Q(w)=0$ forces
 $w_{t}=0$, contradicting $w_{t}>0$ (Step~3).
 
@@ -179,7 +179,7 @@ $w_{t}=0$, contradicting $w_{t}>0$ (Step~3).
 By Step~2, $Q$ takes a positive value; by Step~3,
 $Q$ vanishes on a nonzero vector. A nondegenerate quadratic form on~$\mathbb{R}^{2}$ with a nonzero null
 vector cannot be definite; hence it is indefinite, and in two dimensions the signature is $(1,1)$.
-Rescaling~$t$ so that $Q(dt,0)=dt^{2}$ and applying an invertible linear change of variables gives
+Rescaling~$t$ so that $Q(1,0)=1$ and applying an invertible linear change of variables gives
 \[
 Q = dt^{2} - c_{\max}^{-2}\,dr^{2}.\qedhere
 \]
@@ -187,7 +187,7 @@ Q = dt^{2} - c_{\max}^{-2}\,dr^{2}.\qedhere
 
 \begin{remark}[The speed $c_{\max}$]
 The constant $c_{\max}$ is not an independent postulate but arises from the cost structure. It represents the maximal propagation speed, determined by the relative
-coefficients of~$Q$. $c_{\max}$ may vary from point to point: the present result is local. A
+coefficients of~$Q$. $c_{\max}$ may vary from point to point; the present result is local. A
 global constant $c_{\max}$ would follow from additional homogeneity assumptions on the cost function,
 which are not required here.
 \end{remark}
@@ -212,17 +212,20 @@ For each $i\in\{1,2,3\}$ there
 exists a sequence $\delta x_{n}^{(i)}\to 0$ with $\delta t_{n}^{(i)}>0$ and $\delta x_{n}^{(i),i}\neq 0$, such that $d(x;\delta x_{n}^{(i)})/\|\delta x_{n}^{(i)}\|\to 0$, and
 a subsequence of normalised directions converges to $v^{(i)}$ with $v_{t}^{(i)}>0$ and $v_{i}^{(i)}\neq 0$. The three
 limiting directions $\{v^{(1)},v^{(2)},v^{(3)}\}$ are required to span a three-dimensional subspace~$W$, and
-the restriction $Q|_{W}$ is required to be seminegative definite:
+the restriction $Q|_{W}$ is required to be negative semidefinite:
 \[
 Q(w)\le 0 \quad\text{for all } w\in W.
 \]
 \end{definition}
 
-The seminegative condition on~$W$ strengthens the spanning requirement: it guarantees a
-three-dimensional subspace on which $Q$ is seminegative definite, thereby ruling out signatures
+Here $\delta x_{n}^{(i),i}$ denotes the $i$-th spatial component of the
+displacement~$\delta x_{n}^{(i)}$.
+
+The negative-semidefinite condition on~$W$ strengthens the spanning requirement: it guarantees a
+three-dimensional subspace on which $Q$ is negative semidefinite, thereby ruling out signatures
 such as $(2,2)$. This condition is strictly stronger than pointwise vanishing at the three directions~$v^{(i)}$: it requires $Q\le 0$ on all linear combinations of those directions, a coherence condition on
 the spatial sector as a whole.
-In $(1{+}1)$ dimensions, Assumption~R alone suffices; the seminegative condition is the additional
+In $(1{+}1)$ dimensions, Assumption~R alone suffices; the negative-semidefinite condition is the additional
 structural condition required for $(1{+}3)$.
 The question of why physical spacetime satisfies this coherence
 condition, and why it has precisely three spatial directions rather than more or fewer, lies outside
@@ -254,7 +257,7 @@ $\{v^{(1)},v^{(2)},v^{(3)}\}$ span a three-dimensional subspace $W\subset\mathbb
 \[
 Q(w)\le 0 \quad\text{for all } w\in W.
 \]
-Thus $Q|_{W}$ is seminegative definite on a three-dimensional subspace, so the negative inertia index
+Thus $Q|_{W}$ is negative semidefinite on a three-dimensional subspace, so the negative inertia index
 of~$Q$ is at least~3.
 
 \textbf{Step~3 (Inertia count).}
@@ -276,14 +279,14 @@ Under the hypotheses of Theorem~5 in $(1{+}1)$ dimensions, and of Theorem~9 in $
 \item[(i)] Positive-definite signature $\mathrm{Sig}(Q)=(2,0)$ is excluded by Assumption~R together with
 Lemma~4: it yields a nonzero limiting direction~$v$ with $v_{t}>0$ and $Q(v)\le 0$, which is
 impossible for a positive-definite form.
-\item[(ii)] Negative-definite signature $\mathrm{Sig}(Q)=(0,2)$ is excluded by Assumption~T (Step~2 of Theorem~5): negative definiteness gives $Q(1,0)<0$, contradicting the positive temporal cost.
+\item[(ii)] Negative-definite signature $\mathrm{Sig}(Q)=(0,2)$ is excluded by Assumption~T (Step~2 of Theorem~5): negative definiteness gives $Q(1,0)<0$, contradicting Assumption~T.
 \item[(iii)] Degenerate forms ($\det Q=0$, $Q\not\equiv 0$) are excluded by Assumptions~R and~T jointly
 (Step~4 of Theorem~5): degeneracy forces $Q=a\,dt^{2}$ with $a>0$; but Step~3 of the proof of
 Theorem~5 yields~$w$ with $Q(w)=0$ and $w_{t}>0$, forcing $w_{t}=0$, a contradiction.
 \end{itemize}
 In $(1{+}3)$ dimensions (Theorem~9):
 \begin{itemize}
-\item[(iv)] The split signature $(2,2)$ is excluded by the seminegative subspace condition of~R4: that
+\item[(iv)] The split signature $(2,2)$ is excluded by the negative-semidefinite subspace condition of~R4: that
 condition forces the negative inertia index of~$Q$ to be at least~3, which is incompatible with $(2,2)$.
 \end{itemize}
 Lorentzian signature is therefore not merely compatible with the cost asymmetry --- it is the unique outcome.
