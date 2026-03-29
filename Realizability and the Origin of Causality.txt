@@ -78,9 +78,9 @@ The precise setup, statements, and proofs are given in Sections~2--4.
 
 \section{Setup}
 
-Work in an open $U\subset\mathbb{R}^{2}$ with chart $(t,r)$, and fix $x\in U$. For small $\delta x=(\delta t,\delta r)$ with $\delta t>0$, let
+Let $U\subset\mathbb{R}^{2}$ be open with chart $(t,r)$, and fix $x\in U$. For small $\delta x=(\delta t,\delta r)$ with $\delta t>0$, let
 $d(x;\delta x)\ge 0$ be a displacement cost at~$x$. The norm $\|\cdot\|$ denotes any norm on~$\mathbb{R}^{2}$; all conclusions
-are independent of the choice. The chart variables $t$ and~$r$ are a distinguished direction (carrying
+are independent of the choice. The chart variables $t$ and~$r$ label a distinguished direction (carrying
 positive cost, Assumption~T) and its complement; no metric or causal structure on~$U$ is assumed
 at this stage.
 
@@ -94,7 +94,7 @@ and there exists a subsequence $v_{n_{k}}\to v=(v_{t},v_{r})$ with $v_{t}>0$ and
 \end{definition}
 
 The condition $\delta t_{n}>0$ restricts attention to forward-in-time displacements.
-Requiring both $\delta t_{n}>0$ and $\delta t_{n}<0$ would strengthen the assumption without
+Requiring the same condition for $\delta t_{n}<0$ would strengthen the assumption without
 changing the conclusion: the proof uses only one null direction, which the
 single-sided condition already provides.
 
@@ -187,7 +187,7 @@ Q = dt^{2} - c_{\max}^{-2}\,dr^{2}.\qedhere
 
 \begin{remark}[The speed $c_{\max}$]
 The constant $c_{\max}$ is not an independent postulate but arises from the cost structure. It represents the maximal propagation speed, determined by the relative
-coefficients of~$Q$. Note that $c_{\max}$ may vary from point to point: the present result is local. A
+coefficients of~$Q$. $c_{\max}$ may vary from point to point: the present result is local. A
 global constant $c_{\max}$ would follow from additional homogeneity assumptions on the cost function,
 which are not required here.
 \end{remark}
@@ -195,7 +195,7 @@ which are not required here.
 \begin{remark}[Physical interpretation of $d$]
 The cost function $d(x;\delta x)$ is treated here as an abstract primitive.
 Its physical identification---whether as an information-theoretic cost, a
-thermodynamic work function, or something else---lies outside the present scope.
+thermodynamic work function, or otherwise---lies outside the present scope.
 The derivation requires only the three structural properties R, E, and~T,
 not a specific physical origin.
 \end{remark}
