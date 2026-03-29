@@ -159,7 +159,7 @@ Define
 Since $v_{r}\neq 0$ (Assumption~R), the denominator is nonzero for all $s\in[0,1]$, so $\gamma$ is well-defined.
 Since $v_{t}>0$, the numerator has strictly positive $t$-component throughout, so $\gamma$ is a continuous
 path in $S^{1}\cap\{u_{t}>0\}$. Then $Q(\gamma(0))=Q(1,0)>0$ and $Q(\gamma(1))=Q(v)\le 0$, so by the
-intermediate value theorem there exists~$s^{*}$ with $Q(\gamma(s^{*}))=0$. Set $w:=\gamma(s^{*})$; then $w_{t}>0$ and $w\neq(1,0)$, so $w_{r}\neq 0$.
+intermediate value theorem there exists~$s^{*}$ with $Q(\gamma(s^{*}))=0$. Set $w:=\gamma(s^{*})$; then $w_{t}>0$. Since $Q(w)=0$ but $Q(1,0)>0$, $w\neq(1,0)$, so $w_{r}\neq 0$.
 
 \textbf{Step~4 (Nondegeneracy).}
 Suppose $Q$ is degenerate, i.e.\
