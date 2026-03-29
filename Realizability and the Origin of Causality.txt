@@ -252,7 +252,7 @@ argument as Step~2 of Theorem~5: if $Q(e_{t})\le 0$ then $d(x;(\Delta t,0,0,0))=
 Hence the positive inertia index of~$Q$ is at least~1.
 
 \textbf{Step~2 (Negative-semidefinite spatial subspace).}
-By Definition~7, the limiting directions
+By Definition~6, the limiting directions
 $\{v^{(1)},v^{(2)},v^{(3)}\}$ span a three-dimensional subspace $W\subset\mathbb{R}^{4}$ on which
 \[
 Q(w)\le 0 \quad\text{for all } w\in W.
@@ -267,14 +267,14 @@ indices sum to~4. The positive index is at least~1 (Step~1) and the negative ind
 \end{proof}
 
 \begin{remark}[Nondegeneracy in the $(1{+}3)$D theorem]
-Theorem~9 assumes nondegeneracy of~$Q$ as a hypothesis, whereas Theorem~5 derives it. In four dimensions, ruling out degeneracy
+Theorem~8 assumes nondegeneracy of~$Q$ as a hypothesis, whereas Theorem~5 derives it. In four dimensions, ruling out degeneracy
 from Assumptions~R4, E4, T alone requires additional input (e.g.\ realizability along a fourth
-independent direction). The nondegeneracy hypothesis in Theorem~9 is therefore an explicit
+independent direction). The nondegeneracy hypothesis in Theorem~8 is therefore an explicit
 scope condition, not a hidden assumption.
 \end{remark}
 
 \begin{remark}[Exclusion of non-Lorentzian signatures]
-Under the hypotheses of Theorem~5 in $(1{+}1)$ dimensions, and of Theorem~9 in $(1{+}3)$ dimensions, every non-Lorentzian signature is excluded. In $(1{+}1)$ dimensions:
+Under the hypotheses of Theorem~5 in $(1{+}1)$ dimensions, and of Theorem~8 in $(1{+}3)$ dimensions, every non-Lorentzian signature is excluded. In $(1{+}1)$ dimensions:
 \begin{itemize}
 \item[(i)] Positive-definite signature $\mathrm{Sig}(Q)=(2,0)$ is excluded by Assumption~R together with
 Lemma~4: it yields a nonzero limiting direction~$v$ with $v_{t}>0$ and $Q(v)\le 0$, which is
@@ -284,7 +284,7 @@ impossible for a positive-definite form.
 (Step~4 of Theorem~5): degeneracy forces $Q=a\,dt^{2}$ with $a>0$; but Step~3 of the proof of
 Theorem~5 yields~$w$ with $Q(w)=0$ and $w_{t}>0$, forcing $w_{t}=0$, a contradiction.
 \end{itemize}
-In $(1{+}3)$ dimensions (Theorem~9):
+In $(1{+}3)$ dimensions (Theorem~8):
 \begin{itemize}
 \item[(iv)] The split signature $(2,2)$ is excluded by the negative-semidefinite subspace condition of~R4: that
 condition forces the negative inertia index of~$Q$ to be at least~3, which is incompatible with $(2,2)$.
