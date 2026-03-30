@@ -218,7 +218,7 @@ Applying It\^{o}'s formula to $K=x^{\top}Gx$ gives an additional drift $\sigma^{
 
 The $K$-space noise amplitude $\sigma_{K}(x)=2\sigma\|Gx\|$ varies along $\{K=1\}$, yielding a position-dependent temperature:
 \begin{equation}
-T_{\mathrm{loc}}(x) := \frac{\sigma_{K}(x)^{2}}{2\kappa_{K}^{*}} = \frac{\sigma^{2}\,x^{\top}G^{2}x}{2d_{c}\,x_{*}^{\top}G^{2}x_{*}}.\label{eq:Tloc}
+T_{\mathrm{loc}}(x) := \frac{\sigma_{K}(x)^{2}}{2\kappa_{K}(x_{*})} = \frac{\sigma^{2}\,x^{\top}G^{2}x}{2d_{c}\,x_{*}^{\top}G^{2}x_{*}}.\label{eq:Tloc}
 \end{equation}
 For $\kappa\ell=1$ and $x(t)=(\sinh t,\cosh t)$: $T_{\mathrm{loc}}(t)=\sigma^{2}\cosh(2t)/(2d_{c})$, which has the structure of Tolman's law.
 
