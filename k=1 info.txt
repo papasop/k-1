@@ -43,7 +43,7 @@ The GENERIC formalism~\cite{GENERIC} provides the closest dynamical precedent; w
 
 \medskip
 
-The information time $dt_{\mathrm{info}}:=d\Phi/H$, where $\Phi$ parametrises structural variation and $H>0$ is a resistance, provides the metric through its Hessian: the local quadratic approximation $dt_{\mathrm{info}}^{2}\approx \delta x^{\top}G\,\delta x$ defines $G=\nabla^{2}(dt_{\mathrm{info}}^{2})|_{K=1}$. The redefinition enters the theorems through $G$ alone: $dt_{\mathrm{info}}$ serves as the motivating construction for~$G$, which enters the theorems as the leading-order form~$Q$ of~\cite{Realizability}.
+The information time $dt_{\mathrm{info}}:=d\Phi/H$, where $\Phi$ parametrises structural variation and $H>0$ is an entropic resistance, provides the metric through its Hessian: the local quadratic approximation $dt_{\mathrm{info}}^{2}\approx \delta x^{\top}G\,\delta x$ defines $G=\nabla^{2}(dt_{\mathrm{info}}^{2})|_{K=1}$. The redefinition enters the theorems through $G$ alone: $dt_{\mathrm{info}}$ serves as the motivating construction for~$G$, which enters the theorems as the leading-order form~$Q$ of~\cite{Realizability}.
 
 As a quadratic form measuring displacement cost, $G$ is the leading-order form~$Q$ of~\cite{Realizability}; the realizability theorem of that reference therefore applies directly. It forces $G$ indefinite: if the cost admits zero-threshold directions while pure temporal displacements retain positive cost, then $\mathrm{Sig}(G)=(1,1)$ is the unique possibility for a $2\times 2$ form, giving Lorentzian geometry with light cones and a causal structure. In general relativity, the Lorentzian metric is prescribed on a pre-existing differentiable manifold; here $G$ and its causal structure are derived from the cost structure.
 
@@ -233,7 +233,7 @@ The Gromov bound~\cite{Gromov} $\sigma_{1}\ge\hbar/2$ gives $\sigma_{\mathrm{Gro
 
 The $2\times 2$ equivalence theorem is the minimal case of a structure that may extend in stages.
 
-\noindent\textit{Stage~0: Origin.} Realizability plus positive temporal cost forces $G$ indefinite (Theorem~4, \cite{Realizability}).
+\noindent\textit{Stage~0: Origin.} Realizability plus positive temporal cost forces $G$ indefinite (Theorem~4, \cite{Realizability}). Conversely, for definite $G$ no nontrivial stability boundary exists (Theorem~3): the framework is self-limiting, producing physical content only when the cost structure is genuinely Lorentzian.
 
 \noindent\textit{Stage~1: Geometry.} $G$ defines a Lorentzian metric with light cones and causal structure. Whether a Lorentzian information geometry --- as opposed to the Riemannian Fisher geometry --- can be made precise remains open.
 
