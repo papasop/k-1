@@ -20,7 +20,7 @@
 \maketitle
 
 \begin{abstract}
-If time is defined as the cost of structural change, what geometric and dynamical structures follow? The answer is rigid: the information time $dt_{\mathrm{info}}=d\Phi/H$ and its Hessian $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$ provide the metric; the quadratic form $K(x)=x^{\top}Gx$ measures local temporal cost, and the condition $K=1$ requires that this cost match the metric's normalisation. Combined with realizability (positive temporal cost and zero-threshold spatial directions), this forces $G$ indefinite, making Lorentzian signature, symplectic structure, and a nontrivial stability boundary $d_{c}>0$ simultaneous algebraic consequences (Theorem~4). The evolution law $\dot{x}=(J_{G}-D)\nabla V$ is unique (Theorem~5), and at critical damping $\kappa_{K}=4d_{c}$ at a normalised $G$-eigenvector (Theorem~6).
+If time is defined as the cost of structural change, what geometric and dynamical structures follow? The information time $dt_{\mathrm{info}}=d\Phi/H$ and its Hessian $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$ provide the metric; the quadratic form $K(x)=x^{\top}Gx$ measures local temporal cost, and the condition $K=1$ requires that this cost match the metric's normalisation. Combined with realizability (positive temporal cost and zero-threshold spatial directions), this forces $G$ indefinite, making Lorentzian signature, symplectic structure, and a nontrivial stability boundary $d_{c}>0$ simultaneous algebraic consequences (Theorem~4). The evolution law $\dot{x}=(J_{G}-D)\nabla V$ is unique (Theorem~5), and at critical damping $\kappa_{K}=4d_{c}$ at a normalised $G$-eigenvector (Theorem~6).
 
 Under local thermal equilibrium, the Clausius relation is compatible with $\sigma^{2}=2d_{c}\cdot T_{\mathrm{tol}}$ (Proposition~7). The $\{K=1\}$ manifold carries two classes of fluctuation: thermodynamic (Class~A, perpendicular to $\{K=1\}$) and gauge (Class~B, tangential boost diffusion). Within Class~A the Clausius relation $\delta Q=T_{\mathrm{eff}}\,\delta S$ follows algebraically; the local noise temperature has the structure of Tolman's law. The sole external input is the identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$; Gromov non-squeezing cannot replace it.
 \end{abstract}
@@ -29,7 +29,7 @@ Under local thermal equilibrium, the Clausius relation is compatible with $\sigm
 
 From Newton's absolute time through proper time in general relativity, time enters physical theory as a primitive. Here it is derived: the information time $dt_{\mathrm{info}}:=d\Phi/H$ measures the cost of structural change, and its Hessian $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$ provides the metric. The quadratic form $K(x)=x^{\top}Gx$ measures local temporal cost. The condition $K=1$ is the \emph{metric self-consistency requirement} --- the point at which the temporal cost evaluated by $G$ equals the metric's own normalisation. Below unity the metric underestimates temporal cost; above unity it overestimates.
 
-Riemann's 1854 lecture posed the origin of the metric as an open problem. General relativity answers where curvature comes from (the Einstein equations) but not why the metric is Lorentzian in the first place. The Jacobson derivation~\cite{Jacobson} obtains the Einstein equations from thermodynamics on local Rindler horizons, but Lorentzian signature is still assumed. The EPS axiomatisation~\cite{EPS} derives causal structure from particle trajectories; the realizability condition of~\cite{Realizability} removes kinematic primitives entirely. The present work takes a different starting point: defining time as information cost determines a Hessian forced indefinite by realizability, making Lorentzian signature, symplectic structure, and $d_{c}>0$ algebraic consequences of a single definition. The GENERIC formalism~\cite{GENERIC} provides the closest dynamical precedent; we show it is the isotropic specialisation of the unique evolution law (Theorem~5).
+Riemann's 1854 lecture posed the origin of the metric as an open problem. General relativity answers where curvature comes from (the Einstein equations) but not why the metric is Lorentzian in the first place. The Jacobson derivation~\cite{Jacobson} obtains the Einstein equations from thermodynamics on local Rindler horizons, but Lorentzian signature is still assumed. The EPS axiomatisation~\cite{EPS} derives causal structure from particle trajectories; the realizability condition of~\cite{Realizability} removes kinematic primitives entirely. The present work takes a different starting point: defining time as information cost determines a Hessian forced indefinite by realizability; Lorentzian signature, symplectic structure, and $d_{c}>0$ are then algebraic consequences. The GENERIC formalism~\cite{GENERIC} provides the closest dynamical precedent; we show it is the isotropic specialisation of the unique evolution law (Theorem~5).
 
 The main results are: (i)~$d_{c}>0$ iff $\mathrm{Sig}(G)=(1,1)$ (Theorem~4); (ii)~unique evolution law (Theorem~5); (iii)~$\kappa_{K}=4d_{c}$ at critical damping (Theorem~6); (iv)~Clausius relation from stochastic dynamics within Class~A (Proposition~7). The physical interpretation (\S7) requires a single external identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$; scope and open questions are collected in~\S8.
 
@@ -41,9 +41,9 @@ The main results are: (i)~$d_{c}>0$ iff $\mathrm{Sig}(G)=(1,1)$ (Theorem~4); (ii
 
 \medskip
 
-Define $dt_{\mathrm{info}}:=d\Phi/H$, where $\Phi$ parametrises structural variation and $H$ is an entropic resistance. The local quadratic approximation $dt_{\mathrm{info}}^{2}\approx \delta x^{\top}G\,\delta x$ defines $G=\nabla^{2}(dt_{\mathrm{info}}^{2})|_{K=1}$.
+Define $dt_{\mathrm{info}}:=d\Phi/H$, where $\Phi$ parametrises structural variation and $H>0$ is an entropic resistance. The local quadratic approximation $dt_{\mathrm{info}}^{2}\approx \delta x^{\top}G\,\delta x$ defines $G=\nabla^{2}(dt_{\mathrm{info}}^{2})|_{K=1}$.
 
-Realizability forces $G$ indefinite~\cite{Realizability}: if the cost admits zero-threshold directions while pure temporal displacements retain positive cost, then $\mathrm{Sig}(G)=(1,1)$ is the unique possibility for a $2\times 2$ form, giving Lorentzian geometry with light cones and a causal structure. In general relativity, time enters as a background coordinate and the spacetime metric is specified independently; here the logic is reversed --- $G$ and its causal structure are consequences of the information cost.
+Realizability forces $G$ indefinite~\cite{Realizability}: if the cost admits zero-threshold directions while pure temporal displacements retain positive cost, then $\mathrm{Sig}(G)=(1,1)$ is the unique possibility for a $2\times 2$ form, giving Lorentzian geometry with light cones and a causal structure. In general relativity, the Lorentzian metric is prescribed on a pre-existing differentiable manifold; here $G$ and its causal structure are derived from the information cost.
 
 \section{Symplectic structure from $G$}
 
@@ -106,7 +106,7 @@ With $G=\mathrm{diag}(0.1,-10)$ and $H_{*}=\bigl(\begin{smallmatrix}1&0.9\\0.9&1
 For $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$ and diagonal $H_{*}$, one has $\mathrm{tr}(J_{G}H_{*})=0$ identically, so $d_{c}=\alpha/(\kappa\ell)$ independently of the diagonal entries. The thermodynamic interpretation of \S\ref{sec:physical} assumes $H_{*}$ diagonal; this is a necessary scope condition.
 \end{remark}
 
-\medskip\noindent\textbf{Numerical verification.} Among 2000 random symmetric $2\times 2$ matrices: all 1420 with $\mathrm{Sig}=(1,1)$ had $d_{c}>0$; all 580 with definite signature had $d_{c}=0$. The closed-form $d_{c}$ agreed with spectral computation to $<10^{-14}$.
+\medskip\noindent\textbf{Numerical verification.} Among 2000 random symmetric $2\times 2$ matrices: all 1420 with $\mathrm{Sig}=(1,1)$ had $d_{c}>0$; all 580 with definite signature had $d_{c}=0$.
 
 \medskip\noindent\textbf{Scope.} The closed-form $d_{c}=\alpha\sqrt{-1/\det G}$ relies on $\dim(\mathrm{Skew}_{2})=1$; higher-dimensional extensions require additional structure and are not part of the present paper.
 
@@ -132,7 +132,7 @@ The GENERIC formalism~\cite{GENERIC} requires Euclidean antisymmetry $L^{\top}=-
 
 \section{Critical damping and fluctuation structure (Law~III)}\label{sec:lawIII}
 
-\noindent\textbf{Law~III.} \textit{$K=1$ acts as a statistical attractor, selecting the unique self-consistent locus at which $G$, $J_{G}$, and $d_{c}$ are simultaneously well-defined.}
+\noindent\textbf{Law~III.} \textit{$K=1$ is selected by the stochastic dynamics as the unique self-consistent locus at which $G$, $J_{G}$, and $d_{c}$ are simultaneously well-defined.}
 
 \medskip
 
@@ -169,7 +169,7 @@ Adding isotropic noise $\sigma\,dW$ to Law~II gives $dx=(J_{G}-D)\nabla V\,dt+\s
 
 \medskip\noindent\textit{Class~B \textup{(gauge)}:} Free diffusion along $\{K=1\}$ in the tangential (boost) direction. For the Rindler metric, $\{K=1\}$ is the hyperbola $-(\kappa\ell)^{2}x_{1}^{2}+x_{2}^{2}=1$; the tangent direction generates Lorentz boosts --- motion along $\{K=1\}$ changes the inertial observer, not the thermodynamic state. The Hessian of $V$ restricted to $\{K=1\}$ is rank-one with null space containing this tangent, confirming that Class~B carries no restoring force and no heat.
 
-Mixing the two classes conflates thermodynamic and kinematic degrees of freedom and yields a non-Boltzmann marginal $K$-distribution; this is a measurement artifact.
+Mixing the two classes conflates thermodynamic and kinematic degrees of freedom and yields a non-Boltzmann marginal $K$-distribution; this is an artifact of marginalising over the gauge direction.
 
 \section{Spacetime thermodynamics}\label{sec:physical}
 
@@ -243,9 +243,7 @@ The $2\times 2$ equivalence theorem is the minimal case of a structure that may 
 
 \medskip
 
-The extension to $(1+3)$ dimensions, the full Jacobson argument~\cite{Jacobson} (which invokes $S=A/4$ independently), and the identification of the $\{K=1\}$ area element with Bekenstein--Hawking entropy require additional steps not contained here. Under local equilibrium and $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, the Clausius relation holds within the $2\times 2$ OU description; this is the sole external input.
-
-Whether $dt_{\mathrm{info}}$ can be identified with proper time, and the self-consistency condition $K=1$ with a variational principle for spacetime, is the subject of ongoing work.
+The extension to $(1+3)$ dimensions, the full Jacobson argument~\cite{Jacobson} (which invokes $S=A/4$ independently), and the identification of the $\{K=1\}$ area element with Bekenstein--Hawking entropy require additional steps not contained here. Whether $dt_{\mathrm{info}}$ can be identified with proper time, and the self-consistency condition $K=1$ with a variational principle for spacetime, is the subject of ongoing work.
 
 \bigskip
 \noindent\textbf{Statements and Declarations}
