@@ -112,14 +112,14 @@ For $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$ and diagonal $H_{*}$, one has $\mathr
 
 \section{Unique dynamics (Law~II)}
 
-\noindent\textbf{Law~II.} \textit{The dynamics on $\{K=1\}$ take the unique form $\dot{x}=(J_{G}-D)\nabla V_{\mathrm{total}}$, compatible with $GJ_{G}$ skew-symmetric and $D\ge 0$.}
+\noindent\textbf{Law~II.} \textit{The dynamics on $\{K=1\}$ take the unique form $\dot{x}=(J_{G}-D)\nabla V$, compatible with $GJ_{G}$ skew-symmetric and $D\ge 0$.}
 
 \begin{theorem}[Law~II Canonical Decomposition]
 Let $G$ be non-degenerate and let $J_{G}=\alpha G^{-1}J$ \textup{(Theorem~1)}. Suppose the generator $A$ splits as
 \begin{equation}
 GA = \alpha J - GD, \qquad D\ge 0.\label{eq:decomp}
 \end{equation}
-Then the evolution law is uniquely $\dot{x} = (J_{G}-D)\,\nabla V_{\mathrm{total}}$.
+Then the evolution law is uniquely $\dot{x} = (J_{G}-D)\,\nabla V$.
 \end{theorem}
 
 \begin{proof}
@@ -132,7 +132,7 @@ The GENERIC formalism~\cite{GENERIC} requires Euclidean antisymmetry $L^{\top}=-
 
 \section{Critical damping and fluctuation structure (Law~III)}\label{sec:lawIII}
 
-\noindent\textbf{Law~III.} \textit{$K=1$ is selected by the stochastic dynamics as the unique self-consistent locus at which $G$, $J_{G}$, and $d_{c}$ are simultaneously well-defined.}
+\noindent\textbf{Law~III.} \textit{$K=1$ is selected by the stochastic dynamics as the unique self-consistent locus of the metric.}
 
 \medskip
 
@@ -243,7 +243,7 @@ The $2\times 2$ equivalence theorem is the minimal case of a structure that may 
 
 \medskip
 
-The $2\times 2$ framework is not a truncation of a $(1+3)$-dimensional theory but the natural dimensionality of a single local Rindler horizon: one temporal and one spatial direction normal to the horizon. The Jacobson argument~\cite{Jacobson} reconstructs the Einstein equations by requiring the Clausius relation on \emph{all} local Rindler horizons and invoking $S=A/4$ independently. The present work supplies the first ingredient --- the algebraic derivation of the Clausius relation on each such horizon --- while the patching across all horizon directions and the entropy--area identification remain the content of the Jacobson argument.
+The $2\times 2$ framework is not a truncation of a $(1+3)$-dimensional theory but the natural dimensionality of a single local Rindler horizon: one temporal and one spatial direction normal to the horizon. The Jacobson argument~\cite{Jacobson} reconstructs the Einstein equations by requiring the Clausius relation on \emph{all} local Rindler horizons and invoking $S=A/4$ independently. The present work supplies one essential ingredient --- the algebraic derivation of the Clausius relation on each such horizon --- while the patching across all horizon directions and the entropy--area identification remain the content of the Jacobson argument.
 
 Whether $dt_{\mathrm{info}}$ can be identified with proper time, and the self-consistency condition $K=1$ with a variational principle for spacetime, is the subject of ongoing work.
 
