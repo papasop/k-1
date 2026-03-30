@@ -43,7 +43,7 @@ The main results are: (i)~$d_{c}>0$ iff $\mathrm{Sig}(G)=(1,1)$ (Theorem~4); (ii
 
 One natural construction is the Hessian of an information time $dt_{\mathrm{info}}:=d\Phi/H$, where $\Phi$ parametrises structural variation and $H>0$ is a resistance; the local quadratic approximation $dt_{\mathrm{info}}^{2}\approx \delta x^{\top}G\,\delta x$ then defines $G=\nabla^{2}(dt_{\mathrm{info}}^{2})|_{K=1}$. The theorems below depend only on $G$ and its signature, not on the specific decomposition into $\Phi$ and $H$.
 
-Realizability forces $G$ indefinite~\cite{Realizability}: if the cost admits zero-threshold directions while pure temporal displacements retain positive cost, then $\mathrm{Sig}(G)=(1,1)$ is the unique possibility for a $2\times 2$ form, giving Lorentzian geometry with light cones and a causal structure. In general relativity, the Lorentzian metric is prescribed on a pre-existing differentiable manifold; here $G$ and its causal structure are derived from the cost structure.
+As a quadratic form measuring displacement cost, $G$ is the leading-order form~$Q$ of~\cite{Realizability}; the realizability theorem of that reference therefore applies directly. It forces $G$ indefinite: if the cost admits zero-threshold directions while pure temporal displacements retain positive cost, then $\mathrm{Sig}(G)=(1,1)$ is the unique possibility for a $2\times 2$ form, giving Lorentzian geometry with light cones and a causal structure. In general relativity, the Lorentzian metric is prescribed on a pre-existing differentiable manifold; here $G$ and its causal structure are derived from the cost structure.
 
 \section{Symplectic structure from $G$}
 
