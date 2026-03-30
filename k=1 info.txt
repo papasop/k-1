@@ -10,7 +10,7 @@
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{definition}[theorem]{Definition}
-\newtheorem{remark}[theorem]{Remark}
+\newtheorem{remark}{Remark}
 
 \title{\textbf{$K=1$ Chronogeometrodynamics}\\[4pt]\large Lorentzian Geometry from Information Time}
 \author{Y.\,Y.\,N.\ Li\footnote{Independent Researcher. E-mail: \texttt{bizuisikao@gmail.com}}}
@@ -20,21 +20,16 @@
 \maketitle
 
 \begin{abstract}
-If time is defined as the cost of structural change, what geometric and dynamical
-structures follow? We show that the answer is surprisingly rigid: the information time $dt_{\mathrm{info}}=d\Phi/H$ and its Hessian $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$ provide the metric. The quadratic form $K(x)=x^{\top}Gx$ measures the local temporal cost; the condition $K=1$ is the metric self-consistency requirement that the temporal cost evaluated by the metric equals the metric's own normalisation. Combined with realizability (positive temporal cost and zero-threshold spatial directions), this forces $G$ indefinite, making Lorentzian signature, symplectic structure, and a nontrivial stability boundary $d_{c}>0$ simultaneous algebraic consequences (Theorem~4). The evolution law $\dot{x}=(J_{G}-D)\nabla V$ is unique (Theorem~5), and at critical damping the local effective restoring rate is $\kappa_{K}=4d_{c}$ at a normalised $G$-eigenvector (Theorem~6).
+If time is defined as the cost of structural change, what geometric and dynamical structures follow? The answer is rigid: the information time $dt_{\mathrm{info}}=d\Phi/H$ and its Hessian $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$ provide the metric; the quadratic form $K(x)=x^{\top}Gx$ measures local temporal cost, and the condition $K=1$ requires that this cost match the metric's normalisation. Combined with realizability (positive temporal cost and zero-threshold spatial directions), this forces $G$ indefinite, making Lorentzian signature, symplectic structure, and a nontrivial stability boundary $d_{c}>0$ simultaneous algebraic consequences (Theorem~4). The evolution law $\dot{x}=(J_{G}-D)\nabla V$ is unique (Theorem~5), and at critical damping $\kappa_{K}=4d_{c}$ at a normalised $G$-eigenvector (Theorem~6).
 
-Under local thermal equilibrium, the Clausius relation is compatible with $\sigma^{2}=2d_{c}\cdot T_{\mathrm{tol}}$ (Proposition~7). The $\{K=1\}$ manifold carries two classes of fluctuation: thermodynamic fluctuations of $K$ perpendicular to $\{K=1\}$ (Class~A) and free diffusion in the boost direction (Class~B, a gauge degree of freedom). Within Class~A the Clausius relation $\delta Q=T_{\mathrm{eff}}\,\delta S$ follows algebraically; the local noise temperature has the structure of Tolman's law. The sole external input is the identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$; Gromov non-squeezing cannot replace it.
+Under local thermal equilibrium, the Clausius relation is compatible with $\sigma^{2}=2d_{c}\cdot T_{\mathrm{tol}}$ (Proposition~7). The $\{K=1\}$ manifold carries two classes of fluctuation: thermodynamic (Class~A, perpendicular to $\{K=1\}$) and gauge (Class~B, tangential boost diffusion). Within Class~A the Clausius relation $\delta Q=T_{\mathrm{eff}}\,\delta S$ follows algebraically; the local noise temperature has the structure of Tolman's law. The sole external input is the identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$; Gromov non-squeezing cannot replace it.
 \end{abstract}
 
 \section{Introduction: time as a derived quantity}
 
-From Newton's absolute time through proper time in general relativity, time enters
-physical theory as a primitive. Here it is derived: the information time
-$dt_{\mathrm{info}}:=d\Phi/H$ measures the cost of structural change, and its Hessian
-$G=\nabla^{2}(dt_{\mathrm{info}}^{2})$ provides the metric. The quadratic form $K(x)=x^{\top}Gx$
-measures the local temporal cost. The condition $K=1$ is the \emph{metric self-consistency requirement} --- the point at which the temporal cost evaluated by $G$ equals the metric's own normalisation. Below unity, the metric underestimates temporal cost; above unity, it overestimates. We ask what geometric and dynamical structures are forced by this condition.
+From Newton's absolute time through proper time in general relativity, time enters physical theory as a primitive. Here it is derived: the information time $dt_{\mathrm{info}}:=d\Phi/H$ measures the cost of structural change, and its Hessian $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$ provides the metric. The quadratic form $K(x)=x^{\top}Gx$ measures local temporal cost. The condition $K=1$ is the \emph{metric self-consistency requirement} --- the point at which the temporal cost evaluated by $G$ equals the metric's own normalisation. Below unity the metric underestimates temporal cost; above unity it overestimates.
 
-Riemann's 1854 lecture posed the origin of the metric as an open problem. General relativity answers where curvature comes from (the Einstein equations) but not why the metric is Lorentzian in the first place. The Jacobson derivation~\cite{Jacobson} obtains the Einstein equations from thermodynamics on local Rindler horizons, but Lorentzian signature is still assumed. The EPS axiomatisation~\cite{EPS} derives causal structure from particle trajectories; the realizability condition of~\cite{Realizability} removes kinematic primitives entirely. The present work takes a different starting point: defining time as information cost determines a Hessian forced indefinite by realizability, making Lorentzian signature, symplectic structure, and $d_{c}>0$ simultaneous algebraic consequences. The GENERIC formalism~\cite{GENERIC} provides the closest dynamical precedent; we show it is the isotropic specialisation of the unique evolution law (Theorem~5).
+Riemann's 1854 lecture posed the origin of the metric as an open problem. General relativity answers where curvature comes from (the Einstein equations) but not why the metric is Lorentzian in the first place. The Jacobson derivation~\cite{Jacobson} obtains the Einstein equations from thermodynamics on local Rindler horizons, but Lorentzian signature is still assumed. The EPS axiomatisation~\cite{EPS} derives causal structure from particle trajectories; the realizability condition of~\cite{Realizability} removes kinematic primitives entirely. The present work takes a different starting point: defining time as information cost determines a Hessian forced indefinite by realizability, making Lorentzian signature, symplectic structure, and $d_{c}>0$ algebraic consequences of a single definition. The GENERIC formalism~\cite{GENERIC} provides the closest dynamical precedent; we show it is the isotropic specialisation of the unique evolution law (Theorem~5).
 
 The main results are: (i)~$d_{c}>0$ iff $\mathrm{Sig}(G)=(1,1)$ (Theorem~4); (ii)~unique evolution law (Theorem~5); (iii)~$\kappa_{K}=4d_{c}$ at critical damping (Theorem~6); (iv)~Clausius relation from stochastic dynamics within Class~A (Proposition~7). The physical interpretation (\S7) requires a single external identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$; scope and open questions are collected in~\S8.
 
@@ -92,22 +87,18 @@ For non-degenerate symmetric $2\times 2$ real $G$, under the isotropic linearisa
 \item[\textup{(a)}] The metric admits a nontrivial stability boundary $d_{c}>0$.
 \item[\textup{(b)}] $\mathrm{Sig}(G)=(1,1)$ \textup{(Lorentzian)}, equivalently $\det G<0$.
 \end{itemize}
-The equivalence fails for general $H_{*}$ \textup{(Remark~8)}: $d_{c}$ is a signature invariant only within the isotropic class.
+The equivalence fails for general $H_{*}$ \textup{(Remark~\ref{rem:Hstar_dep})}: $d_{c}$ is a signature invariant only within the isotropic class.
 \end{theorem}
 
 \begin{proof}
 $d_{c}>0 \Leftrightarrow -1/\det G>0 \Leftrightarrow \det G<0 \Leftrightarrow \mathrm{Sig}(G)=(1,1)$, via Theorems~2 and~3.\qed
 \end{proof}
 
-\begin{remark}
-Theorem~1 shows that a unique $J_{G}$ with $GJ_{G}$ skew-symmetric exists for every non-degenerate $G$, regardless of signature. It is a structural prerequisite, not an equivalence condition characterising Lorentzian signature. The core equivalence is (a)$\Leftrightarrow$(b).
-\end{remark}
-
 \begin{remark}[Isotropic scaling]
 $H_{*}$ denotes the cost-function weight matrix in $d(\delta x)/dt=(J_{G}-dI)H_{*}\,\delta x$; $H_{*}=I$ is the default. For $H_{*}=cI$ ($c>0$), $d_{c}$ is invariant. For general $H_{*}>0$, the threshold may shift.
 \end{remark}
 
-\begin{remark}[Dependence on $H_{*}$]
+\begin{remark}[Dependence on $H_{*}$]\label{rem:Hstar_dep}
 With $G=\mathrm{diag}(0.1,-10)$ and $H_{*}=\bigl(\begin{smallmatrix}1&0.9\\0.9&1\end{smallmatrix}\bigr)$, $d_{c}^{\mathrm{iso}}=1$ while $d_{c}(H_{*})=4.55$, confirming that $d_{c}$ may depend on $H_{*}$ outside the isotropic class.
 \end{remark}
 
@@ -141,11 +132,11 @@ The GENERIC formalism~\cite{GENERIC} requires Euclidean antisymmetry $L^{\top}=-
 
 \section{Critical damping and fluctuation structure (Law~III)}\label{sec:lawIII}
 
-\noindent\textbf{Law~III.} \textit{$K=1$ acts as a statistical attractor via mean dissipativity, selecting the unique self-consistent locus at which $G$, $J_{G}$, and $d_{c}$ are simultaneously well-defined.}
+\noindent\textbf{Law~III.} \textit{$K=1$ acts as a statistical attractor, selecting the unique self-consistent locus at which $G$, $J_{G}$, and $d_{c}$ are simultaneously well-defined.}
 
 \medskip
 
-Two systems must be distinguished. The auxiliary linear system $\dot{x}=(J_{G}-d_{c}I)x$ has eigenvalues $0$ and $-2d_{c}$ at critical damping. Theorem~6 below concerns the nonlinear system $\dot{x}=(J_{G}-d_{c}I)\nabla V$, $V=\tfrac{1}{2}(K-1)^{2}$, where $V$ penalises departure from $K=1$. On $\{K=1\}$ one has $\nabla V=0$, so $x_{*}$ is an equilibrium; the Jacobian at $x_{*}$ is $(J_{G}-d_{c}I)\nabla^{2}V(x_{*})$, which differs from $J_{G}-d_{c}I$ because $\nabla^{2}V(x_{*})$ is rank-1.
+The auxiliary linear system $\dot{x}=(J_{G}-d_{c}I)x$ has eigenvalues $0$ and $-2d_{c}$ at critical damping. Theorem~6 concerns the nonlinear system $\dot{x}=(J_{G}-d_{c}I)\nabla V$, $V=\tfrac{1}{2}(K-1)^{2}$, where $V$ penalises departure from $K=1$. On $\{K=1\}$ one has $\nabla V=0$, so $x_{*}$ is an equilibrium; the Jacobian at $x_{*}$ is $(J_{G}-d_{c}I)\nabla^{2}V(x_{*})$, which differs from $J_{G}-d_{c}I$ because $\nabla^{2}V(x_{*})$ is rank-1.
 
 \begin{theorem}[Local Effective Restoring Rate]
 Let $G$ be a $2\times 2$ Lorentzian metric, $D=d_{c}$. Define $K(x)=x^{\top}Gx$, $V=\tfrac{1}{2}(K-1)^{2}$, with drift $\dot{x}=(J_{G}-d_{c}I)\nabla V$. Then for all $x\in\mathbb{R}^{2}$:
@@ -182,7 +173,7 @@ Mixing the two classes conflates thermodynamic and kinematic degrees of freedom 
 
 \section{Spacetime thermodynamics}\label{sec:physical}
 
-The preceding sections establish the geometric content without physical input. This section connects it to spacetime thermodynamics; every connection requires at least one external identification, marked explicitly.
+This section connects the geometric structures of \S\S2--6 to spacetime thermodynamics; every connection requires at least one external identification, marked explicitly.
 
 For the Rindler metric $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, eq.~\eqref{eq:dc} gives $d_{c}=\alpha/(\kappa\ell)$. With $T_{H}=\kappa/(2\pi)$,
 \begin{equation}
@@ -196,11 +187,11 @@ Within Class~A (fixed inertial observer), the $K$-dynamics near $K=1$ is a one-d
 \begin{equation}
 \mathrm{Var}(K)\approx\frac{\sigma^{2}}{2d_{c}}\label{eq:var}
 \end{equation}
-and effective temperature $T_{\mathrm{eff}}=\sigma^{2}/(2d_{c})$. The fluctuation-dissipation relation $\sigma_{K}^{2}=2\kappa_{K}T_{\mathrm{eff}}$ is verified algebraically from Law~II and Theorem~6. The Fokker--Planck equation yields a Boltzmann stationary distribution $\rho\propto\exp(-V/T_{\mathrm{eff}})$; the Clausius relation $\delta Q=T_{\mathrm{eff}}\,dS$ then follows identically for the OU process, with
+and effective temperature $T_{\mathrm{eff}}=\sigma^{2}/(2d_{c})$. The fluctuation-dissipation relation $\sigma_{K}^{2}=2\kappa_{K}T_{\mathrm{eff}}$ follows algebraically from Law~II and Theorem~6. The Fokker--Planck equation yields a Boltzmann stationary distribution $\rho\propto\exp(-V/T_{\mathrm{eff}})$; the Clausius relation $\delta Q=T_{\mathrm{eff}}\,dS$ then follows for the OU process, with
 \[
 \delta Q := dV + \tfrac{1}{2}\sigma_{K}^{2}\,dt,\qquad \sigma_{K}=2\sigma\|Gx_{*}\|.
 \]
-Everything except the identification $T_{\mathrm{eff}}(x_{*})=T_{\mathrm{tol}}(x_{*})$ is derived internally; once this identification is accepted, the Clausius relation follows.
+The only external input is the identification $T_{\mathrm{eff}}(x_{*})=T_{\mathrm{tol}}(x_{*})$; everything else is derived internally.
 
 \begin{proposition}[Local Clausius Compatibility]
 Under local thermal equilibrium and the identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, the Clausius relation $\delta Q=T\,\delta S$ is compatible with
@@ -220,9 +211,7 @@ Three logically distinct inputs: (i)~the OU approximation, valid when $|K-1|\ll 
 
 \subsection*{It\^{o} correction and local temperature}
 
-Applying It\^{o}'s formula to $K=x^{\top}Gx$ gives an additional drift $\sigma^{2}\,\mathrm{tr}(G)\,dt$. This shifts the mean of $K$ but not its variance: at any $G$-eigenvector base point, the FDT ratio $\sigma_{K}^{2}/(2\kappa_{K})$ cancels to $\sigma^{2}/(2d_{c})$ regardless of $x_{*}^{\top}G^{2}x_{*}$. Hence~\eqref{eq:var} and $T_{\mathrm{eff}}=\sigma^{2}/(2d_{c})$ hold for any Lorentzian $G$.
-
-For the Rindler metric, $\sigma^{2}\,\mathrm{tr}(G)=\sigma^{2}(1-(\kappa\ell)^{2})$; the OU approximation is exact at $\kappa\ell=1$ and accurate when $|(\kappa\ell)^{2}-1|\ll 1$.
+Applying It\^{o}'s formula to $K=x^{\top}Gx$ gives an additional drift $\sigma^{2}\,\mathrm{tr}(G)\,dt$. This shifts the mean of $K$ but not its variance: at any $G$-eigenvector base point, the FDT ratio $\sigma_{K}^{2}/(2\kappa_{K})$ cancels to $\sigma^{2}/(2d_{c})$ regardless of $x_{*}^{\top}G^{2}x_{*}$. Hence~\eqref{eq:var} and $T_{\mathrm{eff}}=\sigma^{2}/(2d_{c})$ hold for any Lorentzian $G$. For the Rindler metric, $\sigma^{2}\,\mathrm{tr}(G)=\sigma^{2}(1-(\kappa\ell)^{2})$; the OU approximation is exact at $\kappa\ell=1$ and accurate when $|(\kappa\ell)^{2}-1|\ll 1$.
 
 The $K$-space noise amplitude $\sigma_{K}(x)=2\sigma\|Gx\|$ varies along $\{K=1\}$, yielding a position-dependent temperature:
 \begin{equation}
@@ -234,13 +223,13 @@ For $\kappa\ell=1$ and $x(t)=(\sinh t,\cosh t)$: $T_{\mathrm{loc}}(t)=\sigma^{2}
 $D=T_{\mathrm{tol}}\ll d_{c}$ renders $K=1$ unstable. Stability requires $D\ge d_{c}$; critical damping $D=d_{c}$ is the unique marginally stable choice.
 \end{remark}
 
-\begin{remark}[Gromov bound]
+\begin{remark}[Gromov bound]\label{rem:gromov}
 The Gromov bound~\cite{Gromov} $\sigma_{1}\ge\hbar/2$ gives $\sigma_{\mathrm{Gromov}}^{2}\sim\ell$, while the Clausius constraint requires $\sigma^{2}\sim 1/\ell^{2}$. These scale oppositely: Gromov provides a lower bound insufficient to produce thermal noise at $T_{\mathrm{tol}}$. The Clausius relation remains an independent input.
 \end{remark}
 
 \section{Discussion}
 
-The $2\times 2$ equivalence theorem is the first case of a structure that extends in stages.
+The $2\times 2$ equivalence theorem is the minimal case of a structure that may extend in stages.
 
 \noindent\textit{Stage~0: Origin.} Realizability plus positive temporal cost forces $G$ indefinite (Theorem~4, \cite{Realizability}).
 
@@ -248,7 +237,7 @@ The $2\times 2$ equivalence theorem is the first case of a structure that extend
 
 \noindent\textit{Stage~2: Physics.} At critical damping, the stochastic extension identifies Class~A and Class~B fluctuations. Within Class~A, the Clausius relation follows algebraically and the local noise temperature has the Tolman structure.
 
-\noindent\textit{Stage~3: Quantum.} For $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, the identity $d_{c}\,\sigma_{1}=1$ holds algebraically. Combining with $\sigma_{1}\ge\hbar/2$ gives $d_{c}\le 2/\hbar$ --- an upper bound on temperature from symplectic topology alone. However, the Gromov and Clausius scalings are incompatible (Remark~13); whether a refinement can close the gap, or coincides with the Bekenstein bound, is the question to which the framework points.
+\noindent\textit{Stage~3: Quantum.} For $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, $d_{c}=\alpha/(\kappa\ell)$ and the minimum symplectic eigenvalue is $\sigma_{1}=\kappa\ell/\alpha$, giving $d_{c}\,\sigma_{1}=1$ identically. Combining with $\sigma_{1}\ge\hbar/2$ gives $d_{c}\le 2/\hbar$ --- an upper bound on temperature from symplectic topology alone. However, the Gromov and Clausius scalings are incompatible (Remark~\ref{rem:gromov}); whether a refinement can close the gap, or coincides with the Bekenstein bound, is the question to which the framework points.
 
 \noindent\textit{Beyond GENERIC.} For Lorentzian $G$, $S\neq 0$ departs from GENERIC while $d_{c}$ is controlled by $\det G$ alone, suggesting a Lorentzian extension of non-equilibrium thermodynamics --- physical law as the consequence of structure at a critical self-consistency point~\cite{Wiener}.
 
