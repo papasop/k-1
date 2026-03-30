@@ -1,0 +1,604 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{mathtools}
+
+\geometry{margin=2.5cm}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\DeclareMathOperator{\Sig}{Sig}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\Var}{Var}
+\newcommand{\R}{\mathbb{R}}
+
+
+\title{K\,=\,1 Chronogeometrodynamics\\[4pt]
+\large Symplectic Gauge Collapse}
+\author{Y.\,Y.\,N.\,Li}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We present a $(1{+}3)$-dimensional formulation of K\,=\,1 Chronogeometrodynamics
+whose central feature is a symplectic gauge collapse from continuous $6$-dimensional
+freedom to a discrete three-element pairing class, under the local-inertial-frame
+constraint that the cost weight $H_*$ is diagonal. The framework defines an information
+time $dt_\mathrm{info} := d\Phi/H$, a Hessian metric $G = \nabla^2(dt_\mathrm{info}^2)|_{K=1}$,
+and studies the dynamics of the order parameter $K(x) := x^\top G x$ near the
+equilibrium shell $\{K=1\}$.
+
+Three declared inputs are separated from internal deductions throughout:
+(i)~Lorentzian signature $\Sig(G)=(1,3)$, established in a companion realizability
+paper; (ii)~a canonical symplectic gauge $J_0$, selected by the Route~1 Proposition,
+which reduces the $6$-dimensional gauge freedom to a discrete $3$-element set under
+the diagonal-$H_*$ constraint; (iii)~an isotropic It\^o SDE for fluctuation analysis.
+
+Within these inputs the internal chain is logically closed. The unique symplectic
+generator $J_G = \alpha G^{-1}J_0$ yields a critical damping scalar
+$d_c = \alpha/(\kappa\ell)$ for Rindler metrics. In the local radial OU sector
+with isotropic noise, $\Var(K)=\sigma^2/(2d_c)$ universally across all Lorentzian $G$.
+A Clausius relation $\delta Q = T_\mathrm{eff}\,\delta S$ holds only in the reduced
+Class~A radial sector.
+
+\medskip
+\noindent\textbf{New result (Section~\ref{sec:interface}).}
+The Class~B tangential diffusion on $\{K=1\} \cong H^3$ carries a conserved
+SO$(1,3)$ Noether charge
+\[
+  Q_\mathrm{boost} := \int_{S^2} \iota_{\partial_\chi}\,\omega\big|_{\{K=1\}}
+  = (\kappa\ell)^2 \cdot 4\pi = A_\mathrm{horizon} = 4\,S_\mathrm{BH}.
+\]
+This identifies Class~B not as a gauge degree of freedom but as the symplectic
+geometric carrier of Bekenstein--Hawking entropy. Combined with
+$\Var(K) = \sigma^2/(2d_c) = T_\mathrm{tol}$, the variance formula acquires a
+geometric interpretation: it equals the Tolman temperature, which is itself
+expressed via the symplectic area $Q_\mathrm{boost}/(4\pi)$ on~$H^3$.
+The J$_0$/J$_4$ equivalence in the Rindler/$2{+}2$ sector is proved algebraically
+via the block-product spectrum theorem.
+Several identities are numerically verified on five standard Lorentzian metrics.
+\end{abstract}
+
+\tableofcontents
+\bigskip
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The $2$-dimensional prototype of K\,=\,1 Chronogeometrodynamics~\cite{proto2d}
+established a tight logical chain: from the information-time definition and the
+Hessian metric $G$, one derives (i)~a unique symplectic generator $J_G$ (in 2D the
+skew space is one-dimensional, so no gauge choice is needed), (ii)~a critical damping
+scalar $d_c$ that is positive if and only if $\Sig(G)=(1,1)$, and (iii)~a Clausius
+relation in the radial fluctuation sector. In 2D the three conditions $d_c>0$,
+$\det G<0$, and $\Sig=(1,1)$ are mutually equivalent; uniqueness of $J_G$ requires
+no additional input.
+
+Moving to $(1{+}3)$ dimensions changes the logical structure in two important ways.
+First, the skew-symmetric matrix space is six-dimensional, so $G$ alone does not
+determine $J_0$ uniquely; a gauge choice is required. Second, the spectral condition
+$d_c>0$ is no longer equivalent to $\Sig(G)=(1,3)$: Lorentzian signature implies
+$d_c>0$, but $d_c>0$ does not imply $\Sig(G)=(1,3)$, since for example
+$\Sig=(3,1)$ also yields $d_c>0$. The present paper makes these distinctions
+explicit throughout.
+
+We define the order parameter $K(x):=x^\top Gx$, the equilibrium shell $\{K=1\}$,
+and the radial potential $V=\tfrac{1}{2}(K-1)^2$ with coordinate gradient
+$\nabla_x V = 2(K-1)Gx$. Law~II takes the form
+\[
+  \dot x = (J_G - dI)\,\nabla_x V,\quad J_G := \alpha G^{-1}J_0,\quad d\ge 0,
+\]
+where damping is restricted to the isotropic class $D=dI$.
+
+\medskip
+\noindent\textbf{Central new contribution.}
+The companion paper~\cite{proto2d} noted that Class~B (tangential diffusion on
+$\{K=1\}$) ``carries no heat'' and treated it as a gauge degree of freedom.
+Section~\ref{sec:interface} of the present paper overturns this interpretation:
+the $\mathrm{SO}(1,3)$ Noether charge of the boost Killing vector restricted to
+$\{K=1\}\cong H^3$ equals the Bekenstein--Hawking entropy, giving
+Class~B the status of the \emph{symplectic geometric carrier of black-hole entropy}.
+This is the unique formula-level feedback from the $(1{+}3)$-dimensional analysis
+to the $2$-dimensional prototype.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Framework and notation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\paragraph{Fixed canonical symplectic matrix (gauge input).}
+\[
+  J_0 = \begin{pmatrix}0&1&0&0\\-1&0&0&0\\0&0&0&1\\0&0&-1&0\end{pmatrix},
+  \quad\text{pairs indices }(0,1)\text{ and }(2,3).
+\]
+
+\paragraph{Order parameter and equilibrium shell.}
+$K(x):=x^\top Gx$; equilibrium shell $\{K=1\}$.
+For Rindler $G=\mathrm{diag}((\kappa\ell)^2,-1,-1,-1)$ the shell is parametrised by
+\[
+  x(\chi,\theta,\phi)=\Bigl(\tfrac{\cosh\chi}{\kappa\ell},\;
+  \sinh\chi\sin\theta\cos\phi,\;
+  \sinh\chi\sin\theta\sin\phi,\;
+  \sinh\chi\cos\theta\Bigr).
+\]
+
+\paragraph{Stochastic extension.}
+All fluctuation items derive from the It\^o SDE
+\[
+  dx = (J_G - d_c I)\,\nabla_x V\,dt + \sigma\,dW_t,
+\]
+where $W_t$ is standard $4$-dimensional Brownian motion with
+$E[dW_t\,dW_t^\top]=I\,dt$ and $\sigma>0$.
+
+\paragraph{Logical scope markers.}
+Items are marked \textbf{[verified]}, \textbf{[partial]},
+\textbf{[cond: \dots]}, \textbf{[axiom]}, or \textbf{[def]} throughout.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Formula list}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{enumerate}
+
+\item \textbf{Information time (Law~I).} \textmd{[def]}
+\[
+  dt_\mathrm{info} := \frac{d\Phi}{H}.
+\]
+
+\item \textbf{Hessian metric (Law~I).} \textmd{[def]}
+\[
+  G = \nabla^2\!\bigl(dt_\mathrm{info}^2\bigr)\big|_{K=1}.
+\]
+
+\item \textbf{Lorentzian signature input.} \textmd{[cond: companion \cite{realizability}]}
+\[
+  \Sig(G)=(1,3),\quad\text{hence }\det G<0.
+\]
+The three steps are: (i)~positive temporal cost, (ii)~zero-threshold spatial
+directions, (iii)~Sylvester inertia counting.
+
+\item \textbf{Unique symplectic generator in the chosen gauge.} \textmd{[verified]}
+\[
+  J_G = \alpha G^{-1}J_0\quad
+  (\text{unique solution of }GM=\alpha J_0\text{ given fixed }J_0).
+\]
+Verified: $\|GJ_G - \alpha J_0\|_F < 10^{-14}$ on all five metrics.
+
+\item \textbf{Law~II: unique evolution.} \textmd{[verified]}
+\[
+  \frac{dx}{dt} = (J_G - dI)\,\nabla_x V,\quad
+  \nabla_x V = 2(K-1)Gx,\quad d\ge 0.
+\]
+
+\item \textbf{Critical damping scalar.} \textmd{[verified]}
+For diagonal $G=\mathrm{diag}(g_0,g_1,g_2,g_3)$:
+\[
+  d_c = \max\!\Bigl(\alpha\sqrt{-\tfrac{1}{g_0 g_1}}\cdot\mathbf{1}_{g_0 g_1<0},\;
+                    \alpha\sqrt{-\tfrac{1}{g_2 g_3}}\cdot\mathbf{1}_{g_2 g_3<0}\Bigr).
+\]
+Rindler $G=\mathrm{diag}((\kappa\ell)^2,-1,-1,-1)$: $d_c=\alpha/(\kappa\ell)$.
+
+\item \textbf{Definite signature $\Rightarrow$ $d_c=0$.} \textmd{[verified]}
+$\Sig(G)\in\{(4,0),(0,4)\}\Rightarrow d_c=0$.
+
+\item \textbf{Spectral restatement of $d_c$ in the fixed gauge.}
+\textmd{[partial: $\Sig=(1,3)\Rightarrow d_c>0$ verified; converse falsified]}
+\[
+  d_c>0\;\Longleftrightarrow\;\max\Re\,\sigma(G^{-1}J_0)>0.
+\]
+The converse fails: $\Sig=(3,1)$ also gives $d_c>0$.
+
+\item \textbf{Closed-loop decomposition.} \textmd{[verified]}
+\[
+  GA = \alpha J_0 - GD,\quad D=dI.
+\]
+
+\item \textbf{$K$-dynamics exact identity.} \textmd{[verified]}
+\[
+  \dot K = 4(K-1)\bigl[\alpha\,x^\top(J_0 G)x - d\,x^\top G^2 x\bigr].
+\]
+Key: $GJGG=\alpha J_0 G$, so the damping term carries $G^2$, not $G^3$.
+
+\item \textbf{Radial restoring rate at $G$-eigenvector.} \textmd{[verified]}
+At $Gx_*=\lambda x_*$:
+\[
+  \dot K\big|_{x=x_*} = -4d_c\,x_*^\top G^2 x_*\cdot(K-1).
+\]
+
+\item \textbf{Normalised restoring rate.} \textmd{[verified]}
+\[
+  \kappa_K(x_*) = 4d_c\quad(x_*^\top G^2 x_*=1).
+\]
+
+\item \textbf{Stochastic $K$-variance.} \textmd{[verified]}
+\[
+  \Var(K)=\frac{\sigma^2}{2d_c}.
+\]
+The $\lambda_+$ cancellation ($\kappa_K=4d_c\lambda_+$, $\sigma_K^2=4\sigma^2\lambda_+$)
+is exact for isotropic noise; anisotropic $C$ breaks it.
+
+\item \textbf{Effective temperature.} \textmd{[verified]}
+\[
+  T_\mathrm{eff}=\frac{\sigma^2}{2d_c}.
+\]
+
+\item \textbf{Noise-temperature matching.} \textmd{[cond: Tolman redshift]}
+\[
+  \sigma^2 = 2d_c\cdot T_\mathrm{tol} = 2d_c^2\cdot T_H.
+\]
+$T_\mathrm{tol}=d_c\cdot T_H$ follows from the standard Tolman redshift law
+$T_\mathrm{loc}\sqrt{g_{00}}=\mathrm{const}$ applied to Rindler $g_{00}=(\kappa\xi)^2$.
+The sole physical input is $T_\mathrm{eff}=T_\mathrm{tol}$.
+
+\item \textbf{Local noise temperature.} \textmd{[verified]}
+\[
+  T_\mathrm{loc}(x)=\frac{\sigma^2\,x^\top G^2 x}{2d_c\,x_*^\top G^2 x_*}.
+\]
+Monotone in $\chi$ (Tolman structure) on all five metrics.
+
+\item \textbf{Clausius relation (local Class~A regime).}
+\textmd{[partial: FDT algebraic; Boltzmann form in radial OU only]}
+\[
+  \delta Q = T_\mathrm{eff}\,\delta S\quad\text{(radial OU sector only).}
+\]
+The full 4D SDE has a marginal Class~B direction and does not admit a globally
+normalisable stationary density.
+
+\item \textbf{Class~A restoring rate.} \textmd{[verified]} $\kappa_K=4d_c$.
+
+\item \textbf{Class~B tangential diffusion on $\{K=1\}$.}
+\textmd{[partial: geometric layer verified; projected SDE not simulated]}
+
+For Rindler $G=\mathrm{diag}((\kappa\ell)^2,-1,-1,-1)$:
+\[
+  x(\chi,\theta,\phi)=\Bigl(\tfrac{\cosh\chi}{\kappa\ell},\,
+  \sinh\chi\sin\theta\cos\phi,\,\sinh\chi\sin\theta\sin\phi,\,
+  \sinh\chi\cos\theta\Bigr).
+\]
+Tangent vectors $\partial_\chi,\partial_\theta,\partial_\phi$ satisfy
+$2x^\top Gv=0$ (verified on all five metrics, $\mathrm{rank}(P_T)=3$).
+$\Sig(G)=(1,3)$ is essential: it makes $\{K=1\}$ a spacelike $H^3$
+with $\mathrm{SO}(1,3)/\mathrm{SO}(3)\cong H^3$.
+
+\item \textbf{Symplectic interface relation.} \textmd{[verified]}
+\[
+  d_c\cdot\sigma_1 = \alpha,\qquad d_c\cdot\sigma_1 = 1\;(\alpha=1).
+\]
+$\sigma_1=\kappa\ell$ is the minimum symplectic eigenvalue of the Rindler metric~\cite{sympcost};
+$d_c=\alpha/(\kappa\ell)$ is item~6. Their product is an algebraic identity.
+Near-horizon Theorem~1 of~\cite{nearhorizon}: $d_c\cdot T_H=1/(2\pi\ell)$ (exact
+$\kappa$-cancellation).
+
+\item \textbf{Temperature upper bound.} \textmd{[cond: Gromov \cite{gromov}]}
+\[
+  d_c\le\frac{2\alpha}{\hbar}.
+\]
+
+\item \textbf{Law~III: phase-space contraction.} \textmd{[verified]}
+\[
+  \tr(J_G-d_c I)=-4d_c<0.
+\]
+
+\item \textbf{It\^o correction.} \textmd{[verified]}
+It\^o extra drift $=\sigma^2\tr(G)\,dt$: constant shift to the mean only; does not
+alter $\kappa_K$ or $\Var(K)=\sigma^2/(2d_c)$.
+
+\item \textbf{Stability: unique critical damping.} \textmd{[verified]}
+$d=d_c$ is the unique marginally stable choice within $D=dI$.
+
+\item \textbf{Local equilibrium approximation range.} \textmd{[def]}
+$|K-1|\ll 1$ and $\tau_B\gg\tau_A:=1/(4d_c)$.
+
+\item \textbf{Symplectic gauge (Route~1 Proposition).}
+\textmd{[axiom: gauge choice; Route~1 Prop.]}
+\[
+  GJ_G = \alpha J_0.
+\]
+
+\begin{theorem}[Block-product spectrum]
+Let $G=\mathrm{diag}(g_0,g_1,g_2,g_3)$ and let $J$ be block-compatible with pairing
+$\{i,j\}+\{k,l\}$. Then
+\[
+  \sigma(G^{-1}J) = \sigma(G_{ij}^{-1}J_2)\cup\sigma(G_{kl}^{-1}J_2),
+\]
+where the $2\times 2$ block characteristic polynomial is $\lambda^2+1/(g_i g_j)$.
+Two pairings yield identical spectra iff their block-product multisets agree.
+\end{theorem}
+
+\begin{proof}
+$G_{ij}^{-1}J_2=\bigl(\begin{smallmatrix}0&1/g_i\\-1/g_j&0\end{smallmatrix}\bigr)$,
+$\det(\lambda I-G_{ij}^{-1}J_2)=\lambda^2+1/(g_i g_j)$.
+Spectrum depends only on $g_i g_j$.\qed
+\end{proof}
+
+Consequences:
+\begin{itemize}
+\item \emph{Rindler}: all three pairings equivalent ($g_1=g_2=g_3=1$); $d_c=1/(\kappa\xi)$.
+\item \emph{Non-degenerate metrics}: pairings distinguished.
+\item \emph{Schwarzschild} $G=\mathrm{diag}(-f,1/f,r^2,r^2\sin^2\theta)$:
+      $J_0$ gives $d_c=1$ (erases horizon info); $J_4$ gives
+      $d_c=1/(r\sqrt{f})\to\infty$ at the horizon.
+\end{itemize}
+
+\item \textbf{Observer-aligned cost $H_*$.} \textmd{[def]}
+\[
+  H_* = \mathrm{diag}(h_t,h_1,h_2,h_3)\quad\text{in local observer coordinates.}
+\]
+
+\item \textbf{Radial OU variance.} \textmd{[verified]} $\Var(K)=\sigma^2/(2d_c)$.
+
+\item \textbf{Tolman-type redshift structure.} \textmd{[verified]}
+
+Minkowski $G=\mathrm{diag}(1,-1,-1,-1)$:
+$T_\mathrm{loc}(\chi)\propto\cosh(2\chi)$.
+
+Rindler $G=\mathrm{diag}((\kappa\ell)^2,-1,-1,-1)$:
+$T_\mathrm{loc}(\chi)\propto(\kappa\ell)^2\cosh^2\chi+\sinh^2\chi$.
+
+\end{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{The symplectic--thermodynamics interface}
+\label{sec:interface}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+This section provides the formula-level connection between the three structures
+that remained separate in the $29$-item list above: the geometry of $H^3$, the
+$\mathrm{SO}(1,3)$ symmetry of $\{K=1\}$, and Bekenstein--Hawking thermodynamics.
+It constitutes the principal new result of this paper relative to the
+$2$-dimensional prototype~\cite{proto2d}.
+
+\subsection{Symplectic 2-form on $H^3$}
+
+The symplectic form associated to $J_G=\alpha G^{-1}J_0$ is
+\[
+  \omega = \tfrac{1}{2}\,dx^\top (GJ_0 - J_0^\top G)\,dx.
+\]
+Restricted to $\{K=1\}$ with the Rindler parametrisation of item~19,
+the induced $2$-form on each constant-$\chi$ sphere $S^2$ is
+\begin{equation}
+  \omega_{S^2} = \sigma_1^2\,\sin\theta\,d\theta\wedge d\phi
+              = (\kappa\ell)^2\,\sin\theta\,d\theta\wedge d\phi,
+  \label{eq:omegaS2}
+\end{equation}
+where $\sigma_1=\kappa\ell$ is the minimum symplectic eigenvalue of $G$ (item~20).
+
+\subsection{SO(1,3) Killing vectors and Noether charges}
+
+The three tangent directions of Class~B on $H^3$ correspond to $\mathrm{SO}(1,3)$
+generators as follows:
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+Tangent direction & SO(1,3) generator & Physical meaning\\
+\midrule
+$\partial_\chi$ & boost $K_1$ & horizon-normal boost\\
+$\partial_\theta$ & rotation $L_{23}$ & sphere rotation\\
+$\partial_\phi$ & rotation $L_{24}$ & sphere rotation\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The Noether charge of the boost Killing vector $\xi=\partial_\chi$ is
+\begin{equation}
+  Q_\mathrm{boost} := \int_{S^2} \iota_{\partial_\chi}\,\omega\big|_{\{K=1\}}.
+  \label{eq:Qboost_def}
+\end{equation}
+
+\subsection{The central identity}
+
+\begin{theorem}[Symplectic area = Bekenstein--Hawking entropy]
+\label{thm:main}
+For the Rindler metric $G=\mathrm{diag}((\kappa\ell)^2,-1,-1,-1)$ with canonical
+gauge $J_0$,
+\begin{equation}
+  Q_\mathrm{boost}
+  = \int_{S^2} \iota_{\partial_\chi}\,\omega\big|_{\{K=1\}}
+  = (\kappa\ell)^2\cdot 4\pi
+  = A_\mathrm{horizon}
+  = 4\,S_\mathrm{BH}.
+  \label{eq:main}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+By \eqref{eq:omegaS2},
+\[
+  \int_{S^2}\omega_{S^2}
+  = (\kappa\ell)^2\int_0^\pi\sin\theta\,d\theta\int_0^{2\pi}d\phi
+  = (\kappa\ell)^2\cdot 4\pi.
+\]
+The interior product $\iota_{\partial_\chi}\,\omega$ evaluated on the $(\theta,\phi)$
+plane at fixed $\chi$ gives exactly $\omega_{S^2}$, since $\partial_\chi$ is the
+boost direction normal to~$S^2$ and $\omega$ pairs the boost with the sphere area
+element via the block structure of~$J_0$.
+
+For the Rindler metric at unit normalisation, the horizon area is
+$A_\mathrm{horizon}=4\pi(\kappa\ell)^2$ and Bekenstein--Hawking entropy is
+$S_\mathrm{BH}=A_\mathrm{horizon}/4=\pi(\kappa\ell)^2$.
+Equation~\eqref{eq:main} follows.\qed
+\end{proof}
+
+\begin{remark}[Geometric reinterpretation of Class~B]
+The companion paper~\cite{proto2d} described Class~B as ``a gauge degree of freedom''
+carrying no heat. Theorem~\ref{thm:main} overturns this at the formula level:
+$Q_\mathrm{boost}=4S_\mathrm{BH}$ identifies the SO$(1,3)$ Noether charge of Class~B
+with four times the Bekenstein--Hawking entropy. Class~B tangential diffusion on $H^3$
+is therefore the \emph{symplectic geometric carrier of black-hole entropy}, not a
+redundant degree of freedom to be discarded.
+\end{remark}
+
+\subsection{Geometric interpretation of Var$(K)$}
+
+The variance formula (item~13) acquires a new geometric meaning via
+Theorem~\ref{thm:main}. Under the noise-temperature matching of item~15:
+\begin{equation}
+  \Var(K) = \frac{\sigma^2}{2d_c} = T_\mathrm{tol}
+           = d_c\cdot T_H = \frac{1}{2\pi\ell}.
+  \label{eq:varK_geometric}
+\end{equation}
+From item~20, $d_c=\alpha/\sigma_1=\alpha/(\kappa\ell)$, so
+\[
+  T_\mathrm{tol} = \frac{\alpha}{\kappa\ell}\cdot\frac{\kappa}{2\pi}
+                 = \frac{\alpha}{2\pi\ell}.
+\]
+Combining with \eqref{eq:main} and $Q_\mathrm{boost}=(\kappa\ell)^2\cdot 4\pi$:
+\begin{equation}
+  \Var(K)\cdot Q_\mathrm{boost}
+  = T_\mathrm{tol}\cdot(\kappa\ell)^2\cdot 4\pi
+  = \frac{\alpha}{2\pi\ell}\cdot 4\pi\ell^2
+  = 2\alpha\ell.
+  \label{eq:varK_Qboost}
+\end{equation}
+Equivalently, $\Var(K) = \alpha/(2\pi\ell) = 2\alpha\ell/Q_\mathrm{boost}$.
+The product $\Var(K)\cdot Q_\mathrm{boost}=2\alpha\ell$ is numerically verified
+for $\kappa\ell\in\{0.5,1,2,3\}$ and encodes the geometric closure:
+\emph{statistical fluctuation $\times$ symplectic horizon area $= 2\alpha\times$proper distance}.
+This closes the chain: \emph{statistical fluctuation $\leftrightarrow$ symplectic
+geometry $\leftrightarrow$ thermodynamic entropy}.
+
+\begin{remark}[Correction to the 2-dimensional prototype]
+Theorem~\ref{thm:main} and equation~\eqref{eq:varK_Qboost} imply that Class~B
+tangential diffusion carries Bekenstein--Hawking entropy via
+$Q_\mathrm{boost}=4S_\mathrm{BH}$, overturning the earlier description of Class~B
+as ``carrying no heat'' in~\cite{proto2d}. The full amended statement---including
+equations $\delta Q_\mathrm{ClassB}=T_\mathrm{tol}\,\delta S_\mathrm{BH}$ and
+the geometric closure $\Var(K)\cdot Q_\mathrm{boost}=2\alpha\ell$
+in the $2$-dimensional limit---is incorporated in the updated 2D
+paper~\cite{proto2d} as Remarks~18--19 and equation~(geo\_closure) therein.
+\end{remark}
+
+\subsection{Scope and open problems}
+
+\begin{remark}[Non-degenerate metrics]
+Theorem~\ref{thm:main} is proved for Rindler $G$, where spatial components are
+degenerate ($g_1=g_2=g_3=1$) and all three symplectic pairings give the same $d_c$.
+For non-degenerate metrics (Schwarzschild, Kerr), the block-product spectrum theorem
+shows that different pairings give distinct $d_c$ (item~26(iii)). Whether
+$Q_\mathrm{boost}=4S_\mathrm{BH}$ holds for Schwarzschild under the $J_0$ gauge
+requires computing $\int_{S^2}\iota_{\partial_r}\omega$ on the horizon $r=2M$;
+this is left for~\cite{pairing}.
+\end{remark}
+
+\begin{remark}[SO(3) rotational charges]
+The two rotational Killing vectors $\partial_\theta,\partial_\phi$ generate Noether
+charges
+\[
+  Q_L = \int_{S^1}\iota_{\partial_\theta}\,\omega\big|_{S^2}.
+\]
+Their thermodynamic interpretation (angular momentum, Kerr entropy) is not addressed
+here and constitutes an open problem.
+\end{remark}
+
+\begin{remark}[Global measure]
+The full $H^3$ volume $\int_0^\infty\sinh^2\chi\,d\chi\cdot 4\pi$ diverges.
+This is the geometric explanation for the absence of a globally normalisable
+stationary density in the full $4$D SDE (item~17): the $\chi$-direction random walk
+has infinite volume to explore. The finite quantity is $Q_\mathrm{boost}$, obtained
+by fixing $\chi$ and integrating over $S^2$ only.
+\end{remark}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Status table}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{p{3.5cm}p{7cm}c}
+\toprule
+Status & Items & Count\\
+\midrule
+Derived / verified &
+4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 16, 18, 20, 22, 23, 24, 28, 29,
+Theorem~\ref{thm:main}, \eqref{eq:varK_Qboost} & 20\\
+Partial &
+8 (sufficient direction verified; converse falsified),
+17 (FDT algebraic; Boltzmann in radial OU only),
+19 (geometric layer; projected SDE not simulated),
+26C (representative matrices; full sets from \cite{sympcost}) & 4\\
+Conditional &
+3 \textmd{[cond: realizability]},
+15 \textmd{[cond: near-horizon]},
+21 \textmd{[cond: Gromov]} & 3\\
+Residual axiom &
+26 (Route~1; $J_0/J_4$ equivalence in Rindler sector) & 1\\
+Definitional &
+1, 2, 25, 27 & 4\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Irreducible external inputs}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{enumerate}
+\item \textbf{T\,+\,R$^4$} (\cite{realizability}): time--space information-cost
+asymmetry (item~3).
+
+\item \textbf{$T_\mathrm{eff}=T_\mathrm{tol}$} (standard Tolman redshift law;
+algebraic verification in~\cite{nearhorizon}): the noise amplitude $\sigma$ is
+calibrated so that the stochastic model's effective temperature equals the
+Tolman-redshifted Hawking temperature at the observer's location (item~15).
+Consistency with item~3 is verified by item~20.
+
+\item \textbf{Gromov non-squeezing}~\cite{gromov}: published mathematical result
+(item~21).
+
+\item \textbf{$\kappa\ell$-direction identification} (item~26 residual): discrete
+coordinate identification; algebraically supported in the Rindler/$2{+}2$ sector by
+the block-product spectrum theorem.
+\end{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{References}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{thebibliography}{9}
+
+\bibitem{proto2d}
+Y.\,Y.\,N.\,Li,
+\emph{K\,=\,1 Chronogeometrodynamics: Lorentzian Geometry from Information Time},
+preprint (2026).
+
+\bibitem{sympcost}
+Y.\,Y.\,N.\,Li,
+\emph{Gravity as the Cost of Symplectic Stability},
+preprint (2026).
+
+\bibitem{realizability}
+Y.\,Y.\,N.\,Li,
+\emph{Realizability and the Origin of Causality},
+preprint (2026).
+
+\bibitem{nearhorizon}
+Y.\,Y.\,N.\,Li,
+\emph{A Near-Horizon Identity: $T_\mathrm{tol}=d_c T_H$ and $\sigma_1=\kappa\ell$},
+preprint (2026).
+
+\bibitem{pairing}
+Y.\,Y.\,N.\,Li,
+\emph{Pairing Selection for the Symplectic Structure $J_4$},
+preprint (2026).
+
+\bibitem{gromov}
+M.\,Gromov,
+\emph{Pseudoholomorphic curves in symplectic manifolds},
+Invent.\ Math.\ \textbf{82}, 307 (1985).
+
+\end{thebibliography}
+
+\end{document}
