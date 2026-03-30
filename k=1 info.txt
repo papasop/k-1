@@ -22,7 +22,7 @@
 \begin{abstract}
 If time is defined as the cost of structural change, what geometric and dynamical structures follow? The information time $dt_{\mathrm{info}}=d\Phi/H$ and its Hessian $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$ provide the metric; the quadratic form $K(x)=x^{\top}Gx$ measures local temporal cost, and the condition $K=1$ requires that this cost match the metric's normalisation. Combined with realizability (positive temporal cost and zero-threshold spatial directions), this forces $G$ indefinite, making Lorentzian signature, symplectic structure, and a nontrivial stability boundary $d_{c}>0$ simultaneous algebraic consequences (Theorem~4). The evolution law $\dot{x}=(J_{G}-D)\nabla V$ is unique (Theorem~5), and at critical damping $\kappa_{K}=4d_{c}$ at a normalised $G$-eigenvector (Theorem~6).
 
-Under local thermal equilibrium, the Clausius relation is compatible with $\sigma^{2}=2d_{c}\cdot T_{\mathrm{tol}}$ (Proposition~7). The $\{K=1\}$ manifold carries two classes of fluctuation: thermodynamic (Class~A, perpendicular to $\{K=1\}$) and gauge (Class~B, tangential boost diffusion). Within Class~A the Clausius relation $\delta Q=T_{\mathrm{eff}}\,\delta S$ follows algebraically; the local noise temperature has the structure of Tolman's law. The sole external input is the identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$; Gromov non-squeezing cannot replace it.
+Under local thermal equilibrium, the Clausius relation is equivalent to $\sigma^{2}=2d_{c}\cdot T_{\mathrm{tol}}$ (Proposition~7). The $\{K=1\}$ manifold carries two classes of fluctuation: thermodynamic (Class~A, perpendicular to $\{K=1\}$) and gauge (Class~B, tangential boost diffusion). Within Class~A the Clausius relation $\delta Q=T_{\mathrm{eff}}\,\delta S$ follows algebraically; the local noise temperature has the structure of Tolman's law. The sole external input is the identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$; Gromov non-squeezing cannot replace it.
 \end{abstract}
 
 \section{Introduction: time as a derived quantity}
@@ -37,7 +37,7 @@ The main results are: (i)~$d_{c}>0$ iff $\mathrm{Sig}(G)=(1,1)$ (Theorem~4); (ii
 
 \section{Metric from information time (Law~I)}
 
-\noindent\textbf{Law~I.} \textit{The metric $G$ is a non-degenerate symmetric bilinear form measuring the local cost of temporal displacement.}
+\noindent\textbf{Law~I.} \textit{The metric $G$ is a non-degenerate symmetric bilinear form measuring the local cost of temporal displacement, where `temporal' denotes the direction distinguished by positive cost \textup{(Assumption~T of~\cite{Realizability})}.}
 
 \medskip
 
@@ -194,7 +194,7 @@ and effective temperature $T_{\mathrm{eff}}=\sigma^{2}/(2d_{c})$. The fluctuatio
 The only external input is the identification $T_{\mathrm{eff}}(x_{*})=T_{\mathrm{tol}}(x_{*})$; everything else is derived internally.
 
 \begin{proposition}[Local Clausius Compatibility]
-Under local thermal equilibrium and the identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, the Clausius relation $\delta Q=T\,\delta S$ is compatible with
+Under local thermal equilibrium and the identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, the Clausius relation $\delta Q=T\,\delta S$ is equivalent to
 \begin{equation}
 \sigma^{2} = 2\,d_{c}\cdot T_{\mathrm{tol}} = 2\,d_{c}^{2}\cdot T_{H}.\label{eq:noise}
 \end{equation}
@@ -239,7 +239,7 @@ The $2\times 2$ equivalence theorem is the minimal case of a structure that may 
 
 \noindent\textit{Stage~3: Quantum.} For $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, $d_{c}=\alpha/(\kappa\ell)$; defining $\sigma_{1}:=|\det G|^{1/2}/\alpha=\kappa\ell/\alpha$ gives $d_{c}\,\sigma_{1}=1$ identically. Combining with $\sigma_{1}\ge\hbar/2$ gives $d_{c}\le 2/\hbar$ --- an upper bound on temperature from symplectic topology alone. However, the Gromov and Clausius scalings are incompatible (Remark~\ref{rem:gromov}); whether a refinement can close the gap, or coincides with the Bekenstein bound~\cite{Bekenstein}, is the question to which the framework points.
 
-\noindent\textit{Beyond GENERIC.} For Lorentzian $G$, $S\neq 0$ departs from GENERIC while $d_{c}$ is controlled by $\det G$ alone, suggesting a Lorentzian extension of non-equilibrium thermodynamics --- physical law as the consequence of structure at a critical self-consistency point~\cite{Wiener}.
+\noindent\textit{Beyond GENERIC.} For Lorentzian $G$, $S\neq 0$ departs from GENERIC while $d_{c}$ is controlled by $\det G$ alone, suggesting a Lorentzian extension of non-equilibrium thermodynamics in the spirit of Wiener's programme~\cite{Wiener}.
 
 \medskip
 
