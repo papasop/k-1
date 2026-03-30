@@ -27,7 +27,7 @@ Under local thermal equilibrium, the Clausius relation is compatible with $\sigm
 
 \section{Introduction: time as a derived quantity}
 
-From Newton's absolute time through proper time in general relativity, time enters physical theory as a primitive. Here it is derived: the information time $dt_{\mathrm{info}}:=d\Phi/H$ measures the cost of structural change, and its Hessian $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$ provides the metric. The quadratic form $K(x)=x^{\top}Gx$ measures local temporal cost. The condition $K=1$ is the \emph{metric self-consistency requirement} --- the point at which the temporal cost evaluated by $G$ equals the metric's own normalisation. Below unity the metric underestimates temporal cost; above unity it overestimates.
+From Newton's absolute time through proper time in general relativity, time enters physical theory as a primitive. Here it is derived: the information time $dt_{\mathrm{info}}:=d\Phi/H$ measures the cost of structural change, and its Hessian $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$ provides the metric; all subsequent results depend on $G$ and its signature alone. The quadratic form $K(x)=x^{\top}Gx$ measures local temporal cost. The condition $K=1$ is the \emph{metric self-consistency requirement} --- the point at which the temporal cost evaluated by $G$ equals the metric's own normalisation. Below unity the metric underestimates temporal cost; above unity it overestimates.
 
 Riemann's 1854 lecture posed the origin of the metric as an open problem. General relativity answers where curvature comes from (the Einstein equations) but not why the metric is Lorentzian in the first place. The Jacobson derivation~\cite{Jacobson} obtains the Einstein equations from thermodynamics on local Rindler horizons, but Lorentzian signature is still assumed. The EPS axiomatisation~\cite{EPS} derives causal structure from particle trajectories; the realizability condition of~\cite{Realizability} removes kinematic primitives entirely. The present work takes a different starting point: defining time as information cost determines a Hessian forced indefinite by realizability; Lorentzian signature, symplectic structure, and $d_{c}>0$ are then algebraic consequences. The GENERIC formalism~\cite{GENERIC} provides the closest dynamical precedent; we show it is the isotropic specialisation of the unique evolution law (Theorem~5).
 
@@ -37,13 +37,13 @@ The main results are: (i)~$d_{c}>0$ iff $\mathrm{Sig}(G)=(1,1)$ (Theorem~4); (ii
 
 \section{Metric from information time (Law~I)}
 
-\noindent\textbf{Law~I.} \textit{The metric $G$ arises as the Hessian of information time.}
+\noindent\textbf{Law~I.} \textit{The metric $G$ is a non-degenerate symmetric bilinear form measuring the local cost of temporal displacement.}
 
 \medskip
 
-Define $dt_{\mathrm{info}}:=d\Phi/H$, where $\Phi$ parametrises structural variation and $H>0$ is an entropic resistance. The local quadratic approximation $dt_{\mathrm{info}}^{2}\approx \delta x^{\top}G\,\delta x$ defines $G=\nabla^{2}(dt_{\mathrm{info}}^{2})|_{K=1}$.
+One natural construction is the Hessian of an information time $dt_{\mathrm{info}}:=d\Phi/H$, where $\Phi$ parametrises structural variation and $H>0$ is a resistance; the local quadratic approximation $dt_{\mathrm{info}}^{2}\approx \delta x^{\top}G\,\delta x$ then defines $G=\nabla^{2}(dt_{\mathrm{info}}^{2})|_{K=1}$. The theorems below depend only on $G$ and its signature, not on the specific decomposition into $\Phi$ and $H$.
 
-Realizability forces $G$ indefinite~\cite{Realizability}: if the cost admits zero-threshold directions while pure temporal displacements retain positive cost, then $\mathrm{Sig}(G)=(1,1)$ is the unique possibility for a $2\times 2$ form, giving Lorentzian geometry with light cones and a causal structure. In general relativity, the Lorentzian metric is prescribed on a pre-existing differentiable manifold; here $G$ and its causal structure are derived from the information cost.
+Realizability forces $G$ indefinite~\cite{Realizability}: if the cost admits zero-threshold directions while pure temporal displacements retain positive cost, then $\mathrm{Sig}(G)=(1,1)$ is the unique possibility for a $2\times 2$ form, giving Lorentzian geometry with light cones and a causal structure. In general relativity, the Lorentzian metric is prescribed on a pre-existing differentiable manifold; here $G$ and its causal structure are derived from the cost structure.
 
 \section{Symplectic structure from $G$}
 
@@ -243,7 +243,9 @@ The $2\times 2$ equivalence theorem is the minimal case of a structure that may 
 
 \medskip
 
-The extension to $(1+3)$ dimensions, the full Jacobson argument~\cite{Jacobson} (which invokes $S=A/4$ independently), and the identification of the $\{K=1\}$ area element with Bekenstein--Hawking entropy require additional steps not contained here. Whether $dt_{\mathrm{info}}$ can be identified with proper time, and the self-consistency condition $K=1$ with a variational principle for spacetime, is the subject of ongoing work.
+The $2\times 2$ framework is not a truncation of a $(1+3)$-dimensional theory but the natural dimensionality of a single local Rindler horizon: one temporal and one spatial direction normal to the horizon. The Jacobson argument~\cite{Jacobson} reconstructs the Einstein equations by requiring the Clausius relation on \emph{all} local Rindler horizons and invoking $S=A/4$ independently. The present work supplies the first ingredient --- the algebraic derivation of the Clausius relation on each such horizon --- while the patching across all horizon directions and the entropy--area identification remain the content of the Jacobson argument.
+
+Whether $dt_{\mathrm{info}}$ can be identified with proper time, and the self-consistency condition $K=1$ with a variational principle for spacetime, is the subject of ongoing work.
 
 \bigskip
 \noindent\textbf{Statements and Declarations}
