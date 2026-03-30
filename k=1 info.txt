@@ -27,9 +27,9 @@ Under local thermal equilibrium, the Clausius relation is compatible with $\sigm
 
 \section{Introduction: time as a derived quantity}
 
-From Newton's absolute time through proper time in general relativity, time enters physical theory as a primitive. Here it is derived: the information time $dt_{\mathrm{info}}:=d\Phi/H$ measures the cost of structural change, and its Hessian $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$ provides the metric; all subsequent results depend on $G$ and its signature alone. The quadratic form $K(x)=x^{\top}Gx$ measures local temporal cost. The condition $K=1$ is the \emph{metric self-consistency requirement} --- the point at which the temporal cost evaluated by $G$ equals the metric's own normalisation. Below unity the metric underestimates temporal cost; above unity it overestimates.
+From Newton's absolute time through proper time in general relativity, time enters physical theory as a primitive. Here it is derived: the information time $dt_{\mathrm{info}}:=d\Phi/H$ measures the cost of structural change, and its Hessian $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$ provides the metric; all subsequent results depend on $G$ and its signature alone. The quadratic form $K(x)=x^{\top}Gx$ measures local temporal cost. The condition $K=1$ is the \emph{metric self-consistency requirement} --- the point at which the temporal cost evaluated by $G$ equals the metric's own normalisation. Below unity the metric underestimates temporal cost; above unity it overestimates. Geometrically, $\{K=1\}$ is the unit hyperboloid of~$G$.
 
-Riemann's 1854 lecture posed the origin of the metric as an open problem. General relativity answers where curvature comes from (the Einstein equations) but not why the metric is Lorentzian in the first place. The Jacobson derivation~\cite{Jacobson} obtains the Einstein equations from thermodynamics on local Rindler horizons, but Lorentzian signature is still assumed. The EPS axiomatisation~\cite{EPS} derives causal structure from particle trajectories; the realizability condition of~\cite{Realizability} removes kinematic primitives entirely. The present work takes a different starting point: defining time as information cost determines a Hessian forced indefinite by realizability; Lorentzian signature, symplectic structure, and $d_{c}>0$ are then algebraic consequences. The GENERIC formalism~\cite{GENERIC} provides the closest dynamical precedent; we show it is the isotropic specialisation of the unique evolution law (Theorem~5).
+Riemann's 1854 lecture posed the origin of the metric as an open problem. General relativity answers where curvature comes from (the Einstein equations) but not why the metric is Lorentzian in the first place. The Jacobson derivation~\cite{Jacobson} obtains the Einstein equations from thermodynamics on local Rindler horizons, but Lorentzian signature is still assumed. The EPS axiomatisation~\cite{EPS} derives causal structure from free-fall and light propagation; the realizability condition of~\cite{Realizability} removes kinematic primitives entirely. The present work takes a different starting point: defining time as information cost determines a Hessian forced indefinite by realizability; Lorentzian signature, symplectic structure, and $d_{c}>0$ are then algebraic consequences. The GENERIC formalism~\cite{GENERIC} provides the closest dynamical precedent; we show it is the isotropic specialisation of the unique evolution law (Theorem~5).
 
 The main results are: (i)~$d_{c}>0$ iff $\mathrm{Sig}(G)=(1,1)$ (Theorem~4); (ii)~unique evolution law (Theorem~5); (iii)~$\kappa_{K}=4d_{c}$ at critical damping (Theorem~6); (iv)~Clausius relation from stochastic dynamics within Class~A (Proposition~7). The physical interpretation (\S7) requires a single external identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$; scope and open questions are collected in~\S8.
 
@@ -128,7 +128,7 @@ $A=G^{-1}(\alpha J-GD)=J_{G}-D$. Uniqueness is immediate: $J_{G}$ is fixed by Th
 
 The generator decomposes as $J_{G}=A_{\mathrm{skew}}+S$ where $S=(J_{G}+J_{G}^{\top})/2$. For Lorentzian $G$: $\sigma(J_{G})\subset\mathbb{R}$, $S\neq 0$, $\mathrm{tr}\,S=0$. For definite $G$: $\sigma(J_{G})\subset i\mathbb{R}$ and $S=0$ iff $G\propto I$.
 
-The GENERIC formalism~\cite{GENERIC} requires Euclidean antisymmetry $L^{\top}=-L$. For $G=cI$, $J_{G}$ is antisymmetric and Law~II reduces to isothermal GENERIC. For Lorentzian $G$, $J_{G}$ is $G$-antisymmetric but not Euclidean-antisymmetric ($S\neq 0$), so Law~II falls outside GENERIC.
+The GENERIC formalism~\cite{GENERIC} requires Euclidean antisymmetry $L^{\top}=-L$. For $G=cI$, $J_{G}$ is antisymmetric and Law~II reduces to isothermal GENERIC. For Lorentzian $G$, $J_{G}$ is $G$-antisymmetric but not Euclidean-antisymmetric ($S\neq 0$), so Law~II falls outside GENERIC in its original formulation~\cite{GENERIC}.
 
 \section{Critical damping and fluctuation structure (Law~III)}\label{sec:lawIII}
 
@@ -175,11 +175,11 @@ Mixing the two classes conflates thermodynamic and kinematic degrees of freedom 
 
 This section connects the geometric structures of \S\S2--6 to spacetime thermodynamics; every connection requires at least one external identification, marked explicitly.
 
-For the Rindler metric $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, eq.~\eqref{eq:dc} gives $d_{c}=\alpha/(\kappa\ell)$. With $T_{H}=\kappa/(2\pi)$,
+For the Rindler metric $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, eq.~\eqref{eq:dc} gives $d_{c}=\alpha/(\kappa\ell)$. With $T_{H}=\kappa/(2\pi)$~\cite{Hawking},
 \begin{equation}
 d_{c}\cdot T_{H} = \frac{\alpha}{\kappa\ell}\cdot\frac{\kappa}{2\pi} = \frac{\alpha}{2\pi\ell},\label{eq:nearhorizon}
 \end{equation}
-exhibiting exact $\kappa$-cancellation. Hence the Tolman temperature $T_{\mathrm{tol}}=d_{c}\cdot T_{H}=\alpha/(2\pi\ell)$.
+exhibiting exact $\kappa$-cancellation. Hence the Tolman temperature~\cite{Tolman} $T_{\mathrm{tol}}=d_{c}\cdot T_{H}=\alpha/(2\pi\ell)$.
 
 \subsection*{Clausius relation as FDT consequence within Class~A}
 
@@ -237,7 +237,7 @@ The $2\times 2$ equivalence theorem is the minimal case of a structure that may 
 
 \noindent\textit{Stage~2: Physics.} At critical damping, the stochastic extension identifies Class~A and Class~B fluctuations. Within Class~A, the Clausius relation follows algebraically and the local noise temperature has the Tolman structure.
 
-\noindent\textit{Stage~3: Quantum.} For $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, $d_{c}=\alpha/(\kappa\ell)$ and the minimum symplectic eigenvalue is $\sigma_{1}=\kappa\ell/\alpha$, giving $d_{c}\,\sigma_{1}=1$ identically. Combining with $\sigma_{1}\ge\hbar/2$ gives $d_{c}\le 2/\hbar$ --- an upper bound on temperature from symplectic topology alone. However, the Gromov and Clausius scalings are incompatible (Remark~\ref{rem:gromov}); whether a refinement can close the gap, or coincides with the Bekenstein bound, is the question to which the framework points.
+\noindent\textit{Stage~3: Quantum.} For $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, $d_{c}=\alpha/(\kappa\ell)$ and the minimum symplectic eigenvalue is $\sigma_{1}=\kappa\ell/\alpha$, giving $d_{c}\,\sigma_{1}=1$ identically. Combining with $\sigma_{1}\ge\hbar/2$ gives $d_{c}\le 2/\hbar$ --- an upper bound on temperature from symplectic topology alone. However, the Gromov and Clausius scalings are incompatible (Remark~\ref{rem:gromov}); whether a refinement can close the gap, or coincides with the Bekenstein bound~\cite{Bekenstein}, is the question to which the framework points.
 
 \noindent\textit{Beyond GENERIC.} For Lorentzian $G$, $S\neq 0$ departs from GENERIC while $d_{c}$ is controlled by $\det G$ alone, suggesting a Lorentzian extension of non-equilibrium thermodynamics --- physical law as the consequence of structure at a critical self-consistency point~\cite{Wiener}.
 
@@ -262,7 +262,7 @@ Whether $dt_{\mathrm{info}}$ can be identified with proper time, and the self-co
 \medskip
 \noindent\textbf{Data availability.} No datasets were generated or analysed during the current study.
 
-\begin{thebibliography}{6}
+\begin{thebibliography}{9}
 
 \bibitem{Realizability}
 Li, Y.Y.N.:
@@ -300,6 +300,24 @@ Gromov, M.:
 Pseudoholomorphic curves in symplectic manifolds.
 Invent.\ Math.\ \textbf{82}, 307 (1985).
 \url{https://doi.org/10.1007/BF01388806}
+
+\bibitem{Hawking}
+Hawking, S.W.:
+Particle creation by black holes.
+Commun.\ Math.\ Phys.\ \textbf{43}, 199--220 (1975).
+\url{https://doi.org/10.1007/BF02345020}
+
+\bibitem{Tolman}
+Tolman, R.C.:
+On the weight of heat and thermal equilibrium in general relativity.
+Phys.\ Rev.\ \textbf{35}, 904--924 (1930).
+\url{https://doi.org/10.1103/PhysRev.35.904}
+
+\bibitem{Bekenstein}
+Bekenstein, J.D.:
+Black holes and entropy.
+Phys.\ Rev.\ D \textbf{7}, 2333--2346 (1973).
+\url{https://doi.org/10.1103/PhysRevD.7.2333}
 
 \end{thebibliography}
 
