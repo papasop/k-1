@@ -220,7 +220,7 @@ T_{\mathrm{loc}}(x) := \frac{\sigma_{K}(x)^{2}}{2\kappa_{K}^{*}} = \frac{\sigma^
 For $\kappa\ell=1$ and $x(t)=(\sinh t,\cosh t)$: $T_{\mathrm{loc}}(t)=\sigma^{2}\cosh(2t)/(2d_{c})$, which has the structure of Tolman's law.
 
 \begin{remark}[Stability constraint]
-$D=T_{\mathrm{tol}}\ll d_{c}$ renders $K=1$ unstable. Stability requires $D\ge d_{c}$; critical damping $D=d_{c}$ is the unique marginally stable choice.
+For macroscopic black holes, $T_{\mathrm{tol}}\ll d_{c}$; setting $D=T_{\mathrm{tol}}I$ renders $K=1$ unstable. Stability requires $D\ge d_{c}I$; critical damping $D=d_{c}I$ is the unique marginally stable choice.
 \end{remark}
 
 \begin{remark}[Gromov bound]\label{rem:gromov}
@@ -237,7 +237,7 @@ The $2\times 2$ equivalence theorem is the minimal case of a structure that may 
 
 \noindent\textit{Stage~2: Physics.} At critical damping, the stochastic extension identifies Class~A and Class~B fluctuations. Within Class~A, the Clausius relation follows algebraically and the local noise temperature has the Tolman structure.
 
-\noindent\textit{Stage~3: Quantum.} For $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, $d_{c}=\alpha/(\kappa\ell)$; defining $\sigma_{1}:=|\det G|^{1/2}/\alpha=\kappa\ell/\alpha$ gives $d_{c}\,\sigma_{1}=1$ identically. Combining with $\sigma_{1}\ge\hbar/2$ gives $d_{c}\le 2/\hbar$ --- an upper bound on temperature from symplectic topology alone. However, the Gromov and Clausius scalings are incompatible (Remark~\ref{rem:gromov}); whether a refinement can close the gap, or coincides with the Bekenstein bound~\cite{Bekenstein}, is the question to which the framework points.
+\noindent\textit{Stage~3: Quantum.} For $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, $d_{c}=\alpha/(\kappa\ell)$; defining $\sigma_{1}:=|\det G|^{1/2}/\alpha=\kappa\ell/\alpha$ gives $d_{c}\,\sigma_{1}=1$ identically. Combining with $\sigma_{1}\ge\hbar/2$ gives $d_{c}\le 2/\hbar$ --- an upper bound on~$d_{c}$, and hence on the Tolman temperature $T_{\mathrm{tol}}=d_{c}T_{H}$, from symplectic topology alone. However, the Gromov and Clausius scalings are incompatible (Remark~\ref{rem:gromov}); whether a refinement can close the gap, or coincides with the Bekenstein bound~\cite{Bekenstein}, is the question to which the framework points.
 
 \noindent\textit{Beyond GENERIC.} For Lorentzian $G$, $S\neq 0$ departs from GENERIC while $d_{c}$ is controlled by $\det G$ alone, suggesting a Lorentzian extension of non-equilibrium thermodynamics in the spirit of Wiener's programme~\cite{Wiener}.
 
