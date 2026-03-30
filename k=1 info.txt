@@ -43,7 +43,7 @@ The GENERIC formalism~\cite{GENERIC} provides the closest dynamical precedent; w
 
 \medskip
 
-The information time $dt_{\mathrm{info}}:=d\Phi/H$, where $\Phi$ parametrises structural variation and $H>0$ is a resistance, provides the metric through its Hessian: the local quadratic approximation $dt_{\mathrm{info}}^{2}\approx \delta x^{\top}G\,\delta x$ defines $G=\nabla^{2}(dt_{\mathrm{info}}^{2})|_{K=1}$. The redefinition enters the theorems through $G$ alone: $dt_{\mathrm{info}}$ serves as the motivating construction for~$G$, with the physical content of $\Phi$ and $H$ developed in~\cite{Realizability}.
+The information time $dt_{\mathrm{info}}:=d\Phi/H$, where $\Phi$ parametrises structural variation and $H>0$ is a resistance, provides the metric through its Hessian: the local quadratic approximation $dt_{\mathrm{info}}^{2}\approx \delta x^{\top}G\,\delta x$ defines $G=\nabla^{2}(dt_{\mathrm{info}}^{2})|_{K=1}$. The redefinition enters the theorems through $G$ alone: $dt_{\mathrm{info}}$ serves as the motivating construction for~$G$, which enters the theorems as the leading-order form~$Q$ of~\cite{Realizability}.
 
 As a quadratic form measuring displacement cost, $G$ is the leading-order form~$Q$ of~\cite{Realizability}; the realizability theorem of that reference therefore applies directly. It forces $G$ indefinite: if the cost admits zero-threshold directions while pure temporal displacements retain positive cost, then $\mathrm{Sig}(G)=(1,1)$ is the unique possibility for a $2\times 2$ form, giving Lorentzian geometry with light cones and a causal structure. In general relativity, the Lorentzian metric is prescribed on a pre-existing differentiable manifold; here $G$ and its causal structure are derived from the cost structure.
 
