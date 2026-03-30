@@ -43,7 +43,7 @@ The GENERIC formalism~\cite{GENERIC} provides the closest dynamical precedent; w
 
 \medskip
 
-The information time $dt_{\mathrm{info}}:=d\Phi/H$, where $\Phi$ parametrises structural variation and $H>0$ is an entropic resistance, provides the metric through its Hessian: the local quadratic approximation $dt_{\mathrm{info}}^{2}\approx \delta x^{\top}G\,\delta x$ defines $G=\nabla^{2}(dt_{\mathrm{info}}^{2})|_{K=1}$. The redefinition enters the theorems through $G$ alone: $dt_{\mathrm{info}}$ serves as the motivating construction for~$G$, which enters the theorems as the leading-order form~$Q$ of~\cite{Realizability}.
+The information time $dt_{\mathrm{info}}:=d\Phi/H$, where $\Phi$ parametrises structural variation and $H>0$ is an entropic resistance, provides the metric through its Hessian: the local quadratic approximation $dt_{\mathrm{info}}^{2}\approx \delta x^{\top}G\,\delta x$ defines $G=\nabla^{2}(dt_{\mathrm{info}}^{2})|_{K=1}$. The redefinition enters the theorems through $G$ alone: $dt_{\mathrm{info}}$ serves as the motivating construction for~$G$, which enters the theorems as the leading-order form~$Q$ of~\cite{Realizability}. The Hessian $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$ has the structure of an information metric --- it measures the local cost of displacement, as the Fisher metric measures the local cost of statistical distinguishability~\cite{Amari} --- but with Lorentzian rather than Riemannian signature.
 
 The realizability theorem of~\cite{Realizability} therefore applies directly, forcing $G$ indefinite: if the cost admits zero-threshold directions while pure temporal displacements retain positive cost, then $Q$ takes both positive and non-positive values, so $\mathrm{Sig}(G)=(1,1)$ is the unique possibility for a non-degenerate $2\times 2$ form, giving Lorentzian geometry with light cones and a causal structure. In general relativity, the Lorentzian metric is prescribed on a pre-existing differentiable manifold; here $G$ and its causal structure are derived from the cost structure.
 
@@ -267,7 +267,7 @@ General relativity prescribes Lorentzian signature; the present work derives it 
 \medskip
 \noindent\textbf{Data availability.} No datasets were generated or analysed during the current study.
 
-\begin{thebibliography}{9}
+\begin{thebibliography}{10}
 
 \bibitem{Realizability}
 Li, Y.Y.N.:
@@ -323,6 +323,12 @@ Bekenstein, J.D.:
 Black holes and entropy.
 Phys.\ Rev.\ D \textbf{7}, 2333--2346 (1973).
 \url{https://doi.org/10.1103/PhysRevD.7.2333}
+
+\bibitem{Amari}
+Amari, S.:
+Information Geometry and Its Applications.
+Springer, Tokyo (2016).
+\url{https://doi.org/10.1007/978-4-431-55978-8}
 
 \end{thebibliography}
 
