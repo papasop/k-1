@@ -128,7 +128,7 @@ $A=G^{-1}(\alpha J-GD)=J_{G}-D$. Uniqueness is immediate: $J_{G}$ is fixed by Th
 
 The generator decomposes as $J_{G}=A_{\mathrm{skew}}+S$ where $S=(J_{G}+J_{G}^{\top})/2$. For Lorentzian $G$: $\sigma(J_{G})\subset\mathbb{R}$, $S\neq 0$, $\mathrm{tr}\,S=0$. For definite $G$: $\sigma(J_{G})\subset i\mathbb{R}$ and $S=0$ iff $G\propto I$.
 
-The GENERIC formalism~\cite{GENERIC} requires Euclidean antisymmetry $L^{\top}=-L$. For $G=cI$, $J_{G}$ is antisymmetric and Law~II reduces to isothermal GENERIC. For Lorentzian $G$, $J_{G}$ is $G$-antisymmetric but not Euclidean-antisymmetric ($S\neq 0$), so Law~II falls outside GENERIC in its original formulation~\cite{GENERIC}.
+The GENERIC formalism~\cite{GENERIC} requires Euclidean antisymmetry $L^{\top}=-L$. For $G=cI$, $J_{G}$ is antisymmetric and Law~II reduces to isothermal GENERIC. For Lorentzian $G$, $J_{G}$ is $G$-antisymmetric but not Euclidean-antisymmetric ($S\neq 0$), so Law~II falls outside GENERIC in its original formulation.
 
 \section{Critical damping and fluctuation structure (Law~III)}\label{sec:lawIII}
 
@@ -175,7 +175,7 @@ Mixing the two classes conflates thermodynamic and kinematic degrees of freedom 
 
 This section connects the geometric structures of \S\S2--6 to spacetime thermodynamics; every connection requires at least one external identification, marked explicitly.
 
-For the Rindler metric $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, eq.~\eqref{eq:dc} gives $d_{c}=\alpha/(\kappa\ell)$. With $T_{H}=\kappa/(2\pi)$~\cite{Hawking},
+For the Rindler metric $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, where $\kappa$ is the surface gravity and $\ell$ the proper distance from the horizon, eq.~\eqref{eq:dc} gives $d_{c}=\alpha/(\kappa\ell)$. With $T_{H}=\kappa/(2\pi)$~\cite{Hawking},
 \begin{equation}
 d_{c}\cdot T_{H} = \frac{\alpha}{\kappa\ell}\cdot\frac{\kappa}{2\pi} = \frac{\alpha}{2\pi\ell},\label{eq:nearhorizon}
 \end{equation}
@@ -237,7 +237,7 @@ The $2\times 2$ equivalence theorem is the minimal case of a structure that may 
 
 \noindent\textit{Stage~2: Physics.} At critical damping, the stochastic extension identifies Class~A and Class~B fluctuations. Within Class~A, the Clausius relation follows algebraically and the local noise temperature has the Tolman structure.
 
-\noindent\textit{Stage~3: Quantum.} For $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, $d_{c}=\alpha/(\kappa\ell)$ and the minimum symplectic eigenvalue is $\sigma_{1}=\kappa\ell/\alpha$, giving $d_{c}\,\sigma_{1}=1$ identically. Combining with $\sigma_{1}\ge\hbar/2$ gives $d_{c}\le 2/\hbar$ --- an upper bound on temperature from symplectic topology alone. However, the Gromov and Clausius scalings are incompatible (Remark~\ref{rem:gromov}); whether a refinement can close the gap, or coincides with the Bekenstein bound~\cite{Bekenstein}, is the question to which the framework points.
+\noindent\textit{Stage~3: Quantum.} For $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, $d_{c}=\alpha/(\kappa\ell)$; defining $\sigma_{1}:=|\det G|^{1/2}/\alpha=\kappa\ell/\alpha$ gives $d_{c}\,\sigma_{1}=1$ identically. Combining with $\sigma_{1}\ge\hbar/2$ gives $d_{c}\le 2/\hbar$ --- an upper bound on temperature from symplectic topology alone. However, the Gromov and Clausius scalings are incompatible (Remark~\ref{rem:gromov}); whether a refinement can close the gap, or coincides with the Bekenstein bound~\cite{Bekenstein}, is the question to which the framework points.
 
 \noindent\textit{Beyond GENERIC.} For Lorentzian $G$, $S\neq 0$ departs from GENERIC while $d_{c}$ is controlled by $\det G$ alone, suggesting a Lorentzian extension of non-equilibrium thermodynamics --- physical law as the consequence of structure at a critical self-consistency point~\cite{Wiener}.
 
