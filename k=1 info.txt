@@ -145,6 +145,7 @@ Let $G$ be a $2\times 2$ Lorentzian metric, $D=d_{c}I$. Define $K(x)=x^{\top}Gx$
 \begin{equation}
 \dot{K} = 4(K-1)\bigl[\alpha\,x^{\top}(J{\cdot}G)\,x - d_{c}\,x^{\top}G^{2}x\bigr].\label{eq:Kdot}
 \end{equation}
+Here $J{\cdot}G$ denotes the ordinary matrix product $JG$ (distinct from the symplectic generator $J_{G}=\alpha G^{-1}J$).
 At any $x_{*}\in\{K=1\}$ with $Gx_{*}=\lambda x_{*}$, the term $x_{*}^{\top}JGx_{*}=0$, so
 \begin{equation}
 \dot{K}\big|_{x=x_{*}} = -4\,d_{c}\,x_{*}^{\top}G^{2}x_{*}\cdot(K-1).\label{eq:Kdot_eigen}
