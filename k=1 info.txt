@@ -175,11 +175,11 @@ Mixing the two classes conflates thermodynamic and kinematic degrees of freedom 
 
 This section connects the geometric structures of \S\S2--6 to spacetime thermodynamics; every connection requires at least one external identification, marked explicitly.
 
-For the Rindler metric $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, where $\kappa$ is the surface gravity and $\ell$ the proper distance from the horizon, eq.~\eqref{eq:dc} gives $d_{c}=\alpha/(\kappa\ell)$. With $T_{H}=\kappa/(2\pi)$~\cite{Hawking},
+For the Rindler metric $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, where $\kappa$ is the surface gravity and $\ell$ the proper distance from the horizon, eq.~\eqref{eq:dc} gives $d_{c}=\alpha/(\kappa\ell)=\alpha/\sqrt{|g_{00}|}$. With $T_{H}=\hbar\kappa/(2\pi)$~\cite{Hawking},
 \begin{equation}
-d_{c}\cdot T_{H} = \frac{\alpha}{\kappa\ell}\cdot\frac{\kappa}{2\pi} = \frac{\alpha}{2\pi\ell},\label{eq:nearhorizon}
+d_{c}\cdot T_{H} = \frac{\alpha}{\kappa\ell}\cdot\frac{\hbar\kappa}{2\pi} = \frac{\alpha\hbar}{2\pi\ell},\label{eq:nearhorizon}
 \end{equation}
-exhibiting exact $\kappa$-cancellation. Hence the Tolman temperature~\cite{Tolman} $T_{\mathrm{tol}}=d_{c}\cdot T_{H}=\alpha/(2\pi\ell)$.
+exhibiting exact $\kappa$-cancellation. Hence the Tolman temperature~\cite{Tolman} $T_{\mathrm{tol}}=d_{c}\cdot T_{H}=\alpha\hbar/(2\pi\ell)$.
 
 \subsection*{Clausius relation as FDT consequence within Class~A}
 
