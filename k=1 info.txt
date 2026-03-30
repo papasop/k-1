@@ -130,7 +130,7 @@ $A=G^{-1}(\alpha J-GD)=J_{G}-D$. Uniqueness is immediate: $J_{G}$ is fixed by Th
 
 The generator decomposes as $J_{G}=A_{\mathrm{skew}}+S$ where $S=(J_{G}+J_{G}^{\top})/2$. For Lorentzian $G$: $\mathrm{spec}(J_{G})\subset\mathbb{R}$, $S\neq 0$, $\mathrm{tr}\,S=0$. For definite $G$: $\mathrm{spec}(J_{G})\subset i\mathbb{R}$ and $S=0$ iff $G\propto I$.
 
-The GENERIC formalism~\cite{GENERIC} requires Euclidean antisymmetry $L^{\top}=-L$. For $G=cI$, $J_{G}$ is antisymmetric and Law~II reduces to isothermal GENERIC. For Lorentzian $G$, $J_{G}$ is $G$-antisymmetric but not Euclidean-antisymmetric ($S\neq 0$), so Law~II falls outside GENERIC in its original formulation.
+The GENERIC formalism~\cite{GENERIC} requires Euclidean antisymmetry $L^{\top}=-L$. For $G=cI$, $J_{G}$ is antisymmetric and Law~II reduces to isothermal GENERIC. For Lorentzian $G$, $J_{G}$ is $G$-antisymmetric but not Euclidean-antisymmetric ($S\neq 0$), so Law~II falls outside GENERIC as formulated in~\cite{GENERIC}.
 
 \section{Critical damping and fluctuation structure (Law~III)}\label{sec:lawIII}
 
@@ -240,7 +240,7 @@ The $2\times 2$ equivalence theorem is the minimal case of a structure that may 
 
 \noindent\textit{Stage~2: Physics.} At critical damping, the stochastic extension identifies Class~A and Class~B fluctuations. Within Class~A, the Clausius relation follows algebraically and the local noise temperature has the Tolman structure.
 
-\noindent\textit{Stage~3: Quantum.} For $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, $d_{c}=\alpha/(\kappa\ell)$; defining $\sigma_{1}:=|\det G|^{1/2}/\alpha=\kappa\ell/\alpha$ gives $d_{c}\,\sigma_{1}=1$ identically. Combining with $\sigma_{1}\ge\hbar/2$ gives $d_{c}\le 2/\hbar$ --- an upper bound on~$d_{c}$, and hence on the Tolman temperature $T_{\mathrm{tol}}=d_{c}T_{H}$, from symplectic topology alone. However, the Gromov and Clausius scalings are incompatible (Remark~\ref{rem:gromov}); whether a refinement can close the gap, or coincides with the Bekenstein bound~\cite{Bekenstein}, is the question to which the framework points.
+\noindent\textit{Stage~3: Quantum.} For $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, $d_{c}=\alpha/(\kappa\ell)$; defining $\sigma_{1}:=|\det G|^{1/2}/\alpha=\kappa\ell/\alpha$ gives $d_{c}\,\sigma_{1}=1$ identically. Combining with $\sigma_{1}\ge\hbar/2$ gives $d_{c}\le 2/\hbar$ --- an upper bound on~$d_{c}$, and hence on the Tolman temperature $T_{\mathrm{tol}}=d_{c}T_{H}$, from symplectic topology alone. However, the Gromov and Clausius scalings are incompatible (Remark~\ref{rem:gromov}); whether a refinement can close the gap, or is related to the Bekenstein bound~\cite{Bekenstein}, is the question to which the framework points.
 
 \noindent\textit{Beyond GENERIC.} For Lorentzian $G$, $S\neq 0$ departs from GENERIC while $d_{c}$ is controlled by $\det G$ alone, suggesting a Lorentzian extension of non-equilibrium thermodynamics in the spirit of Wiener's programme~\cite{Wiener}.
 
@@ -248,7 +248,7 @@ The $2\times 2$ equivalence theorem is the minimal case of a structure that may 
 
 The $2\times 2$ framework is not a truncation of a $(1+3)$-dimensional theory but the natural dimensionality of a single local Rindler horizon: one temporal and one spatial direction normal to the horizon. The Jacobson argument~\cite{Jacobson} reconstructs the Einstein equations by requiring the Clausius relation on \emph{all} local Rindler horizons and invoking $S=A/4$ independently. The present work supplies one essential ingredient --- the algebraic derivation of the Clausius relation on each such horizon --- while the patching across all horizon directions and the entropy--area identification remain the content of the Jacobson argument.
 
-The condition $K=1$ has a self-referential character: the metric $G$ defines the quadratic form $K$, and $K=1$ requires that this form reproduce~$G$'s own normalisation. The potential $V=\tfrac{1}{2}(K-1)^{2}$ and the resulting dynamics can be understood as the metric's response to departures from this self-referential fixed point.
+The condition $K=1$ has a self-referential character: the metric $G$ defines the quadratic form $K$, and $K=1$ requires that this form reproduce~$G$'s own normalisation. The potential $V=\tfrac{1}{2}(K-1)^{2}$ and the resulting dynamics are the metric's response to departures from this self-referential fixed point.
 
 Whether $dt_{\mathrm{info}}$ can be identified with proper time, and the self-consistency condition $K=1$ with a variational principle for spacetime, is the subject of ongoing work.
 
