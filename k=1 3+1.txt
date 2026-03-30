@@ -23,7 +23,7 @@
 \large Bekenstein--Hawking Entropy from a Symplectic Eigenvalue}
 \author{Y.\,Y.\,N.\ Li\footnote{Independent Researcher, China.
 E-mail: \texttt{bizuisikao@gmail.com}.
-ORCID: \texttt{0009-0003-3614-7906}.}}
+ORCID: \texttt{0009-0002-6417-139x}.}}
 \date{}
 
 \begin{document}
