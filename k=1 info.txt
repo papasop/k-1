@@ -33,7 +33,7 @@ Riemann's 1854 lecture posed the origin of the metric as an open problem. Genera
 
 The main results are: (i)~$d_{c}>0$ iff $\mathrm{Sig}(G)=(1,1)$ (Theorem~4); (ii)~unique evolution law (Theorem~5); (iii)~$\kappa_{K}=4d_{c}$ at critical damping (Theorem~6); (iv)~Clausius relation from stochastic dynamics within Class~A (Proposition~7). The physical interpretation (\S7) requires a single external identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$; scope and open questions are collected in~\S8.
 
-\medskip\noindent\textbf{Notation.} $\sigma(A)$: spectrum of $A$. $\mathrm{Sig}(G)=(p,q)$: inertia ($p$ positive, $q$ negative eigenvalues). $J=\bigl(\begin{smallmatrix}0&1\\-1&0\end{smallmatrix}\bigr)$: canonical symplectic matrix.
+\medskip\noindent\textbf{Notation.} $\mathrm{spec}(A)$: spectrum of $A$. $\mathrm{Sig}(G)=(p,q)$: inertia ($p$ positive, $q$ negative eigenvalues). $J=\bigl(\begin{smallmatrix}0&1\\-1&0\end{smallmatrix}\bigr)$: canonical symplectic matrix. $\|\cdot\|$: Euclidean norm on~$\mathbb{R}^{2}$.
 
 \section{Metric from information time (Law~I)}
 
@@ -72,7 +72,7 @@ The dominant eigenvalue satisfies $\lambda_{\max}(d)=-(d-d_{c})$ and $\tau\sim(d
 \end{theorem}
 
 \begin{proof}
-$\mathrm{tr}(G^{-1}J)=0$ and $\det(G^{-1}J)=1/\det G$. For $H_{*}=I$, $\max\mathrm{Re}\,\sigma(J_{G}-dI)=0$ at $d=d_{c}$.\qed
+$\mathrm{tr}(G^{-1}J)=0$ and $\det(G^{-1}J)=1/\det G$. For $H_{*}=I$, $\max\mathrm{Re}\,\mathrm{spec}(J_{G}-dI)=0$ at $d=d_{c}$.\qed
 \end{proof}
 
 \begin{theorem}[Necessity of Lorentzian Signature]
@@ -126,7 +126,7 @@ Then the evolution law is uniquely $\dot{x} = (J_{G}-D)\,\nabla V$.
 $A=G^{-1}(\alpha J-GD)=J_{G}-D$. Uniqueness is immediate: $J_{G}$ is fixed by Theorem~1 and $D\ge 0$ is prescribed.\qed
 \end{proof}
 
-The generator decomposes as $J_{G}=A_{\mathrm{skew}}+S$ where $S=(J_{G}+J_{G}^{\top})/2$. For Lorentzian $G$: $\sigma(J_{G})\subset\mathbb{R}$, $S\neq 0$, $\mathrm{tr}\,S=0$. For definite $G$: $\sigma(J_{G})\subset i\mathbb{R}$ and $S=0$ iff $G\propto I$.
+The generator decomposes as $J_{G}=A_{\mathrm{skew}}+S$ where $S=(J_{G}+J_{G}^{\top})/2$. For Lorentzian $G$: $\mathrm{spec}(J_{G})\subset\mathbb{R}$, $S\neq 0$, $\mathrm{tr}\,S=0$. For definite $G$: $\mathrm{spec}(J_{G})\subset i\mathbb{R}$ and $S=0$ iff $G\propto I$.
 
 The GENERIC formalism~\cite{GENERIC} requires Euclidean antisymmetry $L^{\top}=-L$. For $G=cI$, $J_{G}$ is antisymmetric and Law~II reduces to isothermal GENERIC. For Lorentzian $G$, $J_{G}$ is $G$-antisymmetric but not Euclidean-antisymmetric ($S\neq 0$), so Law~II falls outside GENERIC in its original formulation.
 
@@ -139,7 +139,7 @@ The GENERIC formalism~\cite{GENERIC} requires Euclidean antisymmetry $L^{\top}=-
 The auxiliary linear system $\dot{x}=(J_{G}-d_{c}I)x$ has eigenvalues $0$ and $-2d_{c}$ at critical damping. Theorem~6 concerns the nonlinear system $\dot{x}=(J_{G}-d_{c}I)\nabla V$, $V=\tfrac{1}{2}(K-1)^{2}$, where $V$ penalises departure from $K=1$. On $\{K=1\}$ one has $\nabla V=0$, so $x_{*}$ is an equilibrium; the Jacobian at $x_{*}$ is $(J_{G}-d_{c}I)\nabla^{2}V(x_{*})$, which differs from $J_{G}-d_{c}I$ because $\nabla^{2}V(x_{*})$ is rank-1.
 
 \begin{theorem}[Local Effective Restoring Rate]
-Let $G$ be a $2\times 2$ Lorentzian metric, $D=d_{c}$. Define $K(x)=x^{\top}Gx$, $V=\tfrac{1}{2}(K-1)^{2}$, with drift $\dot{x}=(J_{G}-d_{c}I)\nabla V$. Then for all $x\in\mathbb{R}^{2}$:
+Let $G$ be a $2\times 2$ Lorentzian metric, $D=d_{c}I$. Define $K(x)=x^{\top}Gx$, $V=\tfrac{1}{2}(K-1)^{2}$, with drift $\dot{x}=(J_{G}-d_{c}I)\nabla V$. Then for all $x\in\mathbb{R}^{2}$:
 \begin{equation}
 \dot{K} = 4(K-1)\bigl[\alpha\,x^{\top}(J{\cdot}G)\,x - d_{c}\,x^{\top}G^{2}x\bigr].\label{eq:Kdot}
 \end{equation}
@@ -163,7 +163,7 @@ The local effective restoring rate is $\kappa_{K}(x_{*})=4d_{c}\cdot x_{*}^{\top
 
 \subsection*{Two classes of fluctuation on $\{K=1\}$}
 
-Adding isotropic noise $\sigma\,dW$ to Law~II gives $dx=(J_{G}-D)\nabla V\,dt+\sigma\,dW$. At $D=d_{c}$, two geometrically distinct classes arise.
+Adding isotropic noise $\sigma\,dW$ to Law~II gives $dx=(J_{G}-D)\nabla V\,dt+\sigma\,dW$. At $D=d_{c}I$ (critical damping), two geometrically distinct classes arise.
 
 \medskip\noindent\textit{Class~A \textup{(thermodynamic)}:} Fluctuations of $K$ perpendicular to $\{K=1\}$ --- departures from metric self-consistency --- governed by restoring rate $\kappa_{K}(x_{*})=4d_{c}\,x_{*}^{\top}G^{2}x_{*}$. The conditional distribution $P(K|x)$ at a fixed base point is Gaussian with variance $\sigma^{2}/(2d_{c})$, verified numerically for $\sigma\in\{0.3,0.6,1.0\}$.
 
