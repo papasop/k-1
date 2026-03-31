@@ -39,7 +39,7 @@ Here we show that the symplectic eigenvalues~$\sigma_j$ (defined as spectral mod
 Combined with the Clausius relation on local causal horizons, this recovers the Einstein equations via Jacobson's argument~\cite{Jacobson}.
 
 We then go beyond translation: in Sections~8--10, we prove that second-order symplectic functionals do reconstruct the Ricci scalar (for the gauge $g_{rr}=1/f$), that the Misner--Sharp mass is a zero-order symplectic quantity, and that once the vacuum Einstein equations ($R=0$) are imposed for strict vacuum ($T_{\mu\nu}=0$, Schwarzschild), the entropy--area ratio $\eta=1/4$ is algebraically recovered from symplectic structure.
-The Clausius relation is still needed upstream to derive the Einstein equations themselves (via Jacobson's argument), but the free parameter~$\eta$ it leaves open is recovered through the constancy of the symplectic Misner--Sharp mass.
+The Clausius relation remains an external input (via Jacobson), but the free parameter~$\eta$ it leaves open is recovered through the constancy of the symplectic Misner--Sharp mass.
 The scope and limitations are discussed in Section~12.
 
 \section{Symplectic spectrum}
@@ -309,7 +309,7 @@ In spherical symmetry with the $B=1/f$ gauge, the trace equation combined with t
 
 \noindent\textbf{Summary.}---The symplectic eigenvalues of the spacetime metric encode the Tolman temperature, horizon area, and Misner--Sharp mass as exact closed-form expressions.
 The curvature identity recovers the Ricci scalar at second differential order; for strict vacuum the entropy--area ratio $\eta=1/4$ is algebraically recovered once the Einstein equations are imposed.
-The thermodynamic content of the vacuum closure coincides with the classical Bekenstein--Hawking calculation; the contribution is the autonomous symplectic formulation, not a new derivation of~$\eta$.
+The contribution of this paper is the autonomous symplectic formulation; the numerical value $\eta=1/4$ is not new.
 
 \medskip
 \noindent\textbf{Scope of `symplectic'.}---The construction throughout is algebraic: $\sigma_j$ are spectral invariants of the matrix $G^{-1}J_4$ at each spacetime point.
