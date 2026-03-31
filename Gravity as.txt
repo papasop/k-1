@@ -227,15 +227,17 @@ Equation~\eqref{eq:mMS} was verified to $<10^{-15}$ for Schwarzschild and Reissn
 
 \section{Vacuum closure}
 
-We now combine the curvature identity, Misner--Sharp formula, and thermodynamic identity to close the entropy calculation for strict vacuum ($T_{\mu\nu}=0$).
+We now combine the Misner--Sharp formula and thermodynamic identity to close the entropy calculation for strict vacuum ($T_{\mu\nu}=0$).
+The vacuum closure below uses only $R=0$ (the vacuum Einstein equation, which is coordinate-invariant) and the symplectic spectrum; it does not depend on the gauge-specific curvature identity of Section~8.
 
 \subsection*{10.1\quad The symplectic vacuum ODE}
 
-Setting $R=0$ in the curvature identity~\eqref{eq:curvature}:
+The vacuum Einstein equation $R=0$ reads, for the metric~\eqref{eq:metric}, $f''+4f'/r+2(f-1)/r^2=0$.
+In symplectic variables this becomes
 \begin{equation}
 \Box_g\ln\sigma_1 = \frac{1}{r^2}=\frac{1}{\sigma_1\sigma_2}\,,\label{eq:vac_ode}
 \end{equation}
-which in coordinate form reads $f''+4f'/r+2(f-1)/r^2=0$.
+where the right-hand side is recognised from the curvature identity~\eqref{eq:curvature} with $R=0$.
 
 \subsection*{10.2\quad First integral}
 
