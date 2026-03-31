@@ -7,9 +7,9 @@
 \usepackage{hyperref}
 \hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue}
 \newtheorem{theorem}{Theorem}
-\newtheorem{proposition}[theorem]{Proposition}
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
 \newtheorem{remark}{Remark}
 
 \title{\textbf{Gravity as the Cost of Symplectic Stability}}
@@ -35,12 +35,12 @@ The symplectic variables provide an autonomous formulation, but the thermodynami
 \section{Introduction}
 
 The $K=1$ non-separability theorem~\cite{K1} implies that causality and stabilizability are algebraically linked for signature $(n,n)$ metrics.
-Here we show that the symplectic eigenvalues~$\sigma_j$ (defined as spectral modulus extrema of $g^{-1}J_4$; see Remark below) are pointwise algebraic in~$g_{\mu\nu}$ (hence cannot encode curvature at zero order), yet yield two closed-form thermodynamic outputs: $\sigma_{\min}^{-1}$ reproduces the Tolman-redshifted temperature and a $2{+}2$ split yields the horizon area.
+Here we show that the symplectic eigenvalues~$\sigma_j$ (defined as spectral modulus extrema of $g^{-1}J_4$; see~\S2) are pointwise algebraic in~$g_{\mu\nu}$ (hence cannot encode curvature at zero order), yet yield two closed-form thermodynamic outputs: $\sigma_{\min}^{-1}$ reproduces the Tolman-redshifted temperature and a $2{+}2$ split yields the horizon area.
 Combined with the Clausius relation on local causal horizons, this recovers the Einstein equations via Jacobson's argument~\cite{Jacobson}.
 
 We then go beyond translation: in Sections~8--10, we prove that second-order symplectic functionals do reconstruct the Ricci scalar (for the gauge $g_{rr}=1/f$), that the Misner--Sharp mass is a zero-order symplectic quantity, and that once the vacuum Einstein equations ($R=0$) are imposed for strict vacuum ($T_{\mu\nu}=0$, Schwarzschild), the entropy--area ratio $\eta=1/4$ is algebraically recovered from symplectic structure.
 The Clausius relation is still needed upstream to derive the Einstein equations themselves (via Jacobson's argument), but the free parameter~$\eta$ it leaves open is recovered through the constancy of the symplectic Misner--Sharp mass.
-The scope and limitations are discussed in Section~11.
+The scope and limitations are discussed in Section~12.
 
 \section{Symplectic spectrum}
 
@@ -49,7 +49,7 @@ Consider the static metric
 ds^2 = -f(r)\,dt^2 + f(r)^{-1}dr^2 + r^2 d\theta^2 + r^2\sin^2\!\theta\,d\phi^2,\label{eq:metric}
 \end{equation}
 with $G=\mathrm{diag}(-f,\,1/f,\,r^2,\,r^2\sin^2\!\theta)$.
-The eigenvalues of the symplectic map $M=G^{-1}J_4$ come in pairs $\pm\lambda_j$, where $J_4$ is the $4\times 4$ antisymmetric matrix realising the cross-pairing~$P_2$ ($t\leftrightarrow\theta$, $r\leftrightarrow\phi$); equivalently, $J_4$ has nonzero entries $J_{t\theta}=1$, $J_{r\phi}=1$ and their antisymmetric partners.
+The eigenvalues of the symplectic map $\mathcal{W}=G^{-1}J_4$ come in pairs $\pm\lambda_j$, where $J_4$ is the $4\times 4$ antisymmetric matrix realising the cross-pairing~$P_2$ ($t\leftrightarrow\theta$, $r\leftrightarrow\phi$); equivalently, $J_4$ has nonzero entries $J_{t\theta}=1$, $J_{r\phi}=1$ and their antisymmetric partners.
 For indefinite~$G$, the spectrum depends on the choice of~$J_4$.
 The within-sector pairing yields $\sigma\equiv 1$ for~\eqref{eq:metric} (since $g_{tt}g_{rr}=-1$) and erases horizon information; the cross-pairing~$P_2$ is selected by the requirement that $\sigma_{\min}$ encode horizon information---specifically, that $\sigma_{\min}\to 0$ at Killing horizons with the vanishing branch independent of the angular coordinate.
 Whether this selection follows from a deeper principle remains open.
@@ -113,16 +113,16 @@ The identity~\eqref{eq:thermo_id} was verified at 24 radii across three spacetim
 
 For the Kerr metric in Boyer--Lindquist coordinates $(t,r,\theta,\phi)$ with spin parameter $a=J/M$, the symplectic eigenvalues are no longer given by elementary formulas.
 However, they are determined exactly by two metric invariants.
-Define $M=G^{-1}J_4$ with $J_4$ pairing $(t,\theta)$ and $(r,\phi)$.
-Then the eigenvalues of~$M$ occur in $\pm$~pairs, and the symplectic eigenvalues $\sigma_j=1/|\mathrm{eigenvalue}_j|$ satisfy:
+Define $\mathcal{W}=G^{-1}J_4$ with $J_4$ pairing $(t,\theta)$ and $(r,\phi)$.
+Then the eigenvalues of~$\mathcal{W}$ occur in $\pm$~pairs, and the symplectic eigenvalues $\sigma_j=1/|\mathrm{eigenvalue}_j|$ satisfy:
 
 \begin{proposition}[Kerr symplectic spectrum]
-Let $T\equiv\mathrm{tr}(M^2)/2$ and $P\equiv 1/(\Sigma^2\sin^2\!\theta)$ where $\Sigma=r^2+a^2\cos^2\!\theta$.
+Let $T\equiv\mathrm{tr}(\mathcal{W}^2)/2$ and $P\equiv 1/(\Sigma^2\sin^2\!\theta)$ where $\Sigma=r^2+a^2\cos^2\!\theta$.
 Then
 \begin{equation}
 \sigma_{\min}^{-2} = \frac{T+\sqrt{T^2+4P}}{2}\,,\label{eq:kerr_sigma}
 \end{equation}
-with the trace invariant $\mathrm{tr}(M^2)=-2(g_{tt}g_{\theta\theta}+g_{rr}g_{\phi\phi})$.
+with the trace invariant $\mathrm{tr}(\mathcal{W}^2)=-2(g_{tt}g_{\theta\theta}+g_{rr}g_{\phi\phi})$.
 The product rule holds exactly:
 \begin{equation}
 \sigma_{\min}\cdot\sigma_{\max} = \Sigma\sin\theta\,,\label{eq:kerr_product}
