@@ -60,7 +60,8 @@ The symplectic eigenvalues $\sigma_j\equiv 1/|\lambda_j|$ are
 \end{equation}
 (For positive-definite metrics these are the Williamson eigenvalues~\cite{Williamson}; for Lorentzian~$G$ the Williamson theorem does not directly apply.
 We define $\sigma_j:=1/|\lambda_j|$ where $\pm\lambda_j$ are the eigenvalues of $G^{-1}J_4$, and use `symplectic eigenvalue' in this extended sense throughout.
-For the diagonal metrics considered here, the eigenvalues are real; the extension to metrics with complex eigenvalue pairs is not addressed.)
+For the diagonal metrics considered here, the eigenvalues occur in one real pair and one imaginary pair; the moduli $|\lambda_j|$ are always real and positive in the static region.
+The extension to metrics where eigenvalue pairs coalesce is not addressed.)
 
 \begin{proposition}
 For any metric of the form~\eqref{eq:metric}, $\sigma_1=r\sqrt{f}$ vanishes at every horizon ($f=0$) and is positive in the exterior.
@@ -122,7 +123,7 @@ Then
 \begin{equation}
 \sigma_{\min}^{-2} = \frac{T+\sqrt{T^2+4P}}{2}\,,\label{eq:kerr_sigma}
 \end{equation}
-with the trace invariant $\mathrm{tr}(\mathcal{W}^2)=-2(g_{tt}g_{\theta\theta}+g_{rr}g_{\phi\phi})$.
+with the trace invariant $\mathrm{tr}(\mathcal{W}^2)=-2(g^{tt}g^{\theta\theta}+g^{rr}g^{\phi\phi})$.
 The product rule holds exactly:
 \begin{equation}
 \sigma_{\min}\cdot\sigma_{\max} = \Sigma\sin\theta\,,\label{eq:kerr_product}
