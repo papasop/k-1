@@ -35,7 +35,7 @@ All subsequent results depend on $G$ and its signature alone. The quadratic form
 
 The GENERIC formalism~\cite{GENERIC} provides the closest dynamical precedent; we show it is the isotropic specialisation of the unique evolution law (Theorem~5). The main results are: (i)~$d_{c}>0$ iff $\mathrm{Sig}(G)=(1,1)$ (Theorem~4); (ii)~unique evolution law (Theorem~5); (iii)~$\kappa_{K}=4d_{c}$ at critical damping (Theorem~6); (iv)~Clausius relation from stochastic dynamics within Class~A (Proposition~7). The physical interpretation (\S7) requires a single external identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$; scope and open questions are collected in~\S8.
 
-\medskip\noindent\textbf{Notation.} $\mathrm{spec}(A)$: spectrum of $A$. $\mathrm{Sig}(G)=(p,q)$: inertia ($p$ positive, $q$ negative eigenvalues). $J=\bigl(\begin{smallmatrix}0&1\\-1&0\end{smallmatrix}\bigr)$: canonical symplectic matrix. $\|\cdot\|$: Euclidean norm on~$\mathbb{R}^{2}$.
+\medskip\noindent\textbf{Notation.} $\mathrm{spec}(A)$: spectrum of $A$. $\mathrm{Sig}(G)=(p,q)$: inertia ($p$ positive, $q$ negative eigenvalues). $J=\bigl(\begin{smallmatrix}0&1\\-1&0\end{smallmatrix}\bigr)$: canonical symplectic matrix. $\|\cdot\|$: Euclidean norm on~$\mathbb{R}^{2}$. $\nabla$: Euclidean gradient on~$\mathbb{R}^{2}$.
 
 \section{Metric from information time (Law~I)}
 
@@ -43,7 +43,7 @@ The GENERIC formalism~\cite{GENERIC} provides the closest dynamical precedent; w
 
 \medskip
 
-The information time $dt_{\mathrm{info}}:=d\Phi/H$, where $\Phi$ parametrises structural variation and $H>0$ is an entropic resistance, provides the metric through its Hessian: the local quadratic approximation $dt_{\mathrm{info}}^{2}\approx \delta x^{\top}G\,\delta x$ defines $G=\nabla^{2}(dt_{\mathrm{info}}^{2})|_{K=1}$. The redefinition enters the theorems through $G$ alone: $dt_{\mathrm{info}}$ serves as the motivating construction for~$G$, which enters the theorems as the leading-order form~$Q$ of~\cite{Realizability}. The Hessian $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$ has the structure of an information metric --- it measures the local cost of displacement, as the Fisher metric measures the local cost of statistical distinguishability~\cite{Amari} --- but with Lorentzian rather than Riemannian signature.
+The information time $dt_{\mathrm{info}}:=d\Phi/H$, where $\Phi$ parametrises structural variation and $H>0$ is an entropic resistance, provides the metric through its Hessian: the local quadratic approximation $dt_{\mathrm{info}}^{2}\approx \delta x^{\top}G\,\delta x$ defines $G=\nabla^{2}(dt_{\mathrm{info}}^{2})|_{K=1}$. The redefinition enters the theorems through $G$ alone: $dt_{\mathrm{info}}$ serves as the motivating construction for~$G$, which enters the theorems as the leading-order form~$Q$ of~\cite{Realizability}. The Hessian $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$ has the structure of an information metric --- it measures the local cost of displacement, as the Fisher metric measures the local cost of statistical distinguishability~\cite{Amari} --- but with Lorentzian rather than Riemannian signature. The specific nature of~$\Phi$ is not required by the theorems; what is required is that not all directions carry equal cost --- equivalently, that the cost structure not be definite (Theorem~3). The theorems follow from the asymmetry, not from the identity of the varying structure.
 
 The realizability theorem of~\cite{Realizability} therefore applies directly, forcing $G$ indefinite: if the cost admits zero-threshold directions while pure temporal displacements retain positive cost, then $Q$ takes both positive and non-positive values, so $\mathrm{Sig}(G)=(1,1)$ is the unique possibility for a non-degenerate $2\times 2$ form, giving Lorentzian geometry with light cones and a causal structure. In general relativity, the Lorentzian metric is prescribed on a pre-existing differentiable manifold; here $G$ and its causal structure are derived from the cost structure.
 
@@ -161,7 +161,7 @@ $\dot{K}=2x^{\top}G\dot{x}=4(K-1)\,x^{\top}G(J_{G}-d_{c}I)Gx$. Since $GJ_{G}=\al
 \end{proof}
 
 \begin{remark}[Base-point dependence]
-The local effective restoring rate is $\kappa_{K}(x_{*})=4d_{c}\cdot x_{*}^{\top}G^{2}x_{*}$; it depends on the base point. For the Rindler metric $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, the normalisation $x_{*}^{\top}G^{2}x_{*}=1$ forces $x_{*}=(0,1)$ uniquely.
+The local effective restoring rate is $\kappa_{K}(x_{*})=4d_{c}\cdot x_{*}^{\top}G^{2}x_{*}$; it depends on the base point. For the Rindler metric $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, $x_{*}=(0,1)$ is the unique $G$-eigenvector on $\{K=1\}$ with $x_{*}^{\top}G^{2}x_{*}=1$.
 \end{remark}
 
 \subsection*{Two classes of fluctuation on $\{K=1\}$}
@@ -246,9 +246,9 @@ The $2\times 2$ equivalence theorem is the minimal case of a structure that may 
 
 \medskip
 
-The $2\times 2$ framework is not a truncation of a $(1+3)$-dimensional theory but the natural dimensionality of a single local Rindler horizon: one temporal and one spatial direction normal to the horizon. The Jacobson argument~\cite{Jacobson} reconstructs the Einstein equations by requiring the Clausius relation on \emph{all} local Rindler horizons and invoking $S=A/4$ independently. The present work supplies one essential ingredient --- the algebraic derivation of the Clausius relation on each such horizon --- while the patching across all horizon directions and the entropy--area identification remain the content of the Jacobson argument.
+The $2\times 2$ framework is not a truncation of a $(1+3)$-dimensional theory but the natural dimensionality of a single local Rindler horizon: one temporal and one spatial direction normal to the horizon. The Jacobson argument~\cite{Jacobson} reconstructs the Einstein equations by requiring the Clausius relation on \emph{all} local Rindler horizons and invoking $S=A/4$ independently. The present work supplies one essential ingredient --- the algebraic derivation of the Clausius relation on each such horizon --- while the patching across all horizon directions and the entropy--area identification remain the content of the Jacobson argument. The $2\times 2$ setting captures signature, light cones, and symplectic structure; conformal and spinor structure require the $(1{+}3)$-dimensional extension.
 
-The condition $K=1$ has a self-referential character: the metric $G$ defines the quadratic form $K$, and $K=1$ requires that this form reproduce~$G$'s own normalisation. The potential $V=\tfrac{1}{2}(K-1)^{2}$ and the resulting dynamics are the metric's response to departures from this self-referential fixed point.
+The condition $K=1$ has a self-referential character: the metric $G$ defines the quadratic form $K$, and $K=1$ requires that this form reproduce~$G$'s own normalisation. The residual $K-1$ is the metric's own measure of departure from self-consistency; the leading-order restoring potential $V=\tfrac{1}{2}(K-1)^{2}$ is therefore fixed by smoothness alone.
 
 General relativity prescribes Lorentzian signature; the present work derives it from a cost asymmetry and shows that the resulting metric enforces its own normalisation. What remains prescribed is the asymmetry itself: why one direction carries positive cost while others do not. This is Riemann's question in economic form.
 
