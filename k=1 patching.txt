@@ -22,7 +22,7 @@
 \begin{abstract}
 From Newton's absolute time through proper time in general relativity, time enters physical theory as a primitive. Redefining it as the cost of structural change and requiring realizability (positive temporal cost and zero-threshold spatial directions) forces a $2\times 2$ metric $G$ indefinite; the sign of $\det G$ then simultaneously determines Lorentzian signature, real symplectic spectrum, and a nontrivial stability boundary $d_{c}>0$ (Theorem~4). The metric arises as the Hessian of an information time $dt_{\mathrm{info}}=d\Phi/H$; the quadratic form $K(x)=x^{\top}Gx$ measures local temporal cost, and the condition $K=1$ --- the metric reproducing its own normalisation --- requires that this cost equal unity. The evolution law $\dot{x}=(J_{G}-D)\nabla V$ is unique (Theorem~5), and at critical damping the restoring rate is $\kappa_{K}=4d_{c}$ for a normalised $G$-eigenvector (Theorem~6).
 
-Under local thermal equilibrium, the Clausius relation is equivalent to $\sigma^{2}=2d_{c}\cdot T_{\mathrm{tol}}$ (Proposition~7). The $\{K=1\}$ manifold carries two classes of fluctuation: thermodynamic (Class~A, perpendicular to $\{K=1\}$) and gauge (Class~B, tangential boost diffusion). Within Class~A the Clausius relation $\delta Q=T_{\mathrm{eff}}\,\delta S$ follows algebraically; the local noise temperature has the structure of Tolman's law. The sole external input is the identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$; Gromov non-squeezing cannot replace it.
+Under local thermal equilibrium, the Clausius relation is equivalent to $\sigma^{2}=2d_{c}\cdot T_{\mathrm{tol}}$ (Proposition~7). The $\{K=1\}$ manifold carries two classes of fluctuation: thermodynamic (Class~A, perpendicular to $\{K=1\}$) and gauge (Class~B, tangential boost diffusion). Within Class~A the Clausius relation $\delta Q=T_{\mathrm{eff}}\,\delta S$ follows algebraically; the local noise temperature is position-dependent, determined by the metric through $\|Gx\|$. The sole external input is the identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$; Gromov non-squeezing cannot replace it.
 \end{abstract}
 
 \section{Introduction: time as a derived quantity}
@@ -220,7 +220,7 @@ The $K$-space noise amplitude $\sigma_{K}(x)=2\sigma\|Gx\|$ varies along $\{K=1\
 \begin{equation}
 T_{\mathrm{loc}}(x) := \frac{\sigma_{K}(x)^{2}}{2\kappa_{K}(x_{*})} = \frac{\sigma^{2}\,x^{\top}G^{2}x}{2d_{c}\,x_{*}^{\top}G^{2}x_{*}}.\label{eq:Tloc}
 \end{equation}
-For $\kappa\ell=1$ and $x(t)=(\sinh t,\cosh t)$: $T_{\mathrm{loc}}(t)=\sigma^{2}\cosh(2t)/(2d_{c})$, which has the structure of Tolman's law.
+For $\kappa\ell=1$ and $x(t)=(\sinh t,\cosh t)$: $T_{\mathrm{loc}}(t)=\sigma^{2}\cosh(2t)/(2d_{c})$, which is position-dependent and determined by the metric.
 
 \begin{remark}[Stability constraint]
 For macroscopic black holes, $T_{\mathrm{tol}}\ll d_{c}$; setting $D=T_{\mathrm{tol}}I$ renders $K=1$ unstable. Stability requires $D\ge d_{c}I$; critical damping $D=d_{c}I$ is the unique marginally stable choice.
@@ -238,7 +238,7 @@ The $2\times 2$ equivalence theorem is the minimal case of a structure that may 
 
 \noindent\textit{Stage~1: Geometry.} $G$ defines a Lorentzian metric with light cones and causal structure. Whether a Lorentzian information geometry --- as opposed to the Riemannian Fisher geometry --- can be made precise remains open.
 
-\noindent\textit{Stage~2: Physics.} At critical damping, the stochastic extension identifies Class~A and Class~B fluctuations. Within Class~A, the Clausius relation follows algebraically and the local noise temperature has the Tolman structure.
+\noindent\textit{Stage~2: Physics.} At critical damping, the stochastic extension identifies Class~A and Class~B fluctuations. Within Class~A, the Clausius relation follows algebraically and the local noise temperature is position-dependent, determined by the metric.
 
 \noindent\textit{Stage~3: Quantum.} For $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, $d_{c}=\alpha/(\kappa\ell)$; defining $\sigma_{1}:=|\det G|^{1/2}/\alpha=\kappa\ell/\alpha$ gives $d_{c}\,\sigma_{1}=1$ identically (this holds for any Lorentzian~$G$). The identity is an uncertainty relation: the stabilisation cost~$d_{c}$ and the symplectic capacity~$\sigma_{1}$ are reciprocal, so tighter self-consistency demands larger phase space. Combining with $\sigma_{1}\ge\hbar/2$ gives $d_{c}\le 2/\hbar$ --- an upper bound on~$d_{c}$, and hence on the Tolman temperature $T_{\mathrm{tol}}=d_{c}T_{H}$, from symplectic topology alone. However, the Gromov and Clausius scalings are incompatible (Remark~\ref{rem:gromov}); whether a refinement can close the gap, or is related to the Bekenstein bound~\cite{Bekenstein}, is the question to which the framework points.
 
