@@ -62,7 +62,7 @@ $\dim(\mathrm{Skew}_{2})=1$, so condition~(i) gives $GM=\beta J$, hence $M=\beta
 \end{proof}
 
 \begin{remark}[Non-degeneracy vs.\ signature]
-Theorem~1 requires only $\det G\neq 0$; it holds for any signature. The Lorentzian condition enters decisively only in Theorem~3, through the reality of the symplectic spectrum.
+Theorem~1 requires only $\det G\neq 0$; it holds for any signature. The Lorentzian condition enters decisively only in Theorem~3, through the reality of the symplectic spectrum. Since $GJ_{G}=\alpha J$ is skew-symmetric, $J_{G}$ lies in the Lie algebra $\mathfrak{sp}(2,\mathbb{R})$; the Lorentzian condition forces $J_{G}$ to be a hyperbolic element, whose real eigenvalues yield $d_{c}>0$.
 \end{remark}
 
 \begin{theorem}[Spectral Survival]
@@ -70,6 +70,7 @@ Let $\mathrm{Sig}(G)=(1,1)$. The characteristic polynomial of $G^{-1}J$ is $\lam
 \begin{equation}
 d_{c}(\alpha)=\alpha\sqrt{-1/\det G}>0.\label{eq:dc}
 \end{equation}
+Equivalently, $d_{c}$ is the infimum of~$d$ for which the pair $(J_{G}-dI,\,I)$ is stabilisable; at $d=d_{c}$ the controllability Gramian degenerates.
 The dominant eigenvalue satisfies $\lambda_{\max}(d)=-(d-d_{c})$ and $\tau\sim(d-d_{c})^{-1}$ near threshold.
 \end{theorem}
 
@@ -95,6 +96,8 @@ The equivalence fails for general $H_{*}$ \textup{(Remark~\ref{rem:Hstar_dep})}:
 \begin{proof}
 $d_{c}>0 \Leftrightarrow -1/\det G>0 \Leftrightarrow \det G<0 \Leftrightarrow \mathrm{Sig}(G)=(1,1)$, via Theorems~2 and~3.\qed
 \end{proof}
+
+In control-theoretic terms: nontrivial controllability requires Lorentzian signature. For definite~$G$ the pair $(J_{G},\,I)$ is already stable and no dissipation threshold exists; for indefinite~$G$ the pair is unstable and requires $d\ge d_{c}$ to stabilise. The metric $G$ always renders the full state observable --- observability is automatic since $G$ is non-degenerate --- so the asymmetry is between trivial observability and nontrivial controllability.
 
 \begin{remark}[Isotropic scaling]
 $H_{*}$ denotes the cost-function weight matrix in $d(\delta x)/dt=(J_{G}-dI)H_{*}\,\delta x$; $H_{*}=I$ is the default. For $H_{*}=cI$ ($c>0$), $d_{c}$ is invariant. For general $H_{*}>0$, the threshold may shift.
@@ -160,7 +163,7 @@ $\dot{K}=2x^{\top}G\dot{x}=4(K-1)\,x^{\top}G(J_{G}-d_{c}I)Gx$. Since $GJ_{G}=\al
 \end{proof}
 
 \begin{remark}[Base-point dependence]
-The local effective restoring rate is $\kappa_{K}(x_{*})=4d_{c}\cdot x_{*}^{\top}G^{2}x_{*}$; it depends on the base point. For the Rindler metric $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, the normalisation $x_{*}^{\top}G^{2}x_{*}=1$ forces $x_{*}=(0,1)$ uniquely.
+The local effective restoring rate is $\kappa_{K}(x_{*})=4d_{c}\cdot x_{*}^{\top}G^{2}x_{*}$; it depends on the base point. For the Rindler metric $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, the normalisation $x_{*}^{\top}G^{2}x_{*}=1$ forces $x_{*}=(0,1)$ uniquely. The factor~$4$ arises because $K=x^{\top}Gx$ is quadratic in~$x$: the linear closed-loop pole at $-2d_{c}$ doubles to~$4d_{c}$ under the quadratic map $x\mapsto K$.
 \end{remark}
 
 \subsection*{Two classes of fluctuation on $\{K=1\}$}
@@ -239,9 +242,9 @@ The $2\times 2$ equivalence theorem is the minimal case of a structure that may 
 
 \noindent\textit{Stage~2: Physics.} At critical damping, the stochastic extension identifies Class~A and Class~B fluctuations. Within Class~A, the Clausius relation follows algebraically and the local noise temperature has the Tolman structure.
 
-\noindent\textit{Stage~3: Quantum.} For $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, $d_{c}=\alpha/(\kappa\ell)$; defining $\sigma_{1}:=|\det G|^{1/2}/\alpha=\kappa\ell/\alpha$ gives $d_{c}\,\sigma_{1}=1$ identically. Combining with $\sigma_{1}\ge\hbar/2$ gives $d_{c}\le 2/\hbar$ --- an upper bound on~$d_{c}$, and hence on the Tolman temperature $T_{\mathrm{tol}}=d_{c}T_{H}$, from symplectic topology alone. However, the Gromov and Clausius scalings are incompatible (Remark~\ref{rem:gromov}); whether a refinement can close the gap, or coincides with the Bekenstein bound~\cite{Bekenstein}, is the question to which the framework points.
+\noindent\textit{Stage~3: Quantum.} For $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, $d_{c}=\alpha/(\kappa\ell)$; defining $\sigma_{1}:=|\det G|^{1/2}/\alpha=\kappa\ell/\alpha$ gives $d_{c}\,\sigma_{1}=1$ identically. The identity $d_{c}\,\sigma_{1}=1$ is a control-theoretic uncertainty relation: the stabilisation rate~$d_{c}$ and the symplectic capacity~$\sigma_{1}$ are reciprocal, so stronger control demands larger phase space. Combining with the Gromov bound~\cite{Gromov} $\sigma_{1}\ge\hbar/2$ gives $d_{c}\le 2/\hbar$ --- the maximum stabilisation rate compatible with quantum phase space. However, the Gromov and Clausius scalings are incompatible (Remark~\ref{rem:gromov}); whether a refinement can close the gap, or coincides with the Bekenstein bound~\cite{Bekenstein}, is the question to which the framework points.
 
-\noindent\textit{Beyond GENERIC.} For Lorentzian $G$, $S\neq 0$ departs from GENERIC while $d_{c}$ is controlled by $\det G$ alone, suggesting a Lorentzian extension of non-equilibrium thermodynamics in the spirit of Wiener's programme~\cite{Wiener}.
+\noindent\textit{Beyond GENERIC.} For Lorentzian $G$, $S\neq 0$ departs from GENERIC while $d_{c}$ is controlled by $\det G$ alone, suggesting a Lorentzian extension of non-equilibrium thermodynamics. The framework realises a central thesis of Wiener's cybernetics~\cite{Wiener} --- that feedback is the organising principle of physical systems --- in a gravitational setting: the $K=1$ self-consistency condition is a feedback loop in which the metric monitors and corrects its own normalisation.
 
 \medskip
 
