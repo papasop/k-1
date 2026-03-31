@@ -38,8 +38,8 @@ The $K=1$ non-separability theorem~\cite{K1} implies that causality and stabiliz
 Here we show that the symplectic eigenvalues~$\sigma_j$ (defined as spectral modulus extrema of $g^{-1}J_4$; see Remark below) are pointwise algebraic in~$g_{\mu\nu}$ (hence cannot encode curvature at zero order), yet yield two closed-form thermodynamic outputs: $\sigma_{\min}^{-1}$ reproduces the Tolman-redshifted temperature and a $2{+}2$ split yields the horizon area.
 Combined with the Clausius relation on local causal horizons, this recovers the Einstein equations via Jacobson's argument~\cite{Jacobson}.
 
-We then go beyond translation: in Sections~8--10, we prove that second-order symplectic functionals do reconstruct the Ricci scalar (for the gauge $g_{rr}=1/f$), that the Misner--Sharp mass is a zero-order symplectic quantity, and that once the vacuum Einstein equations ($R=0$) are imposed for strict vacuum ($T_{\mu\nu}=0$, Schwarzschild), the entropy--area ratio $\eta=1/4$ is algebraically determined by symplectic structure.
-The Clausius relation is still needed upstream to derive the Einstein equations themselves (via Jacobson's argument), but the free parameter~$\eta$ it leaves open is fixed by the constancy of the symplectic Misner--Sharp mass.
+We then go beyond translation: in Sections~8--10, we prove that second-order symplectic functionals do reconstruct the Ricci scalar (for the gauge $g_{rr}=1/f$), that the Misner--Sharp mass is a zero-order symplectic quantity, and that once the vacuum Einstein equations ($R=0$) are imposed for strict vacuum ($T_{\mu\nu}=0$, Schwarzschild), the entropy--area ratio $\eta=1/4$ is algebraically recovered from symplectic structure.
+The Clausius relation is still needed upstream to derive the Einstein equations themselves (via Jacobson's argument), but the free parameter~$\eta$ it leaves open is recovered through the constancy of the symplectic Misner--Sharp mass.
 The scope and limitations are discussed in Section~11.
 
 \section{Symplectic spectrum}
@@ -242,7 +242,7 @@ In symplectic variables this becomes
 \begin{equation}
 \Box_g\ln\sigma_1 = \frac{1}{r^2}=\frac{1}{\sigma_1\sigma_2}\,,\label{eq:vac_ode}
 \end{equation}
-where the right-hand side is recognised from the curvature identity~\eqref{eq:curvature} with $R=0$.
+where $\sigma_1\sigma_2=r^2$ on the equatorial plane~\eqref{eq:product_eq}.
 
 \subsection*{10.2\quad First integral}
 
@@ -274,7 +274,7 @@ The closure below requires $m_{\mathrm{MS}}=M_{\mathrm{ADM}}$ everywhere.
 \subsection*{10.3\quad Closure of the thermodynamic chain}
 
 For strict vacuum (Schwarzschild), $m_{\mathrm{MS}}=M_{\mathrm{ADM}}=M=\mathrm{const.}$ everywhere (previous subsection).
-A quasi-static process $M\to M+\delta M$ then gives $\delta Q\equiv\delta m_{\mathrm{MS}}(r_+)=\delta M$ algebraically (not by assumption).
+A variation $M\to M+\delta M$ across the one-parameter family of Schwarzschild solutions then gives $\delta Q\equiv\delta m_{\mathrm{MS}}(r_+)=\delta M$ algebraically (not by assumption).
 With $T_H=1/(8\pi M)$ (Theorem~1) and $A_H=16\pi M^2$ (Proposition~3), the Clausius relation $\delta Q=T_H\,\delta S$ yields
 \begin{equation}
 \delta S = 8\pi M\,\delta M = \tfrac{1}{4}\,dA_H/dM\cdot\delta M = \tfrac{1}{4}\,\delta A_H\,.\label{eq:closure}
@@ -287,7 +287,7 @@ S = \frac{A_H}{4}\label{eq:BH}
 \end{equation}
 with the chain $R=0\to m_{\mathrm{MS}}=M_{\mathrm{ADM}}=\mathrm{const.}\to\delta Q=\delta M\to\eta=\frac{1}{4}$, where $T_H$ and $A_H$ come from the $K=1$ symplectic spectrum.
 The Clausius relation is still required upstream (via Jacobson) to obtain the Einstein equations; the vacuum closure fixes $\eta=1/4$, the free parameter that argument leaves open.
-The assumption required for the Einstein equation is therefore weakened from $S=A/4$ (a specific coefficient) to $S\propto A$ (proportionality alone); the coefficient is fixed by self-consistency.
+The assumption required for the Einstein equation is therefore weakened from $S=A/4$ (a specific coefficient) to $S\propto A$ (proportionality alone); the coefficient is algebraically recovered for strict vacuum once the Einstein equation is imposed.
 \end{theorem}
 
 \section{Non-vacuum extension}
@@ -350,12 +350,6 @@ Whether the Bianchi identity $\nabla_\mu G^{\mu\nu}=0$ can be derived from sympl
 Li, Y.Y.N.:
 $K=1$ Chronogeometrodynamics: Lorentzian Geometry from Information Time.
 Submitted to Found.\ Phys.\ (2026).
-
-\bibitem{Realizability}
-Li, Y.Y.N.:
-Realizability and the origin of causality.
-Submitted to Found.\ Phys.\ (2026).
-Preprint: Zenodo, \url{https://doi.org/10.5281/zenodo.19062187}
 
 \bibitem{Jacobson}
 Jacobson, T.:
