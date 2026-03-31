@@ -131,7 +131,7 @@ for all $r$, $\theta$, and $a$, verified to $<2\times 10^{-15}$ across 24 test p
 \end{proposition}
 
 For $a=0$, Eq.~\eqref{eq:kerr_sigma} reduces to $\sigma_1=r\sqrt{f}$, recovering Eq.~\eqref{eq:sigma} exactly.
-For $a\neq 0$, the identity acquires $O(a^2/r^2)$ corrections, while $\sigma_{\min}\to 0$ at $r\to r_+$ for all $a<M$.
+For $a\neq 0$, the thermodynamic ratio acquires $O(a^2/r^2)$ corrections, while $\sigma_{\min}\to 0$ at $r\to r_+$ for all $a<M$.
 
 \section{From symplectic stability to Einstein equations}
 
@@ -157,7 +157,7 @@ We now show that the transverse $(\theta,\phi)$ sector yields the horizon area t
 For a $2\times 2$ positive-definite metric $\gamma_{AB}$, the unique Williamson eigenvalue is $\sigma_{2D}=\sqrt{\det\gamma}$.
 \end{lemma}
 
-On the Kerr horizon ($r=r_+$, $\Delta=0$), the induced 2-metric is $\gamma=\mathrm{diag}(\Sigma_+,\,(r_+^2+a^2)^2\sin^2\!\theta/\Sigma_+)$ with $\Sigma_+=r_+^2+a^2\cos^2\!\theta$, giving
+On the Kerr horizon ($r=r_+$, $\Delta\equiv r^2-2Mr+a^2=0$), the induced 2-metric is $\gamma=\mathrm{diag}(\Sigma_+,\,(r_+^2+a^2)^2\sin^2\!\theta/\Sigma_+)$ with $\Sigma_+=r_+^2+a^2\cos^2\!\theta$, giving
 \begin{equation}
 \sigma_{2D}(\theta)=(r_+^2+a^2)\sin\theta\,.\label{eq:sigma2D}
 \end{equation}
@@ -246,7 +246,7 @@ where $\sigma_1\sigma_2=r^2$ on the equatorial plane~\eqref{eq:product_eq}.
 
 \subsection*{10.2\quad First integral}
 
-Multiplying by $r^2$ and recognising an exact derivative:
+Multiplying the coordinate-form ODE by $r^2$ and recognising an exact derivative:
 \begin{equation}
 \frac{d}{dr}\bigl[r^2 f'+2r(f-1)\bigr]=0\,.\label{eq:exact}
 \end{equation}
