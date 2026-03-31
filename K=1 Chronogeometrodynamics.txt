@@ -62,7 +62,7 @@ $\dim(\mathrm{Skew}_{2})=1$, so condition~(i) gives $GM=\beta J$, hence $M=\beta
 \end{proof}
 
 \begin{remark}[Non-degeneracy vs.\ signature]
-Theorem~1 requires only $\det G\neq 0$; it holds for any signature. The Lorentzian condition enters decisively only in Theorem~3, through the reality of the symplectic spectrum. Since $GJ_{G}=\alpha J$ is skew-symmetric, $J_{G}$ lies in the Lie algebra $\mathfrak{sp}(2,\mathbb{R})$; the Lorentzian condition forces $J_{G}$ to be a hyperbolic element, whose real eigenvalues yield $d_{c}>0$.
+Theorem~1 requires only $\det G\neq 0$; it holds for any signature. The Lorentzian condition enters decisively in Theorems~2 and~3, through the reality of the symplectic spectrum. Since $GJ_{G}=\alpha J$ is skew-symmetric, $J_{G}$ lies in the Lie algebra $\mathfrak{sp}(2,\mathbb{R})$; the Lorentzian condition forces $J_{G}$ to be a hyperbolic element, whose real eigenvalues yield $d_{c}>0$.
 \end{remark}
 
 \begin{theorem}[Spectral Survival]
