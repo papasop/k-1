@@ -138,7 +138,7 @@ The GENERIC formalism~\cite{GENERIC} requires Euclidean antisymmetry $L^{\top}=-
 
 \medskip
 
-The auxiliary linear system $\dot{x}=(J_{G}-d_{c}I)x$ has eigenvalues $0$ and $-2d_{c}$ at critical damping. Theorem~6 concerns the nonlinear system $\dot{x}=(J_{G}-d_{c}I)\nabla V$, $V=\tfrac{1}{2}(K-1)^{2}$, where $V$ penalises departure from $K=1$. On $\{K=1\}$ one has $\nabla V=0$, so $x_{*}$ is an equilibrium; the Jacobian at $x_{*}$ is $(J_{G}-d_{c}I)\nabla^{2}V(x_{*})$, which differs from $J_{G}-d_{c}I$ because $\nabla^{2}V(x_{*})$ is rank-one.
+The auxiliary linear system $\dot{x}=(J_{G}-d_{c}I)x$ has eigenvalues $0$ and $-2d_{c}$ at critical damping. Theorem~6 concerns the nonlinear system $\dot{x}=(J_{G}-d_{c}I)\nabla V$, $V=\tfrac{1}{2}(K-1)^{2}$, where departure from $K=1$ incurs a cost~$V$. On $\{K=1\}$ one has $\nabla V=0$, so $x_{*}$ is an equilibrium; the Jacobian at $x_{*}$ is $(J_{G}-d_{c}I)\nabla^{2}V(x_{*})$, which differs from $J_{G}-d_{c}I$ because $\nabla^{2}V(x_{*})$ is rank-one.
 
 \begin{theorem}[Local Effective Restoring Rate]
 Let $G$ be a $2\times 2$ Lorentzian metric, $D=d_{c}I$. Define $K(x)=x^{\top}Gx$, $V=\tfrac{1}{2}(K-1)^{2}$, with drift $\dot{x}=(J_{G}-d_{c}I)\nabla V$. Then for all $x\in\mathbb{R}^{2}$:
