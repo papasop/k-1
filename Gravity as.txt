@@ -327,6 +327,13 @@ It is a gauge-specific computational tool, not a coordinate-invariant geometric 
 The vacuum closure (\S10) uses only $R=0$, which is coordinate-invariant, and does not inherit this gauge dependence.
 
 \medskip
+\noindent\textbf{Information-time interpretation.}---The $\kappa$-cancellation in Theorem~1 admits a structural reading.
+In the $K=1$ framework~\cite{K1}, $\sqrt{f}=\sqrt{-g_{tt}}$ is the ratio of information time to coordinate time.
+The stabilizability cost $d_c=1/(r\sqrt{f})$ has coordinate decay rate $2d_c$; multiplied by~$\sqrt{f}$ the \emph{proper} decay rate is $2d_c\sqrt{f}=2/r$, independent of the gravitational potential~$f$.
+By Tolman's theorem, any system that thermalizes in proper time satisfies $T\sqrt{f}=\mathrm{const}$; the Rindler limit (\S6) fixes the constant to $\kappa/(2\pi)$, recovering $T_{\mathrm{tol}}$.
+A rigorous derivation---showing that the $K=1$ fluctuation-dissipation temperature transforms as a Tolman scalar---would eliminate the identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ currently postulated as an external axiom in~\cite{K1}.
+
+\medskip
 \noindent\textbf{Open questions.}---Does the zero-order Misner--Sharp formula generalise to quasi-local mass definitions in non-spherical geometries (Hawking mass, Brown--York mass)?
 For non-vacuum spacetimes, $m_{\mathrm{MS}}$ varies with~$r$ and the closure requires the full Einstein equations.
 Whether the Bianchi identity $\nabla_\mu G^{\mu\nu}=0$ can be derived from symplectic structure---closing the non-vacuum chain---remains open.
