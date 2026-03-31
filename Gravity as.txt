@@ -28,7 +28,7 @@ A $2{+}2$ decomposition recovers the Unruh proportionality constant and the hori
 
 Three further results link symplectic structure to gravitational dynamics: an exact curvature identity $R=-2\,\Box_g\ln\sigma_1+2/(\sigma_1\sigma_2)$ (in the gauge $g_{rr}=1/f$), a zero-order symplectic formula for the Misner--Sharp mass, and---for strict vacuum---an algebraic recovery of the Bekenstein--Hawking entropy $S=A/4$.
 The last result requires the vacuum Einstein equation $R=0$ as input; it does not replace the Clausius relation used upstream (via Jacobson) to obtain that equation, but it fixes the entropy--area ratio $\eta=1/4$ that Jacobson's argument leaves as a free parameter.
-The assumption required for the Einstein equation is therefore weakened from $S=A/4$ (a specific coefficient) to $S\propto A$ (proportionality alone); the coefficient is algebraically recovered for strict vacuum once the Einstein equation is imposed.
+The required assumption is thereby weakened from $S=A/4$ to $S\propto A$, with the coefficient recovered by self-consistency.
 The symplectic variables provide an autonomous formulation, but the thermodynamic content coincides with the classical Bekenstein--Hawking calculation.
 \end{abstract}
 
@@ -135,6 +135,7 @@ For $a\neq 0$, the thermodynamic ratio acquires $O(a^2/r^2)$ corrections, while 
 
 \section{From symplectic stability to Einstein equations}
 
+The preceding sections compute the symplectic spectrum for specific spacetimes; we now extract a universal result by passing to the local Rindler limit.
 In a local Rindler frame with proper acceleration~$\kappa$, the metric is $ds^2=-\kappa^2\xi^2\,d\tau^2+d\xi^2+dx_\perp^2$.
 Direct computation of $G^{-1}J_4$ (without assuming the $g_{rr}=1/f$ gauge) gives $\sigma_{\min}=\kappa\xi$.
 The Tolman-redshifted temperature $T_{\mathrm{tol}}=1/(2\pi\xi)$ then yields
