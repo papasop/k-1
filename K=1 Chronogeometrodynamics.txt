@@ -35,7 +35,7 @@ All subsequent results depend on $G$ and its signature alone. The quadratic form
 
 The GENERIC formalism~\cite{GENERIC} provides the closest dynamical precedent; we show it is the isotropic specialisation of the unique evolution law (Theorem~5). The main results are: (i)~$d_{c}>0$ iff $\mathrm{Sig}(G)=(1,1)$ (Theorem~4); (ii)~unique evolution law (Theorem~5); (iii)~$\kappa_{K}=4d_{c}$ at critical damping (Theorem~6); (iv)~Clausius relation from stochastic dynamics within Class~A (Proposition~7). The physical interpretation (\S7) requires a single external identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$; scope and open questions are collected in~\S8.
 
-\medskip\noindent\textbf{Notation.} $\mathrm{spec}(A)$: spectrum of $A$. $\mathrm{Sig}(G)=(p,q)$: inertia ($p$ positive, $q$ negative eigenvalues). $J=\bigl(\begin{smallmatrix}0&1\\-1&0\end{smallmatrix}\bigr)$: canonical symplectic matrix. $\|\cdot\|$: Euclidean norm on~$\mathbb{R}^{2}$.
+\medskip\noindent\textbf{Notation.} $\mathrm{spec}(A)$: spectrum of $A$. $\mathrm{Sig}(G)=(p,q)$: inertia ($p$ positive, $q$ negative eigenvalues). $J=\bigl(\begin{smallmatrix}0&1\\-1&0\end{smallmatrix}\bigr)$: canonical symplectic matrix. $\|\cdot\|$: Euclidean norm on~$\mathbb{R}^{2}$. $\nabla$: Euclidean gradient on~$\mathbb{R}^{2}$.
 
 \section{Metric from information time (Law~I)}
 
@@ -70,7 +70,7 @@ Let $\mathrm{Sig}(G)=(1,1)$. The characteristic polynomial of $G^{-1}J$ is $\lam
 \begin{equation}
 d_{c}(\alpha)=\alpha\sqrt{-1/\det G}>0.\label{eq:dc}
 \end{equation}
-Equivalently, $d_{c}$ is the infimum of~$d$ for which the pair $(J_{G}-dI,\,I)$ is stabilisable; at $d=d_{c}$ the controllability Gramian degenerates.
+Equivalently, $d_{c}$ is the stability margin: the infimum of~$d$ for which $J_{G}-dI$ is Hurwitz.
 The dominant eigenvalue satisfies $\lambda_{\max}(d)=-(d-d_{c})$ and $\tau\sim(d-d_{c})^{-1}$ near threshold.
 \end{theorem}
 
@@ -97,7 +97,7 @@ The equivalence fails for general $H_{*}$ \textup{(Remark~\ref{rem:Hstar_dep})}:
 $d_{c}>0 \Leftrightarrow -1/\det G>0 \Leftrightarrow \det G<0 \Leftrightarrow \mathrm{Sig}(G)=(1,1)$, via Theorems~2 and~3.\qed
 \end{proof}
 
-In control-theoretic terms: nontrivial controllability requires Lorentzian signature. For definite~$G$ the pair $(J_{G},\,I)$ is already stable and no dissipation threshold exists; for indefinite~$G$ the pair is unstable and requires $d\ge d_{c}$ to stabilise. The metric $G$ always renders the full state observable --- observability is automatic since $G$ is non-degenerate --- so the asymmetry is between trivial observability and nontrivial controllability.
+In control-theoretic terms: a nontrivial stability margin requires Lorentzian signature. For definite~$G$ the generator $J_{G}$ has purely imaginary eigenvalues and any positive~$d$ suffices for asymptotic stability ($d_{c}=0$); for indefinite~$G$ the eigenvalues are real and finite dissipation $d\ge d_{c}$ is required. The metric $G$ always renders the full state observable --- observability is automatic since $G$ is non-degenerate --- so the asymmetry is between trivial observability and nontrivial stabilisation cost.
 
 \begin{remark}[Isotropic scaling]
 $H_{*}$ denotes the cost-function weight matrix in $d(\delta x)/dt=(J_{G}-dI)H_{*}\,\delta x$; $H_{*}=I$ is the default. For $H_{*}=cI$ ($c>0$), $d_{c}$ is invariant. For general $H_{*}>0$, the threshold may shift.
@@ -163,7 +163,7 @@ $\dot{K}=2x^{\top}G\dot{x}=4(K-1)\,x^{\top}G(J_{G}-d_{c}I)Gx$. Since $GJ_{G}=\al
 \end{proof}
 
 \begin{remark}[Base-point dependence]
-The local effective restoring rate is $\kappa_{K}(x_{*})=4d_{c}\cdot x_{*}^{\top}G^{2}x_{*}$; it depends on the base point. For the Rindler metric $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, the normalisation $x_{*}^{\top}G^{2}x_{*}=1$ forces $x_{*}=(0,1)$ uniquely. The factor~$4$ arises because $K=x^{\top}Gx$ is quadratic in~$x$: the linear closed-loop pole at $-2d_{c}$ doubles to~$4d_{c}$ under the quadratic map $x\mapsto K$.
+The local effective restoring rate is $\kappa_{K}(x_{*})=4d_{c}\cdot x_{*}^{\top}G^{2}x_{*}$; it depends on the base point. For the Rindler metric $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, the normalisation $x_{*}^{\top}G^{2}x_{*}=1$ forces $x_{*}=(0,1)$ uniquely. The factor~$4=2\times 2$ reflects two sources: the quadratic observable $K=x^{\top}Gx$ and the quadratic penalty $V=\tfrac{1}{2}(K-1)^{2}$; each contributes a factor of~$2$ upon differentiation.
 \end{remark}
 
 \subsection*{Two classes of fluctuation on $\{K=1\}$}
@@ -220,7 +220,7 @@ Applying It\^{o}'s formula to $K=x^{\top}Gx$ gives an additional drift $\sigma^{
 
 The $K$-space noise amplitude $\sigma_{K}(x)=2\sigma\|Gx\|$ varies along $\{K=1\}$, yielding a position-dependent temperature:
 \begin{equation}
-T_{\mathrm{loc}}(x) := \frac{\sigma_{K}(x)^{2}}{2\kappa_{K}^{*}} = \frac{\sigma^{2}\,x^{\top}G^{2}x}{2d_{c}\,x_{*}^{\top}G^{2}x_{*}}.\label{eq:Tloc}
+T_{\mathrm{loc}}(x) := \frac{\sigma_{K}(x)^{2}}{2\kappa_{K}(x_{*})} = \frac{\sigma^{2}\,x^{\top}G^{2}x}{2d_{c}\,x_{*}^{\top}G^{2}x_{*}}.\label{eq:Tloc}
 \end{equation}
 For $\kappa\ell=1$ and $x(t)=(\sinh t,\cosh t)$: $T_{\mathrm{loc}}(t)=\sigma^{2}\cosh(2t)/(2d_{c})$, which has the structure of Tolman's law.
 
