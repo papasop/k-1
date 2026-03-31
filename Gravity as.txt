@@ -254,7 +254,7 @@ Multiplying the coordinate-form ODE by $r^2$ and recognising an exact derivative
 \end{equation}
 
 \begin{corollary}[$R=0$ first integral]
-The $R=0$ ODE~\eqref{eq:vac_ode} admits the first integral
+For asymptotically flat solutions ($f\to 1$ as $r\to\infty$), the $R=0$ ODE~\eqref{eq:vac_ode} admits the first integral
 \begin{equation}
 J(r)\equiv r^2 f'+2r(f-1)=-2M_{\mathrm{ADM}}=\mathrm{const.}\label{eq:first_int}
 \end{equation}
@@ -263,7 +263,7 @@ The ADM mass $M_{\mathrm{ADM}}=-J/2$ is conserved (independent of~$r$) for any $
 \end{corollary}
 
 \begin{proof}
-The general solution of the $R=0$ ODE is $f=1+A/r+B/r^2$, giving $J=A=-2M_{\mathrm{ADM}}$ independently of~$B$ (the charge parameter~$Q^2$).
+The general solution of the $R=0$ ODE is $f=1+A/r+B/r^2$ (Birkhoff's theorem), giving $J=A=-2M_{\mathrm{ADM}}$ independently of~$B$ (the charge parameter~$Q^2$).
 In symplectic variables, $\sigma_1\sigma_1'=rf+r^2 f'/2$, so $J=r^2 f'+2rf-2r=2(\sigma_1\sigma_1'-r)$.\qed
 \end{proof}
 
@@ -283,7 +283,7 @@ With $T_H=1/(8\pi M)$ (Theorem~1) and $A_H=16\pi M^2$ (Proposition~3), the Claus
 \end{equation}
 
 \begin{theorem}[Vacuum closure]
-For strict vacuum ($T_{\mu\nu}=0$) spherically symmetric spacetimes in the gauge $g_{rr}=1/f$, imposing $R=0$ yields
+For strict vacuum ($T_{\mu\nu}=0$), asymptotically flat, spherically symmetric spacetimes in the gauge $g_{rr}=1/f$, imposing $R=0$ yields
 \begin{equation}
 S = \frac{A_H}{4}\label{eq:BH}
 \end{equation}
