@@ -34,7 +34,7 @@ The symplectic variables provide an autonomous formulation, but the thermodynami
 
 \section{Introduction}
 
-The $K=1$ non-separability theorem~\cite{K1} implies that causality and stabilizability are algebraically linked for signature $(n,n)$ metrics.
+The $K=1$ non-separability theorem~\cite{K1} implies that causality and stabilizability are algebraically linked for signature $(1,1)$ metrics.
 Here we show that the symplectic eigenvalues~$\sigma_j$ (defined as spectral modulus extrema of $g^{-1}J_4$; see~\S2) are pointwise algebraic in~$g_{\mu\nu}$ (hence cannot encode curvature at zero order), yet yield two closed-form thermodynamic outputs: $\sigma_{\min}^{-1}$ reproduces the Tolman-redshifted temperature and a $2{+}2$ split yields the horizon area.
 Combined with the Clausius relation on local causal horizons, this recovers the Einstein equations via Jacobson's argument~\cite{Jacobson}.
 
@@ -105,7 +105,7 @@ $\sigma_1^{-1}=1/(r\sqrt{f})$ and $T_{\mathrm{tol}}=\kappa/(2\pi\sqrt{f})$, so $
 
 \noindent The identity is a direct algebraic consequence of the definitions; its content is the exact $\kappa$-cancellation, which parallels the $\kappa$-cancellation in Jacobson's derivation~\cite{Jacobson} but arises here from the symplectic spectrum rather than from the Raychaudhuri equation.
 
-For Schwarzschild ($\kappa=1/2r_s$), both $\sigma_1^{-1}$ and $T_{\mathrm{tol}}$ diverge as $r\to r_s^+$, but their ratio has the finite horizon limit~$4\pi$.
+For Schwarzschild ($\kappa=1/(2r_s)$), both $\sigma_1^{-1}$ and $T_{\mathrm{tol}}$ diverge as $r\to r_s^+$, but their ratio has the finite horizon limit~$4\pi$.
 Near the horizon ($\delta\equiv r/r_s-1\ll 1$), $\sigma_1\sim\sqrt{\delta}$, $d_c\sim\delta^{-1/2}$, and $\kappa_s\sim\delta^{-1}$; the Gromov capacity $c=\pi\sigma_1^2\sim\delta$ vanishes linearly.
 The identity~\eqref{eq:thermo_id} was verified at 24 radii across three spacetimes (Schwarzschild, de~Sitter, Reissner--Nordstr\"om) with errors $<3\times 10^{-16}$.
 
@@ -130,7 +130,7 @@ The product rule holds exactly:
 for all $r$, $\theta$, and $a$, verified to $<2\times 10^{-15}$ across 24 test points.
 \end{proposition}
 
-For $a=0$, Eq.~\eqref{eq:kerr_sigma} reduces to $\sigma_1=r\sqrt{f}$ and recovers Eq.~\eqref{eq:thermo_id} exactly.
+For $a=0$, Eq.~\eqref{eq:kerr_sigma} reduces to $\sigma_1=r\sqrt{f}$, recovering Eq.~\eqref{eq:sigma} exactly.
 For $a\neq 0$, the identity acquires $O(a^2/r^2)$ corrections, while $\sigma_{\min}\to 0$ at $r\to r_+$ for all $a<M$.
 
 \section{From symplectic stability to Einstein equations}
@@ -144,9 +144,9 @@ The Tolman-redshifted temperature $T_{\mathrm{tol}}=1/(2\pi\xi)$ then yields
 where $\xi$ cancels identically, recovering $T_{\mathrm{Unruh}}=\kappa/(2\pi)$ as a geometric consequence of $K=1$ stability.
 With this temperature, Jacobson's argument~\cite{Jacobson} (the Clausius relation $\delta Q=T\,\delta S$ on local Rindler horizons, combined with Raychaudhuri) gives
 \begin{equation}
-G_{\mu\nu}+\Lambda g_{\mu\nu}=8\pi G\,T_{\mu\nu}\,.\label{eq:einstein}
+G_{\mu\nu}+\Lambda g_{\mu\nu}=8\pi G_N\,T_{\mu\nu}\,.\label{eq:einstein}
 \end{equation}
-The Clausius relation is the sole external input not derived from $K=1$; Newton's constant is defined by $G\equiv 1/(4\eta)$ where $\delta S=\eta\,\delta A$.
+The Clausius relation is the sole external input not derived from $K=1$; Newton's constant is defined by $G_N\equiv 1/(4\eta)$ where $\delta S=\eta\,\delta A$.
 
 \section{Symplectic area theorem}
 
@@ -168,7 +168,7 @@ The horizon area is the integral of the 2D symplectic eigenvalue:
 A_H = \int_H \sigma_{2D}\,d\theta\,d\phi = 4\pi(r_+^2+a^2)\,,\label{eq:area}
 \end{equation}
 verified numerically for Schwarzschild and Kerr ($a/M\in[0,0.99]$, 6 spins) to $<2.1\times 10^{-9}$ relative error.
-This identifies $A_H=\int\sigma_{2D}$ within the same symplectic framework; the proportionality $\delta S=\eta\,\delta A$ then fixes $G=1/(4\eta)$.
+This identifies $A_H=\int\sigma_{2D}$ within the same symplectic framework; the proportionality $\delta S=\eta\,\delta A$ then fixes $G_N=1/(4\eta)$.
 \end{proposition}
 
 \section{Exact curvature identity}
