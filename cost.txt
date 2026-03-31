@@ -1,0 +1,352 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{mathpazo}
+\usepackage[scaled=0.85]{helvet}
+\usepackage{microtype}
+\setlength{\emergencystretch}{1.5em}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1in]{geometry}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage[colorlinks=true,linkcolor=blue!60!black,citecolor=blue!60!black,urlcolor=blue!60!black]{hyperref}
+
+% --- Page headers ---
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyhead[L]{\small\textit{The Cost Functional}}
+\fancyhead[R]{\small\thepage}
+
+% --- Theorem environments ---
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{axiom}{Axiom}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+% --- Title ---
+\title{\textbf{\Large The Cost Functional}\\[6pt]
+{\normalfont\large Calculus on Existence and the Origin of Structure}}
+\author{Y.\,Y.\,N.\ Li}
+\date{}
+
+\begin{document}
+\maketitle
+\thispagestyle{fancy}
+
+\begin{abstract}
+We introduce the \emph{cost functional}---a non-negative, real-valued functional on a
+configuration space whose zero set is the trivial state and whose critical set with
+nontrivial kernel defines the generative manifold.
+Unlike the physical action (which requires a pre-existing spacetime and can take
+either sign), the cost functional operates prior to spacetime: its gradient defines
+the direction of collapse, its Hessian kernel defines the directions of cost-free
+existence, and its indefiniteness---forced by structural stability---generates
+Lorentzian signature as an algebraic consequence.
+We develop the basic calculus of the cost functional, show that it unifies
+five existing mathematical objects (Morse functions, Lyapunov functions,
+effective potentials, Fisher information, and entropy) as special cases or
+projections, and derive three structural theorems that have no analogue for
+any of the five.
+\end{abstract}
+
+%% ====================================================================
+\section{Motivation}\label{sec:mot}
+
+Physics assigns a number to every trajectory: the action $S_{\mathrm{phys}}[\phi]
+=\int\mathcal{L}\,d^4x$.
+Its critical points are classical motions.
+The action answers: \emph{how does the field move?}
+
+We assign a number to every state: the cost $S[\psi]\ge0$.
+Its critical points are states that can persist.
+The cost functional answers: \emph{what can exist?}
+
+The distinction is not notational.
+The action requires a pre-existing spacetime (the domain of integration $d^4x$).
+The cost functional does not: spacetime signature emerges from the cost
+functional's Hessian~[1,\,3].
+The action can be negative; the cost functional cannot: $S=0$ if and only if
+$\psi=0$ (the trivial state, ``nothing'').
+Non-negativity gives ``nothing'' a precise location---the global minimum of~$S$---and
+gives ``collapse toward nothing'' a precise dynamics: the gradient flow
+$\partial_t\psi=-\nabla S[\psi]$.
+
+\begin{remark}[What non-negativity buys]\label{rem:nonneg}
+If $S$ could be negative, there would be no distinguished ``nothing.''
+Collapse would have no target.
+The asymmetry between existence ($S>0$) and non-existence ($S=0$) would be absent.
+Non-negativity is not a convenience; it is the structural condition that makes
+``what can exist?'' a well-posed question.
+\end{remark}
+
+%% ====================================================================
+\section{Definition and Basic Calculus}\label{sec:def}
+
+Let $\mathcal{F}$ be a real Hilbert space (the \emph{configuration space}).
+
+\begin{definition}[Cost functional]\label{def:cost}
+A \emph{cost functional} is a twice Fr\'echet-differentiable map
+$S:\mathcal{F}\to\mathbb{R}_{\ge0}$ satisfying:
+\begin{enumerate}[label=\textbf{(C\arabic*)},nosep]
+\item \textbf{Anchored zero:} $S[\psi]=0\;\Longleftrightarrow\;\psi=0$.
+\item \textbf{Gradient:} $\nabla S[\psi]\in\mathcal{F}$ is the Riesz representative of the
+      first variation.
+\item \textbf{Hessian:} $H[\psi]$ is the bounded, self-adjoint second variation.
+\end{enumerate}
+\end{definition}
+
+\begin{definition}[Derived objects]\label{def:derived}
+From~$S$ alone:
+\begin{itemize}[nosep]
+\item \textbf{Collapse flow:}
+  $\partial_t\psi=-\nabla S[\psi]$.
+  This flow drives every state toward $\psi=0$ unless obstructed.
+\item \textbf{Critical set:}
+  $\mathrm{Crit}(S):=\{\psi\in\mathcal{F}:\nabla S[\psi]=0\}$.
+\item \textbf{Cost-free directions at $\psi$:}
+  $\ker H[\psi]=\{v\in\mathcal{F}:H[\psi]v=0\}$.
+\item \textbf{Generative manifold:}
+  $\mathcal{M}:=\{\psi\in\mathrm{Crit}(S):\dim\ker H[\psi]>0\}$.
+\item \textbf{Null cone:}
+  $\mathcal{L}[\psi]:=\{v\in\mathcal{F}:\langle v,H[\psi]v\rangle=0\}$.
+\item \textbf{Singular set:}
+  $\Sigma_S:=\{\psi\in\mathcal{F}:S\text{ is not twice differentiable at }\psi\}$.
+\end{itemize}
+\end{definition}
+
+\begin{remark}[Everything from one scalar]\label{rem:scalar}
+A single non-negative scalar function $S$ generates: a dynamics (gradient flow),
+a geometry (null cone from the Hessian), a distinguished submanifold ($\mathcal{M}$),
+and a singular set ($\Sigma_S$).
+No external structure---no metric, no symmetry group, no spacetime---is required.
+\end{remark}
+
+%% ====================================================================
+\section{Relation to Existing Objects}\label{sec:rel}
+
+Five existing mathematical objects are special cases or projections of the cost
+functional.
+
+\begin{proposition}[Taxonomy]\label{prop:tax}
+\mbox{}
+\begin{enumerate}[label=\emph{(\roman*)},nosep]
+\item \textbf{Morse function.}
+  A Morse function $f:M\to\mathbb{R}$ on a compact manifold is a cost functional
+  if and only if $f\ge0$ with $f^{-1}(0)$ a single point.
+  Standard Morse theory studies the topology of sublevel sets;
+  cost-functional theory studies the structure of the critical set
+  with $\ker H>0$.
+\item \textbf{Lyapunov function.}
+  A Lyapunov function $V:\mathcal{F}\to\mathbb{R}_{\ge0}$ with $V(\psi)=0$
+  iff $\psi=\psi^*$ is a cost functional centred at~$\psi^*$ rather than at~$0$.
+  Lyapunov theory proves stability of~$\psi^*$;
+  cost-functional theory proves existence and uniqueness of~$\mathcal{M}$.
+\item \textbf{Effective potential.}
+  The string-landscape effective potential
+  $V_{\mathrm{eff}}(\phi_1,\ldots,\phi_N)$ is a cost functional
+  restricted to a finite-dimensional field space, provided $V_{\mathrm{eff}}\ge0$.
+  Landscape theory searches for minima (vacua);
+  cost-functional theory studies the full critical set with $\ker H>0$ (generative
+  manifold).
+\item \textbf{Fisher information.}
+  The Fisher metric $g_{ij}=E[\partial_i\log p\;\partial_j\log p]$ is a second-order
+  object on a statistical manifold.
+  The cost functional $S=-\log p$ (when $0<p\le1$) reproduces the Fisher metric
+  as~$H[S]$ restricted to the statistical model.
+\item \textbf{Entropy.}
+  Shannon entropy $H_{\mathrm{Sh}}=-\sum p_i\log p_i$ is non-negative on
+  normalised distributions.
+  It reaches its maximum at the uniform distribution (maximum disorder);
+  the cost functional reaches its critical points at states of stable existence.
+  The two are related by Legendre duality in thermodynamic settings.
+\end{enumerate}
+\end{proposition}
+
+\begin{remark}[What the cost functional adds]\label{rem:adds}
+None of the five objects above asks ``what must exist?''
+Morse theory asks about topology.
+Lyapunov theory asks about stability.
+Effective potentials ask about vacua.
+Fisher information asks about estimation.
+Entropy asks about disorder.
+The cost functional asks about existence---and because it is non-negative with
+an anchored zero, ``existence'' has a precise meaning: $S[\psi]>0$.
+\end{remark}
+
+%% ====================================================================
+\section{Three Structural Theorems}\label{sec:thm}
+
+The following three theorems hold for any cost functional satisfying the
+realizability axiom~[3].
+None of them has an analogue for Morse functions, Lyapunov functions, effective
+potentials, Fisher information, or entropy.
+
+\begin{theorem}[Signature emergence]\label{thm:sig}
+If the cost functional admits a realizable critical point $\psi^*$ with
+$\langle e_t,He_t\rangle>0$ for some direction~$e_t$ and $\ker H\neq\{0\}$
+(both consequences of realizability~[1,\,3]), and if structural stability
+(Axiom~1(iv) of~[3]) holds, then $H[\psi^*]$ is indefinite.
+On any two-dimensional subspace containing a positive and a negative direction,
+the signature is $(1,1)$: Lorentzian.
+\end{theorem}
+
+\begin{proof}
+See~[3, Proposition~7 and Theorem~8].
+Non-negativity of~$H$ would place zero eigenvalues at the spectral boundary,
+where small perturbations eliminate them, contradicting structural stability.
+Hence $H$ is indefinite, and the $(1,1)$ signature follows.
+\end{proof}
+
+\begin{remark}\label{rem:sig}
+Morse functions can have any signature---$(2,0)$, $(1,1)$, $(0,2)$---depending
+on the critical point.
+Lyapunov functions have $H\ge0$ by design.
+Effective potentials seek minima where $H>0$.
+Only the cost functional, through its interaction with structural stability,
+\emph{forces} indefiniteness and thereby generates causal structure.
+\end{remark}
+
+\begin{theorem}[Uniqueness of the generative manifold]\label{thm:unique}
+Under realizability (Axiom~1 of~[3], including global non-isolation),
+\[
+  \mathrm{Crit}(S)=\mathcal{M}.
+\]
+The generative manifold is the unique non-collapsing completion of~$\mathcal{F}$.
+\end{theorem}
+
+\begin{proof}
+See~[3, Theorem~11].
+Global non-isolation forces $\dim\ker H>0$ at every critical point, so
+every critical point belongs to~$\mathcal{M}$.
+\end{proof}
+
+\begin{remark}\label{rem:unique}
+Morse functions have multiple critical points of different indices---saddles,
+maxima, minima---with no uniqueness.
+Effective potentials have $\sim10^{500}$ minima (string landscape) with no
+selection principle.
+The cost functional, through global non-isolation, collapses the entire critical
+set into a single object: $\mathcal{M}$.
+\end{remark}
+
+\begin{theorem}[Indestructibility of cost-free directions]\label{thm:indestr}
+For any realizable extension $S_e=S+R$ with $H_e^{\psi\psi}\ge0$ near~$\mathcal{M}$,
+\[
+  \ker H_e^{\psi\psi}\supseteq\ker H.
+\]
+Every cost-free direction of~$S$ remains cost-free under any consistent extension.
+\end{theorem}
+
+\begin{proof}
+See~[3, Theorem~14].
+If $v\in\ker H$ and $H_e^{\psi\psi}v\neq0$, then
+$\langle v,H_e^{\psi\psi}v\rangle>0$, contradicting $\langle v,Hv\rangle=0$.
+\end{proof}
+
+\begin{remark}\label{rem:indestr}
+Morse functions have no such indestructibility---perturbations freely change
+the index of critical points.
+Effective potentials are routinely modified to lift flat directions
+(moduli stabilization).
+Lyapunov functions are tools, not fundamental objects, and have no
+``indestructibility'' property.
+Only the cost functional, through the interplay of non-negativity and
+realizability, produces directions that cannot be eliminated by any
+consistent modification of the system.
+\end{remark}
+
+%% ====================================================================
+\section{The Zeta-Domain Instance}\label{sec:zeta}
+
+As a concrete candidate, consider the one-dimensional complex configuration space
+$\mathcal{F}=\mathbb{C}$ and define
+\[
+  S_w[s] := -\log|\zeta(s)| - w\log|\zeta'(s)|, \qquad w>0,
+\]
+on the domain $\Omega=\mathbb{C}\setminus\Sigma_0$ where
+$\Sigma_0=\{\zeta(s)=0\}\cup\{\zeta'(s)=0\}\cup\{1\}$.
+
+\begin{proposition}[Basic properties of $S_w$]\label{prop:zeta}
+\mbox{}
+\begin{enumerate}[label=\emph{(\alph*)},nosep]
+\item $S_w[s]\ge0$ when $|\zeta(s)|\le1$ and $|\zeta'(s)|\le1$
+  (satisfied in large regions of the critical strip).
+\item $\nabla S_w=0$ at points where
+  $\zeta'(s)/\zeta(s)+w\,\zeta''(s)/\zeta'(s)=0$.
+\item $\Sigma_{S_w}=\Sigma_0$, which coincides with the protocol singular set
+  of~[4].
+\end{enumerate}
+\end{proposition}
+
+\begin{conjecture}[Zeta-domain realizability]\label{conj:zeta}
+There exist $w>0$ and anchor points $s^*\in\Omega$ at which $S_w$ satisfies
+Axiom~$1_{\mathbb{C}}$~[5]:
+$\nabla S_w[s^*]=0$, nearby trajectories do not collapse to $s=0$, and
+$\dim\ker H[s^*]>0$.
+The resulting $\mathcal{M}_{\mathbb{C}}$ has connected components corresponding to
+the SCC partition reported in~[4].
+\end{conjecture}
+
+\begin{remark}\label{rem:zeta}
+If Conjecture~\ref{conj:zeta} holds, the cost functional provides the missing link
+between the abstract framework~[3,\,5] and the concrete certification
+protocol~[4]: the generative manifold $\mathcal{M}_{\mathbb{C}}$ is the geometric
+object whose connected components are detected by the SCC partition.
+\end{remark}
+
+%% ====================================================================
+\section{Summary}\label{sec:sum}
+
+The cost functional is a non-negative scalar on configuration space.
+From it alone---without spacetime, without symmetry, without a Lagrangian---one
+derives:
+
+\begin{enumerate}[leftmargin=*,itemsep=2pt]
+\item A dynamics (gradient flow toward $\psi=0$).
+\item A geometry (null cone from the indefinite Hessian).
+\item A distinguished submanifold ($\mathcal{M}$, the generative manifold).
+\item A causal structure (Lorentzian signature, forced by structural stability).
+\item A uniqueness theorem ($\mathrm{Crit}(S)=\mathcal{M}$, one destination).
+\item An indestructibility theorem (cost-free directions cannot be eliminated).
+\end{enumerate}
+
+No existing mathematical object---Morse function, Lyapunov function, effective
+potential, Fisher information, or entropy---produces all six.
+Each produces at most two.
+The cost functional produces all six from three axioms: non-negativity,
+anchored zero, and realizability.
+
+\medskip
+\noindent\textbf{One sentence.}
+The action asks how fields move on a given stage;
+the cost functional asks why the stage exists at all.
+
+%% ====================================================================
+\begin{thebibliography}{9}
+\bibitem{1} Y.\,Y.\,N.\ Li,
+  \textit{Realizability and the Origin of Causality}, preprint (2026).
+
+\bibitem{2} Y.\,Y.\,N.\ Li,
+  \textit{K\!=\!1 Chronogeometrodynamics: Lorentzian Geometry from Information Time},
+  preprint (2026).
+
+\bibitem{3} Y.\,Y.\,N.\ Li,
+  \textit{The Universal Completion Conjecture}, preprint (2026).
+
+\bibitem{4} Y.\,Y.\,N.\ Li,
+  \textit{$\Delta I=0$: The Minimal Principle of Ontokinesis}, preprint (2026).
+
+\bibitem{5} Y.\,Y.\,N.\ Li,
+  \textit{The Complex Completion Conjecture}, preprint (2026).
+\end{thebibliography}
+
+\end{document}
