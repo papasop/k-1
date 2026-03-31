@@ -26,9 +26,10 @@ We prove the exact identity $\sigma_1^{-1}=(2\pi/r\kappa)\,T_{\mathrm{tol}}$, li
 For Kerr, the exact symplectic spectrum follows from a quadratic in metric invariants with the product rule $\sigma_{\min}\sigma_{\max}=\Sigma\sin\theta$.
 A $2{+}2$ decomposition recovers the Unruh proportionality constant and the horizon area from separate symplectic sectors; together with Jacobson's thermodynamic argument~\cite{Jacobson}, this connects the $K=1$ framework~\cite{K1} to the Einstein equations.
 
-Three further results link symplectic structure to gravitational dynamics (in the gauge $g_{rr}=1/f$): an exact curvature identity $R=-2\,\Box_g\ln\sigma_1+2/(\sigma_1\sigma_2)$, a zero-order symplectic formula for the Misner--Sharp mass, and---for strict vacuum---an algebraic determination of the Bekenstein--Hawking entropy $S=A/4$.
+Three further results link symplectic structure to gravitational dynamics: an exact curvature identity $R=-2\,\Box_g\ln\sigma_1+2/(\sigma_1\sigma_2)$ (in the gauge $g_{rr}=1/f$), a zero-order symplectic formula for the Misner--Sharp mass, and---for strict vacuum---an algebraic recovery of the Bekenstein--Hawking entropy $S=A/4$.
 The last result requires the vacuum Einstein equation $R=0$ as input; it does not replace the Clausius relation used upstream (via Jacobson) to obtain that equation, but it fixes the entropy--area ratio $\eta=1/4$ that Jacobson's argument leaves as a free parameter.
-The assumption required for the Einstein equation is therefore weakened from $S=A/4$ (a specific coefficient) to $S\propto A$ (proportionality alone); the coefficient is fixed by self-consistency.
+The assumption required for the Einstein equation is therefore weakened from $S=A/4$ (a specific coefficient) to $S\propto A$ (proportionality alone); the coefficient is algebraically recovered for strict vacuum once the Einstein equation is imposed.
+The symplectic variables provide an autonomous formulation, but the thermodynamic content coincides with the classical Bekenstein--Hawking calculation.
 \end{abstract}
 
 \section{Introduction}
@@ -57,7 +58,9 @@ The symplectic eigenvalues $\sigma_j\equiv 1/|\lambda_j|$ are
 \begin{equation}
 \sigma_1 = r\sqrt{f}\,,\qquad \sigma_2 = \frac{r\sin\theta}{\sqrt{f}}\,.\label{eq:sigma}
 \end{equation}
-(For positive-definite metrics these are the Williamson eigenvalues~\cite{Williamson}; for Lorentzian~$G$ the Williamson theorem does not directly apply, and we use the term to mean the spectral modulus extrema $1/|\lambda_j|$ of $G^{-1}J_4$.)
+(For positive-definite metrics these are the Williamson eigenvalues~\cite{Williamson}; for Lorentzian~$G$ the Williamson theorem does not directly apply.
+We define $\sigma_j:=1/|\lambda_j|$ where $\pm\lambda_j$ are the eigenvalues of $G^{-1}J_4$, and use `symplectic eigenvalue' in this extended sense throughout.
+For the diagonal metrics considered here, the eigenvalues are real; the extension to metrics with complex eigenvalue pairs is not addressed.)
 
 \begin{proposition}
 For any metric of the form~\eqref{eq:metric}, $\sigma_1=r\sqrt{f}$ vanishes at every horizon ($f=0$) and is positive in the exterior.
@@ -99,6 +102,8 @@ holding identically for all~$r$ in the static region ($f(r)>0$), independent of~
 \begin{proof}
 $\sigma_1^{-1}=1/(r\sqrt{f})$ and $T_{\mathrm{tol}}=\kappa/(2\pi\sqrt{f})$, so $\sigma_1^{-1}/T_{\mathrm{tol}}=2\pi/(r\kappa)$.\qed
 \end{proof}
+
+\noindent The identity is a direct algebraic consequence of the definitions; its content is the exact $\kappa$-cancellation, which parallels the $\kappa$-cancellation in Jacobson's derivation~\cite{Jacobson} but arises here from the symplectic spectrum rather than from the Raychaudhuri equation.
 
 For Schwarzschild ($\kappa=1/2r_s$), both $\sigma_1^{-1}$ and $T_{\mathrm{tol}}$ diverge as $r\to r_s^+$, but their ratio has the finite horizon limit~$4\pi$.
 Near the horizon ($\delta\equiv r/r_s-1\ll 1$), $\sigma_1\sim\sqrt{\delta}$, $d_c\sim\delta^{-1/2}$, and $\kappa_s\sim\delta^{-1}$; the Gromov capacity $c=\pi\sigma_1^2\sim\delta$ vanishes linearly.
@@ -302,7 +307,13 @@ In spherical symmetry with the $B=1/f$ gauge, the trace equation combined with t
 \section{Discussion}
 
 \noindent\textbf{Summary.}---The symplectic eigenvalues of the spacetime metric encode the Tolman temperature, horizon area, and Misner--Sharp mass as exact closed-form expressions.
-The curvature identity recovers the Ricci scalar at second differential order; for strict vacuum the entropy--area ratio $\eta=1/4$ is algebraically determined once the Einstein equations are imposed.
+The curvature identity recovers the Ricci scalar at second differential order; for strict vacuum the entropy--area ratio $\eta=1/4$ is algebraically recovered once the Einstein equations are imposed.
+The thermodynamic content of the vacuum closure coincides with the classical Bekenstein--Hawking calculation; the contribution is the autonomous symplectic formulation, not a new derivation of~$\eta$.
+
+\medskip
+\noindent\textbf{Scope of `symplectic'.}---The construction throughout is algebraic: $\sigma_j$ are spectral invariants of the matrix $G^{-1}J_4$ at each spacetime point.
+No symplectic manifold structure is assumed, and no global symplectic topology (e.g.\ Gromov non-squeezing) enters the vacuum closure.
+The Gromov bound $\sigma_1\ge\hbar/2$ provides a lower bound on the symplectic capacity~(\S8 of~\cite{K1}) but does not enter the $\eta=1/4$ calculation; its role in a quantum $K=1$ theory remains to be established.
 
 \medskip
 \noindent\textbf{Pairing selection.}---The cross-pairing $P_2$ is selected by the physical requirement that $\sigma_{\min}$ vanish at Killing horizons.
@@ -311,12 +322,12 @@ This is a selection criterion validated by results, not a derivation from first 
 \medskip
 \noindent\textbf{Gauge dependence.}---The curvature identity~\eqref{eq:curvature} holds for the $g_{rr}=1/f$ gauge only.
 It is a gauge-specific computational tool, not a coordinate-invariant geometric relation; extension to general static metrics and to Kerr requires a modified identity involving both metric functions.
+The vacuum closure (\S10) uses only $R=0$, which is coordinate-invariant, and does not inherit this gauge dependence.
 
 \medskip
 \noindent\textbf{Open questions.}---Does the zero-order Misner--Sharp formula generalise to quasi-local mass definitions in non-spherical geometries (Hawking mass, Brown--York mass)?
 For non-vacuum spacetimes, $m_{\mathrm{MS}}$ varies with~$r$ and the closure requires the full Einstein equations.
 Whether the Bianchi identity $\nabla_\mu G^{\mu\nu}=0$ can be derived from symplectic structure---closing the non-vacuum chain---remains open.
-A quantum $K=1$ theory enforcing $\sigma_{\min}\ge\hbar/2$ via Gromov non-squeezing could provide a microstate derivation of $\eta=1/4$ independent of the classical closure.
 
 \bigskip
 \noindent\textbf{Statements and Declarations}
