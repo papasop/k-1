@@ -62,7 +62,7 @@ $\dim(\mathrm{Skew}_{2})=1$, so condition~(i) gives $GM=\beta J$, hence $M=\beta
 \end{proof}
 
 \begin{remark}[Non-degeneracy vs.\ signature]
-Theorem~1 requires only $\det G\neq 0$; it holds for any signature. The Lorentzian condition enters decisively only in Theorem~2, through the reality of the symplectic spectrum.
+Theorem~1 requires only $\det G\neq 0$; it holds for any signature. The Lorentzian condition enters decisively only in Theorem~2, through the reality of the symplectic spectrum. Since $GJ_{G}=\alpha J$ is skew-symmetric, $J_{G}$ lies in the Lie algebra $\mathfrak{sp}(2,\mathbb{R})$; the Lorentzian condition forces $J_{G}$ to be a hyperbolic element, whose real eigenvalues yield $d_{c}>0$.
 \end{remark}
 
 \begin{theorem}[Spectral Survival]
@@ -161,7 +161,7 @@ $\dot{K}=2x^{\top}G\dot{x}=4(K-1)\,x^{\top}G(J_{G}-d_{c}I)Gx$. Since $GJ_{G}=\al
 \end{proof}
 
 \begin{remark}[Base-point dependence]
-The local effective restoring rate is $\kappa_{K}(x_{*})=4d_{c}\cdot x_{*}^{\top}G^{2}x_{*}$; it depends on the base point. For the Rindler metric $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, $x_{*}=(0,1)$ is the unique $G$-eigenvector on $\{K=1\}$ with $x_{*}^{\top}G^{2}x_{*}=1$.
+The local effective restoring rate is $\kappa_{K}(x_{*})=4d_{c}\cdot x_{*}^{\top}G^{2}x_{*}$; it depends on the base point. For the Rindler metric $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, $x_{*}=(0,1)$ is the unique $G$-eigenvector on $\{K=1\}$ with $x_{*}^{\top}G^{2}x_{*}=1$. The factor~$4=2\times 2$ reflects two sources: the quadratic observable $K=x^{\top}Gx$ and the quadratic penalty $V=\tfrac{1}{2}(K-1)^{2}$; each contributes a factor of~$2$ upon differentiation.
 \end{remark}
 
 \subsection*{Two classes of fluctuation on $\{K=1\}$}
@@ -240,7 +240,7 @@ The $2\times 2$ equivalence theorem is the minimal case of a structure that may 
 
 \noindent\textit{Stage~2: Physics.} At critical damping, the stochastic extension identifies Class~A and Class~B fluctuations. Within Class~A, the Clausius relation follows algebraically and the local noise temperature has the Tolman structure.
 
-\noindent\textit{Stage~3: Quantum.} For $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, $d_{c}=\alpha/(\kappa\ell)$; defining $\sigma_{1}:=|\det G|^{1/2}/\alpha=\kappa\ell/\alpha$ gives $d_{c}\,\sigma_{1}=1$ identically. Combining with $\sigma_{1}\ge\hbar/2$ gives $d_{c}\le 2/\hbar$ --- an upper bound on~$d_{c}$, and hence on the Tolman temperature $T_{\mathrm{tol}}=d_{c}T_{H}$, from symplectic topology alone. However, the Gromov and Clausius scalings are incompatible (Remark~\ref{rem:gromov}); whether a refinement can close the gap, or is related to the Bekenstein bound~\cite{Bekenstein}, is the question to which the framework points.
+\noindent\textit{Stage~3: Quantum.} For $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, $d_{c}=\alpha/(\kappa\ell)$; defining $\sigma_{1}:=|\det G|^{1/2}/\alpha=\kappa\ell/\alpha$ gives $d_{c}\,\sigma_{1}=1$ identically (this holds for any Lorentzian~$G$). The identity is an uncertainty relation: the stabilisation cost~$d_{c}$ and the symplectic capacity~$\sigma_{1}$ are reciprocal, so tighter self-consistency demands larger phase space. Combining with $\sigma_{1}\ge\hbar/2$ gives $d_{c}\le 2/\hbar$ --- an upper bound on~$d_{c}$, and hence on the Tolman temperature $T_{\mathrm{tol}}=d_{c}T_{H}$, from symplectic topology alone. However, the Gromov and Clausius scalings are incompatible (Remark~\ref{rem:gromov}); whether a refinement can close the gap, or is related to the Bekenstein bound~\cite{Bekenstein}, is the question to which the framework points.
 
 \noindent\textit{Beyond GENERIC.} For Lorentzian $G$, $S\neq 0$ departs from GENERIC while $d_{c}$ is controlled by $\det G$ alone, suggesting a Lorentzian extension of non-equilibrium thermodynamics in the spirit of Wiener's programme~\cite{Wiener}.
 
