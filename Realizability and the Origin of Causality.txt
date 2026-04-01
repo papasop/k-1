@@ -106,6 +106,8 @@ There is a quadratic form $Q(\delta t,\delta r)=a\,\delta t^{2}+2\kappa\,\delta 
 d(x;\delta x)^{2} = \bigl(Q(\delta x)\bigr)_{+} + o\!\left(\|\delta x\|^{2}\right) \quad\text{as } \delta x\to 0 \text{ with } \delta t>0,
 \]
 where $(u)_{+}:=\max\{u,0\}$.
+The positive part ensures compatibility with $d\ge 0$: we do not assume $Q\ge 0$, since the
+existence of directions on which $Q\le 0$ is to be derived, not postulated.
 \end{definition}
 
 The notation $\mathrm{Sig}(Q)=(p,q)$ denotes the inertia of~$Q$: $p$~positive and $q$~negative eigenvalues.
