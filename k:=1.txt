@@ -1,0 +1,373 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\setlength{\emergencystretch}{1.5em}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem{remark}{Remark}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Sig}{Sig}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\diag}{diag}
+
+\title{\textbf{$K\neq 1$ Corrections to the Einstein Equation}\\[4pt]
+\large Vacuum Energy Density from Self-Consistency Fluctuations}
+\author{Y.\,Y.\,N.\ Li\footnote{Independent Researcher, China.
+E-mail: \texttt{bizuisikao@gmail.com}.
+ORCID: \texttt{0009-0002-6417-139x}.}}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The $K{=}1$ framework~\cite{K1} derives a restoring dynamics
+$d\varepsilon = -\kappa_K\varepsilon\,dt + \sigma\,dW$
+for the self-consistency deviation $\varepsilon := K-1$, with thermal variance
+$\Var(\varepsilon) = T_{\mathrm{tol}} = 1/(2\pi\ell)$.
+General relativity contains no analogue of this fluctuation: in vacuum Schwarzschild,
+$T_{\mu\nu}=0$ identically. We show that the $K$-fluctuation energy density
+\[
+  \rho_\varepsilon = \frac{2}{\pi\kappa\ell^2}
+\]
+enters the Jacobson thermodynamic derivation as a correction to the Einstein equation:
+$G_{\mu\nu}+\Lambda g_{\mu\nu} = 8\pi(T_{\mu\nu}^{(m)}+T_{\mu\nu}^{(\varepsilon)})$.
+The correction satisfies the Bianchi identity, diverges as $\ell\to 0$
+(near the horizon), and vanishes as $\ell\to\infty$ (far from the horizon),
+recovering standard GR in the latter limit.
+For macroscopic black holes the correction is of Planck-scale magnitude,
+$\rho_\varepsilon/\rho_{\mathrm{Planck}} \sim (\ell_P/\ell)^2$,
+and is not observable with current or foreseeable experiments.
+If the first-order $\varepsilon$-dynamics is promoted to a propagating scalar field
+(Assumption~F1), an alternative expression $\rho_\varepsilon = 1/(2\pi\ell)$
+holds far from the horizon, with a crossover governed by the restoring rate $\kappa_K$.
+\end{abstract}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Setup and notation}\label{sec:setup}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+We work in natural units $\hbar = c = k_B = G = 1$ unless otherwise stated.
+All quantities from the $K{=}1$ framework are taken from~\cite{K1} with
+normalisation $\alpha=1$.
+
+The self-consistency parameter is $K(x) = x^\top G x$, where $G$ is
+the information-time metric. The deviation
+\begin{equation}\label{eq:epsilon}
+  \varepsilon := K - 1
+\end{equation}
+satisfies the Ornstein--Uhlenbeck process~\cite{K1}
+\begin{equation}\label{eq:OU}
+  d\varepsilon = -\kappa_K\,\varepsilon\,dt + \sigma\,dW,
+\end{equation}
+with restoring rate $\kappa_K = 4d_c = 4/\sigma_1$, noise strength
+$\sigma = \sqrt{2\kappa_K T_{\mathrm{tol}}}$, and stationary variance
+\begin{equation}\label{eq:var}
+  \Var(\varepsilon) = \frac{\sigma^2}{2\kappa_K} = T_{\mathrm{tol}}
+  = \frac{1}{2\pi\ell}.
+\end{equation}
+Here $\ell$ is the proper distance to the local Rindler horizon,
+$\sigma_1 = \kappa\ell$ is the minimum symplectic eigenvalue of~$G$,
+and $\kappa$ is the surface gravity.
+The identity $d_c\cdot\sigma_1 = 1$ produces the $\kappa$-cancellation
+$T_{\mathrm{tol}} = d_c\,T_H = 1/(2\pi\ell)$,
+independent of~$\kappa$.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Energy density of $K$-fluctuations}\label{sec:rho}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The Ornstein--Uhlenbeck process~\eqref{eq:OU} is first-order: $\varepsilon$
+has no independent velocity degree of freedom. The only energy is the
+restoring potential $V(\varepsilon) = \tfrac{1}{2}\kappa_K\varepsilon^2$.
+
+\begin{proposition}[$K$-fluctuation energy density]\label{prop:rho}
+For the stationary state of~\eqref{eq:OU}, the energy density associated
+with $\varepsilon$-fluctuations on a local Rindler horizon is
+\begin{equation}\label{eq:rhoA}
+  \rho_\varepsilon
+  = \bigl\langle\tfrac{1}{2}\kappa_K\varepsilon^2\bigr\rangle
+  = \tfrac{1}{2}\kappa_K\,T_{\mathrm{tol}}
+  = \frac{2}{\pi\kappa\ell^2}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+$\langle\varepsilon^2\rangle = T_{\mathrm{tol}} = 1/(2\pi\ell)$
+by~\eqref{eq:var}. With $\kappa_K = 4/(\kappa\ell)$:
+\[
+  \tfrac{1}{2}\kappa_K\,T_{\mathrm{tol}}
+  = \tfrac{1}{2}\cdot\frac{4}{\kappa\ell}\cdot\frac{1}{2\pi\ell}
+  = \frac{2}{\pi\kappa\ell^2}.\qedhere
+\]
+\end{proof}
+
+\begin{remark}[Comparison with GR]\label{rem:GR}
+In vacuum Schwarzschild, $T_{\mu\nu} = 0$.
+Equation~\eqref{eq:rhoA} gives $\rho_\varepsilon > 0$ for all finite~$\ell$.
+This is the correction: the $K{=}1$ framework predicts a nonzero vacuum
+energy density that GR does not.
+\end{remark}
+
+\begin{remark}[Divergence structure]\label{rem:diverge}
+$\rho_\varepsilon \sim \ell^{-2}$ as $\ell\to 0$ (near-horizon divergence)
+and $\rho_\varepsilon \to 0$ as $\ell\to\infty$ (asymptotic recovery of GR).
+The divergence at $\ell=0$ signals the breakdown of the semiclassical
+description at the horizon, analogous to the divergence of the
+Boulware vacuum stress tensor~\cite{Boulware}.
+\end{remark}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Modified Einstein equation}\label{sec:einstein}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+We follow the Jacobson thermodynamic derivation~\cite{Jacobson}. At each
+spacetime point~$p$ and for each null direction~$k^a$, consider a local
+Rindler horizon~$\mathcal{H}$. The total energy flux across $\mathcal{H}$
+now has two contributions:
+\begin{equation}\label{eq:flux}
+  \delta Q_{\mathrm{total}}
+  = \delta Q_m + \delta Q_\varepsilon
+  = T_H\,\delta S,
+\end{equation}
+where $\delta Q_m = \kappa\!\int_0^{\lambda_1}\!\lambda\,
+T_{ab}^{(m)}k^a k^b\,\delta A_0\,d\lambda$ is the matter flux and
+$\delta Q_\varepsilon$ is the $\varepsilon$-fluctuation flux
+with the same integrand structure but
+$T_{ab}^{(m)} \to T_{ab}^{(\varepsilon)}$.
+
+The Raychaudhuri equation gives $\delta A = -R_{ab}k^a k^b\,\delta A_0\,
+\lambda_1^2/2$. Substituting into~\eqref{eq:flux} and cancelling common
+factors as in~\cite{Jacobson}:
+\begin{equation}\label{eq:null}
+  T_{ab}^{(m)}k^a k^b + T_{ab}^{(\varepsilon)}k^a k^b
+  = -\frac{1}{8\pi}R_{ab}k^a k^b.
+\end{equation}
+Since~\eqref{eq:null} holds for all null~$k^a$:
+
+\begin{theorem}[Modified Einstein equation]\label{thm:einstein}
+Under the $K{=}1$ framework with $\varepsilon$-fluctuations contributing
+to the horizon energy flux,
+\begin{equation}\label{eq:modified}
+  G_{\mu\nu} + \Lambda g_{\mu\nu}
+  = 8\pi\bigl(T_{\mu\nu}^{(m)} + T_{\mu\nu}^{(\varepsilon)}\bigr),
+\end{equation}
+where $T_{\mu\nu}^{(\varepsilon)}$ is the stress-energy of the
+$\varepsilon$-fluctuations with energy density~\eqref{eq:rhoA}.
+\end{theorem}
+
+\begin{proof}
+Equation~\eqref{eq:null} for all null $k^a$ implies
+$R_{\mu\nu} - \frac{1}{2}Rg_{\mu\nu} + \Lambda g_{\mu\nu}
+= -8\pi(T_{\mu\nu}^{(m)} + T_{\mu\nu}^{(\varepsilon)})$
+by the standard argument of~\cite{Jacobson}. Sign conventions
+give~\eqref{eq:modified}.
+\end{proof}
+
+\begin{corollary}[Bianchi consistency]\label{cor:bianchi}
+The contracted Bianchi identity $\nabla^\mu G_{\mu\nu} = 0$ requires
+$\nabla^\mu(T_{\mu\nu}^{(m)} + T_{\mu\nu}^{(\varepsilon)}) = 0$.
+If $\varepsilon$ satisfies its equation of motion
+(the stationary Fokker--Planck equation in the stochastic setting,
+or $\Box\varepsilon + \kappa_K\varepsilon = 0$ in the field-theory
+extension), then $\nabla^\mu T_{\mu\nu}^{(\varepsilon)} = 0$
+independently and matter conservation $\nabla^\mu T_{\mu\nu}^{(m)} = 0$
+is preserved.
+\end{corollary}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Schwarzschild profile}\label{sec:schwarz}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+For a Schwarzschild black hole of mass~$M$, $\kappa = 1/(4M)$ and the
+proper distance from the horizon $r_s = 2M$ is
+\begin{equation}\label{eq:ell}
+  \ell(r) = \sqrt{r(r-2M)} + 2M\ln\!\Bigl(
+  \sqrt{\tfrac{r}{2M}} + \sqrt{\tfrac{r}{2M}-1}\Bigr).
+\end{equation}
+Near the horizon, $\delta r := r-2M \ll 2M$ gives
+$\ell \approx 2\sqrt{2M\,\delta r}$, so
+\begin{equation}\label{eq:rho_r}
+  \rho_\varepsilon(r)
+  = \frac{2}{\pi\kappa\ell^2}
+  \approx \frac{2}{\pi\cdot\frac{1}{4M}\cdot 8M\,\delta r}
+  = \frac{1}{\pi\,\delta r}.
+\end{equation}
+
+\begin{remark}[Near-horizon divergence]\label{rem:nearhor}
+Equation~\eqref{eq:rho_r} diverges as $\delta r \to 0$. In a
+freely-falling frame, $\ell$ remains finite and so does
+$\rho_\varepsilon$; the divergence is a coordinate effect of the
+Schwarzschild static frame. The physical content is that
+$K$-fluctuations grow without bound in the static-observer description
+as the horizon is approached, analogous to the Unruh effect.
+\end{remark}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Magnitude estimate}\label{sec:magnitude}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Restoring SI units via $\ell \to \ell$, $\rho_\varepsilon \to
+\rho_\varepsilon\cdot c^7/(\hbar G^2)$:
+\begin{equation}\label{eq:SI}
+  \rho_\varepsilon^{(\mathrm{SI})}
+  \sim \frac{\hbar}{\pi\kappa\ell^2\,\ell_P^2\,c},
+\end{equation}
+where $\ell_P = \sqrt{\hbar G/c^3} \approx 1.616\times 10^{-35}$\,m.
+At $\ell = \ell_P$, $\rho_\varepsilon \sim \rho_{\mathrm{Planck}}$.
+At macroscopic $\ell$:
+\[
+  \frac{\rho_\varepsilon}{\rho_{\mathrm{Planck}}}
+  \sim \left(\frac{\ell_P}{\ell}\right)^{\!2}.
+\]
+For a $10\,M_\odot$ black hole at $\ell = r_s \approx 3\times 10^4$\,m,
+this ratio is $\sim 10^{-78}$. The correction is far below any
+foreseeable experimental sensitivity.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Field-theory extension (conditional)}\label{sec:F1}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The preceding results use only the first-order Ornstein--Uhlenbeck dynamics
+of~\cite{K1}. A natural but nontrivial extension is:
+
+\begin{assumption}[Field promotion --- F1]\label{ass:F1}
+The self-consistency deviation $\varepsilon(x^\mu)$ is a scalar field on
+spacetime with action
+\begin{equation}\label{eq:action}
+  S_\varepsilon = \int\!\Bigl[\tfrac{1}{2}\nabla_\mu\varepsilon\,
+  \nabla^\mu\varepsilon
+  - \tfrac{1}{2}\kappa_K\,\varepsilon^2\Bigr]\sqrt{-g}\;d^4x,
+\end{equation}
+where $m^2 = \kappa_K = 4/(\kappa\ell)$ is the effective mass squared.
+\end{assumption}
+
+Under Assumption~F1 the equipartition theorem gives each quadratic
+degree of freedom $\tfrac{1}{2}T_{\mathrm{tol}}$, yielding
+\begin{equation}\label{eq:rhoB}
+  \rho_\varepsilon^{(B)}
+  = \underbrace{\tfrac{1}{2}T_{\mathrm{tol}}}_{\text{kinetic}}
+  + \underbrace{\tfrac{1}{2}T_{\mathrm{tol}}}_{\text{potential}}
+  = T_{\mathrm{tol}}
+  = \frac{1}{2\pi\ell}.
+\end{equation}
+
+\begin{remark}[Crossover]\label{rem:crossover}
+The ratio $\rho^{(A)}/\rho^{(B)} = \kappa_K = 4/(\kappa\ell)$ is large
+near the horizon ($\kappa\ell \ll 1$, overdamped regime, Case~A dominates)
+and approaches unity far away ($\kappa\ell \gg 1$, propagating regime,
+Case~B applies). The crossover occurs at $\kappa_K \sim 1$, i.e.\
+$\ell \sim 4/\kappa$. Whether the physical $\varepsilon$-dynamics
+interpolates smoothly between the two regimes is an open problem
+requiring the full $(1{+}3)$-dimensional treatment.
+\end{remark}
+
+\begin{remark}[Stress-energy tensor under F1]\label{rem:Tmunu}
+The stress-energy of~\eqref{eq:action} is the standard minimally coupled
+massive scalar result:
+\[
+  T_{\mu\nu}^{(\varepsilon)} = \nabla_\mu\varepsilon\,\nabla_\nu\varepsilon
+  - g_{\mu\nu}\bigl[\tfrac{1}{2}\nabla_\alpha\varepsilon\,\nabla^\alpha\varepsilon
+  - \tfrac{1}{2}\kappa_K\varepsilon^2\bigr].
+\]
+This satisfies $\nabla^\mu T_{\mu\nu}^{(\varepsilon)} = 0$ on shell,
+so Corollary~\ref{cor:bianchi} holds as a standard identity.
+\end{remark}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Discussion}\label{sec:disc}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The $K{=}1$ framework~\cite{K1} derives a self-consistency condition for
+the information-time metric. General relativity has no analogue: the metric
+$g_{\mu\nu}$ in GR is a fundamental field with no self-consistency
+requirement and no restoring potential. The deviation $\varepsilon = K-1$
+and its thermal fluctuations are therefore genuinely new physical content.
+
+The modified Einstein equation~\eqref{eq:modified} has the same form as
+GR with a minimally coupled scalar field. The novelty is not the form
+but the origin: the scalar field $\varepsilon$ is not postulated but
+derived from the $K{=}1$ self-consistency condition; its mass
+$m^2 = 4/(\kappa\ell)$ and temperature $T_{\mathrm{tol}} = 1/(2\pi\ell)$
+are determined by the framework with no free parameters.
+
+The correction is of Planck-scale magnitude for macroscopic black holes.
+This places it alongside other quantum-gravity corrections (loop quantum
+gravity area gap, string $\alpha'$ corrections, etc.) that are formally
+derivable but experimentally inaccessible. We make no claim of observable
+predictions.
+
+Three open problems remain: (i)~whether the first-order (OU) or
+second-order (field) description of $\varepsilon$ is physically correct,
+or whether an interpolation is needed; (ii)~the full
+$(1{+}3)$-dimensional treatment, including the symplectic pairing ambiguity
+noted in~\cite{K1}; (iii)~whether the near-horizon divergence of
+$\rho_\varepsilon$ has implications for the information paradox or the
+firewall debate.
+
+\medskip
+
+\noindent\textbf{Statements and Declarations}
+
+\medskip
+\noindent\textbf{Funding.} No funding was received for conducting this study.
+
+\medskip
+\noindent\textbf{Competing interests.} The author has no relevant financial
+or non-financial interests to disclose.
+
+\medskip
+\noindent\textbf{Author contributions.} Y.Y.N.\ Li is the sole author
+of the work presented.
+
+\medskip
+\noindent\textbf{Data availability.} No datasets were generated or analysed
+during the current study.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{thebibliography}{9}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bibitem{K1}
+Li, Y.Y.N.:
+$K{=}1$ Chronogeometrodynamics: Lorentzian Geometry from Information Time.
+J.\ Math.\ Phys.\ (submitted, 2026).
+
+\bibitem{Realizability}
+Li, Y.Y.N.:
+Realizability and the Origin of Causality.
+Found.\ Phys.\ (submitted, 2026).
+
+\bibitem{Jacobson}
+Jacobson, T.:
+Thermodynamics of spacetime: The Einstein equation of state.
+Phys.\ Rev.\ Lett.\ \textbf{75}, 1260--1263 (1995).
+
+\bibitem{Boulware}
+Boulware, D.G.:
+Quantum field theory in Schwarzschild and Rindler spaces.
+Phys.\ Rev.\ D \textbf{11}, 1404--1423 (1975).
+
+\bibitem{Bekenstein}
+Bekenstein, J.D.:
+Black holes and entropy.
+Phys.\ Rev.\ D \textbf{7}, 2333--2346 (1973).
+
+\bibitem{Hawking}
+Hawking, S.W.:
+Particle creation by black holes.
+Commun.\ Math.\ Phys.\ \textbf{43}, 199--220 (1975).
+
+\end{thebibliography}
+
+\end{document}
