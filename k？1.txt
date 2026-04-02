@@ -263,7 +263,7 @@ $\langle\tfrac{1}{2}\kappa_K\varepsilon^2\rangle
 which is a constant independent of~$\ell$. The strict-layer result is
 $\langle\varepsilon^2\rangle_{\mathrm{OU}} = T_{\mathrm{tol}}
 = 1/(2\pi\ell)$, which depends on~$\ell$. The two agree only at
-$\kappa\ell = 4/\pi$, not generically. This is not a minor discrepancy:
+$\kappa\ell = 4$, not generically. This is not a minor discrepancy:
 it means F1 changes the statistical properties of~$\varepsilon$ itself,
 not merely the tensorial interpretation of its energy. The OU process
 and the scalar field are therefore genuinely different models for
