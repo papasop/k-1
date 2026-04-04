@@ -331,9 +331,9 @@ At Δ = 0: D is **discontinuous** (D(0⁻) = 0, D(0⁺) = D₀ > 0). This discon
 
 **Consequences:**
 
-- Detailed balance is **necessarily violated** at the signature boundary. This is a mathematical fact, not a numerical observation.
+- Detailed balance is **necessarily violated** at the signature boundary. This is a mathematical fact (D discontinuous at Δ = 0), not a numerical observation.
 - The system is not in a non-equilibrium steady state (NESS) — it is in an **absorbing state**: Lorentzian is entered but never left. The steady-state probability is ρ_Lor = 1, ρ_Euc = 0.
-- Entropy production Ṡ = 0.085 > 0, concentrated inside the Lorentzian regime, confirming irreversibility.
+- Note: entropy production Ṡ > 0 measured within the Lorentzian regime is a numerical artifact (Itô/Stratonovich mismatch in the simulation), not physical evidence. Detailed balance holds within the Lorentzian regime; it is violated only **across** the signature boundary.
 
 **Physical meaning:** Equilibrium systems have reversible fluctuations. The K=1 signature dynamics is fundamentally irreversible at Δ = 0 because the noise mechanism (OU fluctuations) exists on one side only. This irreversibility is not imposed — it is an algebraic consequence of the framework.
 
@@ -441,7 +441,7 @@ $$\text{Jacobson} \rightarrow \text{Einstein eq.} \qquad \text{quantum mechanics
 12. **Lorentzian is the unique stable signature** — Euclidean is unstable, decays to Lorentzian; Lorentzian is self-protecting. Computed.
 13. **Measurement irreversibility from barrier asymmetry** — Lor → Euc requires external push; Euc → Lor is spontaneous; net effect is irreversible loss of superposition. Computed.
 14. **One-way barrier is intrinsic** — survives Euclidean traps (μ_E = 0.5–1.0); source is noise discontinuity D(0⁻)=0 vs D(0⁺)=D₀, not potential shape. Computed.
-15. **Detailed balance necessarily broken** — D(Δ) discontinuous at Δ=0; Lorentzian is absorbing state (ρ_Lor=1); entropy production Ṡ=0.085>0. Computed.
+15. **Detailed balance necessarily broken** — D(Δ) discontinuous at Δ=0 (mathematical fact from OU existence); Lorentzian is absorbing state (ρ_Lor=1). Detailed balance holds within Lorentzian, violated only across the boundary. Computed + proved.
 16. **Two D scalings (Path A)** — FDT: D ∝ √|Δ|; noise transfer: D ∝ |Δ|². Both vanish at boundary → self-stability robust to derivation method. Computed.
 17. **Multi-mode D_cross > 0 (Path B)** — other modes' OU provides finite noise at boundary; D_total = D_self + D_cross is continuous; D_cross/D_total → 99% at σ₁ = 0.01. Computed.
 18. **Barrier finite in multi-mode** — single-mode: ~2.25 (infinite in limit); multi-mode: ~0.87 (finite). Kramers rate ~ exp(−17000) ≈ 0 but non-zero. Computed.
