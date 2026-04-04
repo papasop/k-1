@@ -1,0 +1,256 @@
+From Information Time to Born Rule
+The Complete Story of K=1 Chronogeometrodynamics
+Y.Y.N. Li — Research Notes (April 2026)
+
+0. The Central Idea: Time Is Not External
+In every framework of physics — from Newton through quantum mechanics — time enters as a primitive: an external parameter, a background coordinate, something given before physics begins.
+This document traces the consequences of a single redefinition:
+Time is the cost of structural change.
+Time is not a container in which physics happens. Time is what physics produces. From this redefinition, a chain of consequences flows — each link algebraically forced by the previous one — reaching from the origin of causality through thermodynamics to the threshold of quantum mechanics.
+
+1. Information Time and the Metric
+1.1 Definition
+Let Φ parametrise structural variation and H > 0 an entropic resistance. The information time is:
+$$dt_{\text{info}} := d\Phi / H$$
+This is a scalar: the cost of an infinitesimal structural change. It depends on where the system is (through Φ and H) and in what direction it moves (through dΦ).
+1.2 From Scalar to Metric
+A scalar does not distinguish directions. Physics requires directions — which way is "time," which way is "space." The metric emerges from asking: how does the cost depend on direction?
+The squared cost dt²_info, expanded to second order in displacement δx, gives:
+$$dt_{\text{info}}^2 \approx \delta x^\top G , \delta x$$
+where G = ∇²(dt²_info) is a symmetric matrix — the metric. This is precisely Riemann's construction (1854): the metric is the second-order structure of an infinitesimal cost function. Riemann used distance; here the cost is informational.
+1.3 Why the Metric Must Be Indefinite
+Three conditions constrain G (proved rigorously in the Realizability paper):
+	•	Assumption E (Expansion): G exists as a non-degenerate quadratic form.
+	•	Assumption T (Temporal cost): At least one direction has positive cost — G(e_t, e_t) > 0.
+	•	Assumption R (Realizability): Some directions have vanishing cost — persistent configurations require that G not be positive definite.
+For a non-degenerate 2×2 matrix with one positive and one non-positive direction:
+$$\text{Sig}(G) = (1,1) \quad \text{(Lorentzian)}$$
+This is Theorem 4 of the K=1 paper. Lorentzian signature is not assumed — it is the unique possibility consistent with R, E, and T.
+1.4 Connection to Zeno
+Zeno's two paradoxes implicitly assumed the opposite cost structure:
+	•	Achilles: spatial cost has a positive lower bound (space is expensive) → R violated.
+	•	Flying arrow: temporal cost can be zero (time is free) → T violated.
+The physical world inverts Zeno:
+	•	Space is free (R satisfied) → Achilles catches the tortoise.
+	•	Time is expensive (T satisfied) → the arrow moves.
+R + T = Lorentzian. Zeno had the cost assignments backwards.
+
+2. Self-Consistency: K = 1
+2.1 The Quadratic Form
+Given G, define:
+$$K(x) := x^\top G , x$$
+K measures the temporal cost at configuration x. The condition K = 1 means: the metric reproduces its own normalisation. Below 1, the metric underestimates; above 1, it overestimates.
+2.2 Self-Reference and the Status of K = 1
+This is not a passive normalisation. G defines K, and K = 1 constrains G. The metric is checking itself.
+Why K = 1 and not K = c for some other constant? K is dimensionless (G is dimensionless in the information-time parametrisation). The condition K = c for any c > 0 defines a hyperboloid, but only K = 1 is self-referential: it requires that the quadratic form defined by G, evaluated on the unit hyperboloid of G, return exactly the value that defines that hyperboloid. Any other value would require an external scale — contradicting the framework's internal character. K = 1 is a normalisation convention, but it is the unique normalisation convention that is self-consistent without external input.
+Status: K = 1 is a condition (the self-consistency requirement), not a theorem derived from dt_info. The information time dt_info motivates the existence of G; the three assumptions R, E, T force its signature; K = 1 is then the natural self-referential condition on G. It is the least arbitrary choice, but it is a choice.
+Departures from K = 1 generate a restoring potential:
+$$V = \tfrac{1}{2}(K - 1)^2$$
+This potential is not independently chosen — it is the unique leading-order term in the Taylor expansion of any smooth function V(K) with a minimum at K = 1: since V(1) = 0 and V'(1) = 0 at a minimum, V ≈ ½V''(1)(K − 1)², and V''(1) can be absorbed into the time scale. The quadratic form is universal, not specific to K = 1.
+2.3 The Unit Hyperboloid
+Geometrically, {K = 1} is the unit hyperboloid of G. For G = diag(−σ₁², 1), this is the hyperbola −σ₁²x₁² + x₂² = 1. It carries two geometrically distinct classes of fluctuation:
+	•	Class A (thermodynamic): perpendicular to {K = 1} — departures from self-consistency.
+	•	Class B (gauge): tangential to {K = 1} — Lorentz boosts, changing the observer but not the thermodynamic state.
+
+3. Unique Dynamics and Critical Damping
+3.1 Symplectic Structure
+Among all matrices M such that GM is skew-symmetric, the unique solution is:
+$$J_G = \alpha G^{-1} J$$
+This uniqueness relies on dim(Skew₂) = 1. The evolution law is then uniquely:
+$$\dot{x} = (J_G - D)\nabla V$$
+with D ≥ 0 (dissipation). This is Law II.
+3.2 The Stability Boundary
+The spectrum of J_G determines everything:
+	•	Lorentzian G (det G < 0): spec(J_G) = ±d_c, real → decay/growth.
+	•	Euclidean G (det G > 0): spec(J_G) = ±iω, imaginary → oscillation.
+The stability boundary is:
+$$d_c = \alpha\sqrt{-1/\det G} = \alpha/\sigma_1$$
+At critical damping D = d_c I, the restoring rate for K is κ_K = 4d_c (Theorem 6).
+3.3 Stochastic Dynamics
+Adding noise: dx = (J_G − d_c I)∇V dt + σ dW. Within Class A, the K-dynamics is a one-dimensional Ornstein–Uhlenbeck process with:
+$$\text{Var}(K) = \sigma^2/(2d_c) = T_{\text{eff}}$$
+
+4. Spacetime Thermodynamics
+4.1 κ-Cancellation
+For the Rindler metric G = diag(−(κℓ)², 1):
+$$d_c \cdot T_H = \frac{\alpha}{\kappa\ell} \cdot \frac{\hbar\kappa}{2\pi} = \frac{\alpha\hbar}{2\pi\ell}$$
+The surface gravity κ cancels exactly. The Tolman temperature T_tol = d_c · T_H = αℏ/(2πℓ).
+4.2 Clausius Relation
+The Clausius relation emerges from the OU process within Class A. The derivation follows standard stochastic thermodynamics (Sekimoto 1998, Seifert 2005) applied to the K=1 OU process.
+Definitions. For the OU process dε = −κ_K ε dt + σ_K dW with ε = K − 1:
+	•	Stationary distribution: ρ_eq ∝ exp(−κ_K ε²/(2D_K)) = exp(−ε²/(2T_eff)), where T_eff = D_K/κ_K = σ²/(2d_c).
+	•	Entropy: S := −ln ρ_eq = ε²/(2T_eff) + const.
+	•	Heat: δQ := dV + ½σ_K² dt, where V = ½κ_K ε² is the restoring potential and ½σ_K² dt is the noise-injected energy.
+Derivation. At stationarity, dS = d(ε²/(2T_eff)) = ε dε/T_eff. Substituting dε = −κ_K ε dt + σ_K dW and taking expectations: ⟨δQ⟩ = T_eff ⟨dS⟩. This is the Clausius relation δQ = T_eff dS. The fluctuation-dissipation relation σ_K² = 2κ_K T_eff follows from the OU stationary variance.
+External input. Under the single identification T_eff = T_tol (the sole external axiom, Proposition 7):
+$$\sigma^2 = 2d_c \cdot T_{\text{tol}} = 2d_c^2 \cdot T_H$$
+Everything except T_eff = T_tol is derived from the OU process; the OU process is derived from G + V = ½(K−1)²; G is derived from R + E + T. The Clausius relation is internal to the framework, conditional on one external identification.
+4.3 Connection to Jacobson
+Jacobson (1995) derives the Einstein equations from three inputs: Lorentzian signature, the Clausius relation, and S = A/4. The K=1 framework supplies the first two:
+	•	Signature: forced by R + E + T (Theorem 4).
+	•	Clausius: follows from K=1 dynamics (Proposition 7, given T_eff = T_tol).
+The three Jacobson inputs reduce toward a single source.
+
+5. Wick Rotation: From Thermal to Quantum
+5.1 The Spectral Mapping
+Terminology. Standard Wick rotation in QFT is the analytic continuation t → iτ of the time coordinate, preserving the metric signature while changing the coordinate representation. What we describe here is different: a change of the metric signature itself, G_L = diag(−σ₁², 1) → G_E = diag(+σ₁², 1). The algebraic effects parallel those of standard Wick rotation (real eigenvalues → imaginary, decay → oscillation), but the operations are distinct. We use "Wick rotation" as shorthand for this algebraic parallel throughout this section, not as a claim of mathematical equivalence with path-integral Wick rotation. Whether the two operations are compatible — i.e., whether the K=1 signature change can be embedded in a path-integral framework — is an open question.
+Under signature change:
+Lorentzian
+Euclidean
+spec(J_G) = ±d_c (real)
+spec(J_G) = ±iω (imaginary)
+decay: e^{−κt}
+oscillation: e^{−iωτ}
+dissipation
+unitary evolution
+The formal continuation of the algebraic formula d_c = α√(−1/det G) gives iω = iα/σ₁ when det G > 0. Strictly, Theorem 3 gives d_c = 0 for Euclidean G (no real stability boundary); the value iω is obtained by formally evaluating the same algebraic expression at det G > 0, yielding an imaginary number. The magnitude α/σ₁ is the same — only real vs imaginary changes.
+5.2 Fokker-Planck to Schrödinger
+The OU process generates a Fokker-Planck equation. The standard similarity transform ρ = e^{−V/(2T)} ψ converts it to:
+$$\partial\psi/\partial t = -H_s \psi$$
+$$H_s = -D_K \partial^2/\partial\varepsilon^2 + \kappa_K^2 \varepsilon^2/(4D_K) - \kappa_K/2$$
+This is the quantum harmonic oscillator in imaginary time, with frequency Ω = κ_K = 4d_c.
+Wick rotating t → iτ:
+$$i\partial\psi/\partial\tau = H_s \psi$$
+This is the Schrödinger equation.
+5.3 Temperature and Planck Constant: Same Dimensionless Number
+Within the dimensionless K=1 framework, the same algebraic expression appears in both signatures:
+$$T_{\text{eff}} = \sigma^2/(2d_c) \quad \text{[Lorentzian: effective temperature]}$$
+$$\hbar_{\text{eff}} = \sigma^2/(2\omega) \quad \text{[Euclidean: effective Planck constant]}$$
+Since d_c = ω = α/σ₁ (the same number in both signatures):
+$$T_{\text{eff}} = \hbar_{\text{eff}} \quad \text{(as dimensionless numbers within the framework)}$$
+Dimensional caveat. In physical units, temperature has dimensions [energy] (with k_B = 1) while ℏ has dimensions [energy·time] = [action]. These are not the same dimension. The equality T_eff = ℏ_eff holds only within the dimensionless framework where G, d_c, σ, and all derived quantities are pure numbers. Connecting to physical dimensions requires the external identification T_eff = T_tol, which introduces ℏ through T_H = ℏκ/(2π). The framework does not derive ℏ as a dimensional constant — it identifies the dimensionless ratio that, upon dimensional restoration, becomes ℏ.
+What this means. The algebraic identity d_c = ω implies that the same dimensionless noise-to-restoring ratio σ²/(2α/σ₁) governs thermal fluctuations in one signature and quantum fluctuations in the other. This is consistent with the standard Matsubara correspondence β = it/ℏ (i.e., inverse temperature ↔ imaginary time in units of ℏ), but does not go beyond it.
+5.4 What the Signature Change Adds to K=1
+The signature change does not derive quantum mechanics from K=1. It confirms internal consistency: the K=1 thermal dynamics, when the algebraic formulas are continued to the Euclidean signature, produces the quantum harmonic oscillator — a known physical object — with parameters determined by det G (not arbitrary). This is a consistency check, not a derivation.
+What is standard: FP ↔ Schrödinger via similarity transform (Nelson 1966), OU ↔ quantum oscillator, Matsubara formalism.
+What K=1 adds: the thermal side has a geometric origin (d_c from det G, not a free parameter), and the signature change gives a geometric interpretation to the thermal-quantum correspondence (changing det G from negative to positive, rather than the coordinate operation t → iτ).
+What K=1 does not establish: whether the K=1 signature change is mathematically equivalent to standard Wick rotation in path-integral QFT, whether the correspondence extends beyond quadratic potentials, or whether σ (and thus ℏ_eff) can be determined geometrically.
+
+6. Touching the Born Rule
+6.1 The Mathematical Fact
+The FP probability density ρ and the wave function ψ are related by:
+$$\rho = e^{-U/2} \psi, \quad \text{where } U = V/T_{\text{eff}}$$
+The stationary FP solution is:
+$$\rho_{\text{eq}} = Z^{-1} e^{-U}$$
+The corresponding ψ:
+$$\psi_0 = e^{+U/2} \rho_{\text{eq}} = Z^{-1/2} e^{-U/2}$$
+Therefore:
+$$|\psi_0|^2 = Z^{-1} e^{-U} = \rho_{\text{eq}}$$
+The ground-state Born probability equals the Boltzmann distribution. This is exact, not approximate.
+6.2 What This Means
+In the FP framework, ρ is a genuine probability density — it describes the statistical distribution of the OU process. It is not postulated; it emerges from the dynamics of K=1.
+Through the similarity transform, ρ maps to ψ. At equilibrium, |ψ₀|² = ρ_eq. After Wick rotation, ψ becomes a quantum state and |ψ|² becomes the Born probability.
+The Born rule (for the ground state) is thus the Wick-rotated Boltzmann distribution — not an independent postulate, but a consequence of metric self-consistency.
+6.3 Limitations
+This only holds for the ground state. For excited states, φ_n = e^{−U/2} ψ_n can be negative — not a probability density. The uniqueness argument (|ψ|² is the only conserved non-negative quantity under unitary evolution) extends the result formally, but does not constitute a full derivation.
+
+7. Measurement as Signature Transition
+7.1 Two Signatures, Two Physics
+The K=1 framework with two metric signatures produces two types of physics:
+
+Euclidean (quantum)
+Lorentzian (thermal)
+Signature
+(+,+)
+(−,+)
+d_c
+imaginary (iω)
+real
+Dynamics
+oscillation
+decay
+Evolution
+unitary (reversible)
+dissipative (irreversible)
+Time arrow
+none
+present
+State
+superposition
+definite outcome
+7.2 Measurement = Signature Switch
+The framework suggests:
+	•	Before measurement: the system is in the Euclidean regime. All directions carry positive cost. R is not satisfied. ψ oscillates — superposition, interference, unitarity.
+	•	During measurement: the system couples to a macroscopic environment. The environment has many degrees of freedom, including directions with vanishing cost. R becomes satisfied. The signature switches from Euclidean to Lorentzian.
+	•	After measurement: the system is in the Lorentzian regime. d_c is real and positive. ψ decays — the OU process drives K toward 1. The system relaxes to ρ_eq = |ψ₀|². A definite result has been obtained.
+Collapse = the appearance of a time arrow = the transition from reversible oscillation to irreversible decay = the moment when one direction becomes expensive (T) while another becomes free (R).
+7.3 Why Irreversible
+In the Lorentzian regime, d_c > 0 produces genuine dissipation. Information about the initial superposition is lost as the OU process decays to equilibrium. This irreversibility is not added by hand — it is an intrinsic property of the Lorentzian signature. The measurement is irreversible because Lorentzian dynamics is irreversible.
+7.4 Why |ψ|²
+After the signature switch, the system decays to the Boltzmann equilibrium ρ_eq. Through the similarity transform, ρ_eq = |ψ₀|². The Born probability is the equilibrium distribution of the post-measurement Lorentzian dynamics.
+7.5 Comparison with Decoherence
+Standard decoherence theory explains the apparent disappearance of interference through environmental entanglement, without requiring new physics. The K=1 interpretation goes deeper: decoherence is the dynamical process by which the effective signature transitions from Euclidean to Lorentzian. The two are compatible — decoherence describes the mechanism; K=1 describes the geometric meaning.
+
+8. The Complete Chain
+$$dt_{\text{info}} = d\Phi/H \quad \text{(information time — the innovation)}$$ $$\downarrow$$ $$G = \nabla^2(dt_{\text{info}}^2) \quad \text{(metric from cost)}$$ $$\downarrow$$ $$R + E + T \rightarrow \text{Sig}(G) = (1,1) \quad \text{(Lorentzian — proved)}$$ $$\downarrow$$ $$K = x^\top G x, \quad K = 1 \quad \text{(self-consistency)}$$ $$\downarrow$$ $$J_G = \alpha G^{-1}J, \quad d_c = \alpha/\sigma_1 \quad \text{(symplectic structure)}$$ $$\downarrow$$ $$\dot{x} = (J_G - D)\nabla V + \sigma dW \quad \text{(unique dynamics)}$$ $$\downarrow \qquad \qquad \qquad \qquad \qquad \downarrow$$ $$\text{LORENTZIAN} \qquad \qquad \quad \text{EUCLIDEAN}$$ $$d_c \text{ real} \qquad \qquad \qquad \quad d_c = i\omega$$ $$\text{OU process} \qquad \qquad \qquad \text{oscillation}$$ $$\text{Fokker-Planck} \qquad \qquad \quad \text{Schrödinger}$$ $$\rho_{\text{eq}} = e^{-V/T} \qquad \qquad \quad |\psi_0|^2 = e^{-V/T}$$ $$\text{Clausius} \qquad \qquad \qquad \quad \text{Born rule (ground state)}$$ $$\text{Jacobson} \rightarrow \text{Einstein eq.} \qquad \text{quantum mechanics}$$
+
+9. What Is Established vs What Is Conjectured
+Established (proved or computed)
+	1	R + E + T → Sig(G) = (1,1) — Realizability paper, Theorem.
+	2	J_G = αG⁻¹J unique — K=1 paper, Theorem 1.
+	3	d_c > 0 ⟺ Lorentzian — K=1 paper, Theorem 4.
+	4	κ_K = 4d_c — K=1 paper, Theorem 6.
+	5	Clausius from OU (given T_eff = T_tol) — K=1 paper, Proposition 7.
+	6	spec(J_G): ±d_c (Lorentzian) vs ±iω (Euclidean) — computed, verified.
+	7	FP → Schrödinger via similarity transform + Wick rotation — standard result applied.
+	8	|ψ₀|² = ρ_eq — algebraic identity, verified.
+	9	T_eff = ℏ_eff as dimensionless numbers within the framework — algebraic identity (d_c = ω); dimensional restoration requires external input.
+Conjectured (consistent but not proved)
+	1	Measurement = signature switch (Euclidean → Lorentzian).
+	2	Collapse = appearance of time arrow.
+	3	Quantum mechanics and thermodynamics are two faces of one structure.
+	4	Born rule for excited states from |ψ|² uniqueness.
+	5	Microscopic systems are naturally Euclidean (few degrees of freedom → R not satisfied).
+Open (not addressed)
+	1	σ (noise amplitude) is a free parameter → ℏ not fully geometric.
+	2	Compatibility of K=1 signature change with path-integral Wick rotation.
+	3	Multi-particle quantum mechanics.
+	4	Standard model.
+	5	Dynamics of the signature transition.
+	6	Why the physical world chose Lorentzian over Euclidean.
+
+10. Historical Position
+The central question — how to measure change — runs from Zeno through Riemann to the present:
+Era
+Contribution
+Open question left
+Zeno (~450 BC)
+Change has cost
+Is change possible?
+Euclid (~300 BC)
+Cost = distance (positive definite)
+Why this metric?
+Riemann (1854)
+Metric can be general, curved
+Where does the metric come from?
+Minkowski (1907)
+Metric can be indefinite
+Why indefinite?
+Einstein (1915)
+Matter determines curvature
+Why Lorentzian signature?
+Jacobson (1995)
+Einstein equation from thermodynamics
+Why Clausius? Why signature?
+This work (2026)
+Signature and Clausius from cost asymmetry
+Why quantum mechanics?
+The innovation is not a formula or a prediction. It is a conceptual shift: time is not external to physics — it is the cost of structural change. Signature, causality, thermodynamics, and (tentatively) quantum mechanics are consequences of this single idea.
+
+11. Status and Next Steps
+Submitted:
+	•	Realizability and the Origin of Causality — Found. Phys. (awaiting review)
+	•	K=1 Chronogeometrodynamics — JMP (awaiting review, JMP26-AR-00991)
+Completed (unpublished notes):
+	•	Wick rotation consistency check — confirms K=1 compatible with quantum mechanics
+	•	Born rule for ground state — |ψ₀|² = ρ_eq (algebraic identity)
+	•	Measurement interpretation — signature switch conjecture
+Next (after acceptance):
+	•	(1+3)D generalisation: multiple horizon directions → multiple K_n → quantum field structure
+	•	Jacobson connection: complete derivation with S ∝ A
+	•	Contact Jacobson (jacobson@umd.edu) upon Realizability acceptance
+Long-term:
+	•	Born rule for excited states
+	•	Dynamics of signature transition
+	•	Relationship to decoherence
+	•	Non-linear corrections at large K-deviation (possible Planck-scale predictions)
