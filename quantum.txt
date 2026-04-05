@@ -51,9 +51,9 @@ deriving the ground-state Born rule as Boltzmann equilibrium.
 \section{Introduction}\label{sec:intro}
 %=====================================================================
 
-The quantum measurement problem has five established approaches. Copenhagen adds a projection postulate~\cite{vonNeumann}; decoherence traces over environmental degrees of freedom~\cite{Zurek}; many-worlds reinterprets the solution space~\cite{Everett}; GRW~\cite{GRW} and Penrose~\cite{Penrose} modify the Schr\"odinger equation itself. All share a common assumption: the Schr\"odinger equation exists unconditionally.
+The quantum measurement problem has attracted at least five prominent approaches, which differ in where they intervene. Copenhagen adds a projection postulate~\cite{vonNeumann}; decoherence traces over environmental degrees of freedom~\cite{Zurek}; many-worlds reinterprets the universal wave function~\cite{Everett}. These three retain the Schr\"odinger equation and address measurement at the level of interpretation or solution. GRW~\cite{GRW} and Penrose~\cite{Penrose} go further: both argue that unitary evolution is \emph{not} unconditionally valid --- GRW by adding a stochastic term, Penrose by arguing that gravitational self-energy renders macroscopic superpositions intrinsically unstable.
 
-This paper identifies a geometric precondition for the equation's existence and shows that the precondition is dynamical:
+This paper identifies a different entry point --- a geometric precondition for the equation's existence --- and shows that the precondition is dynamical:
 
 \begin{quote}
 \itshape
@@ -69,7 +69,7 @@ The argument has four steps:
 \item \textbf{Born rule.} After collapse (Euclidean excursion), the OU process restarts and decays to $\rho_{\mathrm{eq}} = |\psi_0|^2$: the ground-state Born rule emerges as Boltzmann equilibrium.
 \end{enumerate}
 
-The approach operates one level below the Schr\"odinger equation --- at its geometric precondition --- and thereby differs from all five preceding approaches.
+The approach operates one level below the Schr\"odinger equation --- at its geometric precondition --- and thereby differs from all preceding approaches.
 
 \medskip\noindent\textbf{Scope.} All results are derived in the $2\times 2$ setting natural to a single Rindler horizon~\cite{K1paper}. The $(1{+}3)$-dimensional extension is discussed in \S\ref{sec:discussion} but not required for the core results; each 2D normal plane closes independently because $\dim(\mathrm{Skew}_2) = 1$ guarantees unique symplectic structure~\cite[Theorem~1]{K1paper}.
 
@@ -113,7 +113,7 @@ i\,\partial_\tau \psi = H_s\,\psi.
 \end{equation}
 
 \begin{remark}[What is standard vs.\ what $K{=}1$ adds]
-The similarity transform FP~$\to$~imaginary-time Schr\"odinger is standard~\cite{Nelson,Risken}; the Wick rotation is a formal algebraic operation, not a claim of physical equivalence between dissipation and unitary evolution. The $K{=}1$ framework adds two things: (i)~the parameters $\kappa_K$, $D_K$ are not free but determined by $\det G$ through~\cite[Theorems~4,\,6]{K1paper}; (ii)~the existence of the OU process --- and hence of $\psi$ --- is conditional on signature, providing a geometric on/off switch absent in Nelson's original construction.
+The similarity transform FP~$\to$~imaginary-time Schr\"odinger is standard~\cite{Nelson,Risken}; the Wick rotation $t \to i\tau$ is a formal algebraic operation that maps the spectral structure of the FP generator to a Hermitian Hamiltonian. It is not a claim of physical equivalence between dissipative relaxation and unitary evolution; the physical content resides entirely in the OU/FP dynamics, and the Wick-rotated equation inherits its structure as a mathematical consequence. The $K{=}1$ framework adds two things: (i)~the parameters $\kappa_K$, $D_K$ are not free but determined by $\det G$ through~\cite[Theorems~4,\,6]{K1paper}; (ii)~the existence of the OU process --- and hence of $\psi$ --- is conditional on signature, providing a geometric on/off switch absent in Nelson's original construction.
 \end{remark}
 
 \subsection{Existence requires Lorentzian signature}
@@ -154,19 +154,19 @@ From the $K{=}1$ OU process~\cite[Proposition~7]{K1paper}, the effective tempera
 \[
 T_{\mathrm{eff}} = \frac{\sigma^2}{2\alpha}\sqrt{|\Delta|}.
 \]
-By the fluctuation-dissipation relation, the noise coefficient $D_L$ for the $\Delta$ dynamics equals the local effective temperature $T_{\mathrm{eff}}$:
+By the fluctuation-dissipation relation, the noise coefficient $D_L$ for the $\Delta$ dynamics inherits the local effective temperature $T_{\mathrm{eff}}$:
 \begin{equation}
 D_L(\Delta) = \frac{\sigma^2}{2\alpha}\sqrt{|\Delta|}, \qquad \Delta < 0.
 \label{eq:D_Lor}
 \end{equation}
-The scaling $D_L \propto \sqrt{|\Delta|} \to 0$ as $\Delta \to 0^-$ holds for any diagonal Lorentzian $G$ (since $T_{\mathrm{eff}} \propto \sigma_1 \to 0$); the coefficient $\sigma^2/(2\alpha)$ is Rindler-specific.
+Strictly, this identification involves a variable transformation from $\varepsilon = K - 1$ to $\Delta = \det G$, introducing a Jacobian that affects the numerical coefficient but not the scaling $D_L \propto \sqrt{|\Delta|} \to 0$ as $\Delta \to 0^-$. The scaling holds for any diagonal Lorentzian $G$ (since $T_{\mathrm{eff}} \propto \sigma_1 \to 0$); the coefficient $\sigma^2/(2\alpha)$ is Rindler-specific. Only the scaling enters the barrier analysis below.
 
 In the Euclidean regime ($\Delta > 0$), no OU process exists; the noise is external (e.g., thermal environment):
 \begin{equation}
 D_E(\Delta) = D_0 > 0, \qquad \Delta > 0.
 \label{eq:D_Euc}
 \end{equation}
-The value $D_0$ is a modelling assumption; the one-way barrier requires only $D_0 > 0$ (any positive value suffices).
+The value $D_0$ is a modelling assumption. Physically, the Euclidean regime lacks the OU self-suppression mechanism that drives $D_L \to 0$: without a real restoring rate ($d_c$ is imaginary for $\det G > 0$), there is no feedback loop to quench fluctuations. External noise sources (thermal, gravitational, or quantum vacuum fluctuations) have no reason to vanish at $\Delta = 0$, so $D_E > 0$ is the natural default. The one-way barrier requires only $D_0 > 0$ (any positive value suffices).
 
 \subsection{Entropic barrier from Lorentzian side}
 
@@ -256,13 +256,15 @@ The barrier structure provides a geometric mechanism for quantum measurement:
 \begin{enumerate}
 \item \textbf{Wave evolution (Lorentzian).} The system resides in the Lorentzian regime, where the OU process generates $\rho$ and the similarity transform $\psi = e^{U/2}\rho$ defines a well-defined wave function (\S\ref{sec:wavefunction}). The entropic barrier prevents spontaneous escape to the Euclidean side, so superposition is maintained.
 
-\item \textbf{Measurement trigger.} Environmental coupling increases the effective cross-mode noise $D_{\mathrm{cross}}$ (more modes, stronger coupling), reducing the barrier and exponentially increasing the collapse rate.
+\item \textbf{Measurement trigger.} The measurement apparatus couples the system to a macroscopic number of environmental degrees of freedom. In the multi-mode picture (\S\ref{sec:multimode}), each coupled mode contributes to $D_{\mathrm{cross}}$; the apparatus effectively increases both the number $N$ of active modes and the coupling $\gamma$, exponentially reducing the Kramers barrier.
 
 \item \textbf{Collapse.} $\Delta$ crosses zero. In the Euclidean regime, $d_c$ is imaginary, the OU process ceases, and $\psi$ loses its probability support.
 
 \item \textbf{Recovery.} With no barrier from the Euclidean side, the system falls back to Lorentzian (100\% of runs, mean time $\sim 0.4$). The OU process restarts.
 
 \item \textbf{Born rule.} The restarted OU process decays to $\rho_{\mathrm{eq}} = |\psi_0|^2$. Because the OU stationary distribution is independent of initial conditions --- this is the standard ergodic property of Ornstein--Uhlenbeck dynamics --- all information about the pre-measurement superposition is erased during re-equilibration.
+
+\item \textbf{Outcome selection (open).} The mechanism above describes \emph{that} collapse occurs and \emph{why} the post-collapse distribution is $|\psi_0|^2$, but does not determine \emph{which} eigenvalue is selected in a given run. Outcome selection likely requires the $(1{+}3)$D multi-mode structure and a pointer-state analysis analogous to einselection~\cite{Zurek}; this is not addressed here.
 \end{enumerate}
 
 \subsection{Multi-mode coupling and finite barrier}\label{sec:multimode}
@@ -329,10 +331,10 @@ The following table places the present work in context:
 Approach & Level & What is changed \\
 \midrule
 Copenhagen~\cite{vonNeumann} & Interpretation & Add projection postulate \\
-Decoherence~\cite{Zurek} & Solution & Trace over environment \\
-Many-worlds~\cite{Everett} & Interpretation & Remove collapse postulate \\
-GRW~\cite{GRW} & Equation & Add stochastic collapse term \\
-Penrose~\cite{Penrose} & Equation & Add gravitational collapse term \\
+Decoherence~\cite{Zurek} & Mechanism & Environment-induced superselection \\
+Many-worlds~\cite{Everett} & Interpretation & Reinterpret universal wave function \\
+GRW~\cite{GRW} & Dynamics & Add stochastic term to evolution \\
+Penrose~\cite{Penrose} & Validity condition & Gravitational instability of superposition \\
 \midrule
 $K{=}1$ (this work) & \textbf{Precondition} & \textbf{Signature is dynamical} \\
 \bottomrule
@@ -341,13 +343,13 @@ $K{=}1$ (this work) & \textbf{Precondition} & \textbf{Signature is dynamical} \\
 
 \subsection{Relation to decoherence}
 
-Standard decoherence explains the apparent disappearance of interference through environmental entanglement. The $K{=}1$ one-way barrier is compatible with decoherence and adds geometric content: environmental coupling increases $D_{\mathrm{cross}}$, catalysing the Kramers escape that drives $\Delta$ across the signature boundary. The framework explains \emph{why} decoherence is irreversible (one-way barrier from $D$ discontinuity) and \emph{why} the post-collapse equilibrium distribution is $|\psi_0|^2$ (Boltzmann equilibrium of the restarted OU process).
+Standard decoherence explains the apparent disappearance of interference through environmental entanglement and identifies preferred pointer states via einselection~\cite{Zurek}. The $K{=}1$ one-way barrier is compatible with decoherence and adds geometric content: environmental coupling increases $D_{\mathrm{cross}}$, catalysing the Kramers escape that drives $\Delta$ across the signature boundary. The barrier structure provides a geometric counterpart to the irreversibility of decoherence (the $D$ discontinuity at $\Delta = 0$ prevents spontaneous recoherence) and identifies the post-collapse equilibrium distribution as $|\psi_0|^2$ (Boltzmann equilibrium of the restarted OU process). However, the $K{=}1$ framework does not yet reproduce einselection or pointer-state selection, which remain open problems (\S\ref{sec:open}, item~7).
 
 \subsection{$(1{+}3)$-dimensional extension}
 
 In $(1{+}3)$D, $\{K{=}1\} \cong H^3$ carries $S^2$ cross-sections with area $4\pi\sigma_1^2$. Combined with the Clausius relation~\cite[Proposition~7]{K1paper}, this provides two of the three Jacobson inputs~\cite{Jacobson} for deriving the Einstein equation; the third ($S = A/4$) remains an independent assumption. The three standard pairings of a Rindler metric yield identical $d_c$~\cite[verified numerically]{K1paper}; for Schwarzschild, they do not. The core results of this paper --- one-way barrier, irreversibility, Born rule --- depend only on $D(\Delta) \to 0$ at the boundary, which holds in any dimension. The multi-mode barrier height changes quantitatively ($N = 3$ spatial directions instead of arbitrary $N$), but the qualitative mechanism is identical.
 
-\subsection{Open questions}
+\subsection{Open questions}\label{sec:open}
 
 \begin{enumerate}
 \item The noise amplitude $\sigma$ (and hence $\hbar_{\mathrm{eff}}$) remains a free parameter. Fixing $\sigma$ geometrically would make the framework fully parameter-free.
@@ -356,6 +358,8 @@ In $(1{+}3)$D, $\{K{=}1\} \cong H^3$ carries $S^2$ cross-sections with area $4\p
 \item Multi-particle quantum mechanics.
 \item Born rule for excited states (only the ground state is derived here).
 \item Absolute collapse rate (requires dimensional restoration and $(1{+}3)$D completion).
+\item Outcome selection: what determines \emph{which} eigenvalue is realised in a given measurement? This likely requires a pointer-state analysis within the multi-mode $(1{+}3)$D framework, analogous to einselection in decoherence theory~\cite{Zurek}.
+\item Experimental predictions. The spontaneous collapse rate $e^{-B_{\mathrm{FP}}} \approx 0$ is currently indistinguishable from zero. A quantitative prediction would require deriving $\gamma$ and $N$ from $(1{+}3)$D geometry and identifying regimes where the barrier is low enough to produce observable deviations from unitary evolution --- for instance, in mesoscopic superposition experiments or near-horizon quantum effects.
 \end{enumerate}
 
 %=====================================================================
