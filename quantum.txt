@@ -25,35 +25,35 @@
 
 \begin{abstract}
 Within the $K{=}1$ chronogeometrodynamic framework~\cite{K1paper},
-we show that the wave function's existence has a geometric precondition ---
-Lorentzian metric signature --- and that this precondition is dynamical.
-The Ornstein--Uhlenbeck process on $\{K{=}1\}$ generates a Fokker--Planck
-equation; the standard similarity transform~\cite{Nelson} followed by
-Wick rotation yields a real-time Schr\"odinger equation.
-This chain requires $d_c = \alpha/\sigma_1 > 0$, which holds if and only if
-$\det G < 0$ (Lorentzian). Modelling $\Delta = \det G$ as a stochastic
-scalar with state-dependent noise $D(\Delta) = c\sqrt{|\Delta|}$, we demonstrate
-that the signature boundary $\Delta = 0$ carries a \emph{one-way barrier}:
-Lorentzian~$\to$~Euclidean is blocked (0\% of Monte Carlo runs),
-while Euclidean~$\to$~Lorentzian is spontaneous (100\%). The barrier
-is intrinsic (survives artificial Euclidean traps) and irreversible
-($D(\Delta)$ is discontinuous at $\Delta = 0$, breaking detailed balance ---
-proved analytically, not merely observed numerically). In the multi-mode
-extension, cross-mode noise $D_{\mathrm{cross}} > 0$ renders the barrier
-finite, permitting Kramers escape at rate $\Gamma \sim \exp(-B_{\mathrm{FP}})
-\approx 0$; the measurement apparatus acts as a catalyst that exponentially
-accelerates this intrinsically possible process. After collapse, the
-restarted OU process decays to $\rho_{\mathrm{eq}} = |\psi_0|^2$, deriving
-the ground-state Born rule as a Boltzmann equilibrium --- not a postulate.
+we show that the wave function's existence requires Lorentzian metric
+signature, and that this requirement is dynamical.
+The Ornstein--Uhlenbeck (OU) process on $\{K{=}1\}$ generates a
+Fokker--Planck equation; similarity transform~\cite{Nelson,Risken}
+followed by Wick rotation yields a real-time Schr\"odinger equation.
+This chain exists if and only if $\det G < 0$ (Lorentzian).
+
+Treating $\Delta = \det G$ as a stochastic variable with
+state-dependent noise $D(\Delta) \propto \sqrt{|\Delta|}$,
+we demonstrate that the signature boundary $\Delta = 0$ carries a
+\emph{one-way barrier}: the vanishing of $D$ at the boundary blocks
+Lorentzian~$\to$~Euclidean transitions, while
+Euclidean~$\to$~Lorentzian is spontaneous.
+The irreversibility is analytic: $D(\Delta)$ is discontinuous at
+$\Delta = 0$, breaking detailed balance.
+In the multi-mode extension, cross-mode noise renders the barrier
+finite but astronomically high; the measurement apparatus acts as a
+catalyst that exponentially accelerates collapse. After collapse, the
+restarted OU process decays to $\rho_{\mathrm{eq}} = |\psi_0|^2$,
+deriving the ground-state Born rule as Boltzmann equilibrium.
 \end{abstract}
 
 %=====================================================================
 \section{Introduction}\label{sec:intro}
 %=====================================================================
 
-Every approach to the quantum measurement problem operates at the level of the Schr\"odinger equation or its solutions: Copenhagen adds a projection postulate~\cite{vonNeumann}, decoherence traces over environmental degrees of freedom~\cite{Zurek}, many-worlds reinterprets the solution space~\cite{Everett}, and spontaneous collapse theories (GRW~\cite{GRW}, Penrose~\cite{Penrose}) modify the equation itself. All share a common assumption: the Schr\"odinger equation exists unconditionally.
+The quantum measurement problem has five established approaches. Copenhagen adds a projection postulate~\cite{vonNeumann}; decoherence traces over environmental degrees of freedom~\cite{Zurek}; many-worlds reinterprets the solution space~\cite{Everett}; GRW~\cite{GRW} and Penrose~\cite{Penrose} modify the Schr\"odinger equation itself. All share a common assumption: the Schr\"odinger equation exists unconditionally.
 
-This paper identifies a geometric precondition for the Schr\"odinger equation's existence and shows that the precondition is dynamical:
+This paper identifies a geometric precondition for the equation's existence and shows that the precondition is dynamical:
 
 \begin{quote}
 \itshape
@@ -61,15 +61,15 @@ Within the $K{=}1$ framework, the wave function $\psi$ exists if and only if the
 Collapse is the temporary removal of this precondition.
 \end{quote}
 
-The argument proceeds in four steps:
+The argument has four steps:
 \begin{enumerate}
-\item The $K{=}1$ Ornstein--Uhlenbeck (OU) process~\cite{K1paper} generates a Fokker--Planck (FP) equation. The standard similarity transform~\cite{Nelson} converts FP to an imaginary-time Schr\"odinger equation; Wick rotation gives the real-time form. This chain requires $d_c > 0$, which holds iff $\det G < 0$ (Lorentzian)~\cite[Theorem~4]{K1paper}.
-\item The noise coefficient $D(\Delta) \propto \sqrt{|\Delta|}$ vanishes at the signature boundary $\Delta = 0$, creating an entropic barrier that protects Lorentzian signature.
-\item The barrier is \emph{one-way}: Lor~$\to$~Euc is blocked; Euc~$\to$~Lor is spontaneous. This is proved analytically from the discontinuity of $D(\Delta)$ at $\Delta = 0$.
-\item After collapse (Euclidean excursion), the OU process restarts and decays to $\rho_{\mathrm{eq}} = |\psi_0|^2$: the ground-state Born rule emerges as Boltzmann equilibrium.
+\item \textbf{From geometry to quantum mechanics.} The $K{=}1$ OU process~\cite{K1paper} generates a Fokker--Planck equation. Similarity transform~\cite{Nelson,Risken} plus Wick rotation yields a Schr\"odinger equation --- but only if $d_c > 0$, i.e., $\det G < 0$ (Lorentzian)~\cite[Theorem~4]{K1paper}.
+\item \textbf{Signature barrier.} The noise coefficient $D(\Delta) \propto \sqrt{|\Delta|}$ vanishes at the signature boundary $\Delta = 0$, creating an entropic barrier that protects Lorentzian signature.
+\item \textbf{One-way crossing.} The barrier is one-way: Lor~$\to$~Euc is blocked; Euc~$\to$~Lor is spontaneous. This follows analytically from the discontinuity of $D(\Delta)$ at $\Delta = 0$.
+\item \textbf{Born rule.} After collapse (Euclidean excursion), the OU process restarts and decays to $\rho_{\mathrm{eq}} = |\psi_0|^2$: the ground-state Born rule emerges as Boltzmann equilibrium.
 \end{enumerate}
 
-The approach does not modify the Schr\"odinger equation. It operates one level below --- at the geometric precondition for the equation's existence. This is the sense in which it differs from all five preceding approaches.
+The approach operates one level below the Schr\"odinger equation --- at its geometric precondition. This is the sense in which it differs from all five preceding approaches.
 
 \medskip\noindent\textbf{Scope.} All results are derived in the $2\times 2$ setting natural to a single Rindler horizon~\cite{K1paper}. The $(1{+}3)$-dimensional extension is discussed in \S\ref{sec:discussion} but not required for the core results; each 2D normal plane closes independently because $\dim(\mathrm{Skew}_2) = 1$ guarantees unique symplectic structure~\cite[Theorem~1]{K1paper}.
 
