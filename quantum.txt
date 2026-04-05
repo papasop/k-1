@@ -217,7 +217,7 @@ $\mu_E$ & Lor $\to$ Euc & Euc $\to$ Lor & Verdict \\
 \end{tabular}
 \end{center}
 
-Weak traps ($\mu_E \le 1$) do not affect the one-way barrier. Strong traps ($\mu_E \ge 2$) can hold the system in the Euclidean regime, but no natural Euclidean trap exists within $K{=}1$: the free energy $F(\sigma_1)$ is everywhere concave ($d^2F/d\sigma_1^2 = -c/(2\sigma_1) < 0$), precluding any Euclidean minimum.
+Weak traps ($\mu_E \le 1$) do not affect the one-way barrier. Strong traps ($\mu_E \ge 2$) can hold the system in the Euclidean regime, but no natural Euclidean trap exists within $K{=}1$: the free energy $\mathcal{F}(\sigma_1)$ is everywhere concave ($d^2\mathcal{F}/d\sigma_1^2 = -c/(2\sigma_1) < 0$), precluding any Euclidean minimum.
 
 \subsection{Detailed balance: analytical proof}\label{sec:detailed_balance}
 
