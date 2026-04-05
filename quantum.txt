@@ -33,9 +33,9 @@ followed by Wick rotation yields a real-time Schr\"odinger equation.
 This chain exists if and only if $\det G < 0$ (Lorentzian).
 
 Treating $\Delta = \det G$ as a stochastic variable with
-state-dependent noise $D(\Delta) \propto \sqrt{|\Delta|}$,
-we demonstrate that the signature boundary $\Delta = 0$ carries a
-\emph{one-way barrier}: the vanishing of $D$ at the boundary blocks
+noise $D \propto \sqrt{|\Delta|}$,
+we demonstrate a \emph{one-way barrier} at $\Delta = 0$:
+the vanishing of $D$ at the boundary blocks
 Lorentzian~$\to$~Euclidean transitions, while
 Euclidean~$\to$~Lorentzian is spontaneous.
 The irreversibility is analytic: $D(\Delta)$ is discontinuous at
@@ -69,7 +69,7 @@ The argument has four steps:
 \item \textbf{Born rule.} After collapse (Euclidean excursion), the OU process restarts and decays to $\rho_{\mathrm{eq}} = |\psi_0|^2$: the ground-state Born rule emerges as Boltzmann equilibrium.
 \end{enumerate}
 
-The approach operates one level below the Schr\"odinger equation --- at its geometric precondition. This is the sense in which it differs from all five preceding approaches.
+The approach operates one level below the Schr\"odinger equation --- at its geometric precondition --- and thereby differs from all five preceding approaches.
 
 \medskip\noindent\textbf{Scope.} All results are derived in the $2\times 2$ setting natural to a single Rindler horizon~\cite{K1paper}. The $(1{+}3)$-dimensional extension is discussed in \S\ref{sec:discussion} but not required for the core results; each 2D normal plane closes independently because $\dim(\mathrm{Skew}_2) = 1$ guarantees unique symplectic structure~\cite[Theorem~1]{K1paper}.
 
