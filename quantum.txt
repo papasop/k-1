@@ -290,8 +290,8 @@ B_{\mathrm{FP}} = \Phi_{\mathrm{FP}}(\text{boundary}) - \Phi_{\mathrm{FP}}(\text
 \toprule
 & Single-mode & Multi-mode \\
 \midrule
-Barrier $B_{\mathrm{FP}}$ & $\to \infty$ & $\sim 6400$ \\
-Rate $\Gamma$ & 0 & $\sim e^{-6400} \approx 0$ \\
+Barrier $B_{\mathrm{FP}}$ & $\to \infty$ & $\sim 7600$ \\
+Rate $\Gamma$ & 0 & $\sim e^{-7600} \approx 0$ \\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -303,7 +303,7 @@ In the single-mode picture, collapse requires an external push --- raising the q
 \end{remark}
 
 \begin{remark}[Model dependence]
-The multi-mode analysis uses a mean-field coupling with free parameter $\gamma$. The qualitative conclusion ($D_{\mathrm{cross}} > 0 \Rightarrow$ finite barrier) is robust, but the numerical value $B_{\mathrm{FP}} \sim 6400$ depends on $\gamma$ and $N$. Deriving $\gamma$ from $K{=}1$ geometry is an open problem.
+The multi-mode analysis uses a mean-field coupling with free parameter $\gamma$. The qualitative conclusion ($D_{\mathrm{cross}} > 0 \Rightarrow$ finite barrier) is robust, but the numerical value $B_{\mathrm{FP}} \sim 7600$ depends on $\gamma$ and $N$. Deriving $\gamma$ from $K{=}1$ geometry is an open problem.
 \end{remark}
 
 \subsection{Why measurement is irreversible}
