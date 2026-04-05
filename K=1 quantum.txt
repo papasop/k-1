@@ -363,7 +363,7 @@ In $(1{+}3)$D, $\{K{=}1\} \cong H^3$ carries $S^2$ cross-sections with area $4\p
 \subsection{Open questions}\label{sec:open}
 
 \begin{enumerate}
-\item The noise amplitude $\sigma$ (and hence $\hbar_{\mathrm{eff}}$) remains a free parameter. Fixing $\sigma$ geometrically would make the framework fully parameter-free.
+\item The Tolman identification $T_{\mathrm{eff}} = T_{\mathrm{tol}}$ fixes $\alpha = 1$ and $\sigma^2 = \hbar\kappa/(\pi\sigma_1^2)$ (\S\ref{sec:review}), but this identification is itself a phenomenological input. Deriving it from a purely geometric principle would make the framework fully self-contained.
 \item The multi-mode coupling $\gamma$ is not derived from $K{=}1$.
 \item Compatibility of $K{=}1$ signature change with path-integral Wick rotation.
 \item Multi-particle quantum mechanics.
