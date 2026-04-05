@@ -63,10 +63,10 @@ Collapse is the temporary removal of this precondition.
 
 The argument has four steps:
 \begin{enumerate}
-\item \textbf{From geometry to quantum mechanics.} The $K{=}1$ OU process~\cite{K1paper} generates a Fokker--Planck equation. Similarity transform~\cite{Nelson,Risken} plus Wick rotation yields a Schr\"odinger equation --- but only if $d_c > 0$, i.e., $\det G < 0$ (Lorentzian)~\cite[Theorem~4]{K1paper}.
+\item \textbf{From geometry to quantum mechanics.} The $K{=}1$ OU process~\cite{K1paper} generates a Fokker--Planck equation. Similarity transform~\cite{Nelson,Risken} plus Wick rotation yields an equation with Schr\"odinger structure --- but only if $d_c > 0$, i.e., $\det G < 0$ (Lorentzian)~\cite[Theorem~4]{K1paper}.
 \item \textbf{Signature barrier.} The noise coefficient $D(\Delta) \propto \sqrt{|\Delta|}$ vanishes at the signature boundary $\Delta = 0$, creating an entropic barrier that protects Lorentzian signature.
 \item \textbf{One-way crossing.} The barrier is one-way: Lor~$\to$~Euc is blocked; Euc~$\to$~Lor is spontaneous. This follows analytically from the discontinuity of $D(\Delta)$ at $\Delta = 0$.
-\item \textbf{Born rule.} After collapse (Euclidean excursion), the OU process restarts and decays to $\rho_{\mathrm{eq}} = |\psi_0|^2$: the ground-state Born rule emerges as Boltzmann equilibrium.
+\item \textbf{Post-collapse equilibrium.} After collapse (Euclidean excursion), the OU process restarts and decays to $\rho_{\mathrm{eq}} = |\psi_0|^2$: the ground-state Born rule emerges as Boltzmann equilibrium.
 \end{enumerate}
 
 The approach operates one level below the Schr\"odinger equation --- at its geometric precondition --- and thereby differs from all preceding approaches.
@@ -262,7 +262,7 @@ The barrier structure provides a geometric mechanism for quantum measurement:
 
 \item \textbf{Recovery.} With no barrier from the Euclidean side, the system falls back to Lorentzian (100\% of runs, mean time $\sim 0.4$). The OU process restarts.
 
-\item \textbf{Born rule.} The restarted OU process decays to $\rho_{\mathrm{eq}} = |\psi_0|^2$. Because the OU stationary distribution is independent of initial conditions --- this is the standard ergodic property of Ornstein--Uhlenbeck dynamics --- all information about the pre-measurement superposition is erased during re-equilibration.
+\item \textbf{Post-collapse equilibrium.} The restarted OU process decays to $\rho_{\mathrm{eq}} = |\psi_0|^2$. Because the OU stationary distribution is independent of initial conditions --- this is the standard ergodic property of Ornstein--Uhlenbeck dynamics --- all information about the pre-measurement superposition is erased during re-equilibration.
 
 \item \textbf{Outcome selection (open).} The mechanism above describes \emph{that} collapse occurs and \emph{why} the post-collapse distribution is $|\psi_0|^2$, but does not determine \emph{which} eigenvalue is selected in a given run. Outcome selection likely requires the $(1{+}3)$D multi-mode structure and a pointer-state analysis analogous to einselection~\cite{Zurek}; this is not addressed here.
 \end{enumerate}
@@ -380,7 +380,7 @@ A single algebraic fact --- $d_c > 0$ if and only if $\det G < 0$~\cite[Theorem~
 \item Within this framework, the wave function exists if and only if the signature is Lorentzian.
 \item Lorentzian signature is dynamically stable (entropic barrier).
 \item Collapse is a temporary Euclidean excursion (one-way barrier).
-\item Measurement irreversibility is a geometric fact ($D$ discontinuous at $\Delta = 0$).
+\item The signature excursion is irreversible ($D$ discontinuous at $\Delta = 0$).
 \item The ground-state probability distribution is Boltzmann equilibrium ($|\psi_0|^2 = \rho_{\mathrm{eq}}$).
 \end{enumerate}
 
