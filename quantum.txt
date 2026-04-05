@@ -84,7 +84,7 @@ Let $G$ be a non-degenerate symmetric $2\times 2$ real matrix, $K(x) = x^\top G 
 \begin{itemize}
 \item \textbf{Stability boundary}~\cite[Theorem~4]{K1paper}: $d_c > 0 \Leftrightarrow \mathrm{Sig}(G) = (1,1)$ (Lorentzian), with $d_c = \alpha\sqrt{-1/\det G}$. For the Rindler metric $G = \mathrm{diag}(-\sigma_1^2, 1)$, this simplifies to $d_c = \alpha/\sigma_1$. The Lorentzian requirement is derived from cost-asymmetry axioms in~\cite{Realizability}.
 \item \textbf{Restoring rate}~\cite[Theorem~6]{K1paper}: $\kappa_K = 4d_c$ for a normalised $G$-eigenvector on $\{K{=}1\}$.
-\item \textbf{OU process}: Near $K=1$, the deviation $\varepsilon = K - 1$ obeys $d\varepsilon = -\kappa_K \varepsilon\,dt + \sigma_K\,dW_t$, where $\sigma_K = 2\sigma\|Gx_*\|$ is the projected noise amplitude ($\sigma$ is the isotropic noise in $\mathbb{R}^2$, $x_*$ is the base point on $\{K{=}1\}$). At the canonical Rindler point $x_* = (0,1)$: $Gx_* = (0,1)$, $\|Gx_*\| = 1$, and $\sigma_K = 2\sigma$. The stationary variance is $T_{\mathrm{eff}} = \sigma_K^2/(2\kappa_K) = \sigma^2/(2d_c)$.
+\item \textbf{OU process}: Near $K{=}1$, the deviation $\varepsilon = K - 1$ obeys $d\varepsilon = -\kappa_K \varepsilon\,dt + \sigma_K\,dW_t$, where $\sigma_K = 2\sigma\|Gx_*\|$ is the projected noise amplitude ($\sigma$ is the isotropic noise in $\mathbb{R}^2$, $x_*$ is the base point on $\{K{=}1\}$). At the canonical Rindler point $x_* = (0,1)$: $Gx_* = (0,1)$, $\|Gx_*\| = 1$, and $\sigma_K = 2\sigma$. The stationary variance is $T_{\mathrm{eff}} = \sigma_K^2/(2\kappa_K) = \sigma^2/(2d_c)$.
 \item \textbf{Clausius relation}~\cite[Proposition~7]{K1paper}: Under the identification $T_{\mathrm{eff}} = T_{\mathrm{tol}}$ --- the sole external (phenomenological) input connecting the stochastic model to Rindler thermodynamics --- the Clausius relation $\delta Q = T_{\mathrm{eff}}\,\delta S$ follows algebraically.
 \end{itemize}
 
@@ -308,7 +308,7 @@ The barrier asymmetry explains irreversibility:
 \begin{itemize}
 \item \textbf{Forward} (Lor $\to$ Euc): barrier $B_{\mathrm{FP}} \gg 1$. Rate $\sim e^{-B_{\mathrm{FP}}} \approx 0$ without environmental catalysis.
 \item \textbf{Return} (Euc $\to$ Lor): no barrier. Spontaneous in $\sim 0.4$ time units.
-\item \textbf{Net effect}: the system returns to the equilibrium distribution $\rho_{\mathrm{eq}}$ (which equals $|\psi_0|^2$ for the harmonic potential), not the original superposition. The OU ergodicity erases the pre-measurement state; once the system re-enters the Lorentzian regime, the entropic barrier ($D \to 0$ at $\Delta = 0$) reforms and protects the new equilibrium against further spontaneous collapse.
+\item \textbf{Net effect}: the system returns to $\rho_{\mathrm{eq}}$, not the original superposition. The OU ergodicity erases the pre-measurement state; once the system re-enters the Lorentzian regime, the entropic barrier ($D \to 0$ at $\Delta = 0$) reforms and protects the new equilibrium against further spontaneous collapse.
 \end{itemize}
 
 %=====================================================================
@@ -316,8 +316,6 @@ The barrier asymmetry explains irreversibility:
 %=====================================================================
 
 \subsection{Comparison with other approaches}
-
-All five prior approaches to the measurement problem operate at the level of the Schr\"odinger equation or its solutions:
 
 \begin{center}
 \begin{tabular}{lcl}
@@ -334,8 +332,6 @@ $K{=}1$ (this work) & \textbf{Precondition} & \textbf{Signature is dynamical} \\
 \bottomrule
 \end{tabular}
 \end{center}
-
-The present work does not modify the Schr\"odinger equation --- it identifies the geometric condition under which the equation exists, and shows that the condition can be dynamically violated.
 
 \subsection{Relation to decoherence}
 
