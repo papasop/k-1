@@ -403,7 +403,8 @@ The approach does not modify the Schr\"odinger equation. It operates at the leve
 \bibitem{K1paper}
 Li, Y.Y.N.:
 $K{=}1$ Chronogeometrodynamics: Lorentzian geometry from information time.
-Submitted to Found.\ Phys.\ (2026).
+Zenodo (2026).
+\url{https://doi.org/10.5281/zenodo.19425803}
 
 \bibitem{Realizability}
 Li, Y.Y.N.:
