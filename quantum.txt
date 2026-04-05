@@ -85,7 +85,7 @@ Let $G$ be a non-degenerate symmetric $2\times 2$ real matrix, $V = \tfrac{1}{2}
 \item \textbf{Stability boundary}~\cite[Theorem~4]{K1paper}: $d_c > 0 \Leftrightarrow \mathrm{Sig}(G) = (1,1)$ (Lorentzian), with $d_c = \alpha\sqrt{-1/\det G}$. For the Rindler metric $G = \mathrm{diag}(-\sigma_1^2, 1)$, this simplifies to $d_c = \alpha/\sigma_1$. The Lorentzian requirement is derived from cost-asymmetry axioms in~\cite{Realizability}.
 \item \textbf{Restoring rate}~\cite[Theorem~6]{K1paper}: $\kappa_K = 4d_c$ for a normalised $G$-eigenvector on $\{K{=}1\}$.
 \item \textbf{OU process}: Near $K{=}1$, the deviation $\varepsilon = K - 1$ obeys $d\varepsilon = -\kappa_K \varepsilon\,dt + \sigma_K\,dW_t$, where $\sigma_K = 2\sigma\|Gx_*\|$ is the projected noise amplitude ($\sigma$ is the isotropic noise in $\mathbb{R}^2$, $x_*$ is the base point on $\{K{=}1\}$). At the canonical Rindler point $x_* = (0,1)$: $Gx_* = (0,1)$, $\|Gx_*\| = 1$, and $\sigma_K = 2\sigma$. The stationary variance is $T_{\mathrm{eff}} = \sigma_K^2/(2\kappa_K) = \sigma^2/(2d_c)$.
-\item \textbf{Clausius relation}~\cite[Proposition~7]{K1paper}: Under the identification $T_{\mathrm{eff}} = T_{\mathrm{tol}}$ --- the sole external (phenomenological) input connecting the stochastic model to Rindler thermodynamics --- the Clausius relation $\delta Q = T_{\mathrm{eff}}\,\delta S$ follows algebraically.
+\item \textbf{Clausius relation}~\cite[Proposition~7]{K1paper}: Under the identification $T_{\mathrm{eff}} = T_{\mathrm{tol}}$ --- the principal external (phenomenological) input connecting the stochastic model to Rindler thermodynamics --- the Clausius relation $\delta Q = T_{\mathrm{eff}}\,\delta S$ follows algebraically.
 \end{itemize}
 
 %=====================================================================
@@ -130,13 +130,13 @@ For Euclidean signature ($\det G > 0$), $d_c$ is formally imaginary: $d_c = i\om
 Within the $K{=}1$ framework, the wave function $\psi$ is well-defined if and only if $\mathrm{Sig}(G) = (1,1)$.
 \end{corollary}
 
-\subsection{Born rule as Boltzmann equilibrium}
+\subsection{Ground-state probability as Boltzmann equilibrium}
 
 The ground-state wave function satisfies $\psi_0 \propto e^{-U/2}$; upon normalisation,
 \begin{equation}
 \psi_0 = Z^{-1/2} e^{-U/2}, \qquad Z = \int e^{-U}\,d\varepsilon.
 \end{equation}
-Therefore $|\psi_0|^2 = Z^{-1}e^{-U} = \rho_{\mathrm{eq}}$. The Born probability equals the Boltzmann distribution --- not a postulate but a consequence of metric self-consistency.
+Therefore $|\psi_0|^2 = Z^{-1}e^{-U} = \rho_{\mathrm{eq}}$. The ground-state probability equals the Boltzmann distribution --- not a postulate but a consequence of metric self-consistency.
 
 \begin{remark}[Ground state only]
 This identity holds exactly for the ground state. For excited states, $e^{-U/2}\psi_n$ can be negative and is not a probability density. Extension to excited states requires the uniqueness of $|\psi|^2$ as the conserved non-negative quantity under unitary evolution --- a standard result, not re-derived here.
@@ -175,7 +175,7 @@ As $\Delta \to 0^-$: $D_L \to 0$. The Fokker--Planck stationary distribution (It
 \rho_{\mathrm{ss}}(\Delta) \propto \frac{1}{D(\Delta)}\exp\!\biggl(\int^{\Delta}\frac{F(s)}{D(s)}\,ds\biggr).
 \label{eq:rho_ss}
 \end{equation}
-The $1/D$ prefactor diverges as $\Delta \to 0^-$: in the It\^o convention, probability density accumulates near the boundary. However, $D \to 0$ means the diffusive flux vanishes --- the system cannot cross $\Delta = 0$ because mobility drops to zero. The stationary current $J_{\mathrm{ss}} = F\rho - \partial_\Delta(D\rho) = 0$ confirms zero net flux. This creates an effective barrier: the OU process suppresses its own fluctuations near the signature boundary.
+The $1/D$ prefactor diverges as $\Delta \to 0^-$: in the It\^o convention, probability density accumulates near the boundary. However, $D \to 0$ means the diffusive flux vanishes --- the system cannot cross $\Delta = 0$ because mobility drops to zero. The stationary current $J_{\mathrm{ss}} = F\rho - \partial_\Delta(D\rho) = 0$ confirms zero net flux within the Lorentzian interior (the boundary requires separate analysis; see \S\ref{sec:detailed_balance}). This creates an effective barrier: the OU process suppresses its own fluctuations near the signature boundary.
 
 From the Euclidean side ($\Delta > 0$), $D_E = D_0$ is constant. No self-suppression operates, and the confining potential drives the system toward $\Delta_0 < 0$ (Lorentzian): the Euclidean side is downhill.
 
@@ -189,9 +189,9 @@ We simulate the It\^o Langevin equation for $\Delta$ with state-dependent noise:
 \begin{equation}
 d\Delta = F(\Delta)\,dt + \sqrt{2D(\Delta)}\,dW_t,
 \end{equation}
-where $F(\Delta)$ includes a confining drift toward $\Delta_0 < 0$ and an entropic correction from the state-dependent noise. Steps that would cross $\Delta = 0$ are rejected (the trajectory remains at its previous position). The one-way direction depends only on $D(0^-) = 0$ vs $D(0^+) > 0$, not on the specific form of $F$.
+where $F(\Delta)$ includes a confining drift toward $\Delta_0 < 0$ and an entropic correction from the state-dependent noise. At $\Delta = 0$, the effective potential is regularised (finite barrier replaces the singularity); no artificial boundary condition is imposed. The one-way direction depends only on $D(0^-) = 0$ vs $D(0^+) > 0$, not on the specific form of $F$ or the regularisation.
 
-\medskip\noindent\textbf{Results} (100 runs per direction, $dt = 10^{-4}$, $t_{\max} = 2.5$):
+\medskip\noindent\textbf{Results} (100 runs per direction, $dt = 10^{-3}$, $N_{\mathrm{steps}} = 60{,}000$):
 \begin{center}
 \begin{tabular}{lcc}
 \toprule
@@ -258,7 +258,7 @@ The barrier structure provides a geometric mechanism for quantum measurement:
 
 \item \textbf{Measurement trigger.} The measurement apparatus couples the system to a macroscopic number of environmental degrees of freedom. In the multi-mode picture (\S\ref{sec:multimode}), each coupled mode contributes to $D_{\mathrm{cross}}$; the apparatus effectively increases both the number $N$ of active modes and the coupling $\gamma$, exponentially reducing the Kramers barrier.
 
-\item \textbf{Collapse.} $\Delta$ crosses zero. In the Euclidean regime, $d_c$ is imaginary, the OU process ceases, and $\psi$ loses its probability support.
+\item \textbf{Collapse.} Mode~1's $\Delta$ crosses zero. In the multi-mode picture, this is a \emph{local} event: the other modes remain Lorentzian ($\sigma_{1,m} > 0$) and their wave functions persist. Only the degree of freedom associated with the collapsing mode loses its OU process and hence its $\psi$ support.
 
 \item \textbf{Recovery.} With no barrier from the Euclidean side, the system falls back to Lorentzian (100\% of runs, mean time $\sim 0.4$). The OU process restarts.
 
@@ -345,9 +345,15 @@ $K{=}1$ (this work) & \textbf{Precondition} & \textbf{Signature is dynamical} \\
 
 Standard decoherence explains the apparent disappearance of interference through environmental entanglement and identifies preferred pointer states via einselection~\cite{Zurek}. The $K{=}1$ one-way barrier is compatible with decoherence and adds geometric content: environmental coupling increases $D_{\mathrm{cross}}$, catalysing the Kramers escape that drives $\Delta$ across the signature boundary. The barrier structure provides a geometric counterpart to the irreversibility of decoherence (the $D$ discontinuity at $\Delta = 0$ prevents spontaneous recoherence) and identifies the post-collapse equilibrium distribution as $|\psi_0|^2$ (Boltzmann equilibrium of the restarted OU process). However, the $K{=}1$ framework does not yet reproduce einselection or pointer-state selection, which remain open problems (\S\ref{sec:open}, item~7).
 
+\subsection{Relation to Penrose and GRW}
+
+The $K{=}1$ precondition approach shares structural features with both Penrose~\cite{Penrose} and GRW~\cite{GRW}: all three identify conditions under which unitary evolution breaks down. The differences are in mechanism and scope. Penrose's criterion is energetic: superpositions become unstable when the gravitational self-energy $E_G$ exceeds $\hbar/\tau$ for the decay time $\tau$; the Schr\"odinger equation breaks down above a mass threshold. $K{=}1$'s criterion is geometric: the equation's precondition ($\det G < 0$) can be dynamically removed by signature fluctuations, regardless of mass. The two are complementary rather than competing; a synthesis would require connecting $K{=}1$ signature dynamics to the Newtonian limit of $E_G$.
+
+GRW and $K{=}1$ both introduce stochasticity, but at different levels. In GRW, the stochastic term is added to the wave function's evolution equation: $\psi$ itself undergoes random localisation events. In $K{=}1$, the stochastic dynamics governs the \emph{metric} ($\Delta = \det G$ obeys a Langevin equation); the wave function $\psi$ evolves unitarily whenever it exists, and collapses only when its geometric precondition fails. The stochasticity is in the arena, not the player.
+
 \subsection{$(1{+}3)$-dimensional extension}
 
-In $(1{+}3)$D, $\{K{=}1\} \cong H^3$ carries $S^2$ cross-sections with area $4\pi\sigma_1^2$. Combined with the Clausius relation~\cite[Proposition~7]{K1paper}, this provides two of the three Jacobson inputs~\cite{Jacobson} for deriving the Einstein equation; the third ($S = A/4$) remains an independent assumption. The three standard pairings of a Rindler metric yield identical $d_c$~\cite[verified numerically]{K1paper}; for Schwarzschild, they do not. The core results of this paper --- one-way barrier, irreversibility, Born rule --- depend only on $D(\Delta) \to 0$ at the boundary, which holds in any dimension. The multi-mode barrier height changes quantitatively ($N = 3$ spatial directions instead of arbitrary $N$), but the qualitative mechanism is identical.
+In $(1{+}3)$D, $\{K{=}1\} \cong H^3$ carries $S^2$ cross-sections with area $4\pi\sigma_1^2$. Combined with the Clausius relation~\cite[Proposition~7]{K1paper}, this provides two of the three Jacobson inputs~\cite{Jacobson} for deriving the Einstein equation: the Clausius relation $\delta Q = T\,\delta S$ and the horizon area element $\delta A$. The third input ($S = A/4$) remains an independent assumption. The three standard pairings of a Rindler metric yield identical $d_c$~\cite[verified numerically]{K1paper}; for Schwarzschild, they do not. The core results of this paper --- one-way barrier, irreversibility, Born rule --- depend only on $D(\Delta) \to 0$ at the boundary, which holds in any dimension. The multi-mode barrier height changes quantitatively ($N = 3$ spatial directions instead of arbitrary $N$), but the qualitative mechanism is identical.
 
 \subsection{Open questions}\label{sec:open}
 
@@ -373,7 +379,7 @@ A single algebraic fact --- $d_c > 0$ if and only if $\det G < 0$~\cite[Theorem~
 \item Lorentzian signature is dynamically stable (entropic barrier).
 \item Collapse is a temporary Euclidean excursion (one-way barrier).
 \item Measurement irreversibility is a geometric fact ($D$ discontinuous at $\Delta = 0$).
-\item The Born rule (ground state) is Boltzmann equilibrium ($|\psi_0|^2 = \rho_{\mathrm{eq}}$).
+\item The ground-state probability distribution is Boltzmann equilibrium ($|\psi_0|^2 = \rho_{\mathrm{eq}}$).
 \end{enumerate}
 
 The approach does not modify the Schr\"odinger equation. It operates at the level of the equation's geometric precondition --- Lorentzian signature --- and shows that the precondition is dynamical. Collapse is not a defect of quantum mechanics to be repaired; it is the temporary absence of the geometric condition that makes quantum mechanics possible.
@@ -392,7 +398,7 @@ The approach does not modify the Schr\"odinger equation. It operates at the leve
 \bibitem{K1paper}
 Li, Y.Y.N.:
 $K{=}1$ Chronogeometrodynamics: Lorentzian geometry from information time.
-Submitted to J.\ Math.\ Phys.\ (2026).
+Submitted to Found.\ Phys.\ (2026).
 
 \bibitem{Realizability}
 Li, Y.Y.N.:
