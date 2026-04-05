@@ -25,12 +25,13 @@
 
 \begin{abstract}
 Within the $K{=}1$ chronogeometrodynamic framework~\cite{K1paper},
-we show that the wave function's existence requires Lorentzian metric
-signature, and that this requirement is dynamical.
-The Ornstein--Uhlenbeck (OU) process on $\{K{=}1\}$ generates a
-Fokker--Planck equation; similarity transform~\cite{Nelson,Risken}
-followed by Wick rotation yields an equation with Schr\"odinger structure.
-This chain exists if and only if $\det G < 0$ (Lorentzian).
+the wave function $\psi$ exists if and only if $\det G < 0$
+(Lorentzian signature).
+This follows from the Ornstein--Uhlenbeck (OU) dynamics on
+$\{K{=}1\}$: the Fokker--Planck equation admits a similarity
+transform~\cite{Nelson,Risken} with Schr\"odinger structure only
+when the critical damping is real.
+The condition is dynamical.
 
 Treating $\Delta = \det G$ as a stochastic variable with
 noise $D \propto \sqrt{|\Delta|}$,
@@ -40,11 +41,13 @@ Lorentzian~$\to$~Euclidean transitions, while
 Euclidean~$\to$~Lorentzian is spontaneous.
 The irreversibility is analytic: $D(\Delta)$ is discontinuous at
 $\Delta = 0$, breaking detailed balance.
+
 In the multi-mode extension, cross-mode noise renders the barrier
 finite but astronomically high; the measurement apparatus acts as a
-catalyst that exponentially accelerates collapse. After collapse, the
-restarted OU process decays to $\rho_{\mathrm{eq}} = |\psi_0|^2$,
-deriving the ground-state Born rule as Boltzmann equilibrium.
+catalyst that exponentially accelerates collapse.
+After collapse, the restarted OU process decays to
+$\rho_{\mathrm{eq}} = |\psi_0|^2$:
+the ground-state probability emerges as Boltzmann equilibrium.
 \end{abstract}
 
 %=====================================================================
