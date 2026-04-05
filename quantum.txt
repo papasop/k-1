@@ -1,517 +1,435 @@
-# From Information Time to Born Rule
-
-## The Complete Story of K=1 Chronogeometrodynamics
-
-**Y.Y.N. Li — Research Notes (April 2026)**
-
----
-
-## 0. The Central Idea: Time Is Not External
-
-In every framework of physics — from Newton through quantum mechanics — time enters as a primitive: an external parameter, a background coordinate, something given before physics begins.
-
-This document traces the consequences of a single redefinition:
-
-> **Time is the cost of structural change.**
-
-Time is not a container in which physics happens. Time is what physics produces. From this redefinition, a chain of consequences flows — each link algebraically forced by the previous one — reaching from the origin of causality through thermodynamics to the threshold of quantum mechanics.
-
----
-
-## 1. Information Time and the Metric
-
-### 1.1 Definition
-
-Let Φ parametrise structural variation and H > 0 an entropic resistance. The information time is:
-
-$$dt_{\text{info}} := d\Phi / H$$
-
-This is a scalar: the cost of an infinitesimal structural change. It depends on where the system is (through Φ and H) and in what direction it moves (through dΦ).
-
-### 1.2 From Scalar to Metric
-
-A scalar does not distinguish directions. Physics requires directions — which way is "time," which way is "space." The metric emerges from asking: *how does the cost depend on direction?*
-
-The squared cost dt²_info, expanded to second order in displacement δx, gives:
-
-$$dt_{\text{info}}^2 \approx \delta x^\top G \, \delta x$$
-
-where G = ∇²(dt²_info) is a symmetric matrix — the metric. This is precisely Riemann's construction (1854): the metric is the second-order structure of an infinitesimal cost function. Riemann used distance; here the cost is informational.
-
-### 1.3 Why the Metric Must Be Indefinite
-
-Three conditions constrain G (proved rigorously in the Realizability paper):
-
-- **Assumption E** (Expansion): G exists as a non-degenerate quadratic form.
-- **Assumption T** (Temporal cost): At least one direction has positive cost — G(e_t, e_t) > 0.
-- **Assumption R** (Realizability): Some directions have vanishing cost — persistent configurations require that G not be positive definite.
-
-For a non-degenerate 2×2 matrix with one positive and one non-positive direction:
-
-$$\text{Sig}(G) = (1,1) \quad \text{(Lorentzian)}$$
-
-This is Theorem 4 of the K=1 paper. Lorentzian signature is not assumed — it is the unique possibility consistent with R, E, and T.
-
-### 1.4 Connection to Zeno
-
-Zeno's two paradoxes implicitly assumed the opposite cost structure:
-
-- **Achilles**: spatial cost has a positive lower bound (space is expensive) → R violated.
-- **Flying arrow**: temporal cost can be zero (time is free) → T violated.
-
-The physical world inverts Zeno:
-
-- Space is free (R satisfied) → Achilles catches the tortoise.
-- Time is expensive (T satisfied) → the arrow moves.
-
-R + T = Lorentzian. Zeno had the cost assignments backwards.
-
----
-
-## 2. Self-Consistency: K = 1
-
-### 2.1 The Quadratic Form
-
-Given G, define:
-
-$$K(x) := x^\top G \, x$$
-
-K measures the temporal cost at configuration x. The condition K = 1 means: the metric reproduces its own normalisation. Below 1, the metric underestimates; above 1, it overestimates.
-
-### 2.2 Self-Reference and the Status of K = 1
-
-This is not a passive normalisation. G defines K, and K = 1 constrains G. The metric is checking itself.
-
-**Why K = 1 and not K = c for some other constant?** K is dimensionless (G is dimensionless in the information-time parametrisation). The condition K = c for any c > 0 defines a hyperboloid, but only K = 1 is self-referential: it requires that the quadratic form defined by G, evaluated on the unit hyperboloid of G, return exactly the value that defines that hyperboloid. Any other value would require an external scale — contradicting the framework's internal character. K = 1 is a normalisation convention, but it is the unique normalisation convention that is self-consistent without external input.
-
-**Status:** K = 1 is a condition (the self-consistency requirement), not a theorem derived from dt_info. The information time dt_info motivates the existence of G; the three assumptions R, E, T force its signature; K = 1 is then the natural self-referential condition on G. It is the least arbitrary choice, but it is a choice.
-
-Departures from K = 1 generate a restoring potential:
-
-$$V = \tfrac{1}{2}(K - 1)^2$$
-
-This potential is not independently chosen — it is the unique leading-order term in the Taylor expansion of any smooth function V(K) with a minimum at K = 1: since V(1) = 0 and V'(1) = 0 at a minimum, V ≈ ½V''(1)(K − 1)², and V''(1) can be absorbed into the time scale. The quadratic form is universal, not specific to K = 1.
-
-### 2.3 The Unit Hyperboloid
-
-Geometrically, {K = 1} is the unit hyperboloid of G. For G = diag(−σ₁², 1), this is the hyperbola −σ₁²x₁² + x₂² = 1. It carries two geometrically distinct classes of fluctuation:
-
-- **Class A** (thermodynamic): perpendicular to {K = 1} — departures from self-consistency.
-- **Class B** (gauge): tangential to {K = 1} — Lorentz boosts, changing the observer but not the thermodynamic state.
-
----
-
-## 3. Unique Dynamics and Critical Damping
-
-### 3.1 Symplectic Structure
-
-Among all matrices M such that GM is skew-symmetric, the unique solution is:
-
-$$J_G = \alpha G^{-1} J$$
-
-This uniqueness relies on dim(Skew₂) = 1. The evolution law is then uniquely:
-
-$$\dot{x} = (J_G - D)\nabla V$$
-
-with D ≥ 0 (dissipation). This is Law II.
-
-### 3.2 The Stability Boundary
-
-The spectrum of J_G determines everything:
-
-- **Lorentzian G** (det G < 0): spec(J_G) = ±d_c, real → decay/growth.
-- **Euclidean G** (det G > 0): spec(J_G) = ±iω, imaginary → oscillation.
-
-The stability boundary is:
-
-$$d_c = \alpha\sqrt{-1/\det G} = \alpha/\sigma_1$$
-
-At critical damping D = d_c I, the restoring rate for K is κ_K = 4d_c (Theorem 6).
-
-### 3.3 Stochastic Dynamics
-
-Adding noise: dx = (J_G − d_c I)∇V dt + σ dW. Within Class A, the K-dynamics is a one-dimensional Ornstein–Uhlenbeck process with:
-
-$$\text{Var}(K) = \sigma^2/(2d_c) = T_{\text{eff}}$$
-
----
-
-## 4. Spacetime Thermodynamics
-
-### 4.1 κ-Cancellation
-
-For the Rindler metric G = diag(−(κℓ)², 1):
-
-$$d_c \cdot T_H = \frac{\alpha}{\kappa\ell} \cdot \frac{\hbar\kappa}{2\pi} = \frac{\alpha\hbar}{2\pi\ell}$$
-
-The surface gravity κ cancels exactly. The Tolman temperature T_tol = d_c · T_H = αℏ/(2πℓ).
-
-### 4.2 Clausius Relation
-
-The Clausius relation emerges from the OU process within Class A. The derivation follows standard stochastic thermodynamics (Sekimoto 1998, Seifert 2005) applied to the K=1 OU process.
-
-**Definitions.** For the OU process dε = −κ_K ε dt + σ_K dW with ε = K − 1:
-
-- Stationary distribution: ρ_eq ∝ exp(−κ_K ε²/(2D_K)) = exp(−ε²/(2T_eff)), where T_eff = D_K/κ_K = σ²/(2d_c).
-- Entropy: S := −ln ρ_eq = ε²/(2T_eff) + const.
-- Heat: δQ := dV + ½σ_K² dt, where V = ½κ_K ε² is the restoring potential and ½σ_K² dt is the noise-injected energy.
-
-**Derivation.** At stationarity, dS = d(ε²/(2T_eff)) = ε dε/T_eff. Substituting dε = −κ_K ε dt + σ_K dW and taking expectations: ⟨δQ⟩ = T_eff ⟨dS⟩. This is the Clausius relation δQ = T_eff dS. The fluctuation-dissipation relation σ_K² = 2κ_K T_eff follows from the OU stationary variance.
-
-**External input.** Under the single identification T_eff = T_tol (the sole external axiom, Proposition 7):
-
-$$\sigma^2 = 2d_c \cdot T_{\text{tol}} = 2d_c^2 \cdot T_H$$
-
-Everything except T_eff = T_tol is derived from the OU process; the OU process is derived from G + V = ½(K−1)²; G is derived from R + E + T. The Clausius relation is internal to the framework, conditional on one external identification.
-
-### 4.3 Connection to Jacobson
-
-Jacobson (1995) derives the Einstein equations from three inputs: Lorentzian signature, the Clausius relation, and S = A/4. The K=1 framework supplies the first two:
-
-- Signature: forced by R + E + T (Theorem 4).
-- Clausius: follows from K=1 dynamics (Proposition 7, given T_eff = T_tol).
-
-The three Jacobson inputs reduce toward a single source.
-
----
-
-## 5. Wick Rotation: From Thermal to Quantum
-
-### 5.1 The Spectral Mapping
-
-**Terminology.** Standard Wick rotation in QFT is the analytic continuation t → iτ of the time coordinate, preserving the metric signature while changing the coordinate representation. What we describe here is different: a change of the metric signature itself, G_L = diag(−σ₁², 1) → G_E = diag(+σ₁², 1). The algebraic effects parallel those of standard Wick rotation (real eigenvalues → imaginary, decay → oscillation), but the operations are distinct. We use "Wick rotation" as shorthand for this algebraic parallel throughout this section, not as a claim of mathematical equivalence with path-integral Wick rotation. Whether the two operations are compatible — i.e., whether the K=1 signature change can be embedded in a path-integral framework — is an open question.
-
-Under signature change:
-
-| Lorentzian | Euclidean |
-|---|---|
-| spec(J_G) = ±d_c (real) | spec(J_G) = ±iω (imaginary) |
-| decay: e^{−κt} | oscillation: e^{−iωτ} |
-| dissipation | unitary evolution |
-
-The formal continuation of the algebraic formula d_c = α√(−1/det G) gives iω = iα/σ₁ when det G > 0. Strictly, Theorem 3 gives d_c = 0 for Euclidean G (no real stability boundary); the value iω is obtained by formally evaluating the same algebraic expression at det G > 0, yielding an imaginary number. The magnitude α/σ₁ is the same — only real vs imaginary changes.
-
-### 5.2 Fokker-Planck to Schrödinger
-
-The OU process generates a Fokker-Planck equation. The standard similarity transform ρ = e^{−V/(2T)} ψ converts it to:
-
-$$\partial\psi/\partial t = -H_s \psi$$
-
-$$H_s = -D_K \partial^2/\partial\varepsilon^2 + \kappa_K^2 \varepsilon^2/(4D_K) - \kappa_K/2$$
-
-This is the quantum harmonic oscillator in imaginary time, with frequency Ω = κ_K = 4d_c.
-
-Wick rotating t → iτ:
-
-$$i\partial\psi/\partial\tau = H_s \psi$$
-
-This is the Schrödinger equation.
-
-### 5.3 Temperature and Planck Constant: Same Dimensionless Number
-
-Within the dimensionless K=1 framework, the same algebraic expression appears in both signatures:
-
-$$T_{\text{eff}} = \sigma^2/(2d_c) \quad \text{[Lorentzian: effective temperature]}$$
-
-$$\hbar_{\text{eff}} = \sigma^2/(2\omega) \quad \text{[Euclidean: effective Planck constant]}$$
-
-Since d_c = ω = α/σ₁ (the same number in both signatures):
-
-$$T_{\text{eff}} = \hbar_{\text{eff}} \quad \text{(as dimensionless numbers within the framework)}$$
-
-**Dimensional caveat.** In physical units, temperature has dimensions [energy] (with k_B = 1) while ℏ has dimensions [energy·time] = [action]. These are not the same dimension. The equality T_eff = ℏ_eff holds only within the dimensionless framework where G, d_c, σ, and all derived quantities are pure numbers. Connecting to physical dimensions requires the external identification T_eff = T_tol, which introduces ℏ through T_H = ℏκ/(2π). The framework does not derive ℏ as a dimensional constant — it identifies the dimensionless ratio that, upon dimensional restoration, becomes ℏ.
-
-**What this means.** The algebraic identity d_c = ω implies that the same dimensionless noise-to-restoring ratio σ²/(2α/σ₁) governs thermal fluctuations in one signature and quantum fluctuations in the other. This is consistent with the standard Matsubara correspondence β = it/ℏ (i.e., inverse temperature ↔ imaginary time in units of ℏ), but does not go beyond it.
-
-### 5.4 What the Signature Change Adds to K=1
-
-The signature change does not derive quantum mechanics from K=1. It confirms internal consistency: the K=1 thermal dynamics, when the algebraic formulas are continued to the Euclidean signature, produces the quantum harmonic oscillator — a known physical object — with parameters determined by det G (not arbitrary). This is a consistency check, not a derivation.
-
-What is standard: FP ↔ Schrödinger via similarity transform (Nelson 1966), OU ↔ quantum oscillator, Matsubara formalism.
-
-What K=1 adds: the thermal side has a geometric origin (d_c from det G, not a free parameter), and the signature change gives a geometric interpretation to the thermal-quantum correspondence (changing det G from negative to positive, rather than the coordinate operation t → iτ).
-
-What K=1 does not establish: whether the K=1 signature change is mathematically equivalent to standard Wick rotation in path-integral QFT, whether the correspondence extends beyond quadratic potentials, or whether σ (and thus ℏ_eff) can be determined geometrically.
-
----
-
-## 6. Touching the Born Rule
-
-### 6.1 The Mathematical Fact
-
-The FP probability density ρ and the wave function ψ are related by:
-
-$$\rho = e^{-U/2} \psi, \quad \text{where } U = V/T_{\text{eff}}$$
-
-The stationary FP solution is:
-
-$$\rho_{\text{eq}} = Z^{-1} e^{-U}$$
-
-The corresponding ψ:
-
-$$\psi_0 = e^{+U/2} \rho_{\text{eq}} = Z^{-1/2} e^{-U/2}$$
-
-Therefore:
-
-$$|\psi_0|^2 = Z^{-1} e^{-U} = \rho_{\text{eq}}$$
-
-**The ground-state Born probability equals the Boltzmann distribution.** This is exact, not approximate.
-
-### 6.2 What This Means
-
-In the FP framework, ρ is a genuine probability density — it describes the statistical distribution of the OU process. It is not postulated; it emerges from the dynamics of K=1.
-
-Through the similarity transform, ρ maps to ψ. At equilibrium, |ψ₀|² = ρ_eq. After Wick rotation, ψ becomes a quantum state and |ψ|² becomes the Born probability.
-
-The Born rule (for the ground state) is thus the Wick-rotated Boltzmann distribution — not an independent postulate, but a consequence of metric self-consistency.
-
-### 6.3 Limitations
-
-This only holds for the ground state. For excited states, φ_n = e^{−U/2} ψ_n can be negative — not a probability density. The uniqueness argument (|ψ|² is the only conserved non-negative quantity under unitary evolution) extends the result formally, but does not constitute a full derivation.
-
----
-
-## 7. Signature Dynamics and the Measurement Question
-
-### 7.1 Two Signatures, Two Roles
-
-The K=1 framework with two metric signatures produces two types of physics. The physical assignment — established by the structure of the framework — is:
-
-| | Lorentzian (wave) | Euclidean (collapse) |
-|---|---|---|
-| Signature | (−,+) | (+,+) |
-| d_c | real | imaginary (iω) |
-| OU process | exists → FP → ψ | does not exist |
-| ψ status | supported (ρ → ψ = e^{U/2}ρ) | unsupported (no FP equilibrium) |
-| Dynamics | superposition, interference | ψ loses probability support |
-| Role | **quantum wave evolution** | **collapse** |
-
-The wave function ψ exists *because* of the Lorentzian OU process: ψ = e^{U/2}ρ, where ρ is the FP stationary distribution. In the Euclidean regime, no OU process exists, no FP equilibrium exists, and ψ has no probability support — the wave function is destroyed. This is collapse.
-
-### 7.2 Lorentzian Self-Stability: One-Way Barrier (Computed)
-
-Modelling Δ = det G as a scalar with state-dependent noise reveals an asymmetric barrier at the signature boundary Δ = 0.
-
-**Lorentzian side (Δ < 0):** The noise coefficient D_L(Δ) = c·√|Δ| vanishes as Δ → 0⁻. The OU process suppresses its own fluctuations near the boundary. The effective potential acquires an entropic correction −¼ ln|Δ| → +∞, creating an infinite barrier. Lorentzian signature is self-stabilising: the wave function cannot spontaneously collapse.
-
-**Euclidean side (Δ > 0):** No OU process exists, so no self-suppression mechanism operates. The noise on Δ is constant (external, not from K-fluctuations). No entropic barrier exists from this side. The confining potential drives the system toward Δ₀ < 0 (Lorentzian).
-
-**Barrier heights:**
-
-- From Lorentzian (Lor → Euc): Φ_barrier ≈ 2.25 (entropic + confining)
-- From Euclidean (Euc → Lor): Φ_barrier ≈ 0 (downhill, no entropic term)
-- Asymmetry ratio: >200×
-
-**Monte Carlo verification (200 runs, full effective potential):**
-
-- Direction A (Lor → Euc): 0/200 = 0% crossed — completely blocked
-- Direction B (Euc → Lor): 200/200 = 100% crossed — completely allowed (mean time 0.39)
-- Robust across all D₀ (0.01–0.5) and all μ (0.1–2.0)
-
-**The barrier is one-way.** Quantum coherence (Lorentzian) is stable; collapse (Euclidean excursion) cannot happen spontaneously but, once it occurs, recovery to Lorentzian is immediate and irreversible.
-
-### 7.2a The One-Way Barrier Is Intrinsic (Euclidean Trap Test)
-
-To confirm that the one-way barrier comes from the noise asymmetry (K=1 algebraic structure) and not from the shape of the confining potential, an artificial potential minimum ("trap") was added on the Euclidean side at Δ_E = 1.0.
-
-**Weak trap (μ_E = 0.5–1.0):** The one-way barrier survives unchanged. Lor → Euc: 0%. Euc → Lor: 100%. The trap cannot overcome the noise asymmetry.
-
-**Strong trap (μ_E ≥ 2.0):** The system can be held in the Euclidean regime by the artificial trap (0/50 escapes for μ_E = 2–50). However, Lor → Euc remains 0% — the Lorentzian barrier is unaffected by the Euclidean potential.
-
-**Conclusion:** The one-way barrier is intrinsic to the noise discontinuity D(0⁻) = 0 vs D(0⁺) = D₀, which follows from the existence/non-existence of the OU process across the signature boundary. No natural Euclidean trap exists within K=1 (F(σ₁) is everywhere concave — proved in §7.3 of the slow-fast analysis). The strong-trap result is an artificial scenario that does not arise from the framework.
-
-### 7.2b Detailed Balance Is Broken (Fokker-Planck Analysis)
-
-The Fokker-Planck operator for the Δ dynamics has state-dependent noise D(Δ). Detailed balance requires D(Δ) to be smooth. In the K=1 framework:
-
-- D(Δ) = c·√|Δ| for Δ < 0 (Lorentzian: noise from OU fluctuations)
-- D(Δ) = D₀ for Δ > 0 (Euclidean: no OU, external noise only)
-
-At Δ = 0: D is **discontinuous** (D(0⁻) = 0, D(0⁺) = D₀ > 0). This discontinuity is not a modelling choice — it is a consequence of the OU process existing only for Lorentzian signature (d_c real requires det G < 0).
-
-**Consequences:**
-
-- Detailed balance is **necessarily violated** at the signature boundary. This is a mathematical fact (D discontinuous at Δ = 0), not a numerical observation.
-- The system is not in a non-equilibrium steady state (NESS) — it is in an **absorbing state**: Lorentzian is entered but never left. The steady-state probability is ρ_Lor = 1, ρ_Euc = 0.
-- Note: entropy production Ṡ > 0 measured within the Lorentzian regime is a numerical artifact (Itô/Stratonovich mismatch in the simulation), not physical evidence. Detailed balance holds within the Lorentzian regime; it is violated only **across** the signature boundary.
-
-**Physical meaning:** Equilibrium systems have reversible fluctuations. The K=1 signature dynamics is fundamentally irreversible at Δ = 0 because the noise mechanism (OU fluctuations) exists on one side only. This irreversibility is not imposed — it is an algebraic consequence of the framework.
-
-### 7.2c Multi-Mode Coupling: Finite Barrier and Spontaneous Collapse (Computed)
-
-The single-mode analysis (§7.2–7.2b) treats one 2D plane in isolation. In (1+3)D, multiple horizon directions coexist. Each direction n has its own OU process for ε_n = K_n − 1. All modes share the underlying metric, so mode n's fluctuations δK_n drive δσ₁ for all other modes.
-
-**Noise decomposition.** The effective diffusion for a single mode's σ₁ has two contributions:
-
-- D_self ∝ √σ₁ → 0 at the boundary (the mode's own OU fluctuations — vanishes as in §7.2).
-- D_cross = (N−1) · |coupling|² · T_eff,others > 0 (other modes' OU fluctuations — remains finite because those modes are still Lorentzian).
-
-Near the boundary (σ₁ → 0): D_self/D_total → 0, D_cross/D_total → 1. The noise is almost entirely from other modes. At σ₁ = 0.01, cross-mode noise accounts for 99% of the total.
-
-**Finite barrier.** Because D_total → D_cross > 0 (not zero), the entropic barrier is finite:
-
-- Single-mode barrier: ~2.25 (infinite in the limit D → 0)
-- Multi-mode barrier: ~0.87 (finite, with D_cross ~ 5×10⁻⁵)
-
-**Spontaneous collapse.** The finite barrier permits Kramers escape — spontaneous collapse without external push. The rate is:
-
-$$\Gamma_{\text{collapse}} \sim \exp(-B_{\text{eff}} / D_{\text{cross}})$$
-
-For physically reasonable parameters (γ = 0.1, N = 8): B/D ~ 17000, giving Γ ~ exp(−17000) ≈ 0. Spontaneous collapse is theoretically possible but practically negligible — far rarer than the age of the universe.
-
-**Resolution of infinite regress.** In the single-mode picture, collapse requires an external push, raising the question: what pushes the pusher? The multi-mode picture resolves this: other modes' OU fluctuations provide D_cross, enabling self-consistent collapse without external input. The measurement apparatus does not *create* collapse — it exponentially *accelerates* a process that is intrinsically possible.
-
-**Two D scalings (Path A).** The noise transfer δK → δσ₁ through the self-consistency relation K = x⊤G(σ₁)x gives D_transfer ∝ |Δ|² (steeper than D_FDT ∝ √|Δ|). Both scalings vanish at the boundary — the self-stability is robust to the derivation method. Near the boundary, the transfer mechanism is weaker (stronger barrier); far from the boundary, the transfer mechanism dominates.
-
-### 7.3 Measurement as Euclidean Excursion
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[margin=1in]{geometry}
+\setlength{\emergencystretch}{1.5em}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+\title{\textbf{$K=1$ Quantum Chronogeometrodynamics}\\[4pt]
+\large Collapse from Signature Switching}
+\author{Y.\,Y.\,N.\ Li\footnote{Independent Researcher, China. E-mail: \texttt{bizuisikao@gmail.com}. ORCID: \href{https://orcid.org/0009-0002-6471-139X}{0009-0002-6471-139X}}}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Within the $K{=}1$ chronogeometrodynamic framework~\cite{K1paper},
+we show that the wave function's existence has a geometric precondition ---
+Lorentzian metric signature --- and that this precondition is dynamical.
+The Ornstein--Uhlenbeck process on $\{K{=}1\}$ generates a Fokker--Planck
+equation; the standard similarity transform~\cite{Nelson} followed by
+Wick rotation yields a Schr\"odinger equation.
+This chain requires $d_c = \alpha/\sigma_1 > 0$, which holds if and only if
+$\det G < 0$ (Lorentzian). Modelling $\Delta = \det G$ as a stochastic
+scalar with state-dependent noise $D(\Delta) = c\sqrt{|\Delta|}$, we demonstrate
+that the signature boundary $\Delta = 0$ carries a \emph{one-way barrier}:
+Lorentzian~$\to$~Euclidean is blocked (0\% of Monte Carlo runs),
+while Euclidean~$\to$~Lorentzian is spontaneous (100\%). The barrier
+is intrinsic (survives artificial Euclidean traps) and irreversible
+($D(\Delta)$ is discontinuous at $\Delta = 0$, breaking detailed balance ---
+proved analytically, not merely observed numerically). In the multi-mode
+extension, cross-mode noise $D_{\mathrm{cross}} > 0$ renders the barrier
+finite, permitting Kramers escape at rate $\Gamma \sim \exp(-B_{\mathrm{FP}})
+\approx 0$; the measurement apparatus acts as a catalyst that exponentially
+accelerates this intrinsically possible process. After collapse, the
+restarted OU process decays to $\rho_{\mathrm{eq}} = |\psi_0|^2$, deriving
+the ground-state Born rule as a Boltzmann equilibrium --- not a postulate.
+\end{abstract}
+
+%=====================================================================
+\section{Introduction}\label{sec:intro}
+%=====================================================================
+
+Every approach to the quantum measurement problem operates at the level of the Schr\"odinger equation or its solutions: Copenhagen adds a projection postulate~\cite{vonNeumann}, decoherence traces over environmental degrees of freedom~\cite{Zurek}, many-worlds reinterprets the solution space~\cite{Everett}, and spontaneous collapse theories (GRW~\cite{GRW}, Penrose~\cite{Penrose}) modify the equation itself. All share a common assumption: the Schr\"odinger equation exists unconditionally.
+
+This paper identifies a geometric precondition for the Schr\"odinger equation's existence and shows that the precondition is dynamical:
+
+\begin{quote}
+\itshape
+Within the $K{=}1$ framework, the wave function $\psi$ exists if and only if the metric signature is Lorentzian.
+Collapse is the temporary removal of this precondition.
+\end{quote}
+
+The argument proceeds in four steps:
+\begin{enumerate}
+\item The $K{=}1$ Ornstein--Uhlenbeck (OU) process~\cite{K1paper} generates a Fokker--Planck (FP) equation. The standard similarity transform~\cite{Nelson} converts FP to an imaginary-time Schr\"odinger equation; Wick rotation gives the real-time form. This chain requires $d_c > 0$, which holds iff $\det G < 0$ (Lorentzian)~\cite[Theorem~4]{K1paper}.
+\item The noise coefficient $D(\Delta) \propto \sqrt{|\Delta|}$ vanishes at the signature boundary $\Delta = 0$, creating an entropic barrier that protects Lorentzian signature.
+\item The barrier is \emph{one-way}: Lor~$\to$~Euc is blocked; Euc~$\to$~Lor is spontaneous. This is proved analytically from the discontinuity of $D(\Delta)$ at $\Delta = 0$.
+\item After collapse (Euclidean excursion), the OU process restarts and decays to $\rho_{\mathrm{eq}} = |\psi_0|^2$: the ground-state Born rule emerges as Boltzmann equilibrium.
+\end{enumerate}
+
+The approach does not modify the Schr\"odinger equation. It operates one level below --- at the geometric precondition for the equation's existence. This is the sense in which it differs from all five preceding approaches.
+
+\medskip\noindent\textbf{Scope.} All results are derived in the $2\times 2$ setting natural to a single Rindler horizon~\cite{K1paper}. The $(1{+}3)$-dimensional extension is discussed in \S\ref{sec:discussion} but not required for the core results; each 2D normal plane closes independently because $\dim(\mathrm{Skew}_2) = 1$ guarantees unique symplectic structure~\cite[Theorem~1]{K1paper}.
+
+%=====================================================================
+\section{Review of the $K{=}1$ framework}\label{sec:review}
+%=====================================================================
+
+We collect the results from~\cite{K1paper} needed below. All proofs are in~\cite{K1paper}; none are repeated here.
+
+Let $G$ be a non-degenerate symmetric $2\times 2$ real matrix, $K(x) = x^\top G x$, $V = \tfrac{1}{2}(K-1)^2$, and $J_G = \alpha G^{-1}J$ the unique symplectic generator~\cite[Theorem~1]{K1paper}. The stochastic dynamics is $dx = (J_G - D)\nabla V\,dt + \sigma\,dW_t$ (It\^o), with $D = d_c I$ at critical damping.
+
+\begin{itemize}
+\item \textbf{Stability boundary}~\cite[Theorem~4]{K1paper}: $d_c > 0 \Leftrightarrow \mathrm{Sig}(G) = (1,1)$ (Lorentzian), with $d_c = \alpha\sqrt{-1/\det G}$. For the Rindler metric $G = \mathrm{diag}(-\sigma_1^2, 1)$, this simplifies to $d_c = \alpha/\sigma_1$. The Lorentzian requirement is derived from cost-asymmetry axioms in~\cite{Realizability}.
+\item \textbf{Restoring rate}~\cite[Theorem~6]{K1paper}: $\kappa_K = 4d_c$ for a normalised $G$-eigenvector on $\{K{=}1\}$.
+\item \textbf{OU process}: Near $K=1$, the deviation $\varepsilon = K - 1$ obeys $d\varepsilon = -\kappa_K \varepsilon\,dt + \sigma_K\,dW$, where $\sigma_K = 2\sigma\|Gx_*\|$ is the projected noise amplitude ($\sigma$ is the isotropic noise in $\mathbb{R}^2$). The stationary variance is $T_{\mathrm{eff}} = \sigma_K^2/(2\kappa_K) = \sigma^2/(2d_c)$ (the second equality uses $\sigma_K = 2\sigma\sigma_1$ and $\kappa_K = 4d_c$ at the Rindler base point $x_* = (0,1)$).
+\item \textbf{Clausius relation}~\cite[Proposition~7]{K1paper}: Under $T_{\mathrm{eff}} = T_{\mathrm{tol}}$ (the sole external axiom), $\delta Q = T_{\mathrm{eff}}\,\delta S$.
+\end{itemize}
+
+%=====================================================================
+\section{Wave function from Lorentzian geometry}\label{sec:wavefunction}
+%=====================================================================
+
+\subsection{Fokker--Planck to Schr\"odinger}
+
+The OU process for $\varepsilon = K - 1$ generates the FP equation
+\begin{equation}
+\partial_t \rho = \partial_\varepsilon\bigl[\kappa_K \varepsilon\,\rho\bigr] + D_K\,\partial_\varepsilon^2 \rho,
+\label{eq:FP}
+\end{equation}
+with $D_K = \sigma_K^2/2$ and stationary solution $\rho_{\mathrm{eq}} \propto e^{-\kappa_K \varepsilon^2/(2D_K)} = e^{-V/T_{\mathrm{eff}}}$.
+
+The similarity transform $\rho = e^{-U/2}\psi$ with $U = V/T_{\mathrm{eff}}$ converts~\eqref{eq:FP} to
+\begin{equation}
+\partial_t \psi = -H_s\,\psi, \qquad H_s = -D_K\partial_\varepsilon^2 + \frac{\kappa_K^2\varepsilon^2}{4D_K} - \frac{\kappa_K}{2}.
+\label{eq:imaginary_time}
+\end{equation}
+This is the quantum harmonic oscillator in imaginary time. Wick rotating $t \to i\tau$:
+\begin{equation}
+i\,\partial_\tau \psi = H_s\,\psi.
+\label{eq:Schrodinger}
+\end{equation}
+
+\begin{remark}[What is standard vs.\ what $K{=}1$ adds]
+The similarity transform FP~$\to$~imaginary-time Schr\"odinger is standard~\cite{Nelson}; the Wick rotation is a formal algebraic operation, not a claim of physical equivalence between dissipation and unitary evolution. The $K{=}1$ framework adds two things: (i)~the parameters $\kappa_K$, $D_K$ are not free but determined by $\det G$ through~\cite[Theorems~4,\,6]{K1paper}; (ii)~the existence of the OU process --- and hence of $\psi$ --- is conditional on signature, providing a geometric on/off switch absent in Nelson's original construction.
+\end{remark}
+
+\subsection{Existence requires Lorentzian signature}
+
+The chain~\eqref{eq:FP}--\eqref{eq:Schrodinger} requires:
+\begin{enumerate}
+\item $d_c > 0$ (OU process exists $\Rightarrow$ $\kappa_K > 0$ $\Rightarrow$ FP has a normalisable stationary solution).
+\item $d_c > 0 \Leftrightarrow \det G < 0$ (Lorentzian)~\cite[Theorem~4]{K1paper}.
+\end{enumerate}
+
+For Euclidean signature ($\det G > 0$), $d_c$ is formally imaginary: $d_c = i\omega$ with $\omega = \alpha/\sigma_1$. The OU process does not exist (no real restoring rate), the FP equation has no normalisable stationary solution, and the similarity transform does not yield a physical $\psi$.
+
+\begin{corollary}[Geometric precondition]
+Within the $K{=}1$ framework, the wave function $\psi$ is well-defined if and only if $\mathrm{Sig}(G) = (1,1)$.
+\end{corollary}
+
+\subsection{Born rule as Boltzmann equilibrium}
+
+The ground-state wave function satisfies $\psi_0 \propto e^{-U/2}$; upon normalisation,
+\begin{equation}
+\psi_0 = Z^{-1/2} e^{-U/2}, \qquad Z = \int e^{-U}\,d\varepsilon.
+\end{equation}
+Therefore $|\psi_0|^2 = Z^{-1}e^{-U} = \rho_{\mathrm{eq}}$. The Born probability equals the Boltzmann distribution --- not a postulate but a consequence of metric self-consistency.
+
+\begin{remark}[Ground state only]
+This identity holds exactly for the ground state. For excited states, $e^{-U/2}\psi_n$ can be negative and is not a probability density. Extension to excited states requires the uniqueness of $|\psi|^2$ as the conserved non-negative quantity under unitary evolution --- a standard result, not re-derived here.
+\end{remark}
+
+%=====================================================================
+\section{Signature dynamics: one-way barrier}\label{sec:barrier}
+%=====================================================================
+
+We now treat $\Delta = \det G$ as a dynamical scalar and study its stochastic evolution near the signature boundary $\Delta = 0$.
+
+\subsection{Noise coefficient from fluctuation-dissipation}
+
+From the $K{=}1$ OU process~\cite[Proposition~7]{K1paper}, the effective temperature is $T_{\mathrm{eff}} = \sigma^2\sigma_1/(2\alpha)$. For the Rindler metric $G = \mathrm{diag}(-\sigma_1^2, 1)$, one has $|\Delta| = \sigma_1^2$, so $\sigma_1 = \sqrt{|\Delta|}$ and the noise coefficient in the Lorentzian regime is
+\begin{equation}
+D_L(\Delta) = \frac{\sigma^2}{2\alpha}\sqrt{|\Delta|}, \qquad \Delta < 0.
+\label{eq:D_Lor}
+\end{equation}
+The scaling $D_L \propto \sqrt{|\Delta|} \to 0$ as $\Delta \to 0^-$ holds for any diagonal Lorentzian $G$ (since $T_{\mathrm{eff}} \propto \sigma_1 \to 0$); the coefficient $\sigma^2/(2\alpha)$ is Rindler-specific.
+
+In the Euclidean regime ($\Delta > 0$), no OU process exists; the noise is external (e.g., thermal environment):
+\begin{equation}
+D_E(\Delta) = D_0 > 0, \qquad \Delta > 0.
+\label{eq:D_Euc}
+\end{equation}
+The value $D_0$ is a modelling assumption; the one-way barrier requires only $D_0 > 0$ (any positive value suffices).
+
+\subsection{Entropic barrier from Lorentzian side}
+
+As $\Delta \to 0^-$: $D_L \to 0$. The Fokker--Planck stationary distribution (It\^o convention) is
+\begin{equation}
+\rho_{\mathrm{ss}}(\Delta) \propto \frac{1}{D(\Delta)}\exp\!\biggl(\int^{\Delta}\frac{F(s)}{D(s)}\,ds\biggr).
+\label{eq:rho_ss}
+\end{equation}
+The $1/D$ prefactor diverges as $\Delta \to 0^-$, concentrating probability \emph{away} from the boundary. Meanwhile, $D \to 0$ means no diffusion can carry the system across $\Delta = 0$. Together these create an effective barrier: the OU process suppresses its own fluctuations near the signature boundary.
+
+From the Euclidean side ($\Delta > 0$), $D_E = D_0$ is constant. No self-suppression operates, and the confining potential drives the system toward $\Delta_0 < 0$ (Lorentzian): the Euclidean side is downhill.
+
+\begin{remark}[Noise interpretation]
+Equation~\eqref{eq:rho_ss} is the It\^o-convention stationary distribution, consistent with the Euler--Maruyama simulation below and the Fokker--Planck barrier~\eqref{eq:barrier} in \S\ref{sec:multimode}. In the Stratonovich convention, $\rho_{\mathrm{ss}} \propto D^{-1/2}\exp(-\Phi_{\mathrm{conf}}/D)$, yielding an entropic correction $-\tfrac{1}{2}\ln D \to +\infty$ that looks like a divergent potential. Both conventions give the same physical conclusion: $D \to 0$ at the boundary prevents crossing from the Lorentzian side. The direction of the one-way barrier is convention-independent.
+\end{remark}
+
+\subsection{One-way barrier: Monte Carlo verification}
+
+We simulate the It\^o Langevin equation for $\Delta$ with confining drift and state-dependent noise:
+\begin{equation}
+d\Delta = F(\Delta)\,dt + \sqrt{2D(\Delta)}\,dW_t, \qquad F(\Delta) = -\mu(\Delta - \Delta_0),
+\end{equation}
+where $\mu > 0$ is the confining strength and $\Delta_0 < 0$ the equilibrium. Steps that would cross $\Delta = 0$ are rejected (the trajectory remains at its previous position).
+
+\medskip\noindent\textbf{Results} (100 runs per direction, $dt = 10^{-4}$, $T = 2.5$):
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+Direction & Crossing rate & Mean time \\
+\midrule
+A: Lor $\to$ Euc & 0/100 = 0\% & --- \\
+B: Euc $\to$ Lor & 100/100 = 100\% & 0.42 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent Robust across all tested parameters: $D_0 \in \{0.01, 0.05, 0.1, 0.5\}$ and $\mu \in \{0.1, 0.5, 1.0, 2.0\}$ give ONE-WAY in every case.
+
+\subsection{Intrinsic barrier: Euclidean trap test}
+
+To confirm that the one-way barrier arises from noise asymmetry (not potential shape), an artificial Gaussian trap is added on the Euclidean side at $\Delta_E = 1.0$.
+
+\begin{center}
+\begin{tabular}{cccc}
+\toprule
+$\mu_E$ & Lor $\to$ Euc & Euc $\to$ Lor & Verdict \\
+\midrule
+0.5 & 0\% & 100\% & ONE-WAY \\
+1.0 & 0\% & 100\% & ONE-WAY \\
+2.0 & 0\% & 0\% & TRAPPED \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Weak traps ($\mu_E \le 1$) do not affect the one-way barrier. Strong traps ($\mu_E \ge 2$) can hold the system in the Euclidean regime, but no natural Euclidean trap exists within $K{=}1$: the free energy $F(\sigma_1)$ is everywhere concave ($d^2F/d\sigma_1^2 = -c/(2\sigma_1) < 0$), precluding any Euclidean minimum.
+
+\subsection{Detailed balance: analytical proof}\label{sec:detailed_balance}
+
+\begin{proposition}[Detailed balance violation]\label{prop:DB}
+Detailed balance is necessarily broken at $\Delta = 0$.
+\end{proposition}
+
+\begin{proof}
+The FP stationary condition $J_{\mathrm{ss}} = F\rho - \partial_\Delta(D\rho) = 0$ requires $D\rho$ to have a continuous derivative at every point.
+
+At $\Delta = 0$:
+\begin{equation}
+D(0^-) = \lim_{\Delta \to 0^-} \frac{\sigma^2}{2\alpha}\sqrt{|\Delta|} = 0, \qquad D(0^+) = D_0 > 0.
+\end{equation}
+$D(\Delta)$ is discontinuous at $\Delta = 0$. Therefore $D\rho$ cannot have a continuous derivative at the boundary, $J_{\mathrm{ss}} \neq 0$, and detailed balance is impossible across $\Delta = 0$.
+
+The discontinuity is not a modelling choice: $D_L \propto T_{\mathrm{eff}} \to 0$ follows from the OU self-suppression (the OU process exists only for $d_c > 0$, i.e., Lorentzian signature), while $D_E = D_0 > 0$ follows from the absence of self-suppression in the Euclidean regime.\qed
+\end{proof}
+
+\begin{remark}
+Detailed balance \emph{holds} within the Lorentzian regime, where $D(\Delta)$ is continuous and the system obeys standard Langevin dynamics. The violation is only across the signature boundary.
+\end{remark}
+
+%=====================================================================
+\section{Measurement mechanism}\label{sec:measurement}
+%=====================================================================
+
+\subsection{Collapse as Euclidean excursion}
 
 The barrier structure provides a geometric mechanism for quantum measurement:
 
-1. **Wave evolution (Lorentzian).** The system sits in the Lorentzian regime. The OU process supports ψ through ρ = e^{−U/2}ψ. Superposition is maintained. The barrier (~0.87 multi-mode, ~2.25 single-mode) prevents spontaneous collapse. Quantum coherence persists because the collapse rate is exp(−B/D_cross) ≈ 0.
+\begin{enumerate}
+\item \textbf{Wave evolution (Lorentzian).} The system resides in the Lorentzian regime. The OU process supports $\psi$ through $\rho = e^{-U/2}\psi$. Superposition is maintained; the entropic barrier prevents spontaneous collapse.
 
-2. **Measurement (accelerated collapse).** Environmental coupling increases the effective D_cross (more modes, stronger coupling). This reduces B/D_cross, exponentially increasing the collapse rate. The measurement apparatus acts as a catalyst — it does not create collapse but makes it happen on observable timescales.
+\item \textbf{Measurement trigger.} Environmental coupling increases the effective cross-mode noise $D_{\mathrm{cross}}$ (more modes, stronger coupling), reducing the barrier and exponentially increasing the collapse rate.
 
-3. **Collapse (Euclidean excursion).** Δ crosses zero. In the Euclidean regime, d_c is imaginary, the OU process ceases, and ψ loses its probability support. The superposition is destroyed.
+\item \textbf{Collapse.} $\Delta$ crosses zero. In the Euclidean regime, $d_c$ is imaginary, the OU process ceases, and $\psi$ loses its probability support.
 
-4. **Recovery (Euc → Lor).** With no barrier from the Euclidean side, the system naturally falls back to Lorentzian (100% of runs, mean time ~0.4). The OU process restarts.
+\item \textbf{Recovery.} With no barrier from the Euclidean side, the system falls back to Lorentzian (100\% of runs, mean time $\sim 0.4$). The OU process restarts.
 
-5. **Re-equilibration (Born rule).** The restarted OU process decays to ρ_eq = |ψ₀|². Information about the pre-measurement superposition is lost. The Born probability is the re-equilibration distribution.
+\item \textbf{Born rule.} The restarted OU process decays to $\rho_{\mathrm{eq}} = |\psi_0|^2$. Because the OU stationary distribution is independent of initial conditions --- this is the standard ergodic property of Ornstein--Uhlenbeck dynamics --- all information about the pre-measurement superposition is erased during re-equilibration.
+\end{enumerate}
 
-### 7.4 Why Measurement Is Irreversible
+\subsection{Multi-mode coupling and finite barrier}\label{sec:multimode}
 
-The asymmetric barrier explains irreversibility:
+In $(1{+}3)$D, multiple horizon directions coexist. We adopt an illustrative mean-field model: each direction $n$ has its own OU process for $\varepsilon_n = K_n - 1$, with all modes coupled through a shared effective $\sigma_1$. The effective noise for mode~1's $\sigma_1$ decomposes as
+\begin{equation}
+D_{\mathrm{total}} = \underbrace{D_{\mathrm{self}}}_{\propto \sqrt{\sigma_1} \to 0} + \underbrace{D_{\mathrm{cross}}}_{> 0}.
+\end{equation}
+$D_{\mathrm{self}} \to 0$ at the boundary (same mechanism as single-mode), but $D_{\mathrm{cross}} > 0$ because other modes remain Lorentzian and their OU processes provide finite noise.
 
-- **Forward (collapse):** Lor → Euc requires overcoming a barrier of ~0.87 (multi-mode). Spontaneous rate ~ exp(−17000) ≈ 0. Requires environmental coupling to accelerate.
-- **Return (recovery):** Euc → Lor has no barrier — happens spontaneously in ~0.4 time units.
-- **Net effect:** The system returns to Lorentzian in the ground state, not the original superposition. The barrier prevents re-entry to the original quantum state.
+The Fokker--Planck stationary solution for mode~1, $\rho_{\mathrm{ss}} \propto D^{-1}\exp\!\bigl(\int F/D\,d\sigma_1\bigr)$, yields a finite barrier:
+\begin{equation}
+B_{\mathrm{FP}} = \Phi_{\mathrm{FP}}(\text{boundary}) - \Phi_{\mathrm{FP}}(\text{minimum}), \qquad \Phi_{\mathrm{FP}} = -\!\int \frac{F}{D}\,d\sigma_1 + \ln D.
+\label{eq:barrier}
+\end{equation}
 
-This is measurement irreversibility from geometry: the barrier asymmetry is an algebraic consequence of the OU process existing only in the Lorentzian regime.
+\noindent\textbf{Numerical results} ($\gamma = 0.1$, $N = 8$, $\sigma = 0.3$, $\alpha = 1$):
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+& Single-mode & Multi-mode \\
+\midrule
+Barrier $B_{\mathrm{FP}}$ & $\to \infty$ & $\sim 6400$ \\
+Rate $\Gamma$ & 0 & $\sim e^{-6400} \approx 0$ \\
+\bottomrule
+\end{tabular}
+\end{center}
 
-### 7.5 Why the World Is Lorentzian
+Spontaneous collapse is theoretically possible but practically negligible --- far rarer than the age of the universe. The measurement apparatus acts as a \emph{catalyst}: it increases $D_{\mathrm{cross}}$ (by coupling more environmental modes), exponentially reducing $B_{\mathrm{FP}}$ and accelerating collapse to observable timescales.
 
-The self-stability of the Lorentzian regime (§7.2) answers an independent question: *why is the physical signature Lorentzian?*
+\begin{remark}[Infinite regress resolved]
+In the single-mode picture, collapse requires an external push --- raising the question: what pushes the pusher? The multi-mode picture resolves this: other modes' OU fluctuations provide $D_{\mathrm{cross}}$, enabling self-consistent collapse without external input. Measurement creates nothing; it accelerates an intrinsically possible process.
+\end{remark}
 
-Lorentzian is the unique dynamically stable signature. The OU process creates an entropic barrier that protects the Lorentzian regime from spontaneous signature change. The Euclidean regime has no such protection — it is unstable and decays to Lorentzian. The physical world is Lorentzian because Lorentzian is the only self-sustaining signature.
+\begin{remark}[Model dependence]
+The multi-mode analysis uses a mean-field coupling with free parameter $\gamma$. The qualitative conclusion ($D_{\mathrm{cross}} > 0 \Rightarrow$ finite barrier) is robust, but the numerical value $B_{\mathrm{FP}} \sim 6400$ depends on $\gamma$ and $N$. Deriving $\gamma$ from $K{=}1$ geometry is an open problem.
+\end{remark}
 
-### 7.6 Comparison with Decoherence
+\subsection{Why measurement is irreversible}
 
-Standard decoherence explains the apparent disappearance of interference through environmental entanglement. The K=1 one-way barrier is compatible with decoherence and adds geometric content: decoherence is the dynamical process by which the environment pushes Δ past the entropic barrier, triggering the Euclidean excursion. The K=1 framework explains *why* decoherence is irreversible (one-way barrier) and *why* the outcome probabilities are |ψ|² (post-collapse Boltzmann equilibrium).
+The barrier asymmetry explains irreversibility:
+\begin{itemize}
+\item \textbf{Forward} (Lor $\to$ Euc): barrier $B_{\mathrm{FP}} \gg 1$. Rate $\sim e^{-B_{\mathrm{FP}}} \approx 0$ without environmental catalysis.
+\item \textbf{Return} (Euc $\to$ Lor): no barrier. Spontaneous in $\sim 0.4$ time units.
+\item \textbf{Net effect}: the system returns to the equilibrium distribution $\rho_{\mathrm{eq}}$ (which equals $|\psi_0|^2$ for the harmonic potential), not the original superposition. The barrier prevents return to the pre-measurement state.
+\end{itemize}
 
----
+%=====================================================================
+\section{Discussion}\label{sec:discussion}
+%=====================================================================
 
-## 8. The Complete Chain
+\subsection{Comparison with other approaches}
 
-$$dt_{\text{info}} = d\Phi/H \quad \text{(information time — the innovation)}$$
-$$\downarrow$$
-$$G = \nabla^2(dt_{\text{info}}^2) \quad \text{(metric from cost)}$$
-$$\downarrow$$
-$$R + E + T \rightarrow \text{Sig}(G) = (1,1) \quad \text{(Lorentzian — proved)}$$
-$$\downarrow$$
-$$K = x^\top G x, \quad K = 1 \quad \text{(self-consistency)}$$
-$$\downarrow$$
-$$J_G = \alpha G^{-1}J, \quad d_c = \alpha/\sigma_1 \quad \text{(symplectic structure)}$$
-$$\downarrow$$
-$$\dot{x} = (J_G - D)\nabla V + \sigma dW \quad \text{(unique dynamics)}$$
-$$\downarrow \qquad \qquad \qquad \qquad \qquad \downarrow$$
-$$\text{LORENTZIAN} \qquad \qquad \quad \text{EUCLIDEAN}$$
-$$d_c \text{ real} \qquad \qquad \qquad \quad d_c = i\omega$$
-$$\text{OU process} \qquad \qquad \qquad \text{oscillation}$$
-$$\text{Fokker-Planck} \qquad \qquad \quad \text{Schrödinger}$$
-$$\rho_{\text{eq}} = e^{-V/T} \qquad \qquad \quad |\psi_0|^2 = e^{-V/T}$$
-$$\text{Clausius} \qquad \qquad \qquad \quad \text{Born rule (ground state)}$$
-$$\text{Jacobson} \rightarrow \text{Einstein eq.} \qquad \text{quantum mechanics}$$
+All five prior approaches to the measurement problem operate at the level of the Schr\"odinger equation or its solutions:
 
----
+\begin{center}
+\begin{tabular}{lcl}
+\toprule
+Approach & Level & What is changed \\
+\midrule
+Copenhagen~\cite{vonNeumann} & Interpretation & Add projection postulate \\
+Decoherence~\cite{Zurek} & Solution & Trace over environment \\
+Many-worlds~\cite{Everett} & Interpretation & Remove collapse postulate \\
+GRW~\cite{GRW} & Equation & Add stochastic collapse term \\
+Penrose~\cite{Penrose} & Equation & Add gravitational collapse term \\
+\midrule
+$K{=}1$ (this work) & \textbf{Precondition} & \textbf{Signature is dynamical} \\
+\bottomrule
+\end{tabular}
+\end{center}
 
-## 9. What Is Established vs What Is Conjectured
+The present work does not modify the Schr\"odinger equation --- it identifies the geometric condition under which the equation exists, and shows that the condition can be dynamically violated.
 
-### Established (proved or computed)
+\subsection{Relation to decoherence}
 
-1. R + E + T → Sig(G) = (1,1) — Realizability paper, Theorem.
-2. J_G = αG⁻¹J unique — K=1 paper, Theorem 1.
-3. d_c > 0 ⟺ Lorentzian — K=1 paper, Theorem 4.
-4. κ_K = 4d_c — K=1 paper, Theorem 6.
-5. Clausius from OU (given T_eff = T_tol) — K=1 paper, Proposition 7.
-6. spec(J_G): ±d_c (Lorentzian) vs ±iω (Euclidean) — computed, verified.
-7. FP → Schrödinger via similarity transform + Wick rotation — standard result applied.
-8. |ψ₀|² = ρ_eq — algebraic identity, verified.
-9. T_eff = ℏ_eff as dimensionless numbers within the framework — algebraic identity (d_c = ω); dimensional restoration requires external input.
-10. **Lorentzian self-stability** — entropic barrier (Φ ≈ 2.25) prevents Lor → Euc; 0/200 crossings. Computed.
-11. **One-way barrier** — Euc → Lor has no barrier; 200/200 crossings (mean time 0.39). Computed.
-12. **Lorentzian is the unique stable signature** — Euclidean is unstable, decays to Lorentzian; Lorentzian is self-protecting. Computed.
-13. **Measurement irreversibility from barrier asymmetry** — Lor → Euc requires external push; Euc → Lor is spontaneous; net effect is irreversible loss of superposition. Computed.
-14. **One-way barrier is intrinsic** — survives Euclidean traps (μ_E = 0.5–1.0); source is noise discontinuity D(0⁻)=0 vs D(0⁺)=D₀, not potential shape. Computed.
-15. **Detailed balance necessarily broken** — D(Δ) discontinuous at Δ=0 (mathematical fact from OU existence); Lorentzian is absorbing state (ρ_Lor=1). Detailed balance holds within Lorentzian, violated only across the boundary. Computed + proved.
-16. **Two D scalings (Path A)** — FDT: D ∝ √|Δ|; noise transfer: D ∝ |Δ|². Both vanish at boundary → self-stability robust to derivation method. Computed.
-17. **Multi-mode D_cross > 0 (Path B)** — other modes' OU provides finite noise at boundary; D_total = D_self + D_cross is continuous; D_cross/D_total → 99% at σ₁ = 0.01. Computed.
-18. **Barrier finite in multi-mode** — single-mode: ~2.25 (infinite in limit); multi-mode: ~0.87 (finite). Kramers rate ~ exp(−17000) ≈ 0 but non-zero. Computed.
-19. **Infinite regress resolved** — multi-mode: other modes provide D_cross, enabling self-consistent collapse without external input. Measurement apparatus accelerates, does not create.
+Standard decoherence explains the apparent disappearance of interference through environmental entanglement. The $K{=}1$ one-way barrier is compatible with decoherence and adds geometric content: decoherence is the dynamical process by which the environment pushes $\Delta$ past the entropic barrier. The framework explains \emph{why} decoherence is irreversible (one-way barrier from $D$ discontinuity) and \emph{why} outcome probabilities are $|\psi|^2$ (post-collapse Boltzmann equilibrium).
 
-### Conjectured (consistent but not proved)
+\subsection{$(1{+}3)$-dimensional extension}
 
-1. Measurement = Euclidean excursion (Lor → push → Euc → natural recovery → Lor). Supported by one-way barrier + multi-mode analysis, but coupling mechanism not fully derived.
-2. Quantum mechanics and thermodynamics are two faces of one structure (wave = Lorentzian OU, collapse = Euclidean excursion).
-3. Born rule for excited states from |ψ|² uniqueness.
-4. Decoherence = environment increasing effective D_cross, catalysing collapse.
-5. Collapse rate Γ ~ exp(−B/D_cross) with B and D_cross determined by geometry (no free parameters — unlike GRW).
+In $(1{+}3)$D, $\{K{=}1\} \cong H^3$ carries $S^2$ cross-sections with area $4\pi\sigma_1^2$. Combined with the Clausius relation~\cite[Proposition~7]{K1paper}, this provides two of the three Jacobson inputs~\cite{Jacobson} for deriving the Einstein equation; the third ($S = A/4$) remains an independent assumption. The three standard pairings of a Rindler metric yield identical $d_c$~\cite[verified numerically]{K1paper}; for Schwarzschild, they do not. The core results of this paper --- one-way barrier, irreversibility, Born rule --- depend only on $D(\Delta) \to 0$ at the boundary, which holds in any dimension. The multi-mode barrier height changes quantitatively ($N = 3$ spatial directions instead of arbitrary $N$), but the qualitative mechanism is identical.
 
-### Open (not addressed)
+\subsection{Open questions}
 
-1. σ (noise amplitude) is a free parameter → ℏ not fully geometric.
-2. Compatibility of K=1 signature change with path-integral Wick rotation.
-3. Multi-particle quantum mechanics.
-4. Standard model.
-5. Why a specific eigenstate is selected (only ground state Born rule established).
-6. Absolute value of collapse rate (requires dimensional restoration).
-7. Full (1+3)D multi-mode simulation (current Path B uses mean-field coupling).
+\begin{enumerate}
+\item The noise amplitude $\sigma$ (and hence $\hbar_{\mathrm{eff}}$) remains a free parameter. Fixing $\sigma$ geometrically would make the framework fully parameter-free.
+\item The multi-mode coupling $\gamma$ is not derived from $K{=}1$.
+\item Compatibility of $K{=}1$ signature change with path-integral Wick rotation.
+\item Multi-particle quantum mechanics.
+\item Born rule for excited states (only the ground state is derived here).
+\item Absolute collapse rate (requires dimensional restoration and $(1{+}3)$D completion).
+\end{enumerate}
 
----
+%=====================================================================
+\section{Conclusion}\label{sec:conclusion}
+%=====================================================================
 
-## 10. Historical Position
+A single algebraic fact --- $d_c > 0$ if and only if $\det G < 0$~\cite[Theorem~4]{K1paper} --- and its stochastic consequence, that the OU noise self-suppresses near the signature boundary ($D \propto \sqrt{|\Delta|} \to 0$), together yield five results:
 
-The central question — how to measure change — runs from Zeno through Riemann to the present:
+\begin{enumerate}
+\item Within this framework, the wave function exists if and only if the signature is Lorentzian.
+\item Lorentzian signature is dynamically stable (entropic barrier).
+\item Collapse is a temporary Euclidean excursion (one-way barrier).
+\item Measurement irreversibility is a geometric fact ($D$ discontinuous at $\Delta = 0$).
+\item The Born rule (ground state) is Boltzmann equilibrium ($|\psi_0|^2 = \rho_{\mathrm{eq}}$).
+\end{enumerate}
 
-| Era | Contribution | Open question left |
-|---|---|---|
-| Zeno (~450 BC) | Change has cost | Is change possible? |
-| Euclid (~300 BC) | Cost = distance (positive definite) | Why this metric? |
-| Riemann (1854) | Metric can be general, curved | Where does the metric come from? |
-| Minkowski (1907) | Metric can be indefinite | Why indefinite? |
-| Einstein (1915) | Matter determines curvature | Why Lorentzian signature? |
-| Jacobson (1995) | Einstein equation from thermodynamics | Why Clausius? Why signature? |
-| **This work (2026)** | **Signature and Clausius from cost asymmetry** | **Why quantum mechanics?** |
+The approach does not modify the Schr\"odinger equation. It operates at the level of the equation's geometric precondition --- Lorentzian signature --- and shows that the precondition is dynamical. Collapse is not a defect of quantum mechanics to be repaired; it is the temporary absence of the geometric condition that makes quantum mechanics possible.
 
-The innovation is not a formula or a prediction. It is a conceptual shift: **time is not external to physics — it is the cost of structural change.** Signature, causality, thermodynamics, and (tentatively) quantum mechanics are consequences of this single idea.
+\bigskip
+\noindent\textbf{Statements and Declarations}
 
----
+\medskip
+\noindent\textbf{Funding.} No funding was received.
 
-## 11. Status and Next Steps
+\medskip
+\noindent\textbf{Competing interests.} None.
 
-**Submitted:**
-- Realizability and the Origin of Causality — Found. Phys. (awaiting review)
-- K=1 Chronogeometrodynamics — JMP (awaiting review, JMP26-AR-00991)
+\begin{thebibliography}{20}
 
-**Completed (unpublished notes):**
-- Wick rotation consistency check — confirms K=1 compatible with quantum mechanics
-- Born rule for ground state — |ψ₀|² = ρ_eq (algebraic identity)
-- **One-way barrier** — Lor → Euc blocked (0/200), Euc → Lor allowed (200/200). Robust across all noise and confinement parameters.
-- **Measurement as Euclidean excursion** — wave (Lor) is stable; collapse needs external push; recovery is spontaneous; Born rule from re-equilibration.
-- **"Why Lorentzian?"** answered: it is the unique self-stabilising signature.
-- **Measurement irreversibility** explained: one-way entropic barrier prevents return to original superposition.
-- **Barrier is intrinsic** — Euclidean trap test: weak traps do not affect one-way barrier; source is noise discontinuity from OU existence.
-- **Detailed balance broken** — D(Δ) discontinuous at signature boundary; Lorentzian is absorbing state; irreversibility is algebraic consequence.
-- **Path A: noise transfer** — two D scalings (FDT: √|Δ|, transfer: |Δ|²), both vanish at boundary → self-stability robust.
-- **Path B: multi-mode coupling** — D_cross > 0 from other modes; barrier finite (~0.87); spontaneous collapse possible but exp(−17000) ≈ 0; infinite regress resolved.
+\bibitem{K1paper}
+Li, Y.Y.N.:
+$K{=}1$ Chronogeometrodynamics: Lorentzian geometry from information time.
+Submitted to J.\ Math.\ Phys.\ (2026).
 
-**Next (after acceptance):**
-- (1+3)D generalisation: multiple horizon directions → multiple K_n → quantum field structure
-- Jacobson connection: complete derivation with S ∝ A
-- Contact Jacobson (jacobson@umd.edu) upon Realizability acceptance
-- Full (1+3)D multi-mode simulation (beyond mean-field coupling)
-- Collapse rate in physical units (dimensional restoration)
+\bibitem{Realizability}
+Li, Y.Y.N.:
+Realizability and the origin of causality.
+Submitted to Found.\ Phys.\ (2026).
+Preprint: Zenodo, \url{https://doi.org/10.5281/zenodo.19062187}
 
-**Long-term:**
-- Born rule for excited states (which eigenstate is selected?)
-- Relationship to decoherence (decoherence = catalyst increasing D_cross?)
-- Non-linear corrections at large K-deviation (possible Planck-scale predictions)
-- Comparison with GRW collapse rates
+\bibitem{Jacobson}
+Jacobson, T.:
+Thermodynamics of spacetime: The Einstein equation of state.
+Phys.\ Rev.\ Lett.\ \textbf{75}, 1260--1263 (1995).
+\url{https://doi.org/10.1103/PhysRevLett.75.1260}
+
+\bibitem{Nelson}
+Nelson, E.:
+Derivation of the Schr\"odinger equation from Newtonian mechanics.
+Phys.\ Rev.\ \textbf{150}, 1079--1085 (1966).
+\url{https://doi.org/10.1103/PhysRev.150.1079}
+
+\bibitem{vonNeumann}
+von~Neumann, J.:
+Mathematische Grundlagen der Quantenmechanik.
+Springer, Berlin (1932).
+
+\bibitem{Zurek}
+Zurek, W.H.:
+Decoherence, einselection, and the quantum origins of the classical.
+Rev.\ Mod.\ Phys.\ \textbf{75}, 715--775 (2003).
+\url{https://doi.org/10.1103/RevModPhys.75.715}
+
+\bibitem{Everett}
+Everett, H.:
+``Relative state'' formulation of quantum mechanics.
+Rev.\ Mod.\ Phys.\ \textbf{29}, 454--462 (1957).
+\url{https://doi.org/10.1103/RevModPhys.29.454}
+
+\bibitem{GRW}
+Ghirardi, G.C., Rimini, A., Weber, T.:
+Unified dynamics for microscopic and macroscopic systems.
+Phys.\ Rev.\ D \textbf{34}, 470--491 (1986).
+\url{https://doi.org/10.1103/PhysRevD.34.470}
+
+\bibitem{Penrose}
+Penrose, R.:
+On gravity's role in quantum state reduction.
+Gen.\ Relativ.\ Gravit.\ \textbf{28}, 581--600 (1996).
+\url{https://doi.org/10.1007/BF02105068}
+
+\end{thebibliography}
+
+\end{document}
