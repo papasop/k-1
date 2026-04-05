@@ -154,7 +154,7 @@ From the $K{=}1$ OU process~\cite[Proposition~7]{K1paper}, the effective tempera
 \[
 T_{\mathrm{eff}} = \frac{\sigma^2}{2\alpha}\sqrt{|\Delta|}.
 \]
-A natural identification sets the noise coefficient $D_L$ for the $\Delta$ dynamics equal to $T_{\mathrm{eff}}$, since the OU process sets the local fluctuation scale for all metric components:
+By the fluctuation-dissipation relation, the noise coefficient $D_L$ for the $\Delta$ dynamics equals the local effective temperature $T_{\mathrm{eff}}$:
 \begin{equation}
 D_L(\Delta) = \frac{\sigma^2}{2\alpha}\sqrt{|\Delta|}, \qquad \Delta < 0.
 \label{eq:D_Lor}
@@ -254,7 +254,7 @@ Detailed balance \emph{holds} within the Lorentzian regime, where $D(\Delta)$ is
 The barrier structure provides a geometric mechanism for quantum measurement:
 
 \begin{enumerate}
-\item \textbf{Wave evolution (Lorentzian).} The system resides in the Lorentzian regime. The OU process generates $\rho$; the similarity transform $\psi = e^{U/2}\rho$ defines the wave function. Superposition is maintained; the entropic barrier prevents spontaneous collapse.
+\item \textbf{Wave evolution (Lorentzian).} The system resides in the Lorentzian regime, where the OU process generates $\rho$ and the similarity transform $\psi = e^{U/2}\rho$ defines a well-defined wave function (\S\ref{sec:wavefunction}). The entropic barrier prevents spontaneous escape to the Euclidean side, so superposition is maintained.
 
 \item \textbf{Measurement trigger.} Environmental coupling increases the effective cross-mode noise $D_{\mathrm{cross}}$ (more modes, stronger coupling), reducing the barrier and exponentially increasing the collapse rate.
 
@@ -276,7 +276,7 @@ where $\gamma > 0$ is the inter-mode coupling. Under mean-field approximation, e
 \begin{equation}
 D_{\mathrm{total}} = \underbrace{D_{\mathrm{self}}}_{\propto \sigma_1 \to 0} + \underbrace{D_{\mathrm{cross}}}_{> 0}.
 \end{equation}
-Here $D_{\mathrm{self}} \propto \gamma^2\sigma^2\sigma_1/(2\alpha N)$ arises from mode~1's own OU fluctuations (which vanish as $\sigma_1 \to 0$, by the same mechanism as the single-mode case); $D_{\mathrm{cross}} \approx \gamma^2(N{-}1)T_{\mathrm{eff,others}}/N^2$ arises from modes $2,\ldots,N$ whose $\sigma_{1,m} > 0$ (they remain Lorentzian) and whose OU processes provide finite noise. At the boundary: $D_{\mathrm{self}}/D_{\mathrm{total}} \to 0$ and $D_{\mathrm{cross}}/D_{\mathrm{total}} \to 1$.
+Here $D_{\mathrm{self}} \propto \gamma^2\sigma^2\sigma_1/(2\alpha N)$ arises from mode~1's own OU fluctuations, which vanish as $\sigma_1 \to 0$ by the same mechanism as the single-mode case. The cross-mode contribution $D_{\mathrm{cross}} \approx \gamma^2(N{-}1)T_{\mathrm{eff,others}}/N^2$ arises from modes $2,\ldots,N$ whose $\sigma_{1,m} > 0$ (they remain Lorentzian) and whose OU processes provide finite noise. At the boundary: $D_{\mathrm{self}}/D_{\mathrm{total}} \to 0$ and $D_{\mathrm{cross}}/D_{\mathrm{total}} \to 1$.
 
 The Fokker--Planck stationary solution for mode~1, $\rho_{\mathrm{ss}} \propto D^{-1}\exp\!\bigl(\int F/D\,d\sigma_1\bigr)$, yields a finite barrier:
 \begin{equation}
