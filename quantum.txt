@@ -29,7 +29,7 @@ we show that the wave function's existence has a geometric precondition ---
 Lorentzian metric signature --- and that this precondition is dynamical.
 The Ornstein--Uhlenbeck process on $\{K{=}1\}$ generates a Fokker--Planck
 equation; the standard similarity transform~\cite{Nelson} followed by
-Wick rotation yields a Schr\"odinger equation.
+Wick rotation yields a real-time Schr\"odinger equation.
 This chain requires $d_c = \alpha/\sigma_1 > 0$, which holds if and only if
 $\det G < 0$ (Lorentzian). Modelling $\Delta = \det G$ as a stochastic
 scalar with state-dependent noise $D(\Delta) = c\sqrt{|\Delta|}$, we demonstrate
@@ -84,8 +84,8 @@ Let $G$ be a non-degenerate symmetric $2\times 2$ real matrix, $K(x) = x^\top G 
 \begin{itemize}
 \item \textbf{Stability boundary}~\cite[Theorem~4]{K1paper}: $d_c > 0 \Leftrightarrow \mathrm{Sig}(G) = (1,1)$ (Lorentzian), with $d_c = \alpha\sqrt{-1/\det G}$. For the Rindler metric $G = \mathrm{diag}(-\sigma_1^2, 1)$, this simplifies to $d_c = \alpha/\sigma_1$. The Lorentzian requirement is derived from cost-asymmetry axioms in~\cite{Realizability}.
 \item \textbf{Restoring rate}~\cite[Theorem~6]{K1paper}: $\kappa_K = 4d_c$ for a normalised $G$-eigenvector on $\{K{=}1\}$.
-\item \textbf{OU process}: Near $K=1$, the deviation $\varepsilon = K - 1$ obeys $d\varepsilon = -\kappa_K \varepsilon\,dt + \sigma_K\,dW$, where $\sigma_K = 2\sigma\|Gx_*\|$ is the projected noise amplitude ($\sigma$ is the isotropic noise in $\mathbb{R}^2$). The stationary variance is $T_{\mathrm{eff}} = \sigma_K^2/(2\kappa_K) = \sigma^2/(2d_c)$ (the second equality uses $\sigma_K = 2\sigma\sigma_1$ and $\kappa_K = 4d_c$ at the Rindler base point $x_* = (0,1)$).
-\item \textbf{Clausius relation}~\cite[Proposition~7]{K1paper}: Under $T_{\mathrm{eff}} = T_{\mathrm{tol}}$ (the sole external axiom), $\delta Q = T_{\mathrm{eff}}\,\delta S$.
+\item \textbf{OU process}: Near $K=1$, the deviation $\varepsilon = K - 1$ obeys $d\varepsilon = -\kappa_K \varepsilon\,dt + \sigma_K\,dW$, where $\sigma_K = 2\sigma\|Gx_*\|$ is the projected noise amplitude ($\sigma$ is the isotropic noise in $\mathbb{R}^2$, $x_*$ is the base point on $\{K{=}1\}$). At the canonical Rindler point $x_* = (0,1)$: $Gx_* = (0,1)$, $\|Gx_*\| = 1$, and $\sigma_K = 2\sigma$. The stationary variance is $T_{\mathrm{eff}} = \sigma_K^2/(2\kappa_K) = \sigma^2/(2d_c)$.
+\item \textbf{Clausius relation}~\cite[Proposition~7]{K1paper}: Under the identification $T_{\mathrm{eff}} = T_{\mathrm{tol}}$ --- the sole external (phenomenological) input connecting the stochastic model to Rindler thermodynamics --- the Clausius relation $\delta Q = T_{\mathrm{eff}}\,\delta S$ follows algebraically.
 \end{itemize}
 
 %=====================================================================
@@ -113,7 +113,7 @@ i\,\partial_\tau \psi = H_s\,\psi.
 \end{equation}
 
 \begin{remark}[What is standard vs.\ what $K{=}1$ adds]
-The similarity transform FP~$\to$~imaginary-time Schr\"odinger is standard~\cite{Nelson}; the Wick rotation is a formal algebraic operation, not a claim of physical equivalence between dissipation and unitary evolution. The $K{=}1$ framework adds two things: (i)~the parameters $\kappa_K$, $D_K$ are not free but determined by $\det G$ through~\cite[Theorems~4,\,6]{K1paper}; (ii)~the existence of the OU process --- and hence of $\psi$ --- is conditional on signature, providing a geometric on/off switch absent in Nelson's original construction.
+The similarity transform FP~$\to$~imaginary-time Schr\"odinger is standard~\cite{Nelson,Risken}; the Wick rotation is a formal algebraic operation, not a claim of physical equivalence between dissipation and unitary evolution. The $K{=}1$ framework adds two things: (i)~the parameters $\kappa_K$, $D_K$ are not free but determined by $\det G$ through~\cite[Theorems~4,\,6]{K1paper}; (ii)~the existence of the OU process --- and hence of $\psi$ --- is conditional on signature, providing a geometric on/off switch absent in Nelson's original construction.
 \end{remark}
 
 \subsection{Existence requires Lorentzian signature}
@@ -150,7 +150,7 @@ We now treat $\Delta = \det G$ as a dynamical scalar and study its stochastic ev
 
 \subsection{Noise coefficient from fluctuation-dissipation}
 
-From the $K{=}1$ OU process~\cite[Proposition~7]{K1paper}, the effective temperature is $T_{\mathrm{eff}} = \sigma^2\sigma_1/(2\alpha)$. For the Rindler metric $G = \mathrm{diag}(-\sigma_1^2, 1)$, one has $|\Delta| = \sigma_1^2$, so $\sigma_1 = \sqrt{|\Delta|}$ and the noise coefficient in the Lorentzian regime is
+From the $K{=}1$ OU process~\cite[Proposition~7]{K1paper}, the effective temperature is $T_{\mathrm{eff}} = \sigma^2\sigma_1/(2\alpha)$. For the Rindler metric $G = \mathrm{diag}(-\sigma_1^2, 1)$, the determinant is $\Delta = \det G = -\sigma_1^2$, so $\sigma_1 = \sqrt{|\Delta|}$. Substituting: $T_{\mathrm{eff}} = (\sigma^2/(2\alpha))\sqrt{|\Delta|}$. Identifying the noise coefficient $D_L$ for the $\Delta$ dynamics with $T_{\mathrm{eff}}$ (a natural choice: the OU process sets the local fluctuation scale for all metric components),
 \begin{equation}
 D_L(\Delta) = \frac{\sigma^2}{2\alpha}\sqrt{|\Delta|}, \qquad \Delta < 0.
 \label{eq:D_Lor}
@@ -171,21 +171,21 @@ As $\Delta \to 0^-$: $D_L \to 0$. The Fokker--Planck stationary distribution (It
 \rho_{\mathrm{ss}}(\Delta) \propto \frac{1}{D(\Delta)}\exp\!\biggl(\int^{\Delta}\frac{F(s)}{D(s)}\,ds\biggr).
 \label{eq:rho_ss}
 \end{equation}
-The $1/D$ prefactor diverges as $\Delta \to 0^-$, concentrating probability \emph{away} from the boundary. Meanwhile, $D \to 0$ means no diffusion can carry the system across $\Delta = 0$. Together these create an effective barrier: the OU process suppresses its own fluctuations near the signature boundary.
+The $1/D$ prefactor diverges as $\Delta \to 0^-$: in the It\^o convention, probability density accumulates near the boundary. However, $D \to 0$ means the diffusive flux vanishes --- the system cannot cross $\Delta = 0$ because mobility drops to zero. The stationary current $J_{\mathrm{ss}} = F\rho - \partial_\Delta(D\rho) = 0$ confirms zero net flux. This creates an effective barrier: the OU process suppresses its own fluctuations near the signature boundary.
 
 From the Euclidean side ($\Delta > 0$), $D_E = D_0$ is constant. No self-suppression operates, and the confining potential drives the system toward $\Delta_0 < 0$ (Lorentzian): the Euclidean side is downhill.
 
 \begin{remark}[Noise interpretation]
-Equation~\eqref{eq:rho_ss} is the It\^o-convention stationary distribution, consistent with the Euler--Maruyama simulation below and the Fokker--Planck barrier~\eqref{eq:barrier} in \S\ref{sec:multimode}. In the Stratonovich convention, $\rho_{\mathrm{ss}} \propto D^{-1/2}\exp(-\Phi_{\mathrm{conf}}/D)$, yielding an entropic correction $-\tfrac{1}{2}\ln D \to +\infty$ that looks like a divergent potential. Both conventions give the same physical conclusion: $D \to 0$ at the boundary prevents crossing from the Lorentzian side. The direction of the one-way barrier is convention-independent.
+Equation~\eqref{eq:rho_ss} is the It\^o-convention stationary distribution, consistent with the Euler--Maruyama simulation below and the Fokker--Planck barrier~\eqref{eq:barrier} in \S\ref{sec:multimode}. In the Stratonovich convention, the stationary distribution takes a different form that yields an entropic correction $-\tfrac{1}{2}\ln D \to +\infty$ as $\Delta \to 0^-$, resembling a divergent effective potential. Both conventions give the same physical conclusion: $D \to 0$ at the boundary prevents crossing from the Lorentzian side. The direction of the one-way barrier is convention-independent.
 \end{remark}
 
 \subsection{One-way barrier: Monte Carlo verification}
 
-We simulate the It\^o Langevin equation for $\Delta$ with confining drift and state-dependent noise:
+We simulate the It\^o Langevin equation for $\Delta$ with state-dependent noise:
 \begin{equation}
-d\Delta = F(\Delta)\,dt + \sqrt{2D(\Delta)}\,dW_t, \qquad F(\Delta) = -\mu(\Delta - \Delta_0),
+d\Delta = F(\Delta)\,dt + \sqrt{2D(\Delta)}\,dW_t,
 \end{equation}
-where $\mu > 0$ is the confining strength and $\Delta_0 < 0$ the equilibrium. Steps that would cross $\Delta = 0$ are rejected (the trajectory remains at its previous position).
+where $F(\Delta)$ includes a confining drift toward $\Delta_0 < 0$ and an entropic correction from the state-dependent noise. Steps that would cross $\Delta = 0$ are rejected (the trajectory remains at its previous position). The one-way direction depends only on $D(0^-) = 0$ vs $D(0^+) > 0$, not on the specific form of $F$.
 
 \medskip\noindent\textbf{Results} (100 runs per direction, $dt = 10^{-4}$, $T = 2.5$):
 \begin{center}
@@ -250,7 +250,7 @@ Detailed balance \emph{holds} within the Lorentzian regime, where $D(\Delta)$ is
 The barrier structure provides a geometric mechanism for quantum measurement:
 
 \begin{enumerate}
-\item \textbf{Wave evolution (Lorentzian).} The system resides in the Lorentzian regime. The OU process supports $\psi$ through $\rho = e^{-U/2}\psi$. Superposition is maintained; the entropic barrier prevents spontaneous collapse.
+\item \textbf{Wave evolution (Lorentzian).} The system resides in the Lorentzian regime. The OU process generates $\rho$; the similarity transform $\psi = e^{U/2}\rho$ defines the wave function. Superposition is maintained; the entropic barrier prevents spontaneous collapse.
 
 \item \textbf{Measurement trigger.} Environmental coupling increases the effective cross-mode noise $D_{\mathrm{cross}}$ (more modes, stronger coupling), reducing the barrier and exponentially increasing the collapse rate.
 
@@ -263,11 +263,16 @@ The barrier structure provides a geometric mechanism for quantum measurement:
 
 \subsection{Multi-mode coupling and finite barrier}\label{sec:multimode}
 
-In $(1{+}3)$D, multiple horizon directions coexist. We adopt an illustrative mean-field model: each direction $n$ has its own OU process for $\varepsilon_n = K_n - 1$, with all modes coupled through a shared effective $\sigma_1$. The effective noise for mode~1's $\sigma_1$ decomposes as
+In $(1{+}3)$D, multiple horizon directions coexist. We adopt an illustrative mean-field model with $N$ modes:
 \begin{equation}
-D_{\mathrm{total}} = \underbrace{D_{\mathrm{self}}}_{\propto \sqrt{\sigma_1} \to 0} + \underbrace{D_{\mathrm{cross}}}_{> 0}.
+d\varepsilon_n = -\kappa_n \varepsilon_n\,dt + \sigma\,dW_n + \gamma\sum_{m\neq n}(\varepsilon_m - \varepsilon_n)\,dt,
+\label{eq:multimode}
 \end{equation}
-$D_{\mathrm{self}} \to 0$ at the boundary (same mechanism as single-mode), but $D_{\mathrm{cross}} > 0$ because other modes remain Lorentzian and their OU processes provide finite noise.
+where $\gamma > 0$ is the inter-mode coupling. Under mean-field approximation, each mode's $\sigma_1$ couples to the others through a shared effective $\bar\varepsilon = N^{-1}\sum\varepsilon_m$. The effective noise on mode~1's $\sigma_1$ decomposes as
+\begin{equation}
+D_{\mathrm{total}} = \underbrace{D_{\mathrm{self}}}_{\propto \sigma_1 \to 0} + \underbrace{D_{\mathrm{cross}}}_{> 0}.
+\end{equation}
+Here $D_{\mathrm{self}} \propto \gamma^2\sigma^2\sigma_1/(2\alpha N)$ arises from mode~1's own OU fluctuations (which vanish as $\sigma_1 \to 0$, by the same mechanism as the single-mode case); $D_{\mathrm{cross}} = \gamma^2(N{-}1)T_{\mathrm{eff,others}}/N^2$ arises from modes $2,\ldots,N$ whose $\sigma_{1,m} > 0$ (they remain Lorentzian) and whose OU processes provide finite noise. At the boundary: $D_{\mathrm{self}}/D_{\mathrm{total}} \to 0$ and $D_{\mathrm{cross}}/D_{\mathrm{total}} \to 1$.
 
 The Fokker--Planck stationary solution for mode~1, $\rho_{\mathrm{ss}} \propto D^{-1}\exp\!\bigl(\int F/D\,d\sigma_1\bigr)$, yields a finite barrier:
 \begin{equation}
@@ -303,7 +308,7 @@ The barrier asymmetry explains irreversibility:
 \begin{itemize}
 \item \textbf{Forward} (Lor $\to$ Euc): barrier $B_{\mathrm{FP}} \gg 1$. Rate $\sim e^{-B_{\mathrm{FP}}} \approx 0$ without environmental catalysis.
 \item \textbf{Return} (Euc $\to$ Lor): no barrier. Spontaneous in $\sim 0.4$ time units.
-\item \textbf{Net effect}: the system returns to the equilibrium distribution $\rho_{\mathrm{eq}}$ (which equals $|\psi_0|^2$ for the harmonic potential), not the original superposition. The barrier prevents return to the pre-measurement state.
+\item \textbf{Net effect}: the system returns to the equilibrium distribution $\rho_{\mathrm{eq}}$ (which equals $|\psi_0|^2$ for the harmonic potential), not the original superposition. The OU ergodicity erases the pre-measurement state; once the system re-enters the Lorentzian regime, the entropic barrier ($D \to 0$ at $\Delta = 0$) reforms and protects the new equilibrium against further spontaneous collapse.
 \end{itemize}
 
 %=====================================================================
@@ -334,7 +339,7 @@ The present work does not modify the Schr\"odinger equation --- it identifies th
 
 \subsection{Relation to decoherence}
 
-Standard decoherence explains the apparent disappearance of interference through environmental entanglement. The $K{=}1$ one-way barrier is compatible with decoherence and adds geometric content: decoherence is the dynamical process by which the environment pushes $\Delta$ past the entropic barrier. The framework explains \emph{why} decoherence is irreversible (one-way barrier from $D$ discontinuity) and \emph{why} outcome probabilities are $|\psi|^2$ (post-collapse Boltzmann equilibrium).
+Standard decoherence explains the apparent disappearance of interference through environmental entanglement. The $K{=}1$ one-way barrier is compatible with decoherence and adds geometric content: environmental coupling increases $D_{\mathrm{cross}}$, catalysing the Kramers escape that drives $\Delta$ across the signature boundary. The framework explains \emph{why} decoherence is irreversible (one-way barrier from $D$ discontinuity) and \emph{why} the post-collapse equilibrium distribution is $|\psi_0|^2$ (Boltzmann equilibrium of the restarted OU process).
 
 \subsection{$(1{+}3)$-dimensional extension}
 
@@ -429,6 +434,12 @@ Penrose, R.:
 On gravity's role in quantum state reduction.
 Gen.\ Relativ.\ Gravit.\ \textbf{28}, 581--600 (1996).
 \url{https://doi.org/10.1007/BF02105068}
+
+\bibitem{Risken}
+Risken, H.:
+The Fokker--Planck Equation: Methods of Solution and Applications, 2nd edn.
+Springer, Berlin (1989).
+\url{https://doi.org/10.1007/978-3-642-61544-3}
 
 \end{thebibliography}
 
