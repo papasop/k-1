@@ -84,7 +84,7 @@ Let $G$ be a non-degenerate symmetric $2\times 2$ real matrix, $K(x) = x^\top G 
 \begin{itemize}
 \item \textbf{Stability boundary}~\cite[Theorem~4]{K1paper}: $d_c > 0 \Leftrightarrow \mathrm{Sig}(G) = (1,1)$ (Lorentzian), with $d_c = \alpha\sqrt{-1/\det G}$. For the Rindler metric $G = \mathrm{diag}(-\sigma_1^2, 1)$, this simplifies to $d_c = \alpha/\sigma_1$. The Lorentzian requirement is derived from cost-asymmetry axioms in~\cite{Realizability}.
 \item \textbf{Restoring rate}~\cite[Theorem~6]{K1paper}: $\kappa_K = 4d_c$ for a normalised $G$-eigenvector on $\{K{=}1\}$.
-\item \textbf{OU process}: Near $K=1$, the deviation $\varepsilon = K - 1$ obeys $d\varepsilon = -\kappa_K \varepsilon\,dt + \sigma_K\,dW$, where $\sigma_K = 2\sigma\|Gx_*\|$ is the projected noise amplitude ($\sigma$ is the isotropic noise in $\mathbb{R}^2$, $x_*$ is the base point on $\{K{=}1\}$). At the canonical Rindler point $x_* = (0,1)$: $Gx_* = (0,1)$, $\|Gx_*\| = 1$, and $\sigma_K = 2\sigma$. The stationary variance is $T_{\mathrm{eff}} = \sigma_K^2/(2\kappa_K) = \sigma^2/(2d_c)$.
+\item \textbf{OU process}: Near $K=1$, the deviation $\varepsilon = K - 1$ obeys $d\varepsilon = -\kappa_K \varepsilon\,dt + \sigma_K\,dW_t$, where $\sigma_K = 2\sigma\|Gx_*\|$ is the projected noise amplitude ($\sigma$ is the isotropic noise in $\mathbb{R}^2$, $x_*$ is the base point on $\{K{=}1\}$). At the canonical Rindler point $x_* = (0,1)$: $Gx_* = (0,1)$, $\|Gx_*\| = 1$, and $\sigma_K = 2\sigma$. The stationary variance is $T_{\mathrm{eff}} = \sigma_K^2/(2\kappa_K) = \sigma^2/(2d_c)$.
 \item \textbf{Clausius relation}~\cite[Proposition~7]{K1paper}: Under the identification $T_{\mathrm{eff}} = T_{\mathrm{tol}}$ --- the sole external (phenomenological) input connecting the stochastic model to Rindler thermodynamics --- the Clausius relation $\delta Q = T_{\mathrm{eff}}\,\delta S$ follows algebraically.
 \end{itemize}
 
@@ -187,7 +187,7 @@ d\Delta = F(\Delta)\,dt + \sqrt{2D(\Delta)}\,dW_t,
 \end{equation}
 where $F(\Delta)$ includes a confining drift toward $\Delta_0 < 0$ and an entropic correction from the state-dependent noise. Steps that would cross $\Delta = 0$ are rejected (the trajectory remains at its previous position). The one-way direction depends only on $D(0^-) = 0$ vs $D(0^+) > 0$, not on the specific form of $F$.
 
-\medskip\noindent\textbf{Results} (100 runs per direction, $dt = 10^{-4}$, $T = 2.5$):
+\medskip\noindent\textbf{Results} (100 runs per direction, $dt = 10^{-4}$, $t_{\max} = 2.5$):
 \begin{center}
 \begin{tabular}{lcc}
 \toprule
@@ -217,7 +217,7 @@ $\mu_E$ & Lor $\to$ Euc & Euc $\to$ Lor & Verdict \\
 \end{tabular}
 \end{center}
 
-Weak traps ($\mu_E \le 1$) do not affect the one-way barrier. Strong traps ($\mu_E \ge 2$) can hold the system in the Euclidean regime, but no natural Euclidean trap exists within $K{=}1$: the free energy $\mathcal{F}(\sigma_1)$ is everywhere concave ($d^2\mathcal{F}/d\sigma_1^2 = -c/(2\sigma_1) < 0$), precluding any Euclidean minimum.
+Weak traps ($\mu_E \le 1$) do not affect the one-way barrier. Strong traps ($\mu_E \ge 2$) can hold the system in the Euclidean regime, but no natural Euclidean trap exists within $K{=}1$: the free energy $\mathcal{F}(\sigma_1)$ is everywhere concave ($d^2\mathcal{F}/d\sigma_1^2 < 0$ for all $\sigma_1 > 0$), precluding any Euclidean minimum.
 
 \subsection{Detailed balance: analytical proof}\label{sec:detailed_balance}
 
@@ -272,7 +272,7 @@ where $\gamma > 0$ is the inter-mode coupling. Under mean-field approximation, e
 \begin{equation}
 D_{\mathrm{total}} = \underbrace{D_{\mathrm{self}}}_{\propto \sigma_1 \to 0} + \underbrace{D_{\mathrm{cross}}}_{> 0}.
 \end{equation}
-Here $D_{\mathrm{self}} \propto \gamma^2\sigma^2\sigma_1/(2\alpha N)$ arises from mode~1's own OU fluctuations (which vanish as $\sigma_1 \to 0$, by the same mechanism as the single-mode case); $D_{\mathrm{cross}} = \gamma^2(N{-}1)T_{\mathrm{eff,others}}/N^2$ arises from modes $2,\ldots,N$ whose $\sigma_{1,m} > 0$ (they remain Lorentzian) and whose OU processes provide finite noise. At the boundary: $D_{\mathrm{self}}/D_{\mathrm{total}} \to 0$ and $D_{\mathrm{cross}}/D_{\mathrm{total}} \to 1$.
+Here $D_{\mathrm{self}} \propto \gamma^2\sigma^2\sigma_1/(2\alpha N)$ arises from mode~1's own OU fluctuations (which vanish as $\sigma_1 \to 0$, by the same mechanism as the single-mode case); $D_{\mathrm{cross}} \approx \gamma^2(N{-}1)T_{\mathrm{eff,others}}/N^2$ arises from modes $2,\ldots,N$ whose $\sigma_{1,m} > 0$ (they remain Lorentzian) and whose OU processes provide finite noise. At the boundary: $D_{\mathrm{self}}/D_{\mathrm{total}} \to 0$ and $D_{\mathrm{cross}}/D_{\mathrm{total}} \to 1$.
 
 The Fokker--Planck stationary solution for mode~1, $\rho_{\mathrm{ss}} \propto D^{-1}\exp\!\bigl(\int F/D\,d\sigma_1\bigr)$, yields a finite barrier:
 \begin{equation}
