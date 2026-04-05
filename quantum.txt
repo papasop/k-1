@@ -77,9 +77,9 @@ The approach operates one level below the Schr\"odinger equation --- at its geom
 \section{Review of the $K{=}1$ framework}\label{sec:review}
 %=====================================================================
 
-We collect the results from~\cite{K1paper} needed below. All proofs are in~\cite{K1paper}; none are repeated here.
+The $K{=}1$ framework treats spacetime geometry as the outcome of a stochastic optimisation: the system drives the quadratic form $K(x) = x^\top G x$ toward the target value $K = 1$, with dissipation and noise competing around the target surface $\{K{=}1\}$. We collect the specific results from~\cite{K1paper} needed below; all proofs are in~\cite{K1paper}.
 
-Let $G$ be a non-degenerate symmetric $2\times 2$ real matrix, $K(x) = x^\top G x$, $V = \tfrac{1}{2}(K-1)^2$, and $J_G = \alpha G^{-1}J$ the unique symplectic generator~\cite[Theorem~1]{K1paper}. The stochastic dynamics is $dx = (J_G - D)\nabla V\,dt + \sigma\,dW_t$ (It\^o), with $D = d_c I$ at critical damping.
+Let $G$ be a non-degenerate symmetric $2\times 2$ real matrix, $V = \tfrac{1}{2}(K-1)^2$ the cost function, and $J_G = \alpha G^{-1}J$ the unique symplectic generator~\cite[Theorem~1]{K1paper}. The stochastic dynamics is $dx = (J_G - D)\nabla V\,dt + \sigma\,dW_t$ (It\^o), with $D = d_c I$ at critical damping.
 
 \begin{itemize}
 \item \textbf{Stability boundary}~\cite[Theorem~4]{K1paper}: $d_c > 0 \Leftrightarrow \mathrm{Sig}(G) = (1,1)$ (Lorentzian), with $d_c = \alpha\sqrt{-1/\det G}$. For the Rindler metric $G = \mathrm{diag}(-\sigma_1^2, 1)$, this simplifies to $d_c = \alpha/\sigma_1$. The Lorentzian requirement is derived from cost-asymmetry axioms in~\cite{Realizability}.
@@ -146,11 +146,15 @@ This identity holds exactly for the ground state. For excited states, $e^{-U/2}\
 \section{Signature dynamics: one-way barrier}\label{sec:barrier}
 %=====================================================================
 
-We now treat $\Delta = \det G$ as a dynamical scalar and study its stochastic evolution near the signature boundary $\Delta = 0$.
+Section~\ref{sec:wavefunction} showed that $\psi$ requires Lorentzian signature. But is Lorentzian signature stable? Can fluctuations push the system across $\Delta = 0$ into a Euclidean regime where $\psi$ ceases to exist? We now treat $\Delta = \det G$ as a dynamical variable and show that the answer is asymmetric: \emph{Lorentzian~$\to$~Euclidean is blocked, while Euclidean~$\to$~Lorentzian is spontaneous.}
 
 \subsection{Noise coefficient from fluctuation-dissipation}
 
-From the $K{=}1$ OU process~\cite[Proposition~7]{K1paper}, the effective temperature is $T_{\mathrm{eff}} = \sigma^2\sigma_1/(2\alpha)$. For the Rindler metric $G = \mathrm{diag}(-\sigma_1^2, 1)$, the determinant is $\Delta = \det G = -\sigma_1^2$, so $\sigma_1 = \sqrt{|\Delta|}$. Substituting: $T_{\mathrm{eff}} = (\sigma^2/(2\alpha))\sqrt{|\Delta|}$. Identifying the noise coefficient $D_L$ for the $\Delta$ dynamics with $T_{\mathrm{eff}}$ (a natural choice: the OU process sets the local fluctuation scale for all metric components),
+From the $K{=}1$ OU process~\cite[Proposition~7]{K1paper}, the effective temperature is $T_{\mathrm{eff}} = \sigma^2\sigma_1/(2\alpha)$. For the Rindler metric $G = \mathrm{diag}(-\sigma_1^2, 1)$, the determinant is $\Delta = \det G = -\sigma_1^2$, giving $\sigma_1 = \sqrt{|\Delta|}$ and hence
+\[
+T_{\mathrm{eff}} = \frac{\sigma^2}{2\alpha}\sqrt{|\Delta|}.
+\]
+A natural identification sets the noise coefficient $D_L$ for the $\Delta$ dynamics equal to $T_{\mathrm{eff}}$, since the OU process sets the local fluctuation scale for all metric components:
 \begin{equation}
 D_L(\Delta) = \frac{\sigma^2}{2\alpha}\sqrt{|\Delta|}, \qquad \Delta < 0.
 \label{eq:D_Lor}
@@ -316,6 +320,8 @@ The barrier asymmetry explains irreversibility:
 %=====================================================================
 
 \subsection{Comparison with other approaches}
+
+The following table places the present work in context:
 
 \begin{center}
 \begin{tabular}{lcl}
