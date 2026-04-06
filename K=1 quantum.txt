@@ -263,7 +263,7 @@ The barrier structure provides a geometric mechanism for quantum measurement:
 \begin{enumerate}
 \item \textbf{Wave evolution (Lorentzian).} The system resides in the Lorentzian regime, where the OU process generates $\rho$ and the similarity transform $\psi = e^{U/2}\rho$ defines a well-defined wave function (\S\ref{sec:wavefunction}). The entropic barrier prevents spontaneous escape to the Euclidean side, so superposition is maintained.
 
-\item \textbf{Measurement trigger.} The measurement apparatus couples the system to a macroscopic number of environmental degrees of freedom. In the multi-mode picture (\S\ref{sec:multimode}), each coupled mode contributes to $D_{\mathrm{cross}}$; the apparatus effectively increases both the number $N$ of active modes and the coupling $\gamma$, exponentially reducing the Kramers barrier.
+\item \textbf{Measurement trigger.} The measurement apparatus couples the system to a macroscopic environment, increasing $D_{\mathrm{cross}}$ and exponentially reducing the Kramers barrier. In the $(1{+}3)$D extension, $N = 3$ and $\gamma = 1$ are geometrically fixed; the apparatus instead modifies the \emph{effective} symplectic eigenvalue~$\sigma_1$, lowering $B_{\mathrm{FP}} \propto \sigma_1^2$. In the present $2{\times}2$ model, this effect is parameterised by the multi-mode coupling (\S\ref{sec:multimode}).
 
 \item \textbf{Collapse.} Mode~1's $\Delta$ crosses zero. In the multi-mode picture, this is a \emph{local} event: the other modes remain Lorentzian ($\sigma_{1,m} > 0$) and their wave functions persist. Only the degree of freedom associated with the collapsing mode loses its OU process and hence its $\psi$ support.
 
