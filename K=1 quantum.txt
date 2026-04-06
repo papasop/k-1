@@ -129,9 +129,13 @@ The chain~\eqref{eq:FP}--\eqref{eq:Schrodinger} requires:
 
 For Euclidean signature ($\det G > 0$), $d_c$ is formally imaginary: $d_c = i\omega$ with $\omega = \alpha/\sigma_1$. The OU process does not exist (no real restoring rate), the FP equation has no normalisable stationary solution, and the similarity transform does not yield a physical $\psi$.
 
-\begin{corollary}[Geometric precondition]
-Within the $K{=}1$ framework, the wave function $\psi$ is well-defined if and only if $\mathrm{Sig}(G) = (1,1)$.
+\begin{corollary}[Geometric precondition]\label{cor:precondition}
+Within the $K{=}1$ framework, the Fokker--Planck equation admits a similarity transform with Schr\"odinger structure if and only if $\mathrm{Sig}(G) = (1,1)$ (Lorentzian). Equivalently, a wave function $\psi$ with Schr\"odinger dynamics can be defined if and only if $\det G < 0$.
 \end{corollary}
+
+\begin{remark}[Status of the FP--Schr\"odinger correspondence]
+The similarity transform FP~$\to$~imaginary-time Schr\"odinger is standard~\cite{Nelson,Risken}; stochastic quantisation~\cite{ParisiWu} extends it to field theory. The $K{=}1$ framework adds the \emph{conditional} aspect: the correspondence exists only when $\det G < 0$, providing a geometric on/off switch absent in Nelson's original construction. The OU structure is not an approximation but the unique compatible linearisation~\cite[Theorem~5]{K1paper}: the ground state $\psi_0 \propto e^{-U/2}$ depends only on the quadratic part of~$V$ and is unaffected by higher-order corrections. The physical interpretation --- that $\psi$ exists when the signature is Lorentzian and ceases to exist when it is not --- is an inference from the mathematical structure, not a separate postulate.
+\end{remark}
 
 \subsection{Ground-state probability as Boltzmann equilibrium}
 
@@ -267,7 +271,7 @@ The barrier structure provides a geometric mechanism for quantum measurement:
 
 \item \textbf{Post-collapse equilibrium.} The restarted OU process decays to $\rho_{\mathrm{eq}} = |\psi_0|^2$. Because the OU stationary distribution is independent of initial conditions --- this is the standard ergodic property of Ornstein--Uhlenbeck dynamics --- all information about the pre-measurement superposition is erased during re-equilibration.
 
-\item \textbf{Outcome selection (open).} The mechanism above describes \emph{that} collapse occurs and \emph{why} the post-collapse distribution is $|\psi_0|^2$, but does not determine \emph{which} eigenvalue is selected in a given run. Outcome selection likely requires the $(1{+}3)$D multi-mode structure and a pointer-state analysis analogous to einselection~\cite{Zurek}; this is not addressed here.
+\item \textbf{Outcome selection (open).} The mechanism above describes \emph{that} collapse occurs and \emph{why} the post-collapse distribution is $|\psi_0|^2$, but does not determine \emph{which} eigenvalue is selected in a given run. No existing approach fully resolves outcome selection: Copenhagen postulates it~\cite{vonNeumann}; decoherence derives a preferred basis but not individual outcomes~\cite{Zurek}; GRW~\cite{GRW} and Penrose~\cite{Penrose} give collapse rates but not specific results. The present work contributes (a)~the mechanism (signature crossing) and (b)~the post-collapse distribution ($|\psi_0|^2 = \rho_{\mathrm{eq}}$) from geometry; outcome selection~(c) likely requires the $(1{+}3)$D multi-mode structure, in which the surviving Lorentzian modes ($\sigma_{1,m} > 0$, $m \neq 1$) act as an effective pointer whose configuration conditions the recovery of the collapsing mode. This geometric analogue of einselection is deferred to future work.
 \end{enumerate}
 
 \subsection{Multi-mode coupling and finite barrier}\label{sec:multimode}
@@ -458,6 +462,11 @@ Risken, H.:
 The Fokker--Planck Equation: Methods of Solution and Applications, 2nd edn.
 Springer, Berlin (1989).
 \url{https://doi.org/10.1007/978-3-642-61544-3}
+
+\bibitem{ParisiWu}
+Parisi, G., Wu, Y.:
+Perturbation theory without gauge fixing.
+Sci.\ Sin.\ \textbf{24}, 483--496 (1981).
 
 \end{thebibliography}
 
