@@ -42,10 +42,10 @@ with solid angle~$4\pi$, giving
   A = 4\pi\sigma_1^2, \qquad S_{\mathrm{BH}} = \pi\sigma_1^2.
 \]
 On the quantum side, the $K{=}1$ constraint couples $N=3$ spatial modes
-through the shared temporal coordinate~$x_0$, with coupling
-$\gamma = 1/\sigma_1^2$ and Kramers barrier
+through the shared temporal coordinate~$x_0$, with unit geometric coupling
+$\gamma = 1$ and Kramers barrier
 \[
-  B_{\mathrm{FP}} = 18\pi\sigma_1^6.
+  B_{\mathrm{FP}} = 18\pi\sigma_1^2.
 \]
 The Clausius relation, $S = A/4$, and the collapse barrier are thereby
 traced to a single symplectic invariant: $\sigma_1 = \kappa\ell$.
@@ -79,8 +79,8 @@ modes~$N$ as free parameters.
 
 All of the above carries over unchanged to $(1{+}3)$ dimensions. The present paper
 adds two results: (i)~$\sigma_1$ determines $S_{\mathrm{BH}} = A/4$;
-(ii)~$\sigma_1$ determines the multi-mode coupling $\gamma = 1/\sigma_1^2$ and
-the collapse barrier $B_{\mathrm{FP}} = 18\pi\sigma_1^6$, with no free parameters.
+(ii)~$\sigma_1$ determines the multi-mode coupling $\gamma = 1$ and
+the collapse barrier $B_{\mathrm{FP}} = 18\pi\sigma_1^2$, with no free parameters.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{From two to four dimensions}\label{sec:2to4}
@@ -222,25 +222,23 @@ At the canonical point ($x_m = 0$ for $m \ge 1$), this reduces to
 $\varepsilon_n = \sum_{m\neq n} \delta x_m^2$.
 \end{proof}
 
-\begin{corollary}[Coupling coefficient]\label{cor:gamma}
+\begin{corollary}[Unit coupling]\label{cor:gamma}
 The coupling between mode~$n$ and mode~$m$ ($n \neq m$) in the
 Ornstein--Uhlenbeck dynamics is
 \begin{equation}\label{eq:gamma}
-  \gamma = \frac{1}{\sigma_1^2},
+  \gamma = 1,
 \end{equation}
-independent of the base point on $\{K=1\}$.
+independent of the base point on $\{K=1\}$ and of~$\sigma_1$.
 \end{corollary}
 
 \begin{proof}
-The coupling enters through the cross-mode noise contribution to
-$D_{\mathrm{cross}}$. From Proposition~\ref{prop:coupling}, the
-sensitivity $\partial\varepsilon_n/\partial(\delta x_m^2)$ at the
-canonical point is unity for all $m \neq n$. The OU process
-of~\cite{K1} operates in $K$-space with $\kappa_K = 4d_c = 4\alpha/\sigma_1$
-and $T_{\mathrm{eff}} = \sigma^2/(2d_c)$; the coupling coefficient
-normalised to the $K$-space dynamics is $\gamma = d_c^2 = 1/\sigma_1^2$.
-The result is independent of the base point because
-equation~\eqref{eq:coupling} holds globally on $\{K=1\}$.
+From Proposition~\ref{prop:coupling}, the sensitivity
+$\partial\varepsilon_n/\partial(\delta x_m^2) = 1$ at the canonical point,
+and equation~\eqref{eq:coupling} gives
+$\delta\varepsilon_n / \sum_{m\neq n}(2x_m\,\delta x_m + \delta x_m^2) = 1$
+at every point on $\{K=1\}$. The coupling is unity because the $K{=}1$ constraint
+transmits perturbations through $x_0$ with no attenuation: one unit of cross-mode
+variance produces exactly one unit of $\varepsilon_n$.
 \end{proof}
 
 \begin{remark}[Number of modes]\label{rem:N}
@@ -259,66 +257,67 @@ The multi-mode extension of~\cite{K1Q} gives the cross-mode diffusion coefficien
 \begin{equation}\label{eq:Dcross}
   D_{\mathrm{cross}} = \frac{\gamma^2(N-1)\,T_{\mathrm{tol}}}{N^2}.
 \end{equation}
-Substituting $N = 3$, $\gamma = 1/\sigma_1^2$, and
+Substituting $N = 3$, $\gamma = 1$ (Corollary~\ref{cor:gamma}), and
 $T_{\mathrm{tol}} = \alpha/(2\pi\sigma_1)$:
 \begin{equation}\label{eq:Dcross_explicit}
-  D_{\mathrm{cross}} = \frac{1}{\sigma_1^4}\cdot\frac{2}{9}
+  D_{\mathrm{cross}} = \frac{2}{9}
   \cdot\frac{\alpha}{2\pi\sigma_1}
-  = \frac{\alpha}{9\pi\sigma_1^5}.
+  = \frac{\alpha}{9\pi\sigma_1}.
 \end{equation}
 
 The Kramers escape rate from the Lorentzian basin over a quadratic barrier
 of curvature $\kappa_K = 4\alpha/\sigma_1$ and width~$\sigma_1$ gives
 \begin{equation}\label{eq:BFP}
   B_{\mathrm{FP}} = \frac{\kappa_K\,\sigma_1^2}{2\,D_{\mathrm{cross}}}
-  = \frac{(4\alpha/\sigma_1)\,\sigma_1^2}{2\,\alpha/(9\pi\sigma_1^5)}
-  = 18\pi\sigma_1^6.
+  = \frac{(4\alpha/\sigma_1)\,\sigma_1^2}{2\,\alpha/(9\pi\sigma_1)}
+  = 18\pi\sigma_1^2.
 \end{equation}
 
 \begin{theorem}[Collapse barrier]\label{thm:barrier}
 For the Rindler metric in $(1{+}3)$ dimensions with $\alpha = 1$,
 the Kramers barrier for spontaneous signature crossing is
 \begin{equation}\label{eq:barrier_final}
-  B_{\mathrm{FP}} = 18\pi\sigma_1^6,
+  B_{\mathrm{FP}} = 18\pi\sigma_1^2,
 \end{equation}
 and the spontaneous collapse rate is
-$\Gamma \sim \exp(-18\pi\sigma_1^6)$.
+$\Gamma \sim \exp(-18\pi\sigma_1^2)$.
 \end{theorem}
 
 \begin{proof}
 Direct substitution of $N = 3$ (Remark~\ref{rem:N}),
-$\gamma = 1/\sigma_1^2$ (Corollary~\ref{cor:gamma}),
+$\gamma = 1$ (Corollary~\ref{cor:gamma}),
 $T_{\mathrm{tol}} = 1/(2\pi\sigma_1)$, and
 $\kappa_K = 4/\sigma_1$ into the Kramers
 formula~\eqref{eq:BFP}.
 \end{proof}
 
-\begin{remark}[Sixth-power scaling]\label{rem:sixth}
-The barrier grows as $\sigma_1^6$:
+\begin{remark}[Quadratic scaling]\label{rem:quadratic}
+The barrier grows as $\sigma_1^2$:
 at $\sigma_1 = 1$ (stretched horizon), $B_{\mathrm{FP}} = 18\pi \approx 56.5$;
-at $\sigma_1 = 2$, $B_{\mathrm{FP}} \approx 3619$;
-at $\sigma_1 = 10$, $B_{\mathrm{FP}} \approx 5.7\times 10^7$.
+at $\sigma_1 = 2$, $B_{\mathrm{FP}} \approx 226$;
+at $\sigma_1 = 10$, $B_{\mathrm{FP}} \approx 5655$;
+at $\sigma_1 = 100$, $B_{\mathrm{FP}} \approx 5.7\times 10^5$.
 Collapse is feasible only near the horizon; away from it the barrier
-is astronomically large.
+grows quadratically and becomes insurmountable.
 \end{remark}
 
 \begin{remark}[Comparison with the $2{\times}2$ estimate]\label{rem:comparison}
 The quantum companion paper~\cite{K1Q} estimated $B_{\mathrm{FP}} \approx 7600$
 using $N = 8$ and $\gamma = 0.1$ as free parameters. The $(1{+}3)$-dimensional
-derivation gives $N = 3$ and $\gamma = 1$ (at $\sigma_1 = 1$): stronger coupling
-and fewer modes yield $B_{\mathrm{FP}} = 56.5$, substantially lower. The
-qualitative conclusion --- an astronomically high barrier for macroscopic systems
---- is unchanged, but the numerical value is now determined rather than modelled.
+derivation gives $N = 3$ and $\gamma = 1$: stronger coupling
+and fewer modes yield $B_{\mathrm{FP}} = 56.5$ at $\sigma_1 = 1$, substantially
+lower. The qualitative conclusion --- an astronomically high barrier for macroscopic
+systems --- is unchanged, but the numerical value is now determined rather than modelled.
 \end{remark}
 
 \begin{remark}[Measurement mechanism]\label{rem:measurement}
 In the $2{\times}2$ model~\cite{K1Q}, the measurement apparatus was described
-as increasing~$N$ and~$\gamma$. In $(1{+}3)$ dimensions, $N = 3$ is fixed and
-$\gamma = 1/\sigma_1^2$ is determined by the metric. The apparatus instead
-modifies the \emph{effective}~$\sigma_1$: coupling a quantum system to a
-macroscopic apparatus changes the effective metric, potentially reducing~$\sigma_1$
-and lowering $B_{\mathrm{FP}} \propto \sigma_1^6$ catastrophically. Collapse is
-triggered by metric coupling, not by parameter adjustment.
+as increasing~$N$ and~$\gamma$. In $(1{+}3)$ dimensions, $N = 3$ and $\gamma = 1$
+are both fixed. The apparatus instead modifies the \emph{effective}~$\sigma_1$:
+coupling a quantum system to a macroscopic apparatus changes the effective metric,
+potentially reducing~$\sigma_1$ and lowering
+$B_{\mathrm{FP}} \propto \sigma_1^2$ substantially. Collapse is triggered by
+metric coupling, not by parameter adjustment.
 \end{remark}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -364,7 +363,7 @@ $\sigma_1 \to \sigma_1^2\cdot 4\pi = A \to S = A/4$.
 Both inputs trace to the same symplectic invariant~$\sigma_1$. Input~(iii) remains
 the content of the Jacobson argument itself.
 
-The collapse barrier $B_{\mathrm{FP}} = 18\pi\sigma_1^6$ is not a Jacobson input
+The collapse barrier $B_{\mathrm{FP}} = 18\pi\sigma_1^2$ is not a Jacobson input
 but a prediction of the framework: it quantifies the rate at which the geometric
 precondition for~$\psi$~\cite{K1Q} can be temporarily removed.
 
@@ -406,8 +405,8 @@ external input~\cite{Realizability}, not an internal deduction.
 \begin{remark}[Open questions resolved]\label{rem:resolved}
 The quantum companion paper~\cite{K1Q} listed $\gamma$ and the absolute collapse
 rate as open questions (\S6.5, items~2 and~6). The present work resolves both:
-$\gamma = 1/\sigma_1^2$ (Corollary~\ref{cor:gamma}) and
-$\Gamma \sim \exp(-18\pi\sigma_1^6)$ (Theorem~\ref{thm:barrier}).
+$\gamma = 1$ (Corollary~\ref{cor:gamma}) and
+$\Gamma \sim \exp(-18\pi\sigma_1^2)$ (Theorem~\ref{thm:barrier}).
 The remaining open questions of~\cite{K1Q} --- multi-particle quantum mechanics,
 Born rule for excited states, outcome selection, and experimental predictions ---
 are unaffected.
