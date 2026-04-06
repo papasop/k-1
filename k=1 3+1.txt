@@ -45,7 +45,7 @@ On the quantum side, the $K{=}1$ constraint couples $N=3$ spatial modes
 through the shared temporal coordinate~$x_0$, with unit geometric coupling
 $\gamma = 1$ and Kramers barrier
 \[
-  B_{\mathrm{FP}} = 18\pi\sigma_1^2.
+  B_{\mathrm{FP}} = 6\pi\sigma_1^2.
 \]
 The Clausius relation, $S = A/4$, and the collapse barrier are thereby
 traced to a single symplectic invariant: $\sigma_1 = \kappa\ell$.
@@ -80,7 +80,7 @@ modes~$N$ as free parameters.
 All of the above carries over unchanged to $(1{+}3)$ dimensions. The present paper
 adds two results: (i)~$\sigma_1$ determines $S_{\mathrm{BH}} = A/4$;
 (ii)~$\sigma_1$ determines the multi-mode coupling $\gamma = 1$ and
-the collapse barrier $B_{\mathrm{FP}} = 18\pi\sigma_1^2$, with no free parameters.
+the collapse barrier $B_{\mathrm{FP}} = 6\pi\sigma_1^2$, with no free parameters.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{From two to four dimensions}\label{sec:2to4}
@@ -260,43 +260,50 @@ The multi-mode extension of~\cite{K1Q} gives the cross-mode diffusion coefficien
 Substituting $N = 3$, $\gamma = 1$ (Corollary~\ref{cor:gamma}), and
 $T_{\mathrm{tol}} = \alpha/(2\pi\sigma_1)$:
 \begin{equation}\label{eq:Dcross_explicit}
-  D_{\mathrm{cross}} = \frac{2}{9}
+  D_{\mathrm{cross}}(\sigma_1) = \frac{2}{9}
   \cdot\frac{\alpha}{2\pi\sigma_1}
   = \frac{\alpha}{9\pi\sigma_1}.
 \end{equation}
+Since $D_{\mathrm{cross}} \propto 1/\sigma_1$, the diffusion coefficient is
+position-dependent: it increases as $\sigma_1 \to 0$ (near the barrier). The
+Kramers barrier must therefore be computed from the full integral, not from
+$D_{\mathrm{cross}}$ evaluated at the equilibrium point.
 
-The Kramers escape rate from the Lorentzian basin over a quadratic barrier
-of curvature $\kappa_K = 4\alpha/\sigma_1$ and width~$\sigma_1$ gives
+The confining drift is $F(s) = \kappa_K(\sigma_1 - s)$, where
+$\kappa_K = 4\alpha/\sigma_1$ and $s$ parametrises the distance
+from the signature boundary at $s = 0$ to the equilibrium at $s = \sigma_1$.
+The Kramers barrier is
 \begin{equation}\label{eq:BFP}
-  B_{\mathrm{FP}} = \frac{\kappa_K\,\sigma_1^2}{2\,D_{\mathrm{cross}}}
-  = \frac{(4\alpha/\sigma_1)\,\sigma_1^2}{2\,\alpha/(9\pi\sigma_1)}
-  = 18\pi\sigma_1^2.
+  B_{\mathrm{FP}} = \int_0^{\sigma_1}\!\frac{F(s)}{D_{\mathrm{cross}}(s)}\,ds
+  = \frac{9\pi\kappa_K}{\alpha}\int_0^{\sigma_1}\!s(\sigma_1 - s)\,ds
+  = \frac{9\pi\kappa_K}{\alpha}\cdot\frac{\sigma_1^3}{6}
+  = 6\pi\sigma_1^2,
 \end{equation}
+where the last step uses $\kappa_K = 4\alpha/\sigma_1$.
 
 \begin{theorem}[Collapse barrier]\label{thm:barrier}
 For the Rindler metric in $(1{+}3)$ dimensions with $\alpha = 1$,
 the Kramers barrier for spontaneous signature crossing is
 \begin{equation}\label{eq:barrier_final}
-  B_{\mathrm{FP}} = 18\pi\sigma_1^2,
+  B_{\mathrm{FP}} = 6\pi\sigma_1^2,
 \end{equation}
 and the spontaneous collapse rate is
-$\Gamma \sim \exp(-18\pi\sigma_1^2)$.
+$\Gamma \sim \exp(-6\pi\sigma_1^2)$.
 \end{theorem}
 
 \begin{proof}
-Direct substitution of $N = 3$ (Remark~\ref{rem:N}),
+Direct evaluation of~\eqref{eq:BFP} with $N = 3$ (Remark~\ref{rem:N}),
 $\gamma = 1$ (Corollary~\ref{cor:gamma}),
-$T_{\mathrm{tol}} = 1/(2\pi\sigma_1)$, and
-$\kappa_K = 4/\sigma_1$ into the Kramers
-formula~\eqref{eq:BFP}.
+$D_{\mathrm{cross}}(s) = \alpha/(9\pi s)$, and
+$\kappa_K = 4\alpha/\sigma_1$.
 \end{proof}
 
 \begin{remark}[Quadratic scaling]\label{rem:quadratic}
 The barrier grows as $\sigma_1^2$:
-at $\sigma_1 = 1$ (stretched horizon), $B_{\mathrm{FP}} = 18\pi \approx 56.5$;
-at $\sigma_1 = 2$, $B_{\mathrm{FP}} \approx 226$;
-at $\sigma_1 = 10$, $B_{\mathrm{FP}} \approx 5655$;
-at $\sigma_1 = 100$, $B_{\mathrm{FP}} \approx 5.7\times 10^5$.
+at $\sigma_1 = 1$ (stretched horizon), $B_{\mathrm{FP}} = 6\pi \approx 18.8$;
+at $\sigma_1 = 2$, $B_{\mathrm{FP}} \approx 75.4$;
+at $\sigma_1 = 10$, $B_{\mathrm{FP}} \approx 1885$;
+at $\sigma_1 = 100$, $B_{\mathrm{FP}} \approx 1.9\times 10^5$.
 Collapse is feasible only near the horizon; away from it the barrier
 grows quadratically and becomes insurmountable.
 \end{remark}
@@ -305,7 +312,7 @@ grows quadratically and becomes insurmountable.
 The quantum companion paper~\cite{K1Q} estimated $B_{\mathrm{FP}} \approx 7600$
 using $N = 8$ and $\gamma = 0.1$ as free parameters. The $(1{+}3)$-dimensional
 derivation gives $N = 3$ and $\gamma = 1$: stronger coupling
-and fewer modes yield $B_{\mathrm{FP}} = 56.5$ at $\sigma_1 = 1$, substantially
+and fewer modes yield $B_{\mathrm{FP}} = 18.8$ at $\sigma_1 = 1$, substantially
 lower. The qualitative conclusion --- an astronomically high barrier for macroscopic
 systems --- is unchanged, but the numerical value is now determined rather than modelled.
 \end{remark}
@@ -363,7 +370,7 @@ $\sigma_1 \to \sigma_1^2\cdot 4\pi = A \to S = A/4$.
 Both inputs trace to the same symplectic invariant~$\sigma_1$. Input~(iii) remains
 the content of the Jacobson argument itself.
 
-The collapse barrier $B_{\mathrm{FP}} = 18\pi\sigma_1^2$ is not a Jacobson input
+The collapse barrier $B_{\mathrm{FP}} = 6\pi\sigma_1^2$ is not a Jacobson input
 but a prediction of the framework: it quantifies the rate at which the geometric
 precondition for~$\psi$~\cite{K1Q} can be temporarily removed.
 
@@ -406,7 +413,7 @@ external input~\cite{Realizability}, not an internal deduction.
 The quantum companion paper~\cite{K1Q} listed $\gamma$ and the absolute collapse
 rate as open questions (\S6.5, items~2 and~6). The present work resolves both:
 $\gamma = 1$ (Corollary~\ref{cor:gamma}) and
-$\Gamma \sim \exp(-18\pi\sigma_1^2)$ (Theorem~\ref{thm:barrier}).
+$\Gamma \sim \exp(-6\pi\sigma_1^2)$ (Theorem~\ref{thm:barrier}).
 The remaining open questions of~\cite{K1Q} --- multi-particle quantum mechanics,
 Born rule for excited states, outcome selection, and experimental predictions ---
 are unaffected.
