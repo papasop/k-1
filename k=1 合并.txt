@@ -13,17 +13,15 @@
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{remark}{Remark}
 
-%%% CHANGED: title subtitle %%%
-\title{\textbf{$K=1$ Chronogeometrodynamics}\\[4pt]\large From Information-Time Axioms to the Vacuum Einstein Equations}
+\title{\textbf{$K=1$ Chronogeometrodynamics}\\[4pt]\large Lorentzian Geometry from Information Time}
 \author{Y.\,Y.\,N.\ Li\footnote{Independent Researcher, China. E-mail: \texttt{papaso@icloud.com}. ORCID: \href{https://orcid.org/0009-0002-6471-139X}{0009-0002-6471-139X}.}}
 \date{}
 
 \begin{document}
 \maketitle
 
-%%% CHANGED: abstract — add Route B paragraph %%%
 \begin{abstract}
-From Newton's absolute time through proper time in general relativity, time enters physical theory as a primitive. Redefining it as the cost of structural change and requiring that the cost structure admit persistent configurations while one direction retains positive cost forces a $2\times 2$ metric $G$ indefinite; the sign of $\det G$ then simultaneously determines Lorentzian signature, real symplectic spectrum, and a nontrivial stability boundary $d_{c}>0$ (Theorem~4). The metric arises as the Hessian of an information time $dt_{\mathrm{info}}=d\Phi/H$; the quadratic form $K(x)=x^{\top}Gx$ measures local temporal cost, and the condition $K=1$ --- the metric reproducing its own normalisation --- requires that this cost equal unity. The evolution law $\dot{x}=(J_{G}-D)\nabla V$ is unique (Theorem~5), and at critical damping the restoring rate is $\kappa_{K}=4d_{c}$ for a normalised $G$-eigenvector (Theorem~6).
+From Newton's absolute time through proper time in general relativity, time enters physical theory as a primitive. Redefining it as the cost of structural change and requiring that the cost structure admit persistent configurations while one direction retains positive cost forces a $2\times 2$ metric $G$ to be indefinite; the sign of $\det G$ then simultaneously determines Lorentzian signature, real symplectic spectrum, and a nontrivial stability boundary $d_{c}>0$ (Theorem~4). The metric arises as the Hessian of an information time $dt_{\mathrm{info}}=d\Phi/H$; the quadratic form $K(x)=x^{\top}Gx$ measures local temporal cost, and the condition $K=1$ --- the metric reproducing its own normalisation --- requires that this cost equal unity. The evolution law $\dot{x}=(J_{G}-D)\nabla V$ is unique (Theorem~5), and at critical damping the restoring rate is $\kappa_{K}=4d_{c}$ for a normalised $G$-eigenvector (Theorem~6).
 
 Under local thermal equilibrium, the Clausius relation is equivalent to $\sigma^{2}=2d_{c}\cdot T_{\mathrm{tol}}$ (Proposition~7). The $\{K=1\}$ manifold carries two classes of fluctuation: thermodynamic (Class~A, perpendicular to $\{K=1\}$) and gauge (Class~B, tangential boost diffusion). Within Class~A the Clausius relation $\delta Q=T_{\mathrm{eff}}\,\delta S$ follows algebraically; the local noise temperature is position-dependent, determined by the metric through $\|Gx\|$. The sole external input is the identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$.
 
@@ -32,7 +30,6 @@ $\sigma_2^2\,\Box\ln\sigma_i=1$ for each~$\sigma_i$
 is algebraically equivalent to the vacuum Einstein equations $R_{\mu\nu}=0$ (Theorem~\ref{thm:field}), without thermodynamic input. Axiom~T forces $\sigma_1>0$ (Proposition~\ref{prop:sigma1}), excluding singularities from the theory's domain; the OU variance condition yields an internal resolution bound $\sigma_1\gtrsim\ell_P$ (Proposition~\ref{prop:domain}).
 \end{abstract}
 
-%%% CHANGED: introduction — add two-route framing %%%
 \section{Introduction: time as a derived quantity}
 
 In Newton's mechanics, time is a uniform background coordinate; in general relativity, it is the proper time defined by a Lorentzian metric whose signature is prescribed. The Jacobson derivation~\cite{Jacobson} obtains the Einstein equations from thermodynamics on local Rindler horizons, but Lorentzian signature is still assumed. The EPS axiomatisation~\cite{EPS} derives causal structure from free-fall and light propagation, but requires kinematic primitives. Padmanabhan~\cite{Padmanabhan} and Verlinde~\cite{Verlinde} proposed related thermodynamic and entropic approaches. In every approach to Riemann's open problem --- the origin of the metric --- either the signature is prescribed or the derivation requires kinematic primitives.
@@ -50,7 +47,6 @@ The main results are: (i)~$d_{c}>0$ iff $\mathrm{Sig}(G)=(1,1)$ (Theorem~4); (ii
 
 \medskip\noindent\textbf{Notation.} $\mathrm{spec}(A)$: spectrum of $A$. $\mathrm{Sig}(G)=(p,q)$: inertia ($p$ positive, $q$ negative eigenvalues). $J=\bigl(\begin{smallmatrix}0&1\\-1&0\end{smallmatrix}\bigr)$: canonical symplectic matrix. $\|\cdot\|$: Euclidean norm on~$\mathbb{R}^{2}$. $\nabla$: Euclidean gradient on~$\mathbb{R}^{2}$.
 
-%%% UNCHANGED: §2--§7 from original K=1 paper %%%
 \section{Metric from information time (Law~I)}
 
 \noindent\textbf{Law~I.} \textit{The metric $G$ is a non-degenerate symmetric bilinear form measuring the local cost of temporal displacement, where `temporal' denotes the direction distinguished by positive cost \textup{(Assumption~T of~\cite{Realizability})}.}
@@ -71,6 +67,8 @@ Let $G$ be a non-degenerate symmetric $2\times 2$ real matrix. Among all matrice
 the unique solution is $J_{G}=\alpha G^{-1}J$.
 \end{theorem}
 
+Here $\alpha>0$ is a normalisation constant fixed by condition~(ii); all subsequent results are homogeneous in $\alpha$, and $\alpha=1$ is adopted wherever $d_{c}$ is compared with thermal quantities. Since $G$ is dimensionless in the information-time parametrisation, $J_{G}=\alpha G^{-1}J$ is also dimensionless.
+
 \begin{proof}
 $\dim(\mathrm{Skew}_{2})=1$, so condition~(i) gives $GM=\beta J$, hence $M=\beta G^{-1}J$; condition~(ii) fixes $\beta=\alpha$.\qed
 \end{proof}
@@ -87,6 +85,10 @@ d_{c}(\alpha)=\alpha\sqrt{-1/\det G}>0.\label{eq:dc}
 The dominant eigenvalue satisfies $\lambda_{\max}(d)=-(d-d_{c})$ and $\tau\sim(d-d_{c})^{-1}$ near threshold.
 \end{theorem}
 
+\begin{proof}
+$\mathrm{tr}(G^{-1}J)=0$ and $\det(G^{-1}J)=1/\det G$. For $H_{*}=I$, $\max\mathrm{Re}\,\mathrm{spec}(J_{G}-dI)=0$ at $d=d_{c}$.\qed
+\end{proof}
+
 \begin{theorem}[Necessity of Lorentzian Signature]
 If $\mathrm{Sig}(G)=(2,0)$ or $(0,2)$, then $\det G>0$, so $\lambda^{2}+1/\det G=0$ has purely imaginary roots and $d_{c}=0$.
 \end{theorem}
@@ -99,6 +101,7 @@ For non-degenerate symmetric $2\times 2$ real $G$, under the isotropic linearisa
 \item[\textup{(a)}] The metric admits a nontrivial stability boundary $d_{c}>0$.
 \item[\textup{(b)}] $\mathrm{Sig}(G)=(1,1)$ \textup{(Lorentzian)}, equivalently $\det G<0$.
 \end{itemize}
+The equivalence fails for general $H_{*}$ \textup{(Remark~\ref{rem:Hstar_dep})}: $d_{c}$ is a signature invariant only within the isotropic class.
 \end{theorem}
 
 \begin{proof}
@@ -119,6 +122,8 @@ For $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$ and diagonal $H_{*}$, one has $\mathr
 
 \medskip\noindent\textbf{Numerical verification.} Among 2000 random symmetric $2\times 2$ matrices: all 1420 with $\mathrm{Sig}=(1,1)$ had $d_{c}>0$; all 580 with definite signature had $d_{c}=0$.
 
+\medskip\noindent\textbf{Scope.} The closed-form $d_{c}=\alpha\sqrt{-1/\det G}$ relies on $\dim(\mathrm{Skew}_{2})=1$; higher-dimensional extensions require additional structure and are not part of the present paper.
+
 \section{Unique dynamics (Law~II)}
 
 \noindent\textbf{Law~II.} \textit{The dynamics on $\{K=1\}$ take the unique form $\dot{x}=(J_{G}-D)\nabla V$, compatible with $GJ_{G}$ skew-symmetric and $D\ge 0$.}
@@ -126,6 +131,12 @@ For $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$ and diagonal $H_{*}$, one has $\mathr
 \begin{theorem}[Law~II Canonical Decomposition]
 Let $G$ be non-degenerate and let $J_{G}=\alpha G^{-1}J$ \textup{(Theorem~1)}. Suppose the generator $A$ splits as $GA = \alpha J - GD$, $D\ge 0$. Then $\dot{x} = (J_{G}-D)\,\nabla V$ uniquely.
 \end{theorem}
+
+\begin{proof}
+$A=G^{-1}(\alpha J-GD)=J_{G}-D$. Uniqueness is immediate: $J_{G}$ is fixed by Theorem~1 and $D\ge 0$ is prescribed.\qed
+\end{proof}
+
+The generator decomposes as $J_{G}=A_{\mathrm{skew}}+S$ where $S=(J_{G}+J_{G}^{\top})/2$. For Lorentzian $G$: $\mathrm{spec}(J_{G})\subset\mathbb{R}$, $S\neq 0$, $\mathrm{tr}\,S=0$. For definite $G$: $\mathrm{spec}(J_{G})\subset i\mathbb{R}$ and $S=0$ iff $G\propto I$.
 
 The GENERIC formalism~\cite{GENERIC} requires Euclidean antisymmetry $L^{\top}=-L$. For $G=cI$, $J_{G}$ is antisymmetric and Law~II reduces to isothermal GENERIC. For Lorentzian $G$, $J_{G}$ is $G$-antisymmetric but not Euclidean-antisymmetric, so Law~II falls outside GENERIC.
 
@@ -135,7 +146,7 @@ The GENERIC formalism~\cite{GENERIC} requires Euclidean antisymmetry $L^{\top}=-
 
 \medskip
 
-The auxiliary linear system $\dot{x}=(J_{G}-d_{c}I)x$ has eigenvalues $0$ and $-2d_{c}$ at critical damping. Theorem~6 concerns the nonlinear system with $V=\tfrac{1}{2}(K{-}1)^2$; on $\{K{=}1\}$ one has $\nabla V=0$, so $x_*$ is an equilibrium.
+The auxiliary linear system $\dot{x}=(J_{G}-d_{c}I)x$ has eigenvalues $0$ and $-2d_{c}$ at critical damping. Theorem~6 concerns the nonlinear system $\dot{x}=(J_{G}-d_{c}I)\nabla V$, $V=\tfrac{1}{2}(K{-}1)^2$, where departure from $K{=}1$ incurs a cost~$V$. On $\{K{=}1\}$ one has $\nabla V=0$, so $x_*$ is an equilibrium; the Jacobian at $x_*$ is $(J_{G}-d_{c}I)\nabla^{2}V(x_*)$, which differs from $J_{G}-d_{c}I$ because $\nabla^{2}V(x_*)$ is rank-one.
 
 \begin{theorem}[Local Effective Restoring Rate]
 Let $G$ be a $2\times 2$ Lorentzian metric, $D=d_{c}I$. Define $K(x)=x^{\top}Gx$, $V=\tfrac{1}{2}(K-1)^{2}$, with drift $\dot{x}=(J_{G}-d_{c}I)\nabla V$. Then for all $x\in\mathbb{R}^{2}$:
@@ -217,7 +228,6 @@ For macroscopic black holes, $T_{\mathrm{tol}}\ll d_{c}$; setting $D=T_{\mathrm{
 Combined with the entropy--area proportionality $S\propto A$ and the Jacobson argument~\cite{Jacobson}, Route~A yields $G_{\mu\nu}=8\pi T_{\mu\nu}$ for general metrics. The sole external input beyond R+E+T is $S\propto A$.
 
 %===================================================================
-%%% NEW: §8 — Route B %%%
 %===================================================================
 \section{Eigenvalue self-consistency (Route~B)}\label{sec:field}
 
@@ -396,7 +406,6 @@ This is a \emph{soft} bound---analogous to classical mechanics
 at action~$\sim\hbar$---derived entirely within the framework.
 
 %===================================================================
-%%% REWRITTEN: Discussion %%%
 %===================================================================
 \section{Discussion}\label{sec:discussion}
 
@@ -438,7 +447,6 @@ For Lorentzian~$G$, the symmetric part $S=(J_G+J_G^\top)/2\neq 0$ departs from t
 \item Route~A requires $S\propto A$.
 \item No deviation from GR is predicted in vacuum.
 \item The $\sigma_1$ bound is soft, not hard.
-\item The $2\times 2$ framework is the natural dimensionality of a single Rindler horizon; higher-dimensional extensions require a symplectic pairing choice when $\dim(\mathrm{Skew}_4)=6$.
 \end{enumerate}
 
 \subsection*{Open problems}
