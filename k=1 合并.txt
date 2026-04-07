@@ -76,7 +76,7 @@ $\dim(\mathrm{Skew}_{2})=1$, so condition~(i) gives $GM=\beta J$, hence $M=\beta
 \end{proof}
 
 \begin{remark}[Non-degeneracy vs.\ signature]
-Theorem~1 requires only $\det G\neq 0$; it holds for any signature. The Lorentzian condition enters decisively only in Theorem~2, through the reality of the symplectic spectrum.
+Theorem~1 requires only $\det G\neq 0$; it holds for any signature. The Lorentzian condition enters decisively only in Theorem~2, through the reality of the symplectic spectrum. Since $GJ_{G}=\alpha J$ is skew-symmetric, $J_{G}$ lies in the Lie algebra $\mathfrak{sp}(2,\mathbb{R})$; the Lorentzian condition forces $J_{G}$ to be a hyperbolic element, whose real eigenvalues yield $d_{c}>0$.
 \end{remark}
 
 \begin{theorem}[Spectral Survival]
@@ -84,6 +84,7 @@ Let $\mathrm{Sig}(G)=(1,1)$. The characteristic polynomial of $G^{-1}J$ is $\lam
 \begin{equation}
 d_{c}(\alpha)=\alpha\sqrt{-1/\det G}>0.\label{eq:dc}
 \end{equation}
+The dominant eigenvalue satisfies $\lambda_{\max}(d)=-(d-d_{c})$ and $\tau\sim(d-d_{c})^{-1}$ near threshold.
 \end{theorem}
 
 \begin{theorem}[Necessity of Lorentzian Signature]
@@ -141,7 +142,7 @@ $\dot{K}=2x^{\top}G\dot{x}=4(K-1)\,x^{\top}G(J_{G}-d_{c}I)Gx$. Since $GJ_{G}=\al
 
 Adding isotropic white noise gives $dx=(J_{G}-D)\nabla V\,dt+\sigma\,dW_{t}$. Two classes arise:
 \textit{Class~A} (thermodynamic): fluctuations of $K$ perpendicular to $\{K=1\}$, variance $\sigma^{2}/(2d_{c})$.
-\textit{Class~B} (gauge): free diffusion along $\{K=1\}$ (boost direction), no restoring force.
+\textit{Class~B} (gauge): free diffusion along $\{K=1\}$ in the tangential (boost) direction; the Hessian of $V$ restricted to $\{K=1\}$ is rank-one with null space containing this tangent, confirming that Class~B carries no restoring force and no heat.
 
 \section{Spacetime thermodynamics (Route~A)}\label{sec:thermo}
 
@@ -317,8 +318,27 @@ in the spherically symmetric sector, however, the derivation is
 entirely independent.
 \end{remark}
 
-%===================================================================
-%%% NEW: §9 — Singularity structure %%%
+\begin{table}[h]
+\centering
+\begin{tabular}{@{}lll@{}}
+\toprule
+& \textbf{Point level (2D)} & \textbf{Field level (4D)} \\
+\midrule
+Principle & $K = \boldsymbol{x}^T\!G\,\boldsymbol{x} = 1$
+  & $\sigma_2^2\,\Box\ln\sigma_i = 1\;\;\forall\,i$ \\[3pt]
+Balance & temporal = spatial & $\Box\ln\sigma_i = 1/\sigma_2^2$ \\[3pt]
+Vacuum & $K{=}1$ & $K_1{=}K_2{=}1\;\Leftrightarrow\;R_{\mu\nu}{=}0$ \\[3pt]
+Matter & $K \neq 1 \to V > 0$ & $K_2 \neq 1\;\to\;
+  \rho = (1{-}K_2)/(8\pi r^2)$ \\[3pt]
+Conditions & 1 (2D wedge) & 2 (4D: one per eigenvalue) \\
+\bottomrule
+\end{tabular}
+\caption{Point-level $K{=}1$ and field-level eigenvalue self-consistency.
+At each level, the number of conditions equals the number of
+independent eigenvalues.}
+\label{tab:corr}
+\end{table}
+
 %===================================================================
 \section{Singularity structure}\label{sec:singularity}
 
@@ -387,6 +407,10 @@ For non-vacuum configurations, $\rho=(1{-}K_2)/(8\pi r^2)$: matter is the angula
 \subsection*{Extension to $(1{+}3)$ dimensions}
 
 In $(1{+}3)$ dimensions, $\{K{=}1\}\cong H^3$ carries $S^2$ cross-sections with area $4\pi(\kappa\ell)^2$. With $\alpha=1$, $\sigma_1=\kappa\ell$, so the cross-sectional area is $A=4\pi\sigma_1^2$ and the Bekenstein--Hawking entropy $S_{\mathrm{BH}}=A/4=\pi\sigma_1^2$, tracing both to the same symplectic invariant. Two structural changes accompany the extension: the equivalence $d_c>0\Leftrightarrow\mathrm{Sig}(G)=(1,1)$ weakens to a one-directional implication, and the uniqueness of~$J_G$ (guaranteed by $\dim(\mathrm{Skew}_2)=1$) requires a symplectic pairing choice when $\dim(\mathrm{Skew}_4)=6$.
+
+\subsection*{Beyond GENERIC}
+
+For Lorentzian~$G$, the symmetric part $S=(J_G+J_G^\top)/2\neq 0$ departs from the GENERIC formalism~\cite{GENERIC} while $d_c$ is controlled by $\det G$ alone, suggesting a Lorentzian extension of non-equilibrium thermodynamics in the spirit of Wiener's programme~\cite{Wiener}. The $2\times 2$ framework is not a truncation of a $(1{+}3)$-dimensional theory but the natural dimensionality of a single local Rindler horizon: one temporal and one spatial direction normal to the horizon.
 
 \subsection*{Limitations}
 
