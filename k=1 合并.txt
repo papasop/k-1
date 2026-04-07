@@ -1,0 +1,409 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[margin=1in]{geometry}
+\setlength{\emergencystretch}{1.5em}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}{Remark}
+
+%%% CHANGED: title subtitle %%%
+\title{\textbf{$K=1$ Chronogeometrodynamics}\\[4pt]\large From Information-Time Axioms to the Vacuum Einstein Equations}
+\author{Y.\,Y.\,N.\ Li\footnote{Independent Researcher, China. E-mail: \texttt{papaso@icloud.com}. ORCID: \href{https://orcid.org/0009-0002-6471-139X}{0009-0002-6471-139X}.}}
+\date{}
+
+\begin{document}
+\maketitle
+
+%%% CHANGED: abstract — add Route B paragraph %%%
+\begin{abstract}
+From Newton's absolute time through proper time in general relativity, time enters physical theory as a primitive. Redefining it as the cost of structural change and requiring that the cost structure admit persistent configurations while one direction retains positive cost forces a $2\times 2$ metric $G$ indefinite; the sign of $\det G$ then simultaneously determines Lorentzian signature, real symplectic spectrum, and a nontrivial stability boundary $d_{c}>0$ (Theorem~4). The metric arises as the Hessian of an information time $dt_{\mathrm{info}}=d\Phi/H$; the quadratic form $K(x)=x^{\top}Gx$ measures local temporal cost, and the condition $K=1$ --- the metric reproducing its own normalisation --- requires that this cost equal unity. The evolution law $\dot{x}=(J_{G}-D)\nabla V$ is unique (Theorem~5), and at critical damping the restoring rate is $\kappa_{K}=4d_{c}$ for a normalised $G$-eigenvector (Theorem~6).
+
+Under local thermal equilibrium, the Clausius relation is equivalent to $\sigma^{2}=2d_{c}\cdot T_{\mathrm{tol}}$ (Proposition~7). The $\{K=1\}$ manifold carries two classes of fluctuation: thermodynamic (Class~A, perpendicular to $\{K=1\}$) and gauge (Class~B, tangential boost diffusion). Within Class~A the Clausius relation $\delta Q=T_{\mathrm{eff}}\,\delta S$ follows algebraically; the local noise temperature is position-dependent, determined by the metric through $\|Gx\|$. The sole external input is the identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$.
+
+Promoting $K{=}1$ to the field level, we prove that for static spherically symmetric spacetimes with symplectic eigenvalues $\sigma_1=r\sqrt{f}$ and $\sigma_2=r$, the eigenvalue self-consistency principle
+$\sigma_2^2\,\Box\ln\sigma_i=1$ for each~$\sigma_i$
+is algebraically equivalent to the vacuum Einstein equations $R_{\mu\nu}=0$ (Theorem~\ref{thm:field}), without thermodynamic input. Axiom~T forces $\sigma_1>0$ (Proposition~\ref{prop:sigma1}), excluding singularities from the theory's domain; the OU variance condition yields an internal resolution bound $\sigma_1\gtrsim\ell_P$ (Proposition~\ref{prop:domain}).
+\end{abstract}
+
+%%% CHANGED: introduction — add two-route framing %%%
+\section{Introduction: time as a derived quantity}
+
+In Newton's mechanics, time is a uniform background coordinate; in general relativity, it is the proper time defined by a Lorentzian metric whose signature is prescribed. The Jacobson derivation~\cite{Jacobson} obtains the Einstein equations from thermodynamics on local Rindler horizons, but Lorentzian signature is still assumed. The EPS axiomatisation~\cite{EPS} derives causal structure from free-fall and light propagation, but requires kinematic primitives. Padmanabhan~\cite{Padmanabhan} and Verlinde~\cite{Verlinde} proposed related thermodynamic and entropic approaches. In every approach to Riemann's open problem --- the origin of the metric --- either the signature is prescribed or the derivation requires kinematic primitives.
+
+Here time is neither coordinate nor metric primitive: it is the cost of structural change, and the metric --- including its Lorentzian signature --- is a consequence. This redefinition resolves the question in the $2\times 2$ setting natural to a single local Rindler horizon: an information time $dt_{\mathrm{info}}:=d\Phi/H$ defines a metric $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$, and the requirement that physical configurations persist forces $\det G<0$ (\S2; see also~\cite{Realizability}); Lorentzian signature, symplectic structure, and $d_{c}>0$ are then algebraic consequences of a single sign.
+
+The framework reaches the Einstein equations by two routes:
+\begin{itemize}
+\item[\textbf{A.}] \emph{Thermodynamic bridge} (\S\S2--7): $K{=}1\to\mathrm{OU}\to\mathrm{Clausius}$; combined with $S\propto A$ and the Jacobson argument~\cite{Jacobson}, this yields $G_{\mu\nu}=8\pi T_{\mu\nu}$ for general metrics.
+\item[\textbf{B.}] \emph{Direct algebraic route} (\S\ref{sec:field}): the eigenvalue self-consistency principle $\sigma_2^2\Box\ln\sigma_i=1$ gives $R_{\mu\nu}=0$ for spherically symmetric metrics, with no thermodynamic input.
+\end{itemize}
+Route~A is general but requires $S\propto A$; Route~B is independent but currently limited to spherical symmetry. The singularity structure (\S\ref{sec:singularity}) and scope (\S\ref{sec:discussion}) are discussed at the end.
+
+The main results are: (i)~$d_{c}>0$ iff $\mathrm{Sig}(G)=(1,1)$ (Theorem~4); (ii)~unique evolution law (Theorem~5); (iii)~$\kappa_{K}=4d_{c}$ at critical damping (Theorem~6); (iv)~Clausius relation from stochastic dynamics within Class~A (Proposition~7); (v)~$\sigma_2^2\Box\ln\sigma_i=1\Leftrightarrow R_{\mu\nu}=0$ (Theorem~\ref{thm:field}); (vi)~$\sigma_1>0$ from Axiom~T (Proposition~\ref{prop:sigma1}).
+
+\medskip\noindent\textbf{Notation.} $\mathrm{spec}(A)$: spectrum of $A$. $\mathrm{Sig}(G)=(p,q)$: inertia ($p$ positive, $q$ negative eigenvalues). $J=\bigl(\begin{smallmatrix}0&1\\-1&0\end{smallmatrix}\bigr)$: canonical symplectic matrix. $\|\cdot\|$: Euclidean norm on~$\mathbb{R}^{2}$. $\nabla$: Euclidean gradient on~$\mathbb{R}^{2}$.
+
+%%% UNCHANGED: §2--§7 from original K=1 paper %%%
+\section{Metric from information time (Law~I)}
+
+\noindent\textbf{Law~I.} \textit{The metric $G$ is a non-degenerate symmetric bilinear form measuring the local cost of temporal displacement, where `temporal' denotes the direction distinguished by positive cost \textup{(Assumption~T of~\cite{Realizability})}.}
+
+\medskip
+
+The information time $dt_{\mathrm{info}}:=d\Phi/H$, where $\Phi$ parametrises structural variation and $H>0$ is an entropic resistance, provides the metric through its Hessian: the local quadratic approximation $dt_{\mathrm{info}}^{2}\approx \delta x^{\top}G\,\delta x$ defines $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$; the condition $K(x):=x^{\top}Gx=1$ then identifies the self-consistent locus. The redefinition enters the theorems through $G$ alone: $dt_{\mathrm{info}}$ serves as the motivating construction for~$G$, which enters the theorems as the leading-order form~$Q$ of~\cite{Realizability}. The Hessian $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$ has the structure of an information metric --- it measures the local cost of displacement, as the Fisher metric measures the local cost of statistical distinguishability~\cite{Amari} --- but with Lorentzian rather than Riemannian signature. The specific nature of~$\Phi$ is not required by the theorems; what is required is that some directions carry vanishing cost --- equivalently, that the cost structure not be definite (Theorem~3). The theorems follow from the asymmetry, not from the identity of the varying structure.
+
+The cost structure of $dt_{\mathrm{info}}$ satisfies the three realizability conditions of~\cite{Realizability}. Assumption~E (quadratic expansion) holds because $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$ exists by the smoothness of~$\Phi$ and~$H$. Assumption~T (positive temporal cost) holds by construction: the temporal direction is defined as the direction along which $dt_{\mathrm{info}}>0$, so $G(e_{t},e_{t})>0$. For Assumption~R (zero-threshold spatial directions), suppose instead that $G$ were positive definite; then $K(x)=x^{\top}Gx>0$ for all $x\neq 0$, and the gradient flow $\dot{x}=-\nabla K$ drives every configuration to $x=0$: no nontrivial structure persists. Since the framework requires persistent configurations, $G$ cannot be positive definite. Combined with $G(e_{t},e_{t})>0$, the only possibility for a non-degenerate $2\times 2$ form is $\mathrm{Sig}(G)=(1,1)$. A rigorous derivation from the three conditions alone, independent of the information-time construction, is given in~\cite{Realizability}.
+
+Lorentzian signature therefore emerges from the cost structure: $G$ is indefinite, with light cones (the null set $\{x:x^{\top}Gx=0\}$) and a causal structure determined by the sign of~$K$. In general relativity, the Lorentzian metric is prescribed on a pre-existing differentiable manifold; here $G$ and its causal structure are derived.
+
+\section{Symplectic structure from $G$}
+
+\begin{theorem}[Structural Uniqueness]
+Let $G$ be a non-degenerate symmetric $2\times 2$ real matrix. Among all matrices $M$ such that
+\textup{(i)}~$GM$ is skew-symmetric and \textup{(ii)}~$M|_{G=I}=\alpha J$,
+the unique solution is $J_{G}=\alpha G^{-1}J$.
+\end{theorem}
+
+\begin{proof}
+$\dim(\mathrm{Skew}_{2})=1$, so condition~(i) gives $GM=\beta J$, hence $M=\beta G^{-1}J$; condition~(ii) fixes $\beta=\alpha$.\qed
+\end{proof}
+
+\begin{remark}[Non-degeneracy vs.\ signature]
+Theorem~1 requires only $\det G\neq 0$; it holds for any signature. The Lorentzian condition enters decisively only in Theorem~2, through the reality of the symplectic spectrum.
+\end{remark}
+
+\begin{theorem}[Spectral Survival]
+Let $\mathrm{Sig}(G)=(1,1)$. The characteristic polynomial of $G^{-1}J$ is $\lambda^{2}+1/\det G=0$. Since $\det G<0$, the roots are real: $\lambda=\pm\sqrt{-1/\det G}$. The stability boundary is
+\begin{equation}
+d_{c}(\alpha)=\alpha\sqrt{-1/\det G}>0.\label{eq:dc}
+\end{equation}
+\end{theorem}
+
+\begin{theorem}[Necessity of Lorentzian Signature]
+If $\mathrm{Sig}(G)=(2,0)$ or $(0,2)$, then $\det G>0$, so $\lambda^{2}+1/\det G=0$ has purely imaginary roots and $d_{c}=0$.
+\end{theorem}
+
+\section{The stability boundary}
+
+\begin{theorem}[Non-Separability]
+For non-degenerate symmetric $2\times 2$ real $G$, under the isotropic linearisation $H_{*}=I$, the following are equivalent:
+\begin{itemize}
+\item[\textup{(a)}] The metric admits a nontrivial stability boundary $d_{c}>0$.
+\item[\textup{(b)}] $\mathrm{Sig}(G)=(1,1)$ \textup{(Lorentzian)}, equivalently $\det G<0$.
+\end{itemize}
+\end{theorem}
+
+\begin{proof}
+$d_{c}>0 \Leftrightarrow -1/\det G>0 \Leftrightarrow \det G<0 \Leftrightarrow \mathrm{Sig}(G)=(1,1)$, via Theorems~2 and~3.\qed
+\end{proof}
+
+\begin{remark}[Dependence on $H_{*}$]\label{rem:Hstar_dep}
+With $G=\mathrm{diag}(0.1,-10)$ and $H_{*}=\bigl(\begin{smallmatrix}1&0.9\\0.9&1\end{smallmatrix}\bigr)$, $d_{c}^{\mathrm{iso}}=1$ while $d_{c}(H_{*})=4.55$, confirming that $d_{c}$ may depend on $H_{*}$ outside the isotropic class.
+\end{remark}
+
+\medskip\noindent\textbf{Numerical verification.} Among 2000 random symmetric $2\times 2$ matrices: all 1420 with $\mathrm{Sig}=(1,1)$ had $d_{c}>0$; all 580 with definite signature had $d_{c}=0$.
+
+\section{Unique dynamics (Law~II)}
+
+\noindent\textbf{Law~II.} \textit{The dynamics on $\{K=1\}$ take the unique form $\dot{x}=(J_{G}-D)\nabla V$, compatible with $GJ_{G}$ skew-symmetric and $D\ge 0$.}
+
+\begin{theorem}[Law~II Canonical Decomposition]
+Let $G$ be non-degenerate and let $J_{G}=\alpha G^{-1}J$ \textup{(Theorem~1)}. Suppose the generator $A$ splits as $GA = \alpha J - GD$, $D\ge 0$. Then $\dot{x} = (J_{G}-D)\,\nabla V$ uniquely.
+\end{theorem}
+
+The GENERIC formalism~\cite{GENERIC} requires Euclidean antisymmetry $L^{\top}=-L$. For $G=cI$, $J_{G}$ is antisymmetric and Law~II reduces to isothermal GENERIC. For Lorentzian $G$, $J_{G}$ is $G$-antisymmetric but not Euclidean-antisymmetric, so Law~II falls outside GENERIC.
+
+\section{Critical damping and fluctuation structure (Law~III)}\label{sec:lawIII}
+
+\noindent\textbf{Law~III.} \textit{$K=1$ is selected by the stochastic dynamics as the unique self-consistent locus of the metric.}
+
+\begin{theorem}[Local Effective Restoring Rate]
+Let $G$ be a $2\times 2$ Lorentzian metric, $D=d_{c}I$. Define $K(x)=x^{\top}Gx$, $V=\tfrac{1}{2}(K-1)^{2}$, with drift $\dot{x}=(J_{G}-d_{c}I)\nabla V$. Then for all $x\in\mathbb{R}^{2}$:
+\begin{equation}
+\dot{K} = 4(K-1)\bigl[\alpha\,x^{\top}(J{\cdot}G)\,x - d_{c}\,x^{\top}G^{2}x\bigr].\label{eq:Kdot}
+\end{equation}
+At any $x_{*}\in\{K=1\}$ with $Gx_{*}=\lambda x_{*}$ and $x_{*}^{\top}G^{2}x_{*}=1$:
+\begin{equation}
+\dot{K} = -\kappa_{K}(K-1)+o(K-1),\qquad \kappa_{K}=4\,d_{c}.\label{eq:kappa}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+$\dot{K}=2x^{\top}G\dot{x}=4(K-1)\,x^{\top}G(J_{G}-d_{c}I)Gx$. Since $GJ_{G}=\alpha J$, right-multiplying by $G$ gives $GJ_{G}G=\alpha(JG)$, yielding~\eqref{eq:Kdot}. At a $G$-eigenvector, $x_{*}^{\top}JGx_{*}=\lambda\,x_{*}^{\top}Jx_{*}=0$ by skew-symmetry.\qed
+\end{proof}
+
+Adding isotropic white noise gives $dx=(J_{G}-D)\nabla V\,dt+\sigma\,dW_{t}$. Two classes arise:
+\textit{Class~A} (thermodynamic): fluctuations of $K$ perpendicular to $\{K=1\}$, variance $\sigma^{2}/(2d_{c})$.
+\textit{Class~B} (gauge): free diffusion along $\{K=1\}$ (boost direction), no restoring force.
+
+\section{Spacetime thermodynamics (Route~A)}\label{sec:thermo}
+
+For $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, eq.~\eqref{eq:dc} gives $d_{c}=\alpha/(\kappa\ell)$. With $T_{H}=\hbar\kappa/(2\pi)$~\cite{Hawking}:
+\begin{equation}
+d_{c}\cdot T_{H} = \frac{\alpha\hbar}{2\pi\ell}\label{eq:nearhorizon}
+\end{equation}
+(exact $\kappa$-cancellation), giving the Tolman temperature~\cite{Tolman} $T_{\mathrm{tol}}=d_{c}\cdot T_{H}$.
+
+\begin{proposition}[Local Clausius Equivalence]\label{prop:clausius}
+Under local thermal equilibrium and $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, the Clausius relation $\delta Q=T\,\delta S$ is equivalent to
+$\sigma^{2} = 2\,d_{c}\cdot T_{\mathrm{tol}} = 2\,d_{c}^{2}\cdot T_{H}$.
+\end{proposition}
+
+Combined with the entropy--area proportionality $S\propto A$ and the Jacobson argument~\cite{Jacobson}, Route~A yields $G_{\mu\nu}=8\pi T_{\mu\nu}$ for general metrics. The sole external input beyond R+E+T is $S\propto A$.
+
+%===================================================================
+%%% NEW: §8 — Route B %%%
+%===================================================================
+\section{Eigenvalue self-consistency (Route~B)}\label{sec:field}
+
+Route~A reaches the Einstein equations via thermodynamics.
+We now show that a direct algebraic route exists in the
+spherically symmetric sector, using no thermodynamic input.
+
+Consider the static spherically symmetric metric
+\begin{equation}\label{eq:metric}
+  ds^2=-f(r)\,dt^2+f(r)^{-1}dr^2+r^2\,d\Omega^2,
+\end{equation}
+with symplectic eigenvalues $\sigma_1=r\sqrt{f}$, $\sigma_2=r$,
+and d'Alembertian
+$\Box\phi=(r^2f)^{-1}\partial_r(r^2f\,\partial_r\phi)$.
+
+\begin{definition}[Eigenvalue self-consistency]\label{def:esc}
+\begin{align}
+  K_1 &:= \sigma_2^2\,\Box\ln\sigma_1 = 1,\label{eq:K1def}\\
+  K_2 &:= \sigma_2^2\,\Box\ln\sigma_2 = 1.\label{eq:K2def}
+\end{align}
+\end{definition}
+
+\noindent
+Both conditions have the form
+$\sigma_2^2\,\Box\ln\sigma=1$:
+the d'Alembertian of each log-eigenvalue equals the angular
+curvature cost $1/\sigma_2^2$.
+Every eigenvalue must propagate at the rate set by the angular
+sector---a field-level analogue of the point-level balance $K{=}1$.
+
+Expanding:
+$K_1 = f+2rf'+\frac{r^2}{2}f''$,\;
+$K_2 = rf'+f = d(rf)/dr$.
+(For $K_2$: $\Box\ln r = (1/r^2)d/dr[r^2f/r]=(rf'+f)/r^2$,
+so $r^2\Box\ln r = rf'+f$.)
+
+\begin{lemma}\label{lem:R}
+$R=-2\,\Box\ln\sigma_1+2/r^2$ for~\eqref{eq:metric}.
+\end{lemma}
+\begin{proof}
+$R=-f''-4f'/r+2(1{-}f)/r^2$.
+$\Box\ln\sigma_1=f/r^2+2f'/r+f''/2$.
+Then $-2\Box\ln\sigma_1+2/r^2=R$.\qed
+\end{proof}
+
+\noindent
+Hence $K_1{=}1\Leftrightarrow R{=}0$ and
+$K_2{=}1\Leftrightarrow R_{\theta\theta}{=}0$
+(since $R_{\theta\theta}=1{-}f{-}rf'=1{-}K_2$).
+
+\begin{theorem}[Field-Level Equivalence]\label{thm:field}
+For~\eqref{eq:metric} with $f\in C^2(0,\infty)$:
+\begin{equation}\label{eq:equiv}
+  \sigma_2^2\,\Box\ln\sigma_i=1\;\;\text{for }i=1,2
+  \quad\Longleftrightarrow\quad R_{\mu\nu}=0.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+$(\Rightarrow)$\;
+$K_2{=}1$ gives $R_{\theta\theta}{=}0$.
+$K_1{-}K_2=rf'+\frac{r^2}{2}f''=0$ gives $f''=-2f'/r$, hence $R_{tt}{=}0$.
+
+$(\Leftarrow)$\;
+$R_{\theta\theta}{=}0$ gives $K_2{=}1$.
+$R_{tt}{=}0$ gives $f''=-2f'/r$; substituting:
+$K_1=f+2rf'-rf'=f+rf'=K_2=1$.\qed
+\end{proof}
+
+\begin{corollary}\label{cor:solutions}
+$K_1{=}1$ alone gives $R{=}0$ with general solution
+$f=1-C_1/r-C_2/r^2$; $K_2{=}1$ forces $C_2{=}0$,
+recovering Schwarzschild uniquely (Birkhoff).
+In the weak field ($f=1+\varepsilon\varphi$),
+$K_2{=}1$ gives $\varphi=C/r$ (Newton) in one line;
+$K_1{=}1$ is automatically satisfied at linear order,
+so its independent content is purely nonlinear (strong-field).
+\end{corollary}
+
+\begin{remark}[Route A vs.\ Route B]
+Route~A (Proposition~\ref{prop:clausius} $+$ Jacobson) applies to all
+metrics but requires $S\propto A$.
+Route~B (Theorem~\ref{thm:field}) requires no thermodynamic input
+but is proved only for spherical symmetry.
+The general extension requires null-surface Gauss--Codazzi and shares
+Jacobson's null-direction patching architecture;
+in the spherically symmetric sector, however, the derivation is
+entirely independent.
+\end{remark}
+
+%===================================================================
+%%% NEW: §9 — Singularity structure %%%
+%===================================================================
+\section{Singularity structure}\label{sec:singularity}
+
+\begin{proposition}[$\sigma_1>0$ from Axiom~T]\label{prop:sigma1}
+Axiom~T implies $\sigma_1>0$ wherever $K{=}1$ is imposed.
+\end{proposition}
+
+\begin{proof}
+The cost metric has $G_{00}=\sigma_1^2$. If $\sigma_1=0$ then
+temporal displacement has zero cost, violating Axiom~T.
+When $\sigma_1=0$, $K=-x_1^2\le 0$
+and $K{=}1$ has no solutions.\qed
+\end{proof}
+
+\noindent
+The Schwarzschild singularity ($\sigma_1\to 0$ as $r\to 0$) lies
+outside the domain of the theory.
+
+\begin{proposition}[Self-consistency bound]\label{prop:domain}
+The $K{=}1$ framework is self-consistent only for
+$\sigma_1>\sigma_{1,c}:=\hbar/(4\pi)\approx\ell_P/(4\pi)$.
+\end{proposition}
+
+\begin{proof}
+Near the horizon, $T_{\mathrm{eff}}\approx\hbar/(4\pi\sigma_1)$
+(from~\eqref{eq:nearhorizon}).
+$\mathrm{Var}(K)=T_{\mathrm{eff}}$; for $K{=}1$ to be a
+well-defined equilibrium, $\mathrm{Var}(K)<1$, hence
+$\sigma_1>\hbar/(4\pi)$.\qed
+\end{proof}
+
+\noindent
+Below $\sigma_{1,c}$, thermal fluctuations of $K$ exceed its
+mean value and the semiclassical metric loses its classical meaning.
+This is a \emph{soft} bound---analogous to classical mechanics
+at action~$\sim\hbar$---derived entirely within the framework.
+
+%===================================================================
+%%% REWRITTEN: Discussion %%%
+%===================================================================
+\section{Discussion}\label{sec:discussion}
+
+\subsection*{Two routes to Einstein}
+
+The framework reaches the Einstein equations from R+E+T by two routes sharing the same starting point ($G$ indefinite, $K{=}1$, OU dynamics) but diverging thereafter. Route~A uses stochastic dynamics and the Jacobson bridge with $S\propto A$; Route~B uses the d'Alembertian of symplectic eigenvalues. In the spherically symmetric sector, Route~B is fully independent of Jacobson and of thermodynamics.
+
+\subsection*{Stages}
+
+\noindent\textit{Stage~0:} R+E+T $\to$ $\mathrm{Sig}(G)=(1,1)$ (Theorem~4).
+\textit{Stage~1:} $G$ defines light cones and causal structure.
+\textit{Stage~2:} $K{=}1$ $\to$ OU $\to$ Class~A/B; Clausius follows (Proposition~7).
+\textit{Stage~3:} $\sigma_2^2\Box\ln\sigma_i=1\Leftrightarrow R_{\mu\nu}=0$ (Theorem~\ref{thm:field}, spherical).
+\textit{Stage~4:} Axiom~T $\to$ $\sigma_1>0$; self-consistency $\to$ $\sigma_1\gtrsim\ell_P$.
+
+\subsection*{Limitations}
+
+\begin{enumerate}
+\item Route~B is proved for spherical symmetry only.
+\item Route~A requires $S\propto A$.
+\item No deviation from GR is predicted in vacuum.
+\item The $\sigma_1$ bound is soft, not hard.
+\item The $2\times 2$ framework is the natural dimensionality of a single Rindler horizon; higher-dimensional extensions require a symplectic pairing choice when $\dim(\mathrm{Skew}_4)=6$.
+\end{enumerate}
+
+\subsection*{Open problems}
+
+\begin{enumerate}
+\item Complete Route~B for general metrics (Gauss--Codazzi).
+\item Prove $\sigma_{1,\min}>0$ from $K$--$\theta$ conjugacy.
+\item Derive $8\pi$ from cost (non-vacuum Route~B).
+\item Identify testable strong-field predictions.
+\end{enumerate}
+
+\subsection*{Conclusion}
+
+General relativity prescribes Lorentzian signature; the present work derives it from a cost asymmetry. At the point level, the Clausius relation follows algebraically. At the field level, the eigenvalue self-consistency principle yields the vacuum Einstein equations directly. Axiom~T excludes the singularity from the theory's domain, and the OU variance sets a Planck-scale resolution limit. What remains prescribed is the cost asymmetry itself: why one direction carries positive cost while others do not. This is Riemann's question in economic form.
+
+\bigskip
+\noindent\textbf{Statements and Declarations}
+
+\medskip\noindent\textbf{Funding.} No funding was received.
+
+\medskip\noindent\textbf{Competing interests.} None.
+
+\medskip\noindent\textbf{Data availability.} No datasets were generated. Supplementary test suite (172 checks) available from the author.
+
+\begin{thebibliography}{99}
+
+\bibitem{Realizability}
+Y.\,Y.\,N.~Li,
+Realizability and the origin of causality.
+Submitted to Found.\ Phys.\ (2026).
+Preprint: Zenodo, \url{https://doi.org/10.5281/zenodo.19062187}
+
+\bibitem{EPS}
+J.~Ehlers, F.\,A.\,E.~Pirani, A.~Schild,
+The geometry of free fall and light propagation.
+Gen.\ Relativ.\ Gravit.\ \textbf{44}, 1587 (2012).
+
+\bibitem{GENERIC}
+M.~Grmela, H.\,C.~\"Ottinger,
+Dynamics and thermodynamics of complex fluids.~I.
+Phys.\ Rev.\ E \textbf{56}, 6620 (1997).
+
+\bibitem{Wiener}
+N.~Wiener, Cybernetics. MIT Press (1948).
+
+\bibitem{Einstein1915}
+A.~Einstein,
+Die Feldgleichungen der Gravitation.
+Sitzungsber.\ Preuss.\ Akad.\ Wiss.\ Berlin, 844 (1915).
+
+\bibitem{Hilbert1915}
+D.~Hilbert,
+Die Grundlagen der Physik.
+Nachr.\ Ges.\ Wiss.\ G\"ottingen, 395 (1915).
+
+\bibitem{Jacobson}
+T.~Jacobson,
+Thermodynamics of spacetime: The Einstein equation of state.
+Phys.\ Rev.\ Lett.\ \textbf{75}, 1260 (1995).
+
+\bibitem{Padmanabhan}
+T.~Padmanabhan,
+Thermodynamical aspects of gravity: New insights.
+Rep.\ Prog.\ Phys.\ \textbf{73}, 046901 (2010).
+
+\bibitem{Verlinde}
+E.~Verlinde,
+On the origin of gravity and the laws of Newton.
+J.\ High Energy Phys.\ \textbf{2011}(04), 029 (2011).
+
+\bibitem{Hawking}
+S.\,W.~Hawking,
+Particle creation by black holes.
+Commun.\ Math.\ Phys.\ \textbf{43}, 199 (1975).
+
+\bibitem{Tolman}
+R.\,C.~Tolman,
+On the weight of heat and thermal equilibrium in general relativity.
+Phys.\ Rev.\ \textbf{35}, 904 (1930).
+
+\bibitem{Bekenstein}
+J.\,D.~Bekenstein,
+Black holes and entropy.
+Phys.\ Rev.\ D \textbf{7}, 2333 (1973).
+
+\bibitem{Amari}
+S.~Amari,
+Information Geometry and Its Applications.
+Springer (2016).
+
+\end{thebibliography}
+
+\end{document}
