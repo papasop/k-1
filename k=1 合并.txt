@@ -37,7 +37,7 @@ is algebraically equivalent to the vacuum Einstein equations $R_{\mu\nu}=0$ (The
 
 In Newton's mechanics, time is a uniform background coordinate; in general relativity, it is the proper time defined by a Lorentzian metric whose signature is prescribed. The Jacobson derivation~\cite{Jacobson} obtains the Einstein equations from thermodynamics on local Rindler horizons, but Lorentzian signature is still assumed. The EPS axiomatisation~\cite{EPS} derives causal structure from free-fall and light propagation, but requires kinematic primitives. Padmanabhan~\cite{Padmanabhan} and Verlinde~\cite{Verlinde} proposed related thermodynamic and entropic approaches. In every approach to Riemann's open problem --- the origin of the metric --- either the signature is prescribed or the derivation requires kinematic primitives.
 
-Here time is neither coordinate nor metric primitive: it is the cost of structural change, and the metric --- including its Lorentzian signature --- is a consequence. This redefinition resolves the question in the $2\times 2$ setting natural to a single local Rindler horizon: an information time $dt_{\mathrm{info}}:=d\Phi/H$ defines a metric $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$, and the requirement that physical configurations persist forces $\det G<0$ (\S2; see also~\cite{Realizability}); Lorentzian signature, symplectic structure, and $d_{c}>0$ are then algebraic consequences of a single sign.
+Here time is neither coordinate nor metric primitive: it is the cost of structural change, and the metric --- including its Lorentzian signature --- is a consequence. This redefinition resolves the question in the $2\times 2$ setting natural to a single local Rindler horizon: an information time $dt_{\mathrm{info}}:=d\Phi/H$ defines a metric $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$, and the requirement that physical configurations persist forces $\det G<0$ (\S2; see also~\cite{Realizability}); Lorentzian signature, symplectic structure, and $d_{c}>0$ are then algebraic consequences of a single sign. The quadratic form $K(x)=x^{\top}Gx$ measures local temporal cost; departures from $K{=}1$ generate a restoring dynamics (Law~III), making this self-referential condition a dynamical attractor. Geometrically, $\{K{=}1\}$ is the unit hyperboloid of~$G$.
 
 The framework reaches the Einstein equations by two routes:
 \begin{itemize}
@@ -109,6 +109,10 @@ $d_{c}>0 \Leftrightarrow -1/\det G>0 \Leftrightarrow \det G<0 \Leftrightarrow \m
 With $G=\mathrm{diag}(0.1,-10)$ and $H_{*}=\bigl(\begin{smallmatrix}1&0.9\\0.9&1\end{smallmatrix}\bigr)$, $d_{c}^{\mathrm{iso}}=1$ while $d_{c}(H_{*})=4.55$, confirming that $d_{c}$ may depend on $H_{*}$ outside the isotropic class.
 \end{remark}
 
+\begin{remark}[Isotropic scaling]
+$H_{*}$ denotes the cost-function weight matrix in $d(\delta x)/dt=(J_{G}-dI)H_{*}\,\delta x$; $H_{*}=I$ is the default. For $H_{*}=cI$ ($c>0$), $d_{c}$ is invariant. For general $H_{*}>0$, the threshold may shift.
+\end{remark}
+
 \medskip\noindent\textbf{Numerical verification.} Among 2000 random symmetric $2\times 2$ matrices: all 1420 with $\mathrm{Sig}=(1,1)$ had $d_{c}>0$; all 580 with definite signature had $d_{c}=0$.
 
 \section{Unique dynamics (Law~II)}
@@ -124,6 +128,10 @@ The GENERIC formalism~\cite{GENERIC} requires Euclidean antisymmetry $L^{\top}=-
 \section{Critical damping and fluctuation structure (Law~III)}\label{sec:lawIII}
 
 \noindent\textbf{Law~III.} \textit{$K=1$ is selected by the stochastic dynamics as the unique self-consistent locus of the metric.}
+
+\medskip
+
+The auxiliary linear system $\dot{x}=(J_{G}-d_{c}I)x$ has eigenvalues $0$ and $-2d_{c}$ at critical damping. Theorem~6 concerns the nonlinear system with $V=\tfrac{1}{2}(K{-}1)^2$; on $\{K{=}1\}$ one has $\nabla V=0$, so $x_*$ is an equilibrium.
 
 \begin{theorem}[Local Effective Restoring Rate]
 Let $G$ be a $2\times 2$ Lorentzian metric, $D=d_{c}I$. Define $K(x)=x^{\top}Gx$, $V=\tfrac{1}{2}(K-1)^{2}$, with drift $\dot{x}=(J_{G}-d_{c}I)\nabla V$. Then for all $x\in\mathbb{R}^{2}$:
@@ -141,8 +149,10 @@ $\dot{K}=2x^{\top}G\dot{x}=4(K-1)\,x^{\top}G(J_{G}-d_{c}I)Gx$. Since $GJ_{G}=\al
 \end{proof}
 
 Adding isotropic white noise gives $dx=(J_{G}-D)\nabla V\,dt+\sigma\,dW_{t}$. Two classes arise:
-\textit{Class~A} (thermodynamic): fluctuations of $K$ perpendicular to $\{K=1\}$, variance $\sigma^{2}/(2d_{c})$.
-\textit{Class~B} (gauge): free diffusion along $\{K=1\}$ in the tangential (boost) direction; the Hessian of $V$ restricted to $\{K=1\}$ is rank-one with null space containing this tangent, confirming that Class~B carries no restoring force and no heat.
+\textit{Class~A} (thermodynamic): fluctuations of $K$ perpendicular to $\{K=1\}$, variance $\sigma^{2}/(2d_{c})$, verified numerically for $\sigma\in\{0.3,0.6,1.0\}$.
+\textit{Class~B} (gauge): free diffusion along $\{K=1\}$ in the tangential (boost) direction, generating Lorentz boosts; the Hessian of $V$ restricted to $\{K=1\}$ is rank-one with null space containing this tangent, confirming that Class~B carries no restoring force and no heat.
+
+Mixing the two classes conflates thermodynamic and kinematic degrees of freedom and yields a non-Boltzmann marginal $K$-distribution; this is an artifact of marginalising over the gauge direction.
 
 \section{Spacetime thermodynamics (Route~A)}\label{sec:thermo}
 
@@ -406,7 +416,7 @@ For non-vacuum configurations, $\rho=(1{-}K_2)/(8\pi r^2)$: matter is the angula
 
 \subsection*{Extension to $(1{+}3)$ dimensions}
 
-In $(1{+}3)$ dimensions, $\{K{=}1\}\cong H^3$ carries $S^2$ cross-sections with area $4\pi(\kappa\ell)^2$. With $\alpha=1$, $\sigma_1=\kappa\ell$, so the cross-sectional area is $A=4\pi\sigma_1^2$ and the Bekenstein--Hawking entropy $S_{\mathrm{BH}}=A/4=\pi\sigma_1^2$, tracing both to the same symplectic invariant. Two structural changes accompany the extension: the equivalence $d_c>0\Leftrightarrow\mathrm{Sig}(G)=(1,1)$ weakens to a one-directional implication, and the uniqueness of~$J_G$ (guaranteed by $\dim(\mathrm{Skew}_2)=1$) requires a symplectic pairing choice when $\dim(\mathrm{Skew}_4)=6$.
+In $(1{+}3)$ dimensions, $\{K{=}1\}\cong H^3$ carries $S^2$ cross-sections with area $4\pi(\kappa\ell)^2$. With $\alpha=1$, $\sigma_1=\kappa\ell$, so the cross-sectional area is $A=4\pi\sigma_1^2$ and the Bekenstein--Hawking entropy $S_{\mathrm{BH}}=A/4=\pi\sigma_1^2$, tracing both to the same symplectic invariant. The coefficient $\eta=1/4$ need not be independently assumed: for Schwarzschild, the first law $\delta M=T_H\,\delta S$ with $A_H=16\pi M^2$ determines it algebraically. Two structural changes accompany the extension: the equivalence $d_c>0\Leftrightarrow\mathrm{Sig}(G)=(1,1)$ weakens to a one-directional implication, and the uniqueness of~$J_G$ (guaranteed by $\dim(\mathrm{Skew}_2)=1$) requires a symplectic pairing choice when $\dim(\mathrm{Skew}_4)=6$. For the Rindler metric with isotropic spatial sector, the three standard pairings (block-diagonal, canonical~$J_4$, and anti-diagonal) yield identical~$d_c$; general pairings do not, and whether a natural selection principle exists is open.
 
 \subsection*{Beyond GENERIC}
 
