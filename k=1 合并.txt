@@ -32,7 +32,7 @@ is algebraically equivalent to the vacuum Einstein equations $R_{\mu\nu}=0$ (The
 
 \section{Introduction: time as a derived quantity}
 
-Every formulation of spacetime physics assumes a metric or its causal equivalent as input. The Jacobson derivation~\cite{Jacobson} obtains the Einstein equations from thermodynamics on local Rindler horizons, but Lorentzian signature is still assumed. The EPS axiomatisation~\cite{EPS} derives causal structure from free-fall and light propagation, but requires kinematic primitives. Padmanabhan~\cite{Padmanabhan} developed a thermodynamic perspective on gravity; Verlinde~\cite{Verlinde} proposed an entropic force interpretation. In every approach to Riemann's open problem --- what determines the metric --- either the signature is prescribed or the derivation requires kinematic primitives.
+Every formulation of spacetime physics assumes a metric or a causal structure as input. The Jacobson derivation~\cite{Jacobson} obtains the Einstein equations from thermodynamics on local Rindler horizons, but Lorentzian signature is still assumed. The EPS axiomatisation~\cite{EPS} derives causal structure from free-fall and light propagation, but requires kinematic primitives. Padmanabhan~\cite{Padmanabhan} developed a thermodynamic perspective on gravity; Verlinde~\cite{Verlinde} proposed an entropic force interpretation. In every approach to Riemann's open problem --- what determines the metric --- either the signature is prescribed or the derivation requires kinematic primitives.
 
 Here time is neither coordinate nor metric primitive: it is the cost of structural change, and the metric --- including its Lorentzian signature --- is a consequence. This redefinition addresses the question in the $2\times 2$ setting natural to a single local Rindler horizon: an information time $dt_{\mathrm{info}}:=d\Phi/H$ defines a metric $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$, and the requirement that physical configurations persist forces $\det G<0$ (\S2; see also~\cite{Realizability}); Lorentzian signature, symplectic structure, and $d_{c}>0$ are then algebraic consequences of a single sign. The quadratic form $K(x)=x^{\top}Gx$ measures local temporal cost; departures from $K{=}1$ generate a restoring dynamics (Law~III), making this self-referential condition a dynamical attractor. Geometrically, $\{K{=}1\}$ is the unit hyperboloid of~$G$.
 
@@ -49,6 +49,9 @@ The main results are: (i)~$d_{c}>0$ iff $\mathrm{Sig}(G)=(1,1)$ (Theorem~4); (ii
 
 \section{Metric from information time (Law~I)}
 
+Laws~I--III are axioms of the framework, not empirical laws; they define the cost structure and its dynamics.
+
+\medskip
 \noindent\textbf{Law~I.} \textit{The metric $G$ is a non-degenerate symmetric bilinear form measuring the local cost of temporal displacement, where `temporal' denotes the direction distinguished by positive cost \textup{(Assumption~T of~\cite{Realizability})}.}
 
 \medskip
@@ -62,6 +65,8 @@ The cost structure of $dt_{\mathrm{info}}$ satisfies the three realizability con
 Lorentzian signature therefore emerges from the cost structure: $G$ is indefinite, with light cones (the null set $\{x:x^{\top}Gx=0\}$) and a causal structure determined by the sign of~$K$. In general relativity, the Lorentzian metric is prescribed on a pre-existing differentiable manifold; here $G$ and its causal structure are derived.
 
 \section{Symplectic structure from $G$}
+
+The requirement that the Hamiltonian flow preserve the cost structure singles out a unique symplectic generator.
 
 \begin{theorem}[Structural Uniqueness]
 Let $G$ be a non-degenerate symmetric $2\times 2$ real matrix. Among all matrices $M$ such that
@@ -135,7 +140,7 @@ For $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$ and diagonal $H_{*}$, one has $\mathr
 \noindent\textbf{Law~II.} \textit{The dynamics on $\{K=1\}$ take the unique form $\dot{x}=(J_{G}-D)\nabla V$, compatible with $GJ_{G}$ skew-symmetric and $D\ge 0$.}
 
 \begin{theorem}[Law~II Canonical Decomposition]
-Let $G$ be non-degenerate and let $J_{G}=\alpha G^{-1}J$ \textup{(Theorem~1)}. Suppose the generator $A$ splits as $GA = \alpha J - GD$, $D\ge 0$. Then for any smooth potential $V$, $\dot{x} = (J_{G}-D)\,\nabla V$ uniquely.
+Let $G$ be non-degenerate and let $J_{G}=\alpha G^{-1}J$ \textup{(Theorem~1)}. Suppose the generator $A$ splits as $GA = \alpha J - GD$, $D\ge 0$. Then for any smooth potential $V$, the unique evolution law is $\dot{x} = (J_{G}-D)\,\nabla V$.
 \end{theorem}
 
 \begin{proof}
@@ -247,9 +252,8 @@ Consider the static spherically symmetric metric
 \begin{equation}\label{eq:metric}
   ds^2=-f(r)\,dt^2+f(r)^{-1}dr^2+r^2\,d\Omega^2,
 \end{equation}
-with symplectic eigenvalues $\sigma_1=r\sqrt{f}$, $\sigma_2=r$
-(defined by $\sigma_1^2=-g_{tt}\,r^2$ and $\sigma_2^2=r^2$;
-on each local Rindler wedge, $\sigma_1$ reduces to the
+with symplectic eigenvalues $\sigma_1:=r\sqrt{f}$, $\sigma_2:=r$
+(on each local Rindler wedge, $\sigma_1$ coincides with the
 $2\times 2$ symplectic eigenvalue of~\S3),
 and d'Alembertian
 $\Box\phi=(r^2f)^{-1}\partial_r(r^2f\,\partial_r\phi)$.
@@ -393,13 +397,11 @@ Axiom~T implies $\sigma_1>0$ wherever $K{=}1$ is imposed.
 \end{proposition}
 
 \begin{proof}
-The $2\times 2$ cost metric on each Rindler wedge is $G=\mathrm{diag}(\sigma_1^2,-1)$ (Axiom~T gives $G_{00}=\sigma_1^2>0$; cf.\ $g_{00}=-f<0$ for the spacetime metric). If $\sigma_1=0$ then temporal displacement has zero cost, violating Axiom~T.
-When $\sigma_1=0$, $K=-x_1^2\le 0$
-and $K{=}1$ has no solutions.\qed
+The $2\times 2$ cost metric on each Rindler wedge is $G=\mathrm{diag}(\sigma_1^2,-1)$ (Axiom~T gives $G_{00}=\sigma_1^2>0$; cf.\ $g_{00}=-f<0$ for the spacetime metric). If $\sigma_1=0$ then $G_{00}=0$, violating Axiom~T.\qed
 \end{proof}
 
 \noindent
-The Schwarzschild singularity ($\sigma_1\to 0$ as $r\to 0$) lies
+A direct consequence: when $\sigma_1=0$, $K=-x_1^2\le 0$ and $K{=}1$ has no solutions, so the framework is undefined there. The Schwarzschild singularity ($\sigma_1\to 0$ as $r\to 0$) lies
 outside the domain of the theory.
 
 \begin{proposition}[Self-consistency bound]\label{prop:domain}
@@ -448,7 +450,7 @@ The condition $K{=}1$ has a self-referential character: the metric~$G$ defines t
 \noindent\textit{Stage~3 (field):} $\sigma_2^2\Box\ln\sigma_i=1\Leftrightarrow R_{\mu\nu}=0$ (Theorem~\ref{thm:field}, spherical).
 For non-vacuum configurations, $\rho=(1{-}K_2)/(8\pi r^2)$: matter is the angular eigenvalue's deficit from self-consistency per unit area. (This \emph{rewrites} the Einstein $G_{tt}$-component; the coefficient $8\pi$ is inherited from GR, not derived.)
 
-\noindent\textit{Stage~4 (quantum interface):} For $G=\mathrm{diag}(-(\kappa\ell)^2,1)$, defining $\sigma_1:=|\det G|^{1/2}/\alpha=\kappa\ell/\alpha$ gives $d_c\cdot\sigma_1=1$ identically. This is a reciprocity relation: the stabilisation cost~$d_c$ and the symplectic eigenvalue~$\sigma_1$ are reciprocal. The observable~$K$ and the boost angle~$\varphi$ along $\{K{=}1\}$ satisfy $\{K,\varphi\}=-2d_c$; whether quantisation of this conjugate pair yields a hard lower bound on~$\sigma_1$ remains open. Meanwhile, Axiom~T forces $\sigma_1>0$ (Proposition~\ref{prop:sigma1}) and the self-consistency bound gives $\sigma_1\gtrsim\ell_P$ (Proposition~\ref{prop:domain}).
+\noindent\textit{Stage~4 (quantum interface):} For $G=\mathrm{diag}(-(\kappa\ell)^2,1)$, defining $\sigma_1:=|\det G|^{1/2}/\alpha=\kappa\ell/\alpha$ gives $d_c\cdot\sigma_1=1$ identically. This is a reciprocity relation: the stabilisation cost~$d_c$ and the symplectic eigenvalue~$\sigma_1$ are reciprocal. The observable~$K$ and the boost angle~$\varphi$ along $\{K{=}1\}$ satisfy $\{K,\varphi\}_{J_G}=-2d_c$ (Poisson bracket with respect to the symplectic structure~$J_G$); whether quantisation of this conjugate pair yields a hard lower bound on~$\sigma_1$ remains open. Meanwhile, Axiom~T forces $\sigma_1>0$ (Proposition~\ref{prop:sigma1}) and the self-consistency bound gives $\sigma_1\gtrsim\ell_P$ (Proposition~\ref{prop:domain}).
 
 \subsection*{Extension to $(1{+}3)$ dimensions}
 
