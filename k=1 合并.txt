@@ -145,16 +145,54 @@ Adding isotropic white noise gives $dx=(J_{G}-D)\nabla V\,dt+\sigma\,dW_{t}$. Tw
 
 \section{Spacetime thermodynamics (Route~A)}\label{sec:thermo}
 
-For $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, eq.~\eqref{eq:dc} gives $d_{c}=\alpha/(\kappa\ell)$. With $T_{H}=\hbar\kappa/(2\pi)$~\cite{Hawking}:
+This section connects the geometric structures of \S\S2--6 to spacetime thermodynamics; every connection requires at least one external identification, marked explicitly.
+
+For the Rindler metric $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, where $\kappa$ is the surface gravity and $\ell$ the proper distance from the horizon, eq.~\eqref{eq:dc} gives $d_{c}=\alpha/(\kappa\ell)=\alpha/\sqrt{|g_{00}|}$. With $T_{H}=\hbar\kappa/(2\pi)$~\cite{Hawking},
 \begin{equation}
-d_{c}\cdot T_{H} = \frac{\alpha\hbar}{2\pi\ell}\label{eq:nearhorizon}
+d_{c}\cdot T_{H} = \frac{\alpha}{\kappa\ell}\cdot\frac{\hbar\kappa}{2\pi} = \frac{\alpha\hbar}{2\pi\ell},\label{eq:nearhorizon}
 \end{equation}
-(exact $\kappa$-cancellation), giving the Tolman temperature~\cite{Tolman} $T_{\mathrm{tol}}=d_{c}\cdot T_{H}$.
+exhibiting exact $\kappa$-cancellation. Hence the Tolman temperature~\cite{Tolman} $T_{\mathrm{tol}}=d_{c}\cdot T_{H}=\alpha\hbar/(2\pi\ell)$.
+
+\subsection*{Clausius relation as FDT consequence within Class~A}
+
+Within Class~A (fixed inertial observer), the $K$-dynamics near $K=1$ is a one-dimensional Ornstein--Uhlenbeck process with stationary variance
+\begin{equation}
+\mathrm{Var}(K)\approx\frac{\sigma^{2}}{2d_{c}}\label{eq:var}
+\end{equation}
+and effective temperature $T_{\mathrm{eff}}=\sigma^{2}/(2d_{c})$. The fluctuation-dissipation relation $\sigma_{K}^{2}=2\kappa_{K}T_{\mathrm{eff}}$ follows algebraically from Law~II and Theorem~6. The Fokker--Planck equation yields a Boltzmann stationary distribution $\rho\propto\exp(-V/T_{\mathrm{eff}})$; the Clausius relation $\delta Q=T_{\mathrm{eff}}\,dS$ then follows for the OU process, with
+\[
+\delta Q := dV + \tfrac{1}{2}\sigma_{K}^{2}\,dt,\qquad \sigma_{K}=2\sigma\|Gx_{*}\|.
+\]
+The only external input is the identification $T_{\mathrm{eff}}(x_{*})=T_{\mathrm{tol}}(x_{*})$; everything else is derived internally.
 
 \begin{proposition}[Local Clausius Equivalence]\label{prop:clausius}
-Under local thermal equilibrium and $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, the Clausius relation $\delta Q=T\,\delta S$ is equivalent to
-$\sigma^{2} = 2\,d_{c}\cdot T_{\mathrm{tol}} = 2\,d_{c}^{2}\cdot T_{H}$.
+Under local thermal equilibrium and the identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, the Clausius relation $\delta Q=T\,\delta S$ is equivalent to
+\begin{equation}
+\sigma^{2} = 2\,d_{c}\cdot T_{\mathrm{tol}} = 2\,d_{c}^{2}\cdot T_{H}.\label{eq:noise}
+\end{equation}
+Conversely, $\sigma^{2}=2d_{c}\cdot T_{\mathrm{tol}}$ implies $T_{\mathrm{eff}}=T_{\mathrm{tol}}$.
 \end{proposition}
+
+\begin{proof}
+Setting $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ gives $\sigma^{2}/(2d_{c})=d_{c}\cdot T_{H}$, hence $\sigma^{2}=2d_{c}^{2}\cdot T_{H}$.\qed
+\end{proof}
+
+\begin{remark}[Status of the approximation]
+Three logically distinct inputs: (i)~the OU approximation, valid when $|K-1|\ll 1$ and Class~B diffusion is slow compared to Class~A relaxation; (ii)~the identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, the sole true external axiom; (iii)~the Tolman identity $T_{\mathrm{tol}}=d_{c}T_{H}$, which follows from~\eqref{eq:nearhorizon} and is independently verifiable.
+\end{remark}
+
+\subsection*{It\^{o} correction and local temperature}
+
+Applying It\^{o}'s formula to $K=x^{\top}Gx$ gives an additional drift $\sigma^{2}\,\mathrm{tr}(G)\,dt$. This shifts the mean of $K$ but not its variance: at any $G$-eigenvector base point, the FDT ratio $\sigma_{K}^{2}/(2\kappa_{K})$ cancels to $\sigma^{2}/(2d_{c})$ regardless of $x_{*}^{\top}G^{2}x_{*}$. Hence~\eqref{eq:var} and $T_{\mathrm{eff}}=\sigma^{2}/(2d_{c})$ hold for any Lorentzian $G$.
+
+The $K$-space noise amplitude $\sigma_{K}(x)=2\sigma\|Gx\|$ varies along $\{K=1\}$, yielding a position-dependent temperature:
+\begin{equation}
+T_{\mathrm{loc}}(x) := \frac{\sigma_{K}(x)^{2}}{2\kappa_{K}(x_{*})} = \frac{\sigma^{2}\,x^{\top}G^{2}x}{2d_{c}\,x_{*}^{\top}G^{2}x_{*}}.\label{eq:Tloc}
+\end{equation}
+
+\begin{remark}[Stability constraint]
+For macroscopic black holes, $T_{\mathrm{tol}}\ll d_{c}$; setting $D=T_{\mathrm{tol}}I$ renders $K=1$ unstable. Stability requires $D\ge d_{c}I$; critical damping $D=d_{c}I$ is the unique marginally stable choice.
+\end{remark}
 
 Combined with the entropy--area proportionality $S\propto A$ and the Jacobson argument~\cite{Jacobson}, Route~A yields $G_{\mu\nu}=8\pi T_{\mu\nu}$ for general metrics. The sole external input beyond R+E+T is $S\propto A$.
 
@@ -239,6 +277,18 @@ $K_1{=}1$ is automatically satisfied at linear order,
 so its independent content is purely nonlinear (strong-field).
 \end{corollary}
 
+\begin{remark}[Non-vacuum and $\Lambda$]
+From the Einstein $G_{tt}$ component,
+$\rho = (1{-}K_2)/(8\pi r^2)$:
+matter is the angular eigenvalue's failure to self-consistently
+propagate, measured per unit area.
+For Schwarzschild--de~Sitter, $K_2=1{-}\Lambda r^2$ and
+$K_1=1{-}2\Lambda r^2$.
+Both relations \emph{use} the Einstein equations;
+they are cost rewritings, not independent derivations
+(in particular, $8\pi$ is inherited from GR).
+\end{remark}
+
 \begin{remark}[Route A vs.\ Route B]
 Route~A (Proposition~\ref{prop:clausius} $+$ Jacobson) applies to all
 metrics but requires $S\propto A$.
@@ -304,6 +354,7 @@ The framework reaches the Einstein equations from R+E+T by two routes sharing th
 \textit{Stage~1:} $G$ defines light cones and causal structure.
 \textit{Stage~2:} $K{=}1$ $\to$ OU $\to$ Class~A/B; Clausius follows (Proposition~7).
 \textit{Stage~3:} $\sigma_2^2\Box\ln\sigma_i=1\Leftrightarrow R_{\mu\nu}=0$ (Theorem~\ref{thm:field}, spherical).
+For non-vacuum configurations, $\rho=(1{-}K_2)/(8\pi r^2)$: matter is the angular eigenvalue's deficit from self-consistency per unit area. (This \emph{rewrites} the Einstein $G_{tt}$-component in cost language; the coefficient $8\pi$ is inherited from GR, not derived.)
 \textit{Stage~4:} Axiom~T $\to$ $\sigma_1>0$; self-consistency $\to$ $\sigma_1\gtrsim\ell_P$.
 
 \subsection*{Limitations}
