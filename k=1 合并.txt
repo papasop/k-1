@@ -51,20 +51,22 @@ Route~A is general but requires $S\propto A$; Route~B is thermodynamically indep
 
 \section{Metric from information time (Law~I)}
 
-Laws~I--III are axioms of the framework, not empirical laws; they define the cost structure and its dynamics.
+Laws~I--III are axioms of the framework, not empirical laws; they define the cost structure and its dynamics. This section constructs $G$ from information time and establishes that nontrivial configurations require $\det G<0$.
 
 \medskip
 \noindent\textbf{Law~I.} \textit{The metric $G$ is a non-degenerate symmetric bilinear form measuring the local cost of temporal displacement, where `temporal' denotes the direction distinguished by positive cost \textup{(Assumption~T of~\cite{Realizability})}.}
 
 \medskip
 
-The information time $dt_{\mathrm{info}}:=d\Phi/H$, where $\Phi$ parametrises structural variation and $H>0$ is an entropic resistance, provides the metric through its Hessian: the local quadratic approximation $dt_{\mathrm{info}}^{2}\approx \delta x^{\top}G\,\delta x$ defines $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$; the condition $K(x):=x^{\top}Gx=1$ then identifies the self-consistent locus. The redefinition enters the theorems through $G$ alone: $dt_{\mathrm{info}}$ serves as the motivating construction for~$G$. The Hessian $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$ has the structure of an information metric --- it measures the local cost of displacement, as the Fisher metric measures the local cost of statistical distinguishability~\cite{Amari} --- but with Lorentzian rather than Riemannian signature.
+The information time $dt_{\mathrm{info}}:=d\Phi/H$, where $\Phi$ parametrises structural variation and $H>0$ is an entropic resistance (the local cost per unit variation of $\Phi$), provides the metric through its Hessian: the local quadratic approximation $dt_{\mathrm{info}}^{2}\approx \delta x^{\top}G\,\delta x$ defines $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$. The quadratic form $K(x):=x^{\top}Gx$ quantifies local temporal cost, and $K=1$ identifies the self-consistent locus. The redefinition enters the theorems through $G$ alone: $dt_{\mathrm{info}}$ serves as the motivating construction for~$G$. The Hessian $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$ has the structure of an information metric --- it measures the local cost of displacement, as the Fisher metric measures the local cost of statistical distinguishability~\cite{Amari} --- but with Lorentzian rather than Riemannian signature.
 
 The specific nature of~$\Phi$ is not required by the theorems; what is required is that some directions carry vanishing cost --- equivalently, that the cost structure not be definite (Theorem~3). The theorems follow from the asymmetry, not from the identity of the varying structure.
 
-The cost structure of $dt_{\mathrm{info}}$ satisfies the three realizability conditions of~\cite{Realizability}. Assumption~E (quadratic expansion) holds because $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$ exists by the smoothness of~$\Phi$ and~$H$. Assumption~T (positive temporal cost) holds by construction: the temporal direction is defined as the direction along which $dt_{\mathrm{info}}>0$, so $G(e_{t},e_{t})>0$. For Assumption~R (zero-threshold spatial directions), suppose instead that $G$ were positive definite; then $K(x)=x^{\top}Gx>0$ for all $x\neq 0$, and the gradient flow $\dot{x}=-\nabla K$ drives every configuration to $x=0$: no nontrivial structure persists. Since the framework requires persistent configurations, $G$ cannot be positive definite. Combined with $G(e_{t},e_{t})>0$, the only possibility for a non-degenerate $2\times 2$ form is $\mathrm{Sig}(G)=(1,1)$. A rigorous derivation from the three conditions alone, independent of the information-time construction, is given in~\cite{Realizability}.
+The cost structure of $dt_{\mathrm{info}}$ satisfies the three realizability conditions of~\cite{Realizability}. Assumption~E (quadratic expansion) holds because $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$ exists by the smoothness of~$\Phi$ and~$H$. Assumption~T (positive temporal cost) holds by construction: the temporal direction is defined as the direction along which $dt_{\mathrm{info}}>0$, so $G(e_{t},e_{t})>0$. For Assumption~R (zero-threshold spatial directions), suppose instead that $G$ were positive definite; then $K(x)=x^{\top}Gx>0$ for all $x\neq 0$, and the gradient flow $\dot{x}=-\nabla K$ drives every configuration to $x=0$: no nontrivial structure persists. Since the framework is intended to describe nontrivial physical states --- persistent configurations --- $G$ cannot be positive definite. Combined with $G(e_{t},e_{t})>0$, the only possibility for a non-degenerate $2\times 2$ form is $\mathrm{Sig}(G)=(1,1)$. A rigorous derivation from the three conditions alone, independent of the information-time construction, is given in~\cite{Realizability}.
 
-Lorentzian signature therefore emerges from the cost structure: $G$ is indefinite, with light cones (the null set $\{x:x^{\top}Gx=0\}$) and a causal structure determined by the sign of~$K$. In general relativity, the Lorentzian metric is prescribed on a pre-existing differentiable manifold; here $G$ and its causal structure are derived.
+Lorentzian signature therefore emerges from the cost structure: $G$ is indefinite, with light cones (the null set $\{x:x^{\top}Gx=0\}$) and a causal structure determined by the sign of~$K$.
+
+In general relativity, the Lorentzian metric is prescribed on a pre-existing differentiable manifold; here $G$ and its causal structure are derived.
 
 \section{Symplectic structure from $G$}
 
@@ -83,7 +85,7 @@ $\dim(\mathrm{Skew}_{2})=1$, so condition~(i) gives $GM=\beta J$, hence $M=\beta
 \end{proof}
 
 \begin{remark}[Non-degeneracy vs.\ signature]
-Theorem~1 requires only $\det G\neq 0$; it holds for any signature. The Lorentzian condition enters decisively only in Theorem~2, through the reality of the symplectic spectrum. Since $GJ_{G}=\alpha J$ is skew-symmetric, $J_{G}$ lies in the Lie algebra $\mathfrak{sp}(2,\mathbb{R})$; the Lorentzian condition forces $J_{G}$ to be a hyperbolic element, whose real eigenvalues yield $d_{c}>0$.
+Theorem~1 requires only $\det G\neq 0$; it holds for any signature. The Lorentzian condition enters decisively only in Theorem~2, through the reality of the symplectic spectrum. Since $GJ_{G}=\alpha J$ is skew-symmetric, $J_{G}$ lies in the Lie algebra $\mathfrak{sp}(2,\mathbb{R})$; the Lorentzian condition forces $J_{G}$ to be a hyperbolic element (with real, nonzero eigenvalues), whose real eigenvalues yield $d_{c}>0$.
 \end{remark}
 
 \begin{theorem}[Spectral Survival]
@@ -108,7 +110,9 @@ $\det G>0$ gives $1/\det G>0$, so $\lambda^{2}=-1/\det G<0$ and both roots are p
 
 \section{The stability boundary}
 
-\begin{theorem}[Non-Separability]
+The stability boundary $d_c>0$ of Theorem~4 is the critical damping threshold: above it, $K=1$ is stabilised; at it, marginal stability obtains.
+
+\begin{theorem}[Signature-Stability Equivalence]
 For non-degenerate symmetric $2\times 2$ real $G$, under the isotropic linearisation $H_{*}=I$, the following are equivalent:
 \begin{itemize}
 \item[\textup{(a)}] The metric admits a nontrivial stability boundary $d_{c}>0$.
@@ -133,7 +137,7 @@ With $G=\mathrm{diag}(0.1,-10)$ and $H_{*}=\bigl(\begin{smallmatrix}1&0.9\\0.9&1
 For $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$ and diagonal $H_{*}$, one has $\mathrm{tr}(J_{G}H_{*})=0$ identically, so $d_{c}=\alpha/(\kappa\ell)$ independently of the diagonal entries. The thermodynamic interpretation of \S\ref{sec:thermo} assumes $H_{*}$ diagonal; this is a necessary scope condition.
 \end{remark}
 
-\medskip\noindent\textbf{Numerical verification.} Among 2000 random symmetric $2\times 2$ matrices: all 1420 with $\mathrm{Sig}=(1,1)$ had $d_{c}>0$; all 580 with definite signature had $d_{c}=0$.
+\medskip\noindent\textbf{Numerical illustration.} Among 2000 random symmetric $2\times 2$ matrices (sufficient for coverage): all 1420 with $\mathrm{Sig}=(1,1)$ had $d_{c}>0$; all 580 with definite signature had $d_{c}=0$.
 
 \medskip\noindent\textbf{Scope.} The closed-form $d_{c}=\alpha\sqrt{-1/\det G}$ relies on $\dim(\mathrm{Skew}_{2})=1$; higher-dimensional extensions require additional structure and are not part of the present paper.
 
@@ -151,7 +155,7 @@ $A=G^{-1}(\alpha J-GD)=J_{G}-D$. Uniqueness is immediate: $J_{G}$ is fixed by Th
 
 The generator decomposes as $J_{G}=A_{\mathrm{skew}}+S$ where $S=(J_{G}+J_{G}^{\top})/2$. For Lorentzian $G$: $\mathrm{spec}(J_{G})\subset\mathbb{R}$, $S\neq 0$, $\mathrm{tr}\,S=0$. For definite $G$: $\mathrm{spec}(J_{G})\subset i\mathbb{R}$ and $S=0$ iff $G\propto I$.
 
-The GENERIC formalism~\cite{GENERIC} requires Euclidean antisymmetry $L^{\top}=-L$. For $G=cI$, $J_{G}$ is antisymmetric and Law~II reduces to isothermal GENERIC. For Lorentzian $G$, $J_{G}$ is $G$-antisymmetric but not Euclidean-antisymmetric, so Law~II falls outside GENERIC.
+The GENERIC formalism~\cite{GENERIC} requires Euclidean antisymmetry $L^{\top}=-L$. For $G=cI$, $J_{G}$ is antisymmetric and Law~II reduces to isothermal GENERIC. For Lorentzian $G$, $J_{G}$ is $G$-antisymmetric but not Euclidean-antisymmetric, so Law~II extends beyond GENERIC.
 
 \section{Critical damping and fluctuation structure (Law~III)}\label{sec:lawIII}
 
@@ -184,9 +188,9 @@ Adding isotropic white noise gives $dx=(J_{G}-D)\nabla V\,dt+\sigma\,dW_{t}$. Tw
 \textit{Class~A} (thermodynamic): fluctuations of $K$ perpendicular to $\{K=1\}$, variance $\sigma^{2}/(2d_{c})$, verified numerically for $\sigma\in\{0.3,0.6,1.0\}$.
 
 \medskip\noindent
-\textit{Class~B} (gauge): free diffusion along $\{K=1\}$ in the tangential (boost) direction, generating Lorentz boosts; the Hessian of $V$ restricted to $\{K=1\}$ is rank-one with null space containing this tangent, confirming that Class~B carries no restoring force and no heat.
+\textit{Class~B} (kinematic, here also gauge): free diffusion along $\{K=1\}$ in the tangential (boost) direction, generating Lorentz boosts; the Hessian of $V$ restricted to $\{K=1\}$ is rank-one with null space containing this tangent, confirming that Class~B carries no restoring force and no heat.
 
-Mixing the two classes conflates thermodynamic and kinematic degrees of freedom and yields a non-Boltzmann marginal $K$-distribution; this is an artifact of marginalising over the gauge direction.
+Mixing the two classes conflates thermodynamic and kinematic degrees of freedom and yields a non-Boltzmann marginal $K$-distribution; this is an artifact of marginalising over the gauge direction. This mixing arises in practice when the full SDE is sampled without projecting onto the two decoupled subspaces.
 
 \section{Spacetime thermodynamics (Route~A)}\label{sec:thermo}
 
@@ -223,7 +227,7 @@ Setting $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ gives $\sigma^{2}/(2d_{c})=d_{c}\cdo
 \end{proof}
 
 \begin{remark}[Status of the approximation]
-Three logically distinct inputs: (i)~the OU approximation, valid when $|K-1|\ll 1$ and Class~B diffusion is slow compared to Class~A relaxation; (ii)~the identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, the sole true external axiom; (iii)~the Tolman identity $T_{\mathrm{tol}}=d_{c}T_{H}$, which follows from~\eqref{eq:nearhorizon} and is independently verifiable.
+Three logically distinct inputs: (i)~the OU approximation, valid when $|K-1|\ll 1$ and Class~B diffusion is slow compared to Class~A relaxation; (ii)~the identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, the sole true external axiom; (iii)~the Tolman identity $T_{\mathrm{tol}}=d_{c}T_{H}$, which follows from~\eqref{eq:nearhorizon} and is independently verifiable via the Tolman-Ehrenfest relation~\cite{Tolman}.
 \end{remark}
 
 \subsection*{It\^{o} correction and local temperature}
@@ -247,7 +251,7 @@ Combined with the entropy--area proportionality $S\propto A$ and the Jacobson ar
 \section{Eigenvalue self-consistency (Route~B)}\label{sec:field}
 
 Route~A reaches the Einstein equations via thermodynamics.
-We now show that a direct algebraic route exists in the
+A direct algebraic route also exists in the
 spherically symmetric sector, using no thermodynamic input.
 
 Consider the static spherically symmetric metric
@@ -260,7 +264,7 @@ $2\times 2$ symplectic eigenvalue of~\S3),
 and d'Alembertian
 $\Box\phi=(r^2f)^{-1}\partial_r(r^2f\,\partial_r\phi)$.
 
-\begin{definition}[Eigenvalue self-consistency observables]\label{def:esc}
+\begin{definition}[Eigenvalue self-consistency functionals]\label{def:esc}
 \begin{align}
   K_1 &:= \sigma_2^2\,\Box\ln\sigma_1,\label{eq:K1def}\\
   K_2 &:= \sigma_2^2\,\Box\ln\sigma_2.\label{eq:K2def}
@@ -294,6 +298,9 @@ $R=-f''-4f'/r+2(1{-}f)/r^2$.
 $\Box\ln\sigma_1=f/r^2+2f'/r+f''/2$.
 Then $-2\Box\ln\sigma_1+2/r^2=R$.\qed
 \end{proof}
+
+\noindent
+An immediate computation gives $R_{tt}=\tfrac{f}{r^2}(K_1-K_2)$, so $K_1=K_2$ implies $R_{tt}=0$.
 
 \noindent
 Hence $K_1{=}1\Leftrightarrow R{=}0$ and
@@ -394,7 +401,7 @@ independent eigenvalues.}
 %===================================================================
 \section{Singularity structure}\label{sec:singularity}
 
-\begin{proposition}[$\sigma_1>0$ from Axiom~T]\label{prop:sigma1}
+\begin{proposition}[Positivity from Axiom~T]\label{prop:sigma1}
 Axiom~T implies $\sigma_1>0$ wherever $K{=}1$ is imposed.
 \end{proposition}
 
@@ -443,7 +450,7 @@ The condition $K{=}1$ has a self-referential character: the metric~$G$ defines t
 
 \subsection*{Stages}
 
-\noindent\textit{Stage~0:} The three axioms $\to$ $\mathrm{Sig}(G)=(1,1)$ (Theorem~4). Conversely, for definite~$G$ no nontrivial stability boundary exists (Theorem~3): the framework produces physical content only when the cost structure is genuinely Lorentzian.
+\noindent\textit{Stage~0:} The three axioms $\to$ $\mathrm{Sig}(G)=(1,1)$ (Theorem~4). Conversely, for definite~$G$ no critical damping threshold $d_c>0$ exists (Theorem~3): the framework produces physical content only when the cost structure is genuinely Lorentzian.
 
 \noindent\textit{Stage~1:} $G$ defines light cones and causal structure.
 
@@ -475,7 +482,7 @@ For Lorentzian~$G$, the symmetric part $S=(J_G+J_G^\top)/2\neq 0$ departs from t
 
 \begin{enumerate}
 \item Complete Route~B for general metrics (Gauss--Codazzi).
-\item Prove $\sigma_{1,\min}>0$ from $K$--$\theta$ conjugacy.
+\item Prove $\sigma_{1,\min}>0$ from $K$--$\theta$ conjugacy, where $\theta$ is the boost angle along $\{K{=}1\}$.
 \item Derive $8\pi$ from cost (non-vacuum Route~B).
 \item Identify testable strong-field predictions.
 \end{enumerate}
