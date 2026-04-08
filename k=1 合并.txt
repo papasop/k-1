@@ -423,10 +423,11 @@ $\sigma_1>\sigma_{1,c}:=\hbar/(4\pi)\approx\ell_P/(4\pi)$.
 \end{proposition}
 
 \begin{proof}
-Near the horizon, $T_{\mathrm{eff}}=T_{\mathrm{tol}}=d_c\cdot T_H=\alpha\hbar/(2\pi\ell)$
-(from~\eqref{eq:nearhorizon}). With $\alpha=1$ and $\sigma_1=\kappa\ell$,
-$\ell=\sigma_1/\kappa$, so $T_{\mathrm{eff}}=\hbar\kappa/(2\pi\sigma_1)
-=\hbar/(4\pi\sigma_1)$ for Schwarzschild ($\kappa=1/(4M)$; near the horizon $r\to 2M$, $\sigma_1=r\sqrt{f}\to 0$).
+Near the horizon, $T_{\mathrm{eff}}=T_{\mathrm{tol}}=\hbar\kappa/(2\pi\sqrt{f})$
+(Tolman redshift factor; cf.~\eqref{eq:nearhorizon} with $\alpha=1$). With $\sigma_1=r\sqrt{f}$ and $r\approx 2M$, $\kappa=1/(4M)$ near the Schwarzschild horizon:
+\begin{equation*}
+T_{\mathrm{eff}}\approx\frac{\hbar\cdot(1/(4M))}{2\pi\cdot\sigma_1/(2M)}=\frac{\hbar}{4\pi\sigma_1}.
+\end{equation*}
 $\mathrm{Var}(K)\approx T_{\mathrm{eff}}$ (from eq.~\eqref{eq:var} and $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, in the OU approximation); for $K{=}1$ to be a
 well-defined equilibrium, $\mathrm{Var}(K)<1$, hence
 $\sigma_1>\hbar/(4\pi)$. This is a self-consistent bound: the OU approximation is required to be valid, i.e., $\mathrm{Var}(K)<1$.\qed
