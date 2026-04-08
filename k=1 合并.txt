@@ -422,8 +422,8 @@ Specialising to the $(t,r)$ Rindler wedge, $G=\mathrm{diag}(\sigma_1^2,-1)$ (Axi
 A direct consequence: when $\sigma_1=0$, $K=-x_2^2\le 0$ and $K{=}1$ has no solutions. The Schwarzschild singularity ($\sigma_1\to 0$ as $r\to 0$) therefore lies outside the domain of the theory --- the framework is undefined there, not incorrect.
 
 \begin{proposition}[Intrinsic resolution scale]\label{prop:domain}
-The $K{=}1$ framework is self-consistent only for
-$\sigma_1>\sigma_{1,c}:=\hbar/(4\pi)\approx\ell_P/(4\pi)$.
+In Planck units ($\hbar=\ell_P=1$), the $K{=}1$ framework is self-consistent only for
+$\sigma_1>\sigma_{1,c}:=\hbar/(4\pi)=\ell_P/(4\pi)$.
 \end{proposition}
 
 \begin{proof}
