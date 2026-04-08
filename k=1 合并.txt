@@ -354,6 +354,7 @@ $K_1=1{-}2\Lambda r^2$.
 Both relations \emph{use} the Einstein equations;
 they are cost rewritings, not independent derivations
 (in particular, $8\pi$ is inherited from GR).
+The cosmological constant shifts both eigenvalue conditions away from unity; its value is not predicted.
 \end{remark}
 
 \begin{remark}[General metrics and polarization]
@@ -466,7 +467,7 @@ The condition $K{=}1$ has a self-referential character: the metric~$G$ defines t
 For non-vacuum configurations, $\rho=(1{-}K_2)/(8\pi r^2)$: matter is the angular eigenvalue's deficit from self-consistency per unit area. (This \emph{rewrites} the Einstein $G_{tt}$-component; the coefficient $8\pi$ is inherited from GR, not derived.)
 
 \medskip
-\noindent\textit{Stage~4 (quantum interface):} For $G=\mathrm{diag}(-(\kappa\ell)^2,1)$, defining $\sigma_1:=|\det G|^{1/2}/\alpha=\kappa\ell/\alpha$ (with $\alpha=1$, this matches $\sigma_1:=r\sqrt{f}$ of \S\ref{sec:field}) gives $d_c\cdot\sigma_1=1$ identically (this holds for any Lorentzian $G$ with $\det G<0$). This is a reciprocity relation: the stabilisation cost~$d_c$ and the symplectic eigenvalue~$\sigma_1$ are reciprocal. The observable~$K$ and the boost angle~$\varphi$ along $\{K{=}1\}$ satisfy $\{K,\varphi\}_{J_G}=-2d_c$, where $\{\cdot,\cdot\}_{J_G}$ denotes the Poisson bracket induced by~$J_G$. Whether quantisation of this conjugate pair yields a hard lower bound on~$\sigma_1$ remains open, as does whether such a bound connects to the Bekenstein entropy bound~\cite{Bekenstein}. Meanwhile, Axiom~T forces $\sigma_1>0$ (Proposition~\ref{prop:sigma1}) and the self-consistency bound gives $\sigma_1\gtrsim\ell_P$ (Proposition~\ref{prop:domain}).
+\noindent\textit{Stage~4 (quantum interface):} For $G=\mathrm{diag}(-(\kappa\ell)^2,1)$, defining $\sigma_1:=|\det G|^{1/2}/\alpha=\kappa\ell/\alpha$ (with $\alpha=1$, this matches $\sigma_1:=r\sqrt{f}$ of \S\ref{sec:field}) gives $d_c\cdot\sigma_1=1$ identically (this holds for any Lorentzian $G$ with $\det G<0$). This is a reciprocity relation: the stabilisation cost~$d_c$ and the symplectic eigenvalue~$\sigma_1$ are reciprocal, so tighter self-consistency demands larger~$\sigma_1$. The observable~$K$ and the boost angle~$\varphi$ along $\{K{=}1\}$ satisfy $\{K,\varphi\}_{J_G}=-2d_c$, where $\{\cdot,\cdot\}_{J_G}$ denotes the Poisson bracket induced by~$J_G$. Whether quantisation of this conjugate pair yields a hard lower bound on~$\sigma_1$ remains open, as does whether such a bound connects to the Bekenstein entropy bound~\cite{Bekenstein}. Meanwhile, Axiom~T forces $\sigma_1>0$ (Proposition~\ref{prop:sigma1}) and the self-consistency bound gives $\sigma_1\gtrsim\ell_P$ (Proposition~\ref{prop:domain}).
 
 \subsection*{Extension to $(1{+}3)$ dimensions}
 
