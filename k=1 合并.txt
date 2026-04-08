@@ -417,7 +417,7 @@ Axiom~T implies $\sigma_1>0$ wherever $K{=}1$ holds.
 \end{proposition}
 
 \begin{proof}
-Specialising to the $(t,r)$ Rindler wedge, $G=\mathrm{diag}(\sigma_1^2,-1)$ (Axiom~T gives $G_{00}=\sigma_1^2>0$; cf.\ $g_{00}=-f<0$ for the spacetime metric; the sign convention here differs from \S\ref{sec:thermo} but gives the same $d_c$, since $\det G=-\sigma_1^2$ in both cases). If $\sigma_1=0$ then $G_{00}=0$, violating Axiom~T.\qed
+For the $(t,r)$ wedge (and by the same argument for any $2\times 2$ Lorentzian $G$), $G=\mathrm{diag}(\sigma_1^2,-1)$: Axiom~T gives $G_{00}=\sigma_1^2>0$; cf.\ $g_{00}=-f<0$ for the spacetime metric; the sign convention here differs from \S\ref{sec:thermo} but gives the same $d_c$, since $\det G=-\sigma_1^2$ in both cases. If $\sigma_1=0$ then $G_{00}=0$, violating Axiom~T.\qed
 \end{proof}
 
 \noindent
