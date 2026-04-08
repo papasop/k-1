@@ -441,9 +441,9 @@ $\sigma_1>\hbar/(4\pi)$. This is a self-consistent bound: the OU approximation i
 Below $\sigma_{1,c}$, thermal fluctuations of $K$ exceed its
 mean value and the semiclassical metric loses its classical meaning.
 This is a \emph{soft} bound---analogous to classical mechanics
-at action~$\sim\hbar$---derived from the framework's internal self-consistency, given the sole external identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$. The bound is self-consistent in the following sense: the OU approximation requires $\mathrm{Var}(K)<1$, which demands $\sigma_1>\sigma_{1,c}$; in that regime $\mathrm{Var}(K)<1$ is indeed satisfied, so the approximation is valid wherever it is invoked.
+at action~$\sim\hbar$---derived from the framework's internal self-consistency, given the sole external identification at the stochastic level $T_{\mathrm{eff}}=T_{\mathrm{tol}}$. The bound is self-consistent in the following sense: the OU approximation requires $\mathrm{Var}(K)<1$, which demands $\sigma_1>\sigma_{1,c}$; in that regime $\mathrm{Var}(K)<1$ is indeed satisfied, so the approximation is valid wherever it is invoked.
 
-If $K$ and the boost angle $\varphi$ along $\{K{=}1\}$ are canonically conjugate (Open Problem~2), the compactness of $\varphi\in[0,2\pi)$ upgrades the soft bound to a hard spectral gap: $\sigma_1\geq\hbar/(4\pi)$. Both the self-consistency argument and the conjugacy argument give $\sigma_{1,\min}\sim O(\ell_P)$; their numerical agreement confirms that the Planck scale is the natural resolution limit of the framework, independently of whether the conjugacy conjecture is established.
+If $K$ and the boost angle $\varphi$ along $\{K{=}1\}$ are canonically conjugate (Open Problem~2), the compactness of $\varphi\in[0,2\pi)$ upgrades the soft bound to a hard spectral gap: $\sigma_1\geq\hbar/(4\pi)$. Both the self-consistency argument and the conjugacy argument give $\sigma_{1,\min}\sim O(\ell_P)$; their order-of-magnitude agreement confirms that the Planck scale is the natural resolution limit of the framework, independently of whether the conjugacy conjecture is established.
 
 %===================================================================
 %===================================================================
