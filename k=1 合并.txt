@@ -76,7 +76,7 @@ The requirement that the Hamiltonian flow preserve the cost structure, together 
 
 \begin{theorem}[Structural Uniqueness]
 Let $G$ be a non-degenerate symmetric $2\times 2$ real matrix. Among all matrices $M$ such that
-\textup{(i)}~$GM$ is skew-symmetric and \textup{(ii)}~$M|_{G=I}=\alpha J$,
+\textup{(i)}~$GM$ is skew-symmetric and \textup{(ii)}~$M=\alpha J$ when $G=I$ \textup{(Euclidean normalisation)},
 the unique solution is $J_{G}=\alpha G^{-1}J$.
 \end{theorem}
 
