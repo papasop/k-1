@@ -58,9 +58,9 @@ Laws~I--III are axioms of the framework, not empirical laws. This section constr
 
 \medskip
 
-The information time $dt_{\mathrm{info}}:=d\Phi/H$, where $\Phi$ parametrises structural variation and $H>0$ is an entropic resistance (the local cost per unit variation of $\Phi$), provides the metric through its Hessian: the local quadratic approximation $dt_{\mathrm{info}}^{2}\approx \delta x^{\top}G\,\delta x$ defines $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$. The quadratic form $K(x):=x^{\top}Gx$ quantifies local temporal cost, and $K=1$ identifies the self-consistent locus. This redefinition of time enters the theorems through $G$ alone: $dt_{\mathrm{info}}$ serves as the motivating construction for~$G$. The Hessian $G$ has the structure of an information metric --- it measures the local cost of displacement, as the Fisher metric measures the local cost of statistical distinguishability~\cite{Amari} --- but with Lorentzian rather than Riemannian signature.
+The information time $dt_{\mathrm{info}}:=d\Phi/H$, where $\Phi$ parametrises structural variation and $H>0$ is an entropic resistance, provides the metric through its Hessian: the local quadratic approximation $dt_{\mathrm{info}}^{2}\approx \delta x^{\top}G\,\delta x$ defines $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$. Here $H$ is the local cost per unit variation of $\Phi$. The quadratic form $K(x):=x^{\top}Gx$ quantifies local temporal cost, and $K=1$ identifies the self-consistent locus. This redefinition of time enters the theorems through $G$ alone: $dt_{\mathrm{info}}$ serves as the motivating construction for~$G$. The Hessian $G$ has the structure of an information metric --- it measures the local cost of displacement, as the Fisher metric measures the local cost of statistical distinguishability~\cite{Amari} --- but with Lorentzian rather than Riemannian signature.
 
-The specific nature of~$\Phi$ is not required by the theorems; what is required is that some directions carry vanishing cost --- equivalently, that the cost structure not be definite (Theorem~3). The theorems follow from the asymmetry, not from the identity of the varying structure.
+The specific nature of~$\Phi$ is not required by the theorems; what is required is that some directions carry vanishing cost --- equivalently, that the cost structure not be definite. The theorems follow from the asymmetry, not from the identity of the varying structure.
 
 The cost structure of $dt_{\mathrm{info}}$ satisfies the three realizability conditions of~\cite{Realizability}. Assumption~E (quadratic expansion in $\delta x$) holds because $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$ exists by the smoothness of~$\Phi$ and~$H$. Assumption~T (positive temporal cost) holds by construction: the temporal direction is defined as the direction along which $dt_{\mathrm{info}}>0$, so $G(e_{t},e_{t})>0$. This convention identifies time with the direction of positive structural cost. For Assumption~R (zero-threshold spatial directions), suppose instead that $G$ were positive definite; then $K(x)=x^{\top}Gx>0$ for all $x\neq 0$, and the gradient flow $\dot{x}=-\nabla K$ (a minimal cost-reduction flow) drives every configuration to $x=0$: no nontrivial structure persists. Since the framework is intended to describe nontrivial physical states --- persistent configurations --- $G$ cannot be positive definite. Combined with $G(e_{t},e_{t})>0$ --- which rules out $\mathrm{Sig}(G)=(0,2)$ --- and non-degeneracy, the only remaining possibility for a non-degenerate $2\times 2$ form is $\mathrm{Sig}(G)=(1,1)$. A rigorous derivation from the three conditions alone, independent of the information-time construction, is given in~\cite{Realizability}.
 
@@ -125,7 +125,7 @@ The equivalence fails for general $H_{*}$ \textup{(Remark~\ref{rem:Hstar_dep})}:
 \end{theorem}
 
 \begin{proof}
-$d_{c}>0 \Leftrightarrow -1/\det G>0$ (eq.~\eqref{eq:dc}) $\Leftrightarrow \det G<0 \Leftrightarrow \mathrm{Sig}(G)=(1,1)$; Theorem~3 provides the converse direction.\qed
+$d_{c}>0 \Leftrightarrow -1/\det G>0$ (eq.~\eqref{eq:dc}) $\Leftrightarrow \det G<0 \Leftrightarrow \mathrm{Sig}(G)=(1,1)$; Theorem~3 establishes the $(\Leftarrow)$ direction.\qed
 \end{proof}
 
 \medskip\noindent\textbf{Scope.} The closed-form $d_{c}=\alpha\sqrt{-1/\det G}$ relies on $\dim(\mathrm{Skew}_{2})=1$; higher-dimensional extensions require additional structure and are not fully developed in the present paper.
@@ -160,7 +160,7 @@ $A=G^{-1}(\alpha J-GD)=J_{G}-D$. Uniqueness is immediate: $J_{G}$ is fixed by Th
 
 The generator decomposes as $J_{G}=A_{\mathrm{skew}}+S$ where $S=(J_{G}+J_{G}^{\top})/2$. For Lorentzian $G$: $\mathrm{spec}(J_{G})\subset\mathbb{R}$, $S\neq 0$, $\mathrm{tr}\,S=0$. For definite $G$: $\mathrm{spec}(J_{G})\subset i\mathbb{R}$ and $S=0$ iff $G\propto I$. This is the Euclidean decomposition; in $G$-metric, $J_{G}$ is purely antisymmetric by construction ($GJ_{G}=\alpha J$ is skew).
 
-The GENERIC formalism~\cite{GENERIC} requires Euclidean antisymmetry $L^{\top}=-L$. For $G=cI$, $J_{G}$ is antisymmetric and Law~II reduces to isothermal GENERIC. For Lorentzian $G$, $J_{G}$ is $G$-antisymmetric but not Euclidean-antisymmetric, so Law~II extends beyond GENERIC.
+The GENERIC formalism~\cite{GENERIC} requires Euclidean antisymmetry $L^{\top}=-L$. For $G=cI$, $J_{G}$ is antisymmetric and Law~II is consistent with isothermal GENERIC. For Lorentzian $G$, $J_{G}$ is $G$-antisymmetric but not Euclidean-antisymmetric, so Law~II extends beyond GENERIC.
 
 \section{Critical damping and fluctuation structure (Law~III)}\label{sec:lawIII}
 
@@ -190,6 +190,8 @@ The local effective restoring rate is $\kappa_{K}(x_{*})=4d_{c}\cdot x_{*}^{\top
 \end{remark}
 
 Adding isotropic white noise gives $dx=(J_{G}-D)\nabla V\,dt+\sigma\,dW_{t}$. Two classes arise:
+
+\medskip\noindent
 \textit{Class~A} (thermodynamic): fluctuations of $K$ perpendicular to $\{K=1\}$, variance $\sigma^{2}/(2d_{c})$, confirmed by simulation for $\sigma\in\{0.3,0.6,1.0\}$.
 
 \medskip\noindent
@@ -239,7 +241,7 @@ Three logically distinct inputs: (i)~the OU approximation, valid when $|K-1|\ll 
 
 Applying It\^{o}'s formula to $K=x^{\top}Gx$ gives an additional drift $\sigma^{2}\,\mathrm{tr}(G)\,dt$. This shifts the mean of $K$ but not its variance: at any $G$-eigenvector base point, the FDT ratio $\sigma_{K}^{2}/(2\kappa_{K})$ cancels to $\sigma^{2}/(2d_{c})$ regardless of $x_{*}^{\top}G^{2}x_{*}$. Hence~\eqref{eq:var} and $T_{\mathrm{eff}}=\sigma^{2}/(2d_{c})$ hold for any Lorentzian $G$.
 
-The $K$-space noise amplitude $\sigma_{K}(x)=2\sigma\|Gx\|$ varies along $\{K=1\}$, yielding a position-dependent temperature (eq.~\eqref{eq:Tloc}):
+The $K$-space noise amplitude $\sigma_{K}(x)=2\sigma\|Gx\|$ varies along $\{K=1\}$, yielding a position-dependent temperature:
 \begin{equation}
 T_{\mathrm{loc}}(x) := \frac{\sigma_{K}(x)^{2}}{2\kappa_{K}(x_{*})} = \frac{\sigma^{2}\,x^{\top}G^{2}x}{2d_{c}\,x_{*}^{\top}G^{2}x_{*}}.\label{eq:Tloc}
 \end{equation}
@@ -298,10 +300,7 @@ Then $-2\Box\ln\sigma_1+2/r^2=R$.\qed
 \end{proof}
 
 \noindent
-An immediate computation gives $R_{tt}=\tfrac{f}{r^2}(K_1-K_2)$, so $K_1=K_2$ implies $R_{tt}=0$.
-
-\noindent
-Substituting $K_1=r^2\Box\ln\sigma_1$ into Lemma~\ref{lem:R} gives $R=2(1-K_1)/r^2$; hence $K_1{=}1\Leftrightarrow R{=}0$ and
+An immediate computation gives $R_{tt}=\tfrac{f}{r^2}(K_1-K_2)$, so $K_1=K_2$ implies $R_{tt}=0$. Substituting $K_1=r^2\Box\ln\sigma_1$ into Lemma~\ref{lem:R} gives $R=2(1-K_1)/r^2$; hence $K_1{=}1\Leftrightarrow R{=}0$ and
 $K_2{=}1\Leftrightarrow R_{\theta\theta}{=}0$
 (since $R_{\theta\theta}=1{-}f{-}rf'=1{-}K_2$).
 Equivalently, $K_2{=}1$ states that the Misner--Sharp mass
@@ -406,7 +405,7 @@ Specialising to the $(t,r)$ Rindler wedge, $G=\mathrm{diag}(\sigma_1^2,-1)$ (Axi
 \end{proof}
 
 \noindent
-A direct consequence: when $\sigma_1=0$, $K=-x_2^2\le 0$ and $K{=}1$ has no solutions, so the framework is undefined there. The Schwarzschild singularity ($\sigma_1\to 0$ as $r\to 0$) lies outside the domain of the theory: the framework is undefined there (rather than incorrect), since $K=1$ has no solutions when $\sigma_1=0$.
+A direct consequence: when $\sigma_1=0$, $K=-x_2^2\le 0$ and $K{=}1$ has no solutions. The Schwarzschild singularity ($\sigma_1\to 0$ as $r\to 0$) therefore lies outside the domain of the theory---the framework is undefined there, not incorrect.
 
 \begin{proposition}[Intrinsic resolution scale]\label{prop:domain}
 The $K{=}1$ framework is self-consistent only for
@@ -437,7 +436,7 @@ at action~$\sim\hbar$---derived from the framework's internal self-consistency, 
 
 The framework reaches the Einstein equations from the three realizability conditions by two routes sharing the same starting point ($G$ indefinite, $K{=}1$, OU dynamics) but diverging thereafter. Route~A uses stochastic dynamics and the Jacobson bridge with $S\propto A$; Route~B uses the d'Alembertian of log-eigenvalues. In the spherically symmetric sector, Route~B is fully independent of Jacobson and of thermodynamics.
 
-The Jacobson argument~\cite{Jacobson} reconstructs the Einstein equations from three inputs: Lorentzian signature, the Clausius relation on every local Rindler horizon, and $S=A/4$. Route~A supplies the first two: signature is forced by realizability (Theorem~4) and Clausius follows on each horizon (Proposition~\ref{prop:clausius}, given $T_{\mathrm{eff}}=T_{\mathrm{tol}}$); $S\propto A$ is then the sole remaining external input. The patching across horizon directions requires no additional assumptions: at each spacetime point, every null direction defines a two-dimensional normal plane on which $\dim(\mathrm{Skew}_2)=1$, so Theorem~1 guarantees a unique~$J_G$ with no pairing ambiguity (cf.\ the $(1{+}3)$-dimensional extension below).
+The Jacobson argument~\cite{Jacobson} reconstructs the Einstein equations from three inputs: Lorentzian signature, the Clausius relation on every local Rindler horizon, and $S=A/4$. Route~A supplies the first two: signature is forced by realizability (Theorem~4) and Clausius follows on each horizon (Proposition~\ref{prop:clausius}, given $T_{\mathrm{eff}}=T_{\mathrm{tol}}$). The sole remaining external input is $S\propto A$. The patching across horizon directions requires no additional assumptions: at each spacetime point, every null direction defines a two-dimensional normal plane on which $\dim(\mathrm{Skew}_2)=1$, so Theorem~1 guarantees a unique~$J_G$ with no pairing ambiguity (cf.\ the $(1{+}3)$-dimensional extension below).
 
 \subsection*{The $K{=}1$ self-referential structure}
 
