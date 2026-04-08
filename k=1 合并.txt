@@ -269,7 +269,7 @@ Combined with the entropy--area proportionality $S\propto A$ and the Jacobson ar
 Route~A reaches the Einstein equations via thermodynamics.
 A complementary algebraic route exists in the
 spherically symmetric sector, using no thermodynamic input:
-rather than deriving the field equations from the framework's axioms, it establishes an algebraic equivalence between a motivated field-level generalisation of $K{=}1$ and $R_{\mu\nu}=0$.
+rather than deriving the field equations from the framework's axioms, it establishes an algebraic equivalence between a motivated field-level analogue of $K{=}1$ and $R_{\mu\nu}=0$.
 
 Consider the static spherically symmetric metric
 \begin{equation}\label{eq:metric}
