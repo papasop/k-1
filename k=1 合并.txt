@@ -87,7 +87,7 @@ Since $\dim(\mathrm{Skew}_{2})=1$ and $J$ spans $\mathrm{Skew}_{2}$, condition~(
 \end{proof}
 
 \begin{remark}[Non-degeneracy vs.\ signature]
-Theorem~1 requires only $\det G\neq 0$; it holds for any signature. The Lorentzian condition enters decisively only in Theorem~2, through the reality of the symplectic eigenvalues. Since $GJ_{G}=\alpha J$ is skew-symmetric, $J_{G}$ lies in the Lie algebra $\mathfrak{sp}(2,\mathbb{R})$ (elements of $\mathfrak{sp}(2,\mathbb{R})$ satisfy $GM$ skew for any $G$); the Lorentzian condition forces $J_{G}$ to be a hyperbolic element (with real, nonzero eigenvalues), whose real eigenvalues yield $d_{c}>0$.
+Theorem~1 requires only $\det G\neq 0$; it holds for any signature. The Lorentzian condition enters decisively only in Theorem~2, through the reality of the symplectic eigenvalues. Since $GJ_{G}=\alpha J$ is skew-symmetric, $J_{G}$ lies in the Lie algebra $\mathfrak{sp}(2,\mathbb{R})$ (elements of $\mathfrak{sp}(2,\mathbb{R})$ satisfy $GM$ skew for any $G$); the Lorentzian condition forces $J_{G}$ to be a hyperbolic element (with real eigenvalues), whose real eigenvalues yield $d_{c}>0$.
 \end{remark}
 
 \begin{theorem}[Spectral Reality]
@@ -128,7 +128,7 @@ The equivalence fails for general $H_{*}$ \textup{(Remark~\ref{rem:Hstar_dep})}:
 $d_{c}>0 \Leftrightarrow -1/\det G>0$ (eq.~\eqref{eq:dc}) $\Leftrightarrow \det G<0 \Leftrightarrow \mathrm{Sig}(G)=(1,1)$; Theorem~3 provides the converse direction.\qed
 \end{proof}
 
-\medskip\noindent\textbf{Scope.} The closed-form $d_{c}=\alpha\sqrt{-1/\det G}$ relies on $\dim(\mathrm{Skew}_{2})=1$; higher-dimensional extensions require additional structure and are not part of the present paper.
+\medskip\noindent\textbf{Scope.} The closed-form $d_{c}=\alpha\sqrt{-1/\det G}$ relies on $\dim(\mathrm{Skew}_{2})=1$; higher-dimensional extensions require additional structure and are not fully developed in the present paper.
 
 \begin{remark}[Isotropic scaling]
 $H_{*}$ denotes the cost-function weight matrix in $d(\delta x)/dt=(J_{G}-dI)H_{*}\,\delta x$; $H_{*}=I$ is the default. For $H_{*}=cI$ ($c>0$), $d_{c}$ is invariant. For general $H_{*}>0$, the threshold may shift.
@@ -148,7 +148,7 @@ For $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$ and diagonal $H_{*}$, one has $\mathr
 
 \noindent\textbf{Law~II.} \textit{The dynamics on $\{K=1\}$ take the unique form $\dot{x}=(J_{G}-D)\nabla V$ for any smooth $V$, compatible with $GJ_{G}$ skew-symmetric and $D\ge 0$ ($D$ a $2\times 2$ positive-semidefinite dissipation matrix).}
 
-Law~II is the uniqueness statement: given $J_{G}$ and $D$, the dynamics are fixed.
+Law~II is the uniqueness statement: once $G$ fixes $J_{G}$ (Theorem~1) and $D\ge 0$ is prescribed, the dynamics are completely determined.
 
 \begin{theorem}[Law~II Canonical Decomposition]
 Let $G$ be non-degenerate and let $J_{G}=\alpha G^{-1}J$ \textup{(Theorem~1)}. Suppose the generator $A$ splits as $GA = \alpha J - GD$, $D\ge 0$. Then for any smooth potential $V$, the unique evolution law is $\dot{x} = (J_{G}-D)\,\nabla V$.
@@ -168,7 +168,7 @@ The GENERIC formalism~\cite{GENERIC} requires Euclidean antisymmetry $L^{\top}=-
 
 \medskip
 
-The auxiliary linear system $\dot{x}=(J_{G}-d_{c}I)x$ has eigenvalues $0$ and $-2d_{c}$ at critical damping (from $\mathrm{spec}(J_{G})=\{\pm d_{c}\}$ at $d=d_{c}$). Theorem~6 concerns the nonlinear system $\dot{x}=(J_{G}-d_{c}I)\nabla V$, $V=\tfrac{1}{2}(K{-}1)^2$, where departure from $K{=}1$ incurs a cost~$V$. On $\{K{=}1\}$ one has $\nabla V=0$, so $x_*$ is an equilibrium; the Jacobian at $x_*$ is $(J_{G}-d_{c}I)\nabla^{2}V(x_*)$, which differs from $J_{G}-d_{c}I$ because $\nabla^{2}V(x_*)$ is rank-one.
+The auxiliary linear system $\dot{x}=(J_{G}-d_{c}I)x$ has eigenvalues $0$ and $-2d_{c}$ at critical damping (from $\mathrm{spec}(J_{G})=\{\pm d_{c}\}$ at $d=d_{c}$). Theorem~6 concerns the nonlinear system $\dot{x}=(J_{G}-d_{c}I)\nabla V$, $V=\tfrac{1}{2}(K{-}1)^2$, where departure from $K{=}1$ generates a penalty~$V$. On $\{K{=}1\}$ one has $\nabla V=0$, so $x_*$ is an equilibrium; the Jacobian at $x_*$ is $(J_{G}-d_{c}I)\nabla^{2}V(x_*)$, which differs from $J_{G}-d_{c}I$ because $\nabla^{2}V(x_*)$ is rank-one.
 
 \begin{theorem}[Local Effective Restoring Rate]
 Let $G$ be a $2\times 2$ Lorentzian metric, $D=d_{c}I$, and $J_{G}=\alpha G^{-1}J$ (Theorem~1). Define $K(x)=x^{\top}Gx$, $V=\tfrac{1}{2}(K-1)^{2}$, with drift $\dot{x}=(J_{G}-d_{c}I)\nabla V$. Then for all $x\in\mathbb{R}^{2}$:
@@ -211,9 +211,9 @@ exhibiting exact $\kappa$-cancellation. Hence the Tolman temperature~\cite{Tolma
 
 Within Class~A (fixed inertial observer), the $K$-dynamics near $K=1$ is a one-dimensional Ornstein--Uhlenbeck process with stationary variance
 \begin{equation}
-\mathrm{Var}(K)\approx\frac{\sigma^{2}}{2d_{c}}\label{eq:var}
+\mathrm{Var}(K)\approx\frac{\sigma^{2}}{2d_{c}}.\label{eq:var}
 \end{equation}
-With this stationary variance, the FDT form $\sigma_{K}^{2}=2\kappa_{K}T_{\mathrm{eff}}$ defines the effective temperature $T_{\mathrm{eff}}=\sigma^{2}/(2d_{c})$, consistent with Law~II and Theorem~6. The Fokker--Planck equation yields a Boltzmann stationary distribution $\rho\propto\exp(-V/T_{\mathrm{eff}})$; the Clausius relation $\delta Q=T_{\mathrm{eff}}\,dS$ then follows for the OU process, with
+With this stationary variance, the FDT form $\sigma_{K}^{2}=2\kappa_{K}T_{\mathrm{eff}}$ defines the effective temperature $T_{\mathrm{eff}}=\sigma^{2}/(2d_{c})$, consistent with Law~II and Theorem~6. The Fokker--Planck equation yields a Boltzmann stationary distribution $\rho\propto\exp(-V/T_{\mathrm{eff}})$; the Clausius relation $\delta Q=T_{\mathrm{eff}}\,dS$ then follows from detailed balance for the OU process, with
 \[
 \delta Q := dV + \tfrac{1}{2}\sigma_{K}^{2}\,dt,\qquad \sigma_{K}=2\sigma\|Gx_{*}\|.
 \]
@@ -239,7 +239,7 @@ Three logically distinct inputs: (i)~the OU approximation, valid when $|K-1|\ll 
 
 Applying It\^{o}'s formula to $K=x^{\top}Gx$ gives an additional drift $\sigma^{2}\,\mathrm{tr}(G)\,dt$. This shifts the mean of $K$ but not its variance: at any $G$-eigenvector base point, the FDT ratio $\sigma_{K}^{2}/(2\kappa_{K})$ cancels to $\sigma^{2}/(2d_{c})$ regardless of $x_{*}^{\top}G^{2}x_{*}$. Hence~\eqref{eq:var} and $T_{\mathrm{eff}}=\sigma^{2}/(2d_{c})$ hold for any Lorentzian $G$.
 
-The $K$-space noise amplitude $\sigma_{K}(x)=2\sigma\|Gx\|$ varies along $\{K=1\}$, yielding a position-dependent temperature:
+The $K$-space noise amplitude $\sigma_{K}(x)=2\sigma\|Gx\|$ varies along $\{K=1\}$, yielding a position-dependent temperature (eq.~\eqref{eq:Tloc}):
 \begin{equation}
 T_{\mathrm{loc}}(x) := \frac{\sigma_{K}(x)^{2}}{2\kappa_{K}(x_{*})} = \frac{\sigma^{2}\,x^{\top}G^{2}x}{2d_{c}\,x_{*}^{\top}G^{2}x_{*}}.\label{eq:Tloc}
 \end{equation}
@@ -288,7 +288,7 @@ Expanding (direct computation using $\Box\ln\sigma_1=\Box\ln r+\tfrac{1}{2}\Box\
 (For $K_2$: $\Box\ln r = (1/r^2)d/dr[r^2f/r]=(rf'+f)/r^2$,
 so $r^2\Box\ln r = rf'+f$.)
 
-\begin{lemma}\label{lem:R}
+\begin{lemma}[Scalar Curvature Formula]\label{lem:R}
 $R=-2\,\Box\ln\sigma_1+2/r^2$ for~\eqref{eq:metric}.
 \end{lemma}
 \begin{proof}
@@ -318,7 +318,7 @@ For~\eqref{eq:metric} with $f\in C^2(0,\infty)$:
 \begin{proof}
 $(\Rightarrow)$\;
 $K_2{=}1$ gives $R_{\theta\theta}{=}0$.
-$K_1{-}K_2=rf'+\frac{r^2}{2}f''=0$ gives $f''=-2f'/r$; hence $R_{tt}{=}0$ (by the observation $R_{tt}=\tfrac{f}{r^2}(K_1-K_2)$ above).
+$K_1{-}K_2=rf'+\frac{r^2}{2}f''=0$ (from eqs.~\eqref{eq:K1exp}--\eqref{eq:K2exp}) gives $f''=-2f'/r$; hence $R_{tt}{=}0$ (by the observation $R_{tt}=\tfrac{f}{r^2}(K_1-K_2)$ above).
 
 $(\Leftarrow)$\;
 $R_{\theta\theta}{=}0$ gives $K_2{=}1$.
@@ -381,7 +381,7 @@ entirely independent.
 \midrule
 Principle & $K = \boldsymbol{x}^T\!G\,\boldsymbol{x} = 1$
   & $\sigma_2^2\,\Box\ln\sigma_i = 1\;\;\forall\,i$ \\[3pt]
-Balance & temporal = spatial & $\Box\ln\sigma_i = 1/\sigma_2^2$ \\[3pt]
+Balance & unit temporal cost ($K{=}1$) & $\Box\ln\sigma_i = 1/\sigma_2^2$ \\[3pt]
 Vacuum & $K{=}1$ & $K_1{=}K_2{=}1\;\Leftrightarrow\;R_{\mu\nu}{=}0$ \\[3pt]
 Matter & $K \neq 1 \to V > 0$ & $K_2 \neq 1\;\to\;
   \rho = (1{-}K_2)/(8\pi r^2)$ \\[3pt]
@@ -406,8 +406,7 @@ Specialising to the $(t,r)$ Rindler wedge, $G=\mathrm{diag}(\sigma_1^2,-1)$ (Axi
 \end{proof}
 
 \noindent
-A direct consequence: when $\sigma_1=0$, $K=-x_2^2\le 0$ and $K{=}1$ has no solutions, so the framework is undefined there. The Schwarzschild singularity ($\sigma_1\to 0$ as $r\to 0$) lies
-outside the domain of the theory.
+A direct consequence: when $\sigma_1=0$, $K=-x_2^2\le 0$ and $K{=}1$ has no solutions, so the framework is undefined there. The Schwarzschild singularity ($\sigma_1\to 0$ as $r\to 0$) lies outside the domain of the theory: the framework is undefined there (rather than incorrect), since $K=1$ has no solutions when $\sigma_1=0$.
 
 \begin{proposition}[Intrinsic resolution scale]\label{prop:domain}
 The $K{=}1$ framework is self-consistent only for
@@ -438,7 +437,7 @@ at action~$\sim\hbar$---derived from the framework's internal self-consistency, 
 
 The framework reaches the Einstein equations from the three realizability conditions by two routes sharing the same starting point ($G$ indefinite, $K{=}1$, OU dynamics) but diverging thereafter. Route~A uses stochastic dynamics and the Jacobson bridge with $S\propto A$; Route~B uses the d'Alembertian of log-eigenvalues. In the spherically symmetric sector, Route~B is fully independent of Jacobson and of thermodynamics.
 
-The Jacobson argument~\cite{Jacobson} reconstructs the Einstein equations from three inputs: Lorentzian signature, the Clausius relation on every local Rindler horizon, and $S=A/4$. Route~A supplies the first two: signature is forced by realizability (Theorem~4) and Clausius follows algebraically on each horizon (Proposition~\ref{prop:clausius}); $S\propto A$ is then the sole remaining external input. The patching across horizon directions requires no additional assumptions: at each spacetime point, every null direction defines a two-dimensional normal plane on which $\dim(\mathrm{Skew}_2)=1$, so Theorem~1 guarantees a unique~$J_G$ with no pairing ambiguity (cf.\ the $(1{+}3)$-dimensional extension below).
+The Jacobson argument~\cite{Jacobson} reconstructs the Einstein equations from three inputs: Lorentzian signature, the Clausius relation on every local Rindler horizon, and $S=A/4$. Route~A supplies the first two: signature is forced by realizability (Theorem~4) and Clausius follows on each horizon (Proposition~\ref{prop:clausius}, given $T_{\mathrm{eff}}=T_{\mathrm{tol}}$); $S\propto A$ is then the sole remaining external input. The patching across horizon directions requires no additional assumptions: at each spacetime point, every null direction defines a two-dimensional normal plane on which $\dim(\mathrm{Skew}_2)=1$, so Theorem~1 guarantees a unique~$J_G$ with no pairing ambiguity (cf.\ the $(1{+}3)$-dimensional extension below).
 
 \subsection*{The $K{=}1$ self-referential structure}
 
@@ -459,7 +458,7 @@ The condition $K{=}1$ has a self-referential character: the metric~$G$ defines t
 For non-vacuum configurations, $\rho=(1{-}K_2)/(8\pi r^2)$: matter is the angular eigenvalue's deficit from self-consistency per unit area. (This \emph{rewrites} the Einstein $G_{tt}$-component; the coefficient $8\pi$ is inherited from GR, not derived.)
 
 \medskip
-\noindent\textit{Stage~4 (quantum interface):} For $G=\mathrm{diag}(-(\kappa\ell)^2,1)$, defining $\sigma_1:=|\det G|^{1/2}/\alpha=\kappa\ell/\alpha$ gives $d_c\cdot\sigma_1=1$ identically. This is a reciprocity relation: the stabilisation cost~$d_c$ and the symplectic eigenvalue~$\sigma_1$ are reciprocal. The observable~$K$ and the boost angle~$\varphi$ along $\{K{=}1\}$ satisfy $\{K,\varphi\}_{J_G}=-2d_c$, where $\{\cdot,\cdot\}_{J_G}$ denotes the Poisson bracket induced by~$J_G$. Whether quantisation of this conjugate pair yields a hard lower bound on~$\sigma_1$ remains open. Meanwhile, Axiom~T forces $\sigma_1>0$ (Proposition~\ref{prop:sigma1}) and the self-consistency bound gives $\sigma_1\gtrsim\ell_P$ (Proposition~\ref{prop:domain}).
+\noindent\textit{Stage~4 (quantum interface):} For $G=\mathrm{diag}(-(\kappa\ell)^2,1)$, defining $\sigma_1:=|\det G|^{1/2}/\alpha=\kappa\ell/\alpha$ (with $\alpha=1$, this matches $\sigma_1:=r\sqrt{f}$ of \S\ref{sec:field}) gives $d_c\cdot\sigma_1=1$ identically. This is a reciprocity relation: the stabilisation cost~$d_c$ and the symplectic eigenvalue~$\sigma_1$ are reciprocal. The observable~$K$ and the boost angle~$\varphi$ along $\{K{=}1\}$ satisfy $\{K,\varphi\}_{J_G}=-2d_c$, where $\{\cdot,\cdot\}_{J_G}$ denotes the Poisson bracket induced by~$J_G$. Whether quantisation of this conjugate pair yields a hard lower bound on~$\sigma_1$ remains open. Meanwhile, Axiom~T forces $\sigma_1>0$ (Proposition~\ref{prop:sigma1}) and the self-consistency bound gives $\sigma_1\gtrsim\ell_P$ (Proposition~\ref{prop:domain}).
 
 \subsection*{Extension to $(1{+}3)$ dimensions}
 
