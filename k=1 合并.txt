@@ -125,7 +125,7 @@ The equivalence fails for general $H_{*}$ \textup{(Remark~\ref{rem:Hstar_dep})}:
 \end{theorem}
 
 \begin{proof}
-$d_{c}>0 \Leftrightarrow -1/\det G>0$ (eq.~\eqref{eq:dc}) $\Leftrightarrow \det G<0 \Leftrightarrow \mathrm{Sig}(G)=(1,1)$; Theorem~3 establishes the $(\Leftarrow)$ direction.\qed
+$d_{c}>0 \Leftrightarrow -1/\det G>0$ (eq.~\eqref{eq:dc}) $\Leftrightarrow \det G<0 \Leftrightarrow \mathrm{Sig}(G)=(1,1)$, via Theorems~2 and~3.\qed
 \end{proof}
 
 \medskip\noindent\textbf{Scope.} The closed-form $d_{c}=\alpha\sqrt{-1/\det G}$ relies on $\dim(\mathrm{Skew}_{2})=1$; higher-dimensional extensions require additional structure and are not fully developed in the present paper.
@@ -164,7 +164,7 @@ The GENERIC formalism~\cite{GENERIC} requires Euclidean antisymmetry $L^{\top}=-
 
 \section{Critical damping and fluctuation structure (Law~III)}\label{sec:lawIII}
 
-\noindent\textbf{Law~III.} \textit{$K=1$ is selected by the drift dynamics as the unique self-consistent locus of the metric.}
+\noindent\textbf{Law~III.} \textit{$K=1$ is selected by the stochastic dynamics as the unique self-consistent locus of the metric.}
 
 \medskip
 
@@ -427,7 +427,7 @@ Near the horizon, $T_{\mathrm{eff}}=T_{\mathrm{tol}}=d_c\cdot T_H=\alpha\hbar/(2
 (from~\eqref{eq:nearhorizon}). With $\alpha=1$ and $\sigma_1=\kappa\ell$,
 $\ell=\sigma_1/\kappa$, so $T_{\mathrm{eff}}=\hbar\kappa/(2\pi\sigma_1)
 =\hbar/(4\pi\sigma_1)$ for Schwarzschild ($\kappa=1/(4M)$; near the horizon $r\to 2M$, $\sigma_1=r\sqrt{f}\to 0$).
-$\mathrm{Var}(K)\approx T_{\mathrm{eff}}$ (in the OU approximation); for $K{=}1$ to be a
+$\mathrm{Var}(K)\approx T_{\mathrm{eff}}$ (from eq.~\eqref{eq:var} and $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, in the OU approximation); for $K{=}1$ to be a
 well-defined equilibrium, $\mathrm{Var}(K)<1$, hence
 $\sigma_1>\hbar/(4\pi)$. This is a self-consistent bound: the OU approximation is required to be valid, i.e., $\mathrm{Var}(K)<1$.\qed
 \end{proof}
