@@ -254,7 +254,7 @@ The $K$-space noise amplitude $\sigma_{K}(x)=2\sigma\|Gx\|$ varies along $\{K=1\
 \begin{equation}
 T_{\mathrm{loc}}(x) := \frac{\sigma_{K}(x)^{2}}{2\kappa_{K}(x_{*})} = \frac{\sigma^{2}\,x^{\top}G^{2}x}{2d_{c}\,x_{*}^{\top}G^{2}x_{*}}.\label{eq:Tloc}
 \end{equation}
-For $\kappa\ell=1$ and $x(t)=(\sinh t,\cosh t)$: $T_{\mathrm{loc}}(t)=\sigma^{2}\cosh(2t)/(2d_{c})$, showing that the local temperature is an intrinsic property of the metric. For the Rindler metric, $\sigma^{2}\,\mathrm{tr}(G)=\sigma^{2}(1-(\kappa\ell)^{2})$; the OU approximation is exact at $\kappa\ell=1$ and accurate when $|(\kappa\ell)^{2}-1|\ll 1$.
+For $\kappa\ell=1$ and $x(t)=(\sinh t,\cosh t)$ (with base point $x_{*}=(0,1)$, so $x_{*}^{\top}G^{2}x_{*}=1$): $T_{\mathrm{loc}}(t)=\sigma^{2}\cosh(2t)/(2d_{c})$, showing that the local temperature is an intrinsic property of the metric. For the Rindler metric, $\sigma^{2}\,\mathrm{tr}(G)=\sigma^{2}(1-(\kappa\ell)^{2})$; the OU approximation is exact at $\kappa\ell=1$ and accurate when $|(\kappa\ell)^{2}-1|\ll 1$.
 
 \begin{remark}[Stability constraint]
 For macroscopic black holes, $T_{\mathrm{tol}}\ll d_{c}$; setting $D=T_{\mathrm{tol}}I$ renders $K=1$ unstable. Stability requires $D\ge d_{c}I$; critical damping $D=d_{c}I$ is the unique marginally stable choice.
