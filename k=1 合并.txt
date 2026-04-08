@@ -264,8 +264,9 @@ Combined with the entropy--area proportionality $S\propto A$ and the Jacobson ar
 \section{Eigenvalue self-consistency (Route~B: direct algebraic)}\label{sec:field}
 
 Route~A reaches the Einstein equations via thermodynamics.
-A direct algebraic route also exists in the
+A complementary algebraic route exists in the
 spherically symmetric sector, using no thermodynamic input.
+Rather than deriving the field equations from the framework's axioms, it establishes an algebraic equivalence between a motivated field-level generalisation of $K{=}1$ and $R_{\mu\nu}=0$.
 
 Consider the static spherically symmetric metric
 \begin{equation}\label{eq:metric}
@@ -284,7 +285,7 @@ $\Box\phi=r^{-2}\partial_r(r^2f\,\partial_r\phi)$ (the radial d'Alembertian, exa
 \end{definition}
 
 \noindent
-The eigenvalue self-consistency condition $\sigma_2^2\,\Box\ln\sigma=1$, imposed on each eigenvalue ($K_1=1$ and $K_2=1$), states that the d'Alembertian of each log-eigenvalue equals the angular curvature cost $1/\sigma_2^2$. Every eigenvalue must propagate at the rate set by the angular sector---a field-level analogue of the point-level balance $K{=}1$.
+The eigenvalue self-consistency condition $\sigma_2^2\,\Box\ln\sigma=1$, imposed on each eigenvalue ($K_1=1$ and $K_2=1$), states that the d'Alembertian of each log-eigenvalue equals the angular curvature cost $1/\sigma_2^2$. This is a motivated field-level analogue of the point-level balance $K{=}1$: each eigenvalue is required to propagate at the rate set by the angular sector, in the same way that $K=1$ requires the cost form to reproduce its own normalisation. The analogy is a conjecture, not a derivation; its justification is that it is algebraically equivalent to the vacuum Einstein equations (Theorem~\ref{thm:field}), which establishes internal consistency.
 
 Expanding (direct computation using $\Box\ln\sigma_1=\Box\ln r+\tfrac{1}{2}\Box\ln f$):
 \begin{equation}\label{eq:K1exp}
@@ -449,7 +450,7 @@ If $K$ and the boost angle $\varphi$ along $\{K{=}1\}$ are canonically conjugate
 
 \subsection*{Two routes to Einstein}
 
-The framework reaches the Einstein equations from the three realizability conditions by two routes sharing the same starting point ($G$ indefinite, $K{=}1$) but diverging thereafter. Route~A uses stochastic dynamics and the Jacobson bridge with $S\propto A$; Route~B uses the d'Alembertian of log-eigenvalues. In the spherically symmetric sector, Route~B is fully independent of Jacobson and of thermodynamics.
+The framework reaches the Einstein equations from the three realizability conditions by two routes sharing the same starting point ($G$ indefinite, $K{=}1$) but diverging thereafter. Route~A uses stochastic dynamics and the Jacobson bridge with $S\propto A$; Route~B establishes algebraic equivalence between the $K{=}1$ field-level analogue and $R_{\mu\nu}=0$, without thermodynamic input but via a motivated condition rather than a derivation from the axioms. In the spherically symmetric sector, Route~B is fully independent of Jacobson and of thermodynamics.
 
 The Jacobson argument~\cite{Jacobson} reconstructs the Einstein equations from three inputs: Lorentzian signature, the Clausius relation on every local Rindler horizon, and $S=A/4$. Route~A supplies the first two: signature is forced by realizability (Theorem~4) and Clausius follows on each horizon (Proposition~\ref{prop:clausius}, given $T_{\mathrm{eff}}=T_{\mathrm{tol}}$). The sole remaining external input is $S\propto A$. The patching across horizon directions requires no additional assumptions: at each spacetime point, every null direction defines a two-dimensional normal plane on which $\dim(\mathrm{Skew}_2)=1$, so Theorem~1 guarantees a unique~$J_G$ with no pairing ambiguity (cf.\ the $(1{+}3)$-dimensional extension below).
 
