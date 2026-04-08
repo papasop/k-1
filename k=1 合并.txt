@@ -274,7 +274,7 @@ Consider the static spherically symmetric metric
 with symplectic eigenvalues $\sigma_1:=r\sqrt{f}$, $\sigma_2:=r$
 (on each local Rindler wedge, $d_c\sigma_1=\alpha$, connecting $\sigma_1$ to the $2\times 2$ symplectic eigenvalue of~\S3),
 and d'Alembertian
-$\Box\phi=(r^2f)^{-1}\partial_r(r^2f\,\partial_r\phi)$ (the radial d'Alembertian, exact for $r$-dependent $\phi$).
+$\Box\phi=r^{-2}\partial_r(r^2f\,\partial_r\phi)$ (the radial d'Alembertian, exact for $r$-dependent $\phi$).
 
 \begin{definition}[Eigenvalue self-consistency functionals]\label{def:esc}
 \begin{align}
