@@ -87,7 +87,7 @@ Since $\dim(\mathrm{Skew}_{2})=1$ and $J$ spans $\mathrm{Skew}_{2}$, condition~(
 \end{proof}
 
 \begin{remark}[Non-degeneracy vs.\ signature]
-Theorem~1 requires only $\det G\neq 0$; it holds for any signature. The Lorentzian condition enters decisively only in Theorem~2, through the reality of the symplectic eigenvalues. Since $GJ_{G}=\alpha J$ is skew-symmetric, $J_{G}$ lies in the Lie algebra $\mathfrak{sp}(2,\mathbb{R})$ (elements of $\mathfrak{sp}(2,\mathbb{R})$ satisfy $GM$ skew for any $G$); the Lorentzian condition forces $J_{G}$ to be a hyperbolic element (with real eigenvalues), whose real eigenvalues yield $d_{c}>0$.
+Theorem~1 requires only $\det G\neq 0$; it holds for any signature. The Lorentzian condition enters decisively only in Theorem~2, through the reality of the symplectic eigenvalues. Since $GJ_{G}=\alpha J$ is skew-symmetric, $J_{G}$ is $G$-antisymmetric by construction; the Lorentzian condition forces $J_{G}$ to be a hyperbolic element (with real eigenvalues), whose real eigenvalues yield $d_{c}>0$.
 \end{remark}
 
 \begin{theorem}[Spectral Reality]
@@ -366,7 +366,7 @@ $R_{\mu\nu}v^\mu v^\nu=0$ for every null~$v^\mu$ and $R=0$,
 then $R_{\mu\nu}=0$.
 (Proof: in an orthonormal frame, taking $v=e_0\pm e_k$ gives
 $R_{0k}=0$, $R_{00}+R_{kk}=0$; mixed spatial components vanish
-from $v=(e_0+\frac{e_i+e_j}{\sqrt{2}})$; the trace $R=0$ then
+by comparing $v=(e_0\pm\frac{e_i+e_j}{\sqrt{2}})$ and $v=(e_0\pm\frac{e_i-e_j}{\sqrt{2}})$, giving $R_{ij}=0$ for $i\neq j$; the trace $R=0$ then
 forces $R_{00}=0$.)
 \end{remark}
 
