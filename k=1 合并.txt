@@ -324,7 +324,7 @@ where $R_{\mu\nu}=0$ are the vacuum Einstein field equations~\cite{Einstein1915,
 \begin{proof}
 $(\Rightarrow)$\;
 $K_2{=}1$ gives $R_{\theta\theta}{=}0$.
-$K_1{-}K_2=rf'+\frac{r^2}{2}f''=0$ (from eqs.~\eqref{eq:K1exp}--\eqref{eq:K2exp}) gives $f''=-2f'/r$; hence $R_{tt}{=}0$ (by the observation $R_{tt}=\tfrac{f}{r^2}(K_1-K_2)$ above).
+$K_1{-}K_2=rf'+\frac{r^2}{2}f''=0$ (from eqs.~\eqref{eq:K1exp}--\eqref{eq:K2exp}) gives $f''=-2f'/r$; hence $R_{tt}{=}0$ (by the observation $R_{tt}=\tfrac{f}{r^2}(K_1-K_2)$ above). ($R_{rr}=0$ is equivalent to $R_{tt}=0$ for this diagonal ansatz.)
 
 $(\Leftarrow)$\;
 $R_{\theta\theta}{=}0$ gives $K_2{=}1$.
@@ -341,6 +341,7 @@ In the weak field ($f=1+\varepsilon\varphi$),
 $K_2{=}1$ gives $\varphi=C/r$ (Newton) in one step;
 $K_1{=}1$ is automatically satisfied at linear order,
 so its independent content is purely nonlinear (strong-field).
+Any future observational test distinguishing the eigenvalue principle from standard GR would therefore require strong-gravity data.
 \end{corollary}
 
 \begin{remark}[Non-vacuum and $\Lambda$]
@@ -371,7 +372,8 @@ forces $R_{00}=0$.)
 \begin{remark}[Route A vs.\ Route B]
 Route~A (Proposition~\ref{prop:clausius} $+$ Jacobson) applies to all
 metrics but requires $S\propto A$.
-Route~B (Theorem~\ref{thm:field}) requires no thermodynamic input
+Route~B (Theorem~\ref{thm:field}) requires no thermodynamic input ---
+no Clausius relation, no $S=A/4$, no horizon entropy ---
 but is proved only for spherical symmetry.
 The general extension requires null-surface Gauss--Codazzi and shares
 Jacobson's null-direction patching architecture;
@@ -451,7 +453,7 @@ The condition $K{=}1$ has a self-referential character: the metric~$G$ defines t
 
 \subsection*{Stages}
 
-\noindent\textit{Stage~0 (origin):} The three axioms $\to$ $\mathrm{Sig}(G)=(1,1)$ (Theorem~4). Conversely, for definite~$G$ no critical damping threshold $d_c>0$ exists (Theorem~3): the framework produces physical content only when the cost structure is genuinely Lorentzian.
+\noindent\textit{Stage~0 (origin):} The three axioms $\to$ $\mathrm{Sig}(G)=(1,1)$ (Theorem~4). Conversely, for definite~$G$ no critical damping threshold $d_c>0$ exists (Theorem~3): the framework is self-limiting, producing physical content only when the cost structure is genuinely Lorentzian.
 
 \medskip
 \noindent\textit{Stage~1 (geometry):} $G$ defines light cones and causal structure. Whether a Lorentzian information geometry --- as opposed to the Riemannian Fisher geometry --- can be made precise remains open.
