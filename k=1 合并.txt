@@ -265,8 +265,8 @@ Combined with the entropy--area proportionality $S\propto A$ and the Jacobson ar
 
 Route~A reaches the Einstein equations via thermodynamics.
 A complementary algebraic route exists in the
-spherically symmetric sector, using no thermodynamic input.
-Rather than deriving the field equations from the framework's axioms, it establishes an algebraic equivalence between a motivated field-level generalisation of $K{=}1$ and $R_{\mu\nu}=0$.
+spherically symmetric sector, using no thermodynamic input:
+rather than deriving the field equations from the framework's axioms, it establishes an algebraic equivalence between a motivated field-level generalisation of $K{=}1$ and $R_{\mu\nu}=0$.
 
 Consider the static spherically symmetric metric
 \begin{equation}\label{eq:metric}
@@ -414,7 +414,7 @@ Axiom~T implies $\sigma_1>0$ wherever $K{=}1$ holds.
 \end{proposition}
 
 \begin{proof}
-Specialising to the $(t,r)$ Rindler wedge, $G=\mathrm{diag}(\sigma_1^2,-1)$ (Axiom~T gives $G_{00}=\sigma_1^2>0$; cf.\ $g_{00}=-f<0$ for the spacetime metric; this is the Axiom-T-consistent sign convention, which gives the same $d_c=\alpha/\sigma_1$ as the Rindler-metric convention $G=\mathrm{diag}(-\sigma_1^2,1)$ used in \S\ref{sec:thermo}, since $\det G=-\sigma_1^2$ in both cases). If $\sigma_1=0$ then $G_{00}=0$, violating Axiom~T.\qed
+Specialising to the $(t,r)$ Rindler wedge, $G=\mathrm{diag}(\sigma_1^2,-1)$ (Axiom~T gives $G_{00}=\sigma_1^2>0$; cf.\ $g_{00}=-f<0$ for the spacetime metric; the sign convention here differs from \S\ref{sec:thermo} but gives the same $d_c$, since $\det G=-\sigma_1^2$ in both cases). If $\sigma_1=0$ then $G_{00}=0$, violating Axiom~T.\qed
 \end{proof}
 
 \noindent
@@ -440,7 +440,7 @@ $\sigma_1>\hbar/(4\pi)$. This is a self-consistent bound: the OU approximation i
 Below $\sigma_{1,c}$, thermal fluctuations of $K$ exceed its
 mean value and the semiclassical metric loses its classical meaning.
 This is a \emph{soft} bound---analogous to classical mechanics
-at action~$\sim\hbar$---derived from the framework's internal self-consistency, given the sole external identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$.
+at action~$\sim\hbar$---derived from the framework's internal self-consistency, given the sole external identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$. The bound is self-consistent in the following sense: the OU approximation requires $\mathrm{Var}(K)<1$, which demands $\sigma_1>\sigma_{1,c}$; in that regime $\mathrm{Var}(K)<1$ is indeed satisfied, so the approximation is valid wherever it is invoked.
 
 If $K$ and the boost angle $\varphi$ along $\{K{=}1\}$ are canonically conjugate (Open Problem~2), the compactness of $\varphi\in[0,2\pi)$ upgrades the soft bound to a hard spectral gap: $\sigma_1\geq\hbar/(4\pi)$. Both the self-consistency argument and the conjugacy argument give $\sigma_{1,\min}\sim O(\ell_P)$; their numerical agreement confirms that the Planck scale is the natural resolution limit of the framework, independently of whether the conjugacy conjecture is established.
 
@@ -450,7 +450,7 @@ If $K$ and the boost angle $\varphi$ along $\{K{=}1\}$ are canonically conjugate
 
 \subsection*{Two routes to Einstein}
 
-The framework reaches the Einstein equations from the three realizability conditions by two routes sharing the same starting point ($G$ indefinite, $K{=}1$) but diverging thereafter. Route~A uses stochastic dynamics and the Jacobson bridge with $S\propto A$; Route~B establishes algebraic equivalence between the $K{=}1$ field-level analogue and $R_{\mu\nu}=0$, without thermodynamic input but via a motivated condition rather than a derivation from the axioms. In the spherically symmetric sector, Route~B is fully independent of Jacobson and of thermodynamics.
+The framework reaches the Einstein equations by two routes sharing the same starting point ($G$ indefinite, $K{=}1$, both following from the three realizability conditions) but diverging thereafter. Route~A uses stochastic dynamics and the Jacobson bridge with $S\propto A$; Route~B establishes algebraic equivalence between the $K{=}1$ field-level analogue and $R_{\mu\nu}=0$, without thermodynamic input but via a motivated condition rather than a derivation from the axioms. In the spherically symmetric sector, Route~B is fully independent of Jacobson and of thermodynamics.
 
 The Jacobson argument~\cite{Jacobson} reconstructs the Einstein equations from three inputs: Lorentzian signature, the Clausius relation on every local Rindler horizon, and $S=A/4$. Route~A supplies the first two: signature is forced by realizability (Theorem~4) and Clausius follows on each horizon (Proposition~\ref{prop:clausius}, given $T_{\mathrm{eff}}=T_{\mathrm{tol}}$). The sole remaining external input is $S\propto A$. The patching across horizon directions requires no additional assumptions: at each spacetime point, every null direction defines a two-dimensional normal plane on which $\dim(\mathrm{Skew}_2)=1$, so Theorem~1 guarantees a unique~$J_G$ with no pairing ambiguity (cf.\ the $(1{+}3)$-dimensional extension below).
 
@@ -503,7 +503,7 @@ For Lorentzian~$G$, the symmetric part $S=(J_G+J_G^\top)/2\neq 0$ departs from t
 
 \subsection*{Conclusion}
 
-General relativity prescribes Lorentzian signature; the present work derives it from a cost asymmetry and shows that the resulting metric enforces its own normalisation. At the point level, the Clausius relation follows algebraically. At the field level, the eigenvalue self-consistency principle yields the vacuum Einstein equations directly. Axiom~T excludes curvature singularities (where $\sigma_1$ degenerates) from the theory's domain, and the OU variance sets a Planck-scale resolution limit. What remains prescribed is the cost asymmetry itself: why one direction carries positive cost while others do not. This is Riemann's question in economic form.
+General relativity prescribes Lorentzian signature; the present work derives it from a cost asymmetry and shows that the resulting metric enforces its own normalisation. At the point level, the Clausius relation follows algebraically. At the field level, the eigenvalue self-consistency principle is algebraically equivalent to the vacuum Einstein equations, connecting the $K{=}1$ language to the field level. Axiom~T excludes curvature singularities (where $\sigma_1$ degenerates) from the theory's domain, and the OU variance sets a Planck-scale resolution limit. What remains prescribed is the cost asymmetry itself: why one direction carries positive cost while others do not. This is Riemann's question in economic form.
 
 \bigskip
 \noindent\textbf{Statements and Declarations}
