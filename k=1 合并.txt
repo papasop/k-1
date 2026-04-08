@@ -54,7 +54,7 @@ Route~A is general but requires $S\propto A$; Route~B is thermodynamically indep
 Laws~I--III are axioms of the framework, not empirical laws. This section constructs $G$ from information time and establishes that nontrivial configurations require $\det G<0$. Law~I defines the cost structure; Law~II uniquely determines the dynamics on it; Law~III identifies $K=1$ as the resulting attractor.
 
 \medskip
-\noindent\textbf{Law~I.} \textit{The metric $G$ is a non-degenerate symmetric bilinear form measuring local displacement cost, where the temporal direction is that of positive cost \textup{(Assumption~T of~\cite{Realizability})}.}
+\noindent\textbf{Law~I.} \textit{The metric $G$ is a non-degenerate symmetric bilinear form measuring local displacement cost \textup{(in the sense of~\cite{Realizability})}, where the temporal direction is that of positive cost \textup{(Assumption~T of~\cite{Realizability})}.}
 
 \medskip
 
