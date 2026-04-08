@@ -213,7 +213,7 @@ For the Rindler metric $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, where $\kappa$ is
 \begin{equation}
 d_{c}\cdot T_{H} = \frac{\alpha}{\kappa\ell}\cdot\frac{\hbar\kappa}{2\pi} = \frac{\alpha\hbar}{2\pi\ell},\label{eq:nearhorizon}
 \end{equation}
-exhibiting exact $\kappa$-cancellation. Hence the Tolman temperature~\cite{Tolman} $T_{\mathrm{tol}}=d_{c}\cdot T_{H}=\alpha\hbar/(2\pi\ell)$, depending only on the proper distance $\ell$ from the horizon, not on the surface gravity $\kappa$.
+exhibiting exact $\kappa$-cancellation. Hence the result $d_{c}\cdot T_{H}=\alpha\hbar/(2\pi\ell)$ recovers the Tolman temperature~\cite{Tolman} $T_{\mathrm{tol}}=\alpha\hbar/(2\pi\ell)$, depending only on the proper distance $\ell$ from the horizon, not on the surface gravity $\kappa$.
 
 \subsection*{Clausius relation (from OU dynamics) within Class~A}
 
@@ -241,7 +241,7 @@ $(\Leftarrow)$: $\sigma^{2}=2d_{c}\cdot T_{\mathrm{tol}}$ gives $T_{\mathrm{eff}
 \end{proof}
 
 \begin{remark}[Status of the approximation]
-Three logically distinct inputs: (i)~the OU approximation, valid when $|K-1|\ll 1$ and Class~B diffusion is slow compared to Class~A relaxation ($\tau=1/(4d_{c})$); (ii)~the identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, the sole genuine external identification, connecting the stochastic framework to Rindler thermodynamics; (iii)~the Tolman identity $T_{\mathrm{tol}}=d_{c}T_{H}$, which follows from~\eqref{eq:nearhorizon} and is independently verifiable via the Tolman-Ehrenfest relation~\cite{Tolman}.
+Three logically distinct inputs: (i)~the OU approximation, valid when $|K-1|\ll 1$ and Class~B diffusion is slow compared to Class~A relaxation ($\tau=1/(4d_{c})$); (ii)~the identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, the sole external identification at the stochastic level, connecting the stochastic framework to Rindler thermodynamics; (iii)~the Tolman identity $T_{\mathrm{tol}}=d_{c}T_{H}$, which follows from~\eqref{eq:nearhorizon} and is independently verifiable via the Tolman-Ehrenfest relation~\cite{Tolman}.
 \end{remark}
 
 \subsection*{Position-dependent temperature and It\^{o} corrections}
