@@ -229,7 +229,7 @@ With this stationary variance, the FDT form $\sigma_{K}^{2}=2\kappa_{K}T_{\mathr
 The only external input is the identification $T_{\mathrm{eff}}(x_{*})=T_{\mathrm{tol}}(x_{*})$; everything else is derived internally.
 
 \begin{proposition}[Local Clausius Equivalence]\label{prop:clausius}
-Under local thermal equilibrium and the identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, the Clausius relation $\delta Q=T\,dS$ is equivalent to
+Under local thermal equilibrium and the identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, the Clausius relation $\delta Q=T_{\mathrm{tol}}\,dS$ is equivalent to
 \begin{equation}
 \sigma^{2} = 2\,d_{c}\cdot T_{\mathrm{tol}} = 2\,d_{c}^{2}\cdot T_{H}.\label{eq:noise}
 \end{equation}
