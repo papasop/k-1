@@ -192,7 +192,7 @@ The local effective restoring rate is $\kappa_{K}(x_{*})=4d_{c}\cdot x_{*}^{\top
 Adding isotropic white noise gives $dx=(J_{G}-D)\nabla V\,dt+\sigma\,dW_{t}$. Two classes arise:
 
 \medskip\noindent
-\textit{Class~A} (thermodynamic): fluctuations of $K$ perpendicular to $\{K=1\}$, variance $\sigma^{2}/(2d_{c})$, confirmed by simulation for $\sigma\in\{0.3,0.6,1.0\}$.
+\textit{Class~A} (thermodynamic): fluctuations of $K$ perpendicular to $\{K=1\}$; the conditional distribution $P(K|x)$ at a fixed base point is Gaussian with variance $\sigma^{2}/(2d_{c})$, confirmed by simulation for $\sigma\in\{0.3,0.6,1.0\}$.
 
 \medskip\noindent
 \textit{Class~B} (kinematic, here also gauge): free tangential diffusion along $\{K=1\}$ in the boost direction. For the Rindler metric $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, $\{K=1\}$ is the hyperbola $-(\kappa\ell)^{2}x_{1}^{2}+x_{2}^{2}=1$; motion along it generates Lorentz boosts, changing the inertial observer but not the thermodynamic state. The Hessian of $V$ restricted to $\{K=1\}$ is rank-one with null space containing this tangent, confirming that Class~B carries no restoring force and no heat.
@@ -448,7 +448,7 @@ The condition $K{=}1$ has a self-referential character: the metric~$G$ defines t
 \noindent\textit{Stage~0:} The three axioms $\to$ $\mathrm{Sig}(G)=(1,1)$ (Theorem~4). Conversely, for definite~$G$ no critical damping threshold $d_c>0$ exists (Theorem~3): the framework produces physical content only when the cost structure is genuinely Lorentzian.
 
 \medskip
-\noindent\textit{Stage~1:} $G$ defines light cones and causal structure.
+\noindent\textit{Stage~1:} $G$ defines light cones and causal structure. Whether a Lorentzian information geometry --- as opposed to the Riemannian Fisher geometry --- can be made precise remains open.
 
 \medskip
 \noindent\textit{Stage~2:} $K{=}1$ $\to$ OU $\to$ Class~A/B; Clausius follows (Proposition~\ref{prop:clausius}).
@@ -458,7 +458,7 @@ The condition $K{=}1$ has a self-referential character: the metric~$G$ defines t
 For non-vacuum configurations, $\rho=(1{-}K_2)/(8\pi r^2)$: matter is the angular eigenvalue's deficit from self-consistency per unit area. (This \emph{rewrites} the Einstein $G_{tt}$-component; the coefficient $8\pi$ is inherited from GR, not derived.)
 
 \medskip
-\noindent\textit{Stage~4 (quantum interface):} For $G=\mathrm{diag}(-(\kappa\ell)^2,1)$, defining $\sigma_1:=|\det G|^{1/2}/\alpha=\kappa\ell/\alpha$ (with $\alpha=1$, this matches $\sigma_1:=r\sqrt{f}$ of \S\ref{sec:field}) gives $d_c\cdot\sigma_1=1$ identically. This is a reciprocity relation: the stabilisation cost~$d_c$ and the symplectic eigenvalue~$\sigma_1$ are reciprocal. The observable~$K$ and the boost angle~$\varphi$ along $\{K{=}1\}$ satisfy $\{K,\varphi\}_{J_G}=-2d_c$, where $\{\cdot,\cdot\}_{J_G}$ denotes the Poisson bracket induced by~$J_G$. Whether quantisation of this conjugate pair yields a hard lower bound on~$\sigma_1$ remains open, as does whether such a bound connects to the Bekenstein entropy bound~\cite{Bekenstein}. Meanwhile, Axiom~T forces $\sigma_1>0$ (Proposition~\ref{prop:sigma1}) and the self-consistency bound gives $\sigma_1\gtrsim\ell_P$ (Proposition~\ref{prop:domain}).
+\noindent\textit{Stage~4 (quantum interface):} For $G=\mathrm{diag}(-(\kappa\ell)^2,1)$, defining $\sigma_1:=|\det G|^{1/2}/\alpha=\kappa\ell/\alpha$ (with $\alpha=1$, this matches $\sigma_1:=r\sqrt{f}$ of \S\ref{sec:field}) gives $d_c\cdot\sigma_1=1$ identically (this holds for any Lorentzian $G$ with $\det G<0$). This is a reciprocity relation: the stabilisation cost~$d_c$ and the symplectic eigenvalue~$\sigma_1$ are reciprocal. The observable~$K$ and the boost angle~$\varphi$ along $\{K{=}1\}$ satisfy $\{K,\varphi\}_{J_G}=-2d_c$, where $\{\cdot,\cdot\}_{J_G}$ denotes the Poisson bracket induced by~$J_G$. Whether quantisation of this conjugate pair yields a hard lower bound on~$\sigma_1$ remains open, as does whether such a bound connects to the Bekenstein entropy bound~\cite{Bekenstein}. Meanwhile, Axiom~T forces $\sigma_1>0$ (Proposition~\ref{prop:sigma1}) and the self-consistency bound gives $\sigma_1\gtrsim\ell_P$ (Proposition~\ref{prop:domain}).
 
 \subsection*{Extension to $(1{+}3)$ dimensions}
 
@@ -497,6 +497,8 @@ General relativity prescribes Lorentzian signature; the present work derives it 
 
 \medskip\noindent\textbf{Competing interests.} None.
 
+\medskip\noindent\textbf{Author contributions.} Y.\,Y.\,N.\ Li is the sole author of the work presented.
+
 \medskip\noindent\textbf{Data availability.} No datasets were generated. Supplementary test suite (172 checks) available from the author.
 
 \begin{thebibliography}{99}
@@ -511,11 +513,13 @@ Preprint: Zenodo, \url{https://doi.org/10.5281/zenodo.19062187}
 J.~Ehlers, F.\,A.\,E.~Pirani, A.~Schild,
 The geometry of free fall and light propagation.
 Gen.\ Relativ.\ Gravit.\ \textbf{44}, 1587 (2012).
+\url{https://doi.org/10.1007/s10714-012-1353-4}
 
 \bibitem{GENERIC}
 M.~Grmela, H.\,C.~\"Ottinger,
 Dynamics and thermodynamics of complex fluids.~I.
 Phys.\ Rev.\ E \textbf{56}, 6620 (1997).
+\url{https://doi.org/10.1103/PhysRevE.56.6620}
 
 \bibitem{Wiener}
 N.~Wiener, Cybernetics. MIT Press (1948).
@@ -534,36 +538,43 @@ Nachr.\ Ges.\ Wiss.\ G\"ottingen, 395 (1915).
 T.~Jacobson,
 Thermodynamics of spacetime: The Einstein equation of state.
 Phys.\ Rev.\ Lett.\ \textbf{75}, 1260 (1995).
+\url{https://doi.org/10.1103/PhysRevLett.75.1260}
 
 \bibitem{Padmanabhan}
 T.~Padmanabhan,
 Thermodynamical aspects of gravity: New insights.
 Rep.\ Prog.\ Phys.\ \textbf{73}, 046901 (2010).
+\url{https://doi.org/10.1088/0034-4885/73/4/046901}
 
 \bibitem{Verlinde}
 E.~Verlinde,
 On the origin of gravity and the laws of Newton.
 J.\ High Energy Phys.\ \textbf{2011}(04), 029 (2011).
+\url{https://doi.org/10.1007/JHEP04(2011)029}
 
 \bibitem{Hawking}
 S.\,W.~Hawking,
 Particle creation by black holes.
 Commun.\ Math.\ Phys.\ \textbf{43}, 199 (1975).
+\url{https://doi.org/10.1007/BF02345020}
 
 \bibitem{Tolman}
 R.\,C.~Tolman,
 On the weight of heat and thermal equilibrium in general relativity.
 Phys.\ Rev.\ \textbf{35}, 904 (1930).
+\url{https://doi.org/10.1103/PhysRev.35.904}
 
 \bibitem{Bekenstein}
 J.\,D.~Bekenstein,
 Black holes and entropy.
 Phys.\ Rev.\ D \textbf{7}, 2333 (1973).
+\url{https://doi.org/10.1103/PhysRevD.7.2333}
 
 \bibitem{Amari}
 S.~Amari,
 Information Geometry and Its Applications.
 Springer (2016).
+\url{https://doi.org/10.1007/978-4-431-55978-8}
 
 \end{thebibliography}
 
