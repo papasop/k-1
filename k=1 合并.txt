@@ -146,7 +146,7 @@ For $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$ and diagonal $H_{*}$, one has $\mathr
 
 \section{Unique dynamics (Law~II)}\label{sec:lawII}
 
-\noindent\textbf{Law~II.} \textit{The dynamics on $\{K=1\}$ take the unique form $\dot{x}=(J_{G}-D)\nabla V$ for any smooth $V$, compatible with $GJ_{G}$ skew-symmetric and $D\ge 0$ ($D$ a $2\times 2$ positive-semidefinite dissipation matrix).}
+\noindent\textbf{Law~II.} \textit{The evolution law takes the unique form $\dot{x}=(J_{G}-D)\nabla V$ for any smooth $V$, compatible with $GJ_{G}$ skew-symmetric and $D\ge 0$ ($D$ a $2\times 2$ positive-semidefinite dissipation matrix); $\{K=1\}$ emerges as the self-consistent attractor under this dynamics.}
 
 Law~II is the uniqueness statement: once $G$ fixes $J_{G}$ (Theorem~1) and $D\ge 0$ is prescribed, the dynamics are completely determined.
 
