@@ -225,6 +225,7 @@ With this stationary variance, the FDT form $\sigma_{K}^{2}=2\kappa_{K}T_{\mathr
 \[
 \delta Q := dV + \tfrac{1}{2}\sigma_{K}^{2}\,dt,\qquad \sigma_{K}=2\sigma\|Gx_{*}\|.
 \]
+(The heat definition follows the Sekimoto--Seifert stochastic thermodynamics convention~\cite{Sekimoto}.)
 The only external input is the identification $T_{\mathrm{eff}}(x_{*})=T_{\mathrm{tol}}(x_{*})$; everything else is derived internally.
 
 \begin{proposition}[Local Clausius Equivalence]\label{prop:clausius}
@@ -232,11 +233,11 @@ Under local thermal equilibrium and the identification $T_{\mathrm{eff}}=T_{\mat
 \begin{equation}
 \sigma^{2} = 2\,d_{c}\cdot T_{\mathrm{tol}} = 2\,d_{c}^{2}\cdot T_{H}.\label{eq:noise}
 \end{equation}
-Conversely, $\sigma^{2}=2d_{c}\cdot T_{\mathrm{tol}}$ implies $T_{\mathrm{eff}}=T_{\mathrm{tol}}$.
 \end{proposition}
 
 \begin{proof}
-Setting $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ gives $\sigma^{2}/(2d_{c})=d_{c}\cdot T_{H}$, hence $\sigma^{2}=2d_{c}^{2}\cdot T_{H}$.\qed
+$(\Rightarrow)$: Setting $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ gives $\sigma^{2}/(2d_{c})=d_{c}\cdot T_{H}$, hence $\sigma^{2}=2d_{c}^{2}\cdot T_{H}$.
+$(\Leftarrow)$: $\sigma^{2}=2d_{c}\cdot T_{\mathrm{tol}}$ gives $T_{\mathrm{eff}}=\sigma^{2}/(2d_{c})=T_{\mathrm{tol}}$, hence Clausius holds.\qed
 \end{proof}
 
 \begin{remark}[Status of the approximation]
@@ -584,6 +585,12 @@ J.\,D.~Bekenstein,
 Black holes and entropy.
 Phys.\ Rev.\ D \textbf{7}, 2333 (1973).
 \url{https://doi.org/10.1103/PhysRevD.7.2333}
+
+\bibitem{Sekimoto}
+K.~Sekimoto,
+Stochastic Energetics.
+Lecture Notes in Physics \textbf{799}, Springer (2010).
+\url{https://doi.org/10.1007/978-3-642-05411-2}
 
 \bibitem{Amari}
 S.~Amari,
