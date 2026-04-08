@@ -150,6 +150,8 @@ For $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$ and diagonal $H_{*}$, one has $\mathr
 
 Law~II is the uniqueness statement: once $G$ fixes $J_{G}$ (Theorem~1) and $D\ge 0$ is prescribed, the dynamics are completely determined.
 
+The two structural conditions --- $GJ_{G}$ skew-symmetric (symplectic structure from Theorem~1) and $D\ge 0$ (dissipation) --- together force the generator to split canonically as $GA=\alpha J-GD$.
+
 \begin{theorem}[Law~II Canonical Decomposition]
 Let $G$ be non-degenerate and let $J_{G}=\alpha G^{-1}J$ \textup{(Theorem~1)}. Suppose the generator $A$ splits as $GA = \alpha J - GD$, $D\ge 0$. Then for any smooth potential $V$, the unique evolution law is $\dot{x} = (J_{G}-D)\,\nabla V$.
 \end{theorem}
