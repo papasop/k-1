@@ -313,7 +313,7 @@ Equivalently, $K_2{=}1$ states that the Misner--Sharp mass
 $m=\frac{r}{2}(1{-}f)$ is constant: $dm/dr=(1{-}K_2)/2=0$.
 
 \begin{theorem}[Field-Level Equivalence]\label{thm:field}
-For~\eqref{eq:metric} with $f\in C^2(0,\infty)$:
+For~\eqref{eq:metric} with $f\in C^2(0,\infty)$ and $K_1,K_2$ as in Definition~\ref{def:esc}:
 \begin{equation}\label{eq:equiv}
   \sigma_2^2\,\Box\ln\sigma_i=1\;\;\text{for }i=1,2
   \quad\Longleftrightarrow\quad R_{\mu\nu}=0,
@@ -381,6 +381,8 @@ Jacobson's null-direction patching architecture;
 in the spherically symmetric sector, however, the derivation is
 entirely independent.
 \end{remark}
+
+Table~\ref{tab:corr} summarises the point-field correspondence established in this section.
 
 \begin{table}[h]
 \centering
