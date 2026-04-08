@@ -497,7 +497,7 @@ For Lorentzian~$G$, the symmetric part $S=(J_G+J_G^\top)/2\neq 0$ departs from t
 
 \begin{enumerate}
 \item Complete Route~B for general metrics (Gauss--Codazzi).
-\item Prove $\sigma_{1,\min}>0$ from $K$--$\varphi$ conjugacy, where $\varphi$ is the boost angle along $\{K{=}1\}$.
+\item Prove $\sigma_{1,\min}\geq\hbar/(4\pi)$ (hard bound) from $K$--$\varphi$ conjugacy, where $\varphi$ is the boost angle along $\{K{=}1\}$.
 \item Derive the $8\pi$ factor from the cost framework (non-vacuum Route~B).
 \item Identify testable strong-field predictions.
 \end{enumerate}
