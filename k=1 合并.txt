@@ -58,11 +58,11 @@ Laws~I--III are axioms of the framework, not empirical laws; they define the cos
 
 \medskip
 
-The information time $dt_{\mathrm{info}}:=d\Phi/H$, where $\Phi$ parametrises structural variation and $H>0$ is an entropic resistance (the local cost per unit variation of $\Phi$), provides the metric through its Hessian: the local quadratic approximation $dt_{\mathrm{info}}^{2}\approx \delta x^{\top}G\,\delta x$ defines $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$. The quadratic form $K(x):=x^{\top}Gx$ quantifies local temporal cost, and $K=1$ identifies the self-consistent locus. This redefinition of time enters the theorems through $G$ alone: $dt_{\mathrm{info}}$ serves as the motivating construction for~$G$. This Hessian has the structure of an information metric --- it measures the local cost of displacement, as the Fisher metric measures the local cost of statistical distinguishability~\cite{Amari} --- but with Lorentzian rather than Riemannian signature.
+The information time $dt_{\mathrm{info}}:=d\Phi/H$, where $\Phi$ parametrises structural variation and $H>0$ is an entropic resistance (the local cost per unit variation of $\Phi$), provides the metric through its Hessian: the local quadratic approximation $dt_{\mathrm{info}}^{2}\approx \delta x^{\top}G\,\delta x$ defines $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$. The quadratic form $K(x):=x^{\top}Gx$ quantifies local temporal cost, and $K=1$ identifies the self-consistent locus. This redefinition of time enters the theorems through $G$ alone: $dt_{\mathrm{info}}$ serves as the motivating construction for~$G$. The Hessian $G$ has the structure of an information metric --- it measures the local cost of displacement, as the Fisher metric measures the local cost of statistical distinguishability~\cite{Amari} --- but with Lorentzian rather than Riemannian signature.
 
 The specific nature of~$\Phi$ is not required by the theorems; what is required is that some directions carry vanishing cost --- equivalently, that the cost structure not be definite (Theorem~3). The theorems follow from the asymmetry, not from the identity of the varying structure.
 
-The cost structure of $dt_{\mathrm{info}}$ satisfies the three realizability conditions of~\cite{Realizability}. Assumption~E (quadratic expansion in $\delta x$) holds because $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$ exists by the smoothness of~$\Phi$ and~$H$. Assumption~T (positive temporal cost) holds by construction: the temporal direction is defined as the direction along which $dt_{\mathrm{info}}>0$, so $G(e_{t},e_{t})>0$. For Assumption~R (zero-threshold spatial directions), suppose instead that $G$ were positive definite; then $K(x)=x^{\top}Gx>0$ for all $x\neq 0$, and the gradient flow $\dot{x}=-\nabla K$ drives every configuration to $x=0$: no nontrivial structure persists. Since the framework is intended to describe nontrivial physical states --- persistent configurations --- $G$ cannot be positive definite. Combined with $G(e_{t},e_{t})>0$ --- which rules out $\mathrm{Sig}(G)=(0,2)$ --- and non-degeneracy, the only remaining possibility for a non-degenerate $2\times 2$ form is $\mathrm{Sig}(G)=(1,1)$. A rigorous derivation from the three conditions alone, independent of the information-time construction, is given in~\cite{Realizability}.
+The cost structure of $dt_{\mathrm{info}}$ satisfies the three realizability conditions of~\cite{Realizability}. Assumption~E (quadratic expansion in $\delta x$) holds because $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$ exists by the smoothness of~$\Phi$ and~$H$. Assumption~T (positive temporal cost) holds by construction: the temporal direction is defined as the direction along which $dt_{\mathrm{info}}>0$, so $G(e_{t},e_{t})>0$. This convention identifies time with the direction of positive structural cost. For Assumption~R (zero-threshold spatial directions), suppose instead that $G$ were positive definite; then $K(x)=x^{\top}Gx>0$ for all $x\neq 0$, and the gradient flow $\dot{x}=-\nabla K$ (a minimal cost-reduction flow) drives every configuration to $x=0$: no nontrivial structure persists. Since the framework is intended to describe nontrivial physical states --- persistent configurations --- $G$ cannot be positive definite. Combined with $G(e_{t},e_{t})>0$ --- which rules out $\mathrm{Sig}(G)=(0,2)$ --- and non-degeneracy, the only remaining possibility for a non-degenerate $2\times 2$ form is $\mathrm{Sig}(G)=(1,1)$. A rigorous derivation from the three conditions alone, independent of the information-time construction, is given in~\cite{Realizability}.
 
 Lorentzian signature therefore emerges from the cost structure: $G$ is indefinite, with light cones (the null set $\{x:x^{\top}Gx=0\}$) and a causal structure determined by the sign of~$K$.
 
@@ -83,11 +83,11 @@ the unique solution is $J_{G}=\alpha G^{-1}J$.
 Here $\alpha>0$ is a normalisation constant fixed by condition~(ii); all subsequent results are homogeneous in $\alpha$, and $\alpha=1$ is adopted wherever $d_{c}$ is compared with thermal quantities. Condition~(ii) is the Euclidean normalisation: when $G=I$, the framework reduces to standard Hamiltonian mechanics.
 
 \begin{proof}
-$\dim(\mathrm{Skew}_{2})=1$, so condition~(i) gives $GM=\beta J$, hence $M=\beta G^{-1}J$; condition~(ii) fixes $\beta=\alpha$.\qed
+Since $\dim(\mathrm{Skew}_{2})=1$ and $J$ spans $\mathrm{Skew}_{2}$, condition~(i) forces $GM=\beta J$ for some $\beta\in\mathbb{R}$, hence $M=\beta G^{-1}J$; condition~(ii) fixes $\beta=\alpha$.\qed
 \end{proof}
 
 \begin{remark}[Non-degeneracy vs.\ signature]
-Theorem~1 requires only $\det G\neq 0$; it holds for any signature. The Lorentzian condition enters decisively only in Theorem~2, through the reality of the symplectic eigenvalues. Since $GJ_{G}=\alpha J$ is skew-symmetric, $J_{G}$ lies in the Lie algebra $\mathfrak{sp}(2,\mathbb{R})$; the Lorentzian condition forces $J_{G}$ to be a hyperbolic element (with real, nonzero eigenvalues), whose real eigenvalues yield $d_{c}>0$.
+Theorem~1 requires only $\det G\neq 0$; it holds for any signature. The Lorentzian condition enters decisively only in Theorem~2, through the reality of the symplectic eigenvalues. Since $GJ_{G}=\alpha J$ is skew-symmetric, $J_{G}$ lies in the Lie algebra $\mathfrak{sp}(2,\mathbb{R})$ (i.e., $GJ_{G}$ is skew-symmetric); the Lorentzian condition forces $J_{G}$ to be a hyperbolic element (with real, nonzero eigenvalues), whose real eigenvalues yield $d_{c}>0$.
 \end{remark}
 
 \begin{theorem}[Spectral Reality]
@@ -113,7 +113,7 @@ $\det G>0$ gives $1/\det G>0$, so $\lambda^{2}=-1/\det G<0$ and both roots are p
 
 \section{The stability boundary}
 
-The stability boundary $d_c>0$ of Theorem~4 is the critical damping threshold: above it, $K=1$ is stabilised; at it, marginal stability obtains.
+The stability boundary $d_c>0$ of Theorem~4 is the critical damping threshold: above it, $K=1$ is stabilised; at it, marginal stability obtains (the dominant eigenvalue of $J_G-d_cI$ is exactly zero).
 
 \begin{theorem}[Signature-Stability Equivalence]
 For non-degenerate symmetric $2\times 2$ real $G$, under the isotropic linearisation $H_{*}=I$, the following are equivalent:
@@ -168,10 +168,10 @@ The GENERIC formalism~\cite{GENERIC} requires Euclidean antisymmetry $L^{\top}=-
 
 \medskip
 
-The auxiliary linear system $\dot{x}=(J_{G}-d_{c}I)x$ has eigenvalues $0$ and $-2d_{c}$ at critical damping. Theorem~6 concerns the nonlinear system $\dot{x}=(J_{G}-d_{c}I)\nabla V$, $V=\tfrac{1}{2}(K{-}1)^2$, where departure from $K{=}1$ incurs a cost~$V$. On $\{K{=}1\}$ one has $\nabla V=0$, so $x_*$ is an equilibrium; the Jacobian at $x_*$ is $(J_{G}-d_{c}I)\nabla^{2}V(x_*)$, which differs from $J_{G}-d_{c}I$ because $\nabla^{2}V(x_*)$ is rank-one.
+The auxiliary linear system $\dot{x}=(J_{G}-d_{c}I)x$ has eigenvalues $0$ and $-2d_{c}$ at critical damping (from $\mathrm{spec}(J_{G})=\{\pm d_{c}\}$ at $d=d_{c}$). Theorem~6 concerns the nonlinear system $\dot{x}=(J_{G}-d_{c}I)\nabla V$, $V=\tfrac{1}{2}(K{-}1)^2$, where departure from $K{=}1$ incurs a cost~$V$. On $\{K{=}1\}$ one has $\nabla V=0$, so $x_*$ is an equilibrium; the Jacobian at $x_*$ is $(J_{G}-d_{c}I)\nabla^{2}V(x_*)$, which differs from $J_{G}-d_{c}I$ because $\nabla^{2}V(x_*)$ is rank-one.
 
 \begin{theorem}[Local Effective Restoring Rate]
-Let $G$ be a $2\times 2$ Lorentzian metric, $D=d_{c}I$. Define $K(x)=x^{\top}Gx$, $V=\tfrac{1}{2}(K-1)^{2}$, with drift $\dot{x}=(J_{G}-d_{c}I)\nabla V$. Then for all $x\in\mathbb{R}^{2}$:
+Let $G$ be a $2\times 2$ Lorentzian metric, $D=d_{c}I$, and $J_{G}=\alpha G^{-1}J$ (Theorem~1). Define $K(x)=x^{\top}Gx$, $V=\tfrac{1}{2}(K-1)^{2}$, with drift $\dot{x}=(J_{G}-d_{c}I)\nabla V$. Then for all $x\in\mathbb{R}^{2}$:
 \begin{equation}
 \dot{K} = 4(K-1)\bigl[\alpha\,x^{\top}(JG)\,x - d_{c}\,x^{\top}G^{2}x\bigr].\label{eq:Kdot}
 \end{equation}
@@ -193,7 +193,7 @@ Adding isotropic white noise gives $dx=(J_{G}-D)\nabla V\,dt+\sigma\,dW_{t}$. Tw
 \textit{Class~A} (thermodynamic): fluctuations of $K$ perpendicular to $\{K=1\}$, variance $\sigma^{2}/(2d_{c})$, confirmed by simulation for $\sigma\in\{0.3,0.6,1.0\}$.
 
 \medskip\noindent
-\textit{Class~B} (kinematic, here also gauge): free diffusion along $\{K=1\}$ in the tangential (boost) direction, generating Lorentz boosts; the Hessian of $V$ restricted to $\{K=1\}$ is rank-one with null space containing this tangent, confirming that Class~B carries no restoring force and no heat.
+\textit{Class~B} (kinematic, here also gauge): free tangential diffusion along $\{K=1\}$ in the boost direction, generating Lorentz boosts; the Hessian of $V$ restricted to $\{K=1\}$ is rank-one with null space containing this tangent, confirming that Class~B carries no restoring force and no heat.
 
 Mixing the two classes conflates thermodynamic and kinematic degrees of freedom and yields a non-Boltzmann marginal $K$-distribution; this is an artifact of marginalising over the gauge direction. This mixing arises in practice when the full SDE is sampled without projecting onto the two decoupled subspaces.
 
@@ -232,7 +232,7 @@ Setting $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ gives $\sigma^{2}/(2d_{c})=d_{c}\cdo
 \end{proof}
 
 \begin{remark}[Status of the approximation]
-Three logically distinct inputs: (i)~the OU approximation, valid when $|K-1|\ll 1$ and Class~B diffusion is slow compared to Class~A relaxation; (ii)~the identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, the sole true external axiom; (iii)~the Tolman identity $T_{\mathrm{tol}}=d_{c}T_{H}$, which follows from~\eqref{eq:nearhorizon} and is independently verifiable via the Tolman-Ehrenfest relation~\cite{Tolman}.
+Three logically distinct inputs: (i)~the OU approximation, valid when $|K-1|\ll 1$ and Class~B diffusion is slow compared to Class~A relaxation; (ii)~the identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, the sole genuine external identification; (iii)~the Tolman identity $T_{\mathrm{tol}}=d_{c}T_{H}$, which follows from~\eqref{eq:nearhorizon} and is independently verifiable via the Tolman-Ehrenfest relation~\cite{Tolman}.
 \end{remark}
 
 \subsection*{Position-dependent temperature and It\^{o} corrections}
@@ -243,7 +243,7 @@ The $K$-space noise amplitude $\sigma_{K}(x)=2\sigma\|Gx\|$ varies along $\{K=1\
 \begin{equation}
 T_{\mathrm{loc}}(x) := \frac{\sigma_{K}(x)^{2}}{2\kappa_{K}(x_{*})} = \frac{\sigma^{2}\,x^{\top}G^{2}x}{2d_{c}\,x_{*}^{\top}G^{2}x_{*}}.\label{eq:Tloc}
 \end{equation}
-For $\kappa\ell=1$ and $x(t)=(\sinh t,\cosh t)$: $T_{\mathrm{loc}}(t)=\sigma^{2}\cosh(2t)/(2d_{c})$, which is position-dependent and determined by the metric. For the Rindler metric, $\sigma^{2}\,\mathrm{tr}(G)=\sigma^{2}(1-(\kappa\ell)^{2})$; the OU approximation is exact at $\kappa\ell=1$ and accurate when $|(\kappa\ell)^{2}-1|\ll 1$.
+For $\kappa\ell=1$ and $x(t)=(\sinh t,\cosh t)$: $T_{\mathrm{loc}}(t)=\sigma^{2}\cosh(2t)/(2d_{c})$, showing that the local temperature is an intrinsic property of the metric. For the Rindler metric, $\sigma^{2}\,\mathrm{tr}(G)=\sigma^{2}(1-(\kappa\ell)^{2})$; the OU approximation is exact at $\kappa\ell=1$ and accurate when $|(\kappa\ell)^{2}-1|\ll 1$.
 
 \begin{remark}[Stability constraint]
 For macroscopic black holes, $T_{\mathrm{tol}}\ll d_{c}$; setting $D=T_{\mathrm{tol}}I$ renders $K=1$ unstable. Stability requires $D\ge d_{c}I$; critical damping $D=d_{c}I$ is the unique marginally stable choice.
@@ -264,8 +264,7 @@ Consider the static spherically symmetric metric
   ds^2=-f(r)\,dt^2+f(r)^{-1}dr^2+r^2\,d\Omega^2,
 \end{equation}
 with symplectic eigenvalues $\sigma_1:=r\sqrt{f}$, $\sigma_2:=r$
-(on each local Rindler wedge, $\sigma_1$ coincides with the
-$2\times 2$ symplectic eigenvalue of~\S3),
+(on each local Rindler wedge, $d_c\sigma_1=\alpha$, connecting $\sigma_1$ to the $2\times 2$ symplectic eigenvalue of~\S3),
 and d'Alembertian
 $\Box\phi=(r^2f)^{-1}\partial_r(r^2f\,\partial_r\phi)$ (the radial d'Alembertian, exact for $r$-dependent $\phi$).
 
@@ -285,7 +284,7 @@ curvature cost $1/\sigma_2^2$.
 Every eigenvalue must propagate at the rate set by the angular
 sector---a field-level analogue of the point-level balance $K{=}1$.
 
-Expanding:
+Expanding (direct computation using $\Box\ln\sigma_1=\Box\ln r+\tfrac{1}{2}\Box\ln f$):
 \begin{equation}\label{eq:K1exp}
   K_1 = f+2rf'+\tfrac{r^2}{2}f'',
 \end{equation}
@@ -308,7 +307,7 @@ Then $-2\Box\ln\sigma_1+2/r^2=R$.\qed
 An immediate computation gives $R_{tt}=\tfrac{f}{r^2}(K_1-K_2)$, so $K_1=K_2$ implies $R_{tt}=0$.
 
 \noindent
-Hence $K_1{=}1\Leftrightarrow R{=}0$ and
+Substituting $K_1=r^2\Box\ln\sigma_1$ into Lemma~\ref{lem:R} gives $R=2(1-K_1)/r^2$; hence $K_1{=}1\Leftrightarrow R{=}0$ and
 $K_2{=}1\Leftrightarrow R_{\theta\theta}{=}0$
 (since $R_{\theta\theta}=1{-}f{-}rf'=1{-}K_2$).
 Equivalently, $K_2{=}1$ states that the Misner--Sharp mass
@@ -402,10 +401,10 @@ independent eigenvalues.}
 \end{table}
 
 %===================================================================
-\section{Singularity structure}\label{sec:singularity}
+\section{Singularity exclusion and resolution scale}\label{sec:singularity}
 
 \begin{proposition}[Positivity from Axiom~T]\label{prop:sigma1}
-Axiom~T implies $\sigma_1>0$ wherever $K{=}1$ is imposed.
+Axiom~T implies $\sigma_1>0$ wherever $K{=}1$ holds.
 \end{proposition}
 
 \begin{proof}
@@ -413,7 +412,7 @@ Specialising to the $(t,r)$ Rindler wedge, $G=\mathrm{diag}(\sigma_1^2,-1)$ (Axi
 \end{proof}
 
 \noindent
-A direct consequence: when $\sigma_1=0$, $K=-x_1^2\le 0$ and $K{=}1$ has no solutions, so the framework is undefined there. The Schwarzschild singularity ($\sigma_1\to 0$ as $r\to 0$) lies
+A direct consequence: when $\sigma_1=0$, $K=-x_2^2\le 0$ and $K{=}1$ has no solutions, so the framework is undefined there. The Schwarzschild singularity ($\sigma_1\to 0$ as $r\to 0$) lies
 outside the domain of the theory.
 
 \begin{proposition}[Self-consistency bound]\label{prop:domain}
@@ -449,7 +448,7 @@ The Jacobson argument~\cite{Jacobson} reconstructs the Einstein equations from t
 
 \subsection*{The $K{=}1$ self-referential structure}
 
-The condition $K{=}1$ has a self-referential character: the metric~$G$ defines the quadratic form~$K$, and $K{=}1$ requires that this form reproduce~$G$'s own normalisation. The residual $K{-}1$ is the metric's own measure of departure from self-consistency; the leading-order restoring potential $V=\frac{1}{2}(K{-}1)^2$ is therefore fixed by smoothness alone. At the field level, this self-referential loop extends: the eigenvalue principle $\sigma_2^2\Box\ln\sigma_i=1$ requires each symplectic eigenvalue to propagate at the rate determined by the metric it inhabits.
+The condition $K{=}1$ has a self-referential character: the metric~$G$ defines the quadratic form~$K$, and $K{=}1$ requires that this form reproduce~$G$'s own normalisation. The residual $K{-}1$ is the metric's own measure of departure from self-consistency; the leading-order restoring potential $V=\frac{1}{2}(K{-}1)^2$ is therefore fixed by smoothness and the requirements $V\geq 0$, $V=0$ at $K{=}1$ alone. At the field level, this self-referential loop extends: the eigenvalue principle $\sigma_2^2\Box\ln\sigma_i=1$ requires each symplectic eigenvalue to propagate at the rate determined by the metric it inhabits.
 
 \subsection*{Stages}
 
