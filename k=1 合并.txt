@@ -49,9 +49,9 @@ Route~A is general but requires $S\propto A$; Route~B is thermodynamically indep
 
 \medskip\noindent\textbf{Notation.} $\mathrm{spec}(A)$: spectrum of $A$. $\mathrm{Sig}(G)=(p,q)$: inertia ($p$ positive, $q$ negative eigenvalues). $J=\bigl(\begin{smallmatrix}0&1\\-1&0\end{smallmatrix}\bigr)$: canonical symplectic matrix. $\|\cdot\|$: Euclidean norm on~$\mathbb{R}^{2}$. $\nabla$: Euclidean gradient on~$\mathbb{R}^{2}$.
 
-\section{Metric from information time (Law~I)}
+\section{Metric from information time (Law~I)}\label{sec:lawI}
 
-Laws~I--III are axioms of the framework, not empirical laws; they define the cost structure and its dynamics. This section constructs $G$ from information time and establishes that nontrivial configurations require $\det G<0$. Law~I defines the cost structure; Law~II uniquely determines the dynamics on it; Law~III identifies $K=1$ as the resulting attractor.
+Laws~I--III are axioms of the framework, not empirical laws. This section constructs $G$ from information time and establishes that nontrivial configurations require $\det G<0$. Law~I defines the cost structure; Law~II uniquely determines the dynamics on it; Law~III identifies $K=1$ as the resulting attractor.
 
 \medskip
 \noindent\textbf{Law~I.} \textit{The metric $G$ is a non-degenerate symmetric bilinear form measuring local displacement cost, where the temporal direction is that of positive cost \textup{(Assumption~T of~\cite{Realizability})}.}
@@ -68,7 +68,7 @@ Lorentzian signature therefore emerges from the cost structure: $G$ is indefinit
 
 In general relativity, the Lorentzian metric is prescribed on a pre-existing differentiable manifold; here $G$ and its causal structure are derived.
 
-\section{Symplectic structure from $G$}
+\section{Symplectic structure from $G$}\label{sec:symplectic}
 
 This section establishes the symplectic generator $J_G$ (Theorem~1), analyses its spectrum (Theorem~2), and shows that Lorentzian signature is necessary for $d_c>0$ (Theorem~3).
 
@@ -87,7 +87,7 @@ Since $\dim(\mathrm{Skew}_{2})=1$ and $J$ spans $\mathrm{Skew}_{2}$, condition~(
 \end{proof}
 
 \begin{remark}[Non-degeneracy vs.\ signature]
-Theorem~1 requires only $\det G\neq 0$; it holds for any signature. The Lorentzian condition enters decisively only in Theorem~2, through the reality of the symplectic eigenvalues. Since $GJ_{G}=\alpha J$ is skew-symmetric, $J_{G}$ lies in the Lie algebra $\mathfrak{sp}(2,\mathbb{R})$ (i.e., $GJ_{G}$ is skew-symmetric); the Lorentzian condition forces $J_{G}$ to be a hyperbolic element (with real, nonzero eigenvalues), whose real eigenvalues yield $d_{c}>0$.
+Theorem~1 requires only $\det G\neq 0$; it holds for any signature. The Lorentzian condition enters decisively only in Theorem~2, through the reality of the symplectic eigenvalues. Since $GJ_{G}=\alpha J$ is skew-symmetric, $J_{G}$ lies in the Lie algebra $\mathfrak{sp}(2,\mathbb{R})$ (elements of $\mathfrak{sp}(2,\mathbb{R})$ satisfy $GM$ skew for any $G$); the Lorentzian condition forces $J_{G}$ to be a hyperbolic element (with real, nonzero eigenvalues), whose real eigenvalues yield $d_{c}>0$.
 \end{remark}
 
 \begin{theorem}[Spectral Reality]
@@ -98,7 +98,7 @@ d_{c}(\alpha)=\alpha\sqrt{-1/\det G}>0.\label{eq:dc}
 \end{theorem}
 
 \begin{proof}
-$\mathrm{tr}(G^{-1}J)=0$ and $\det(G^{-1}J)=1/\det G$. For $H_{*}=I$, $\max\mathrm{Re}\,\mathrm{spec}(J_{G}-dI)=0$ at $d=d_{c}$.\qed
+$\mathrm{tr}(G^{-1}J)=0$ and $\det(G^{-1}J)=1/\det G$; the characteristic polynomial $\lambda^{2}+1/\det G=0$ then gives $\mathrm{spec}(J_{G})=\{\pm d_{c}\}$. For $H_{*}=I$, $\max\mathrm{Re}\,\mathrm{spec}(J_{G}-dI)=d_{c}-d$, which vanishes at $d=d_{c}$.\qed
 \end{proof}
 
 Near threshold, $\lambda_{\max}(d)=-(d-d_{c})$ and the relaxation time $\tau\sim(d-d_{c})^{-1}$ diverge, confirming $d_c$ as a bifurcation point.
@@ -111,7 +111,7 @@ If $\mathrm{Sig}(G)=(2,0)$ or $(0,2)$, then $\det G>0$, so $\lambda^{2}+1/\det G
 $\det G>0$ gives $1/\det G>0$, so $\lambda^{2}=-1/\det G<0$ and both roots are purely imaginary.\qed
 \end{proof}
 
-\section{The stability boundary}
+\section{The stability boundary}\label{sec:stability}
 
 The stability boundary $d_c>0$ of Theorem~4 is the critical damping threshold: above it, $K=1$ is stabilised; at it, marginal stability obtains (the dominant eigenvalue of $J_G-d_cI$ is exactly zero).
 
@@ -144,9 +144,9 @@ For $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$ and diagonal $H_{*}$, one has $\mathr
 
 \medskip\noindent\textbf{Numerical illustration.} Among 2000 random symmetric $2\times 2$ matrices (sufficient for coverage): all 1420 with $\mathrm{Sig}=(1,1)$ had $d_{c}>0$; all 580 with definite signature had $d_{c}=0$.
 
-\section{Unique dynamics (Law~II)}
+\section{Unique dynamics (Law~II)}\label{sec:lawII}
 
-\noindent\textbf{Law~II.} \textit{The dynamics on $\{K=1\}$ take the unique form $\dot{x}=(J_{G}-D)\nabla V$, compatible with $GJ_{G}$ skew-symmetric and $D\ge 0$ ($D$ a $2\times 2$ positive-semidefinite dissipation matrix).}
+\noindent\textbf{Law~II.} \textit{The dynamics on $\{K=1\}$ take the unique form $\dot{x}=(J_{G}-D)\nabla V$ for any smooth $V$, compatible with $GJ_{G}$ skew-symmetric and $D\ge 0$ ($D$ a $2\times 2$ positive-semidefinite dissipation matrix).}
 
 Law~II is the uniqueness statement: given $J_{G}$ and $D$, the dynamics are fixed.
 
@@ -201,7 +201,7 @@ Mixing the two classes conflates thermodynamic and kinematic degrees of freedom 
 
 This section connects the geometric structures of \S\S2--6 to spacetime thermodynamics; every connection requires at least one external identification, marked explicitly.
 
-For the Rindler metric $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, where $\kappa$ is the surface gravity and $\ell$ the proper distance from the horizon, eq.~\eqref{eq:dc} gives $d_{c}=\alpha/(\kappa\ell)=\alpha/\sqrt{|g_{00}|}$. With $T_{H}=\hbar\kappa/(2\pi)$~\cite{Hawking},
+For the Rindler metric $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, where $\kappa$ is the surface gravity and $\ell$ the proper distance from the horizon, eq.~\eqref{eq:dc} gives $d_{c}=\alpha/(\kappa\ell)=\alpha/\sqrt{|g_{00}|}$, with $g_{00}=-(\kappa\ell)^{2}$ the temporal component of the Rindler metric. With $T_{H}=\hbar\kappa/(2\pi)$~\cite{Hawking},
 \begin{equation}
 d_{c}\cdot T_{H} = \frac{\alpha}{\kappa\ell}\cdot\frac{\hbar\kappa}{2\pi} = \frac{\alpha\hbar}{2\pi\ell},\label{eq:nearhorizon}
 \end{equation}
@@ -213,7 +213,7 @@ Within Class~A (fixed inertial observer), the $K$-dynamics near $K=1$ is a one-d
 \begin{equation}
 \mathrm{Var}(K)\approx\frac{\sigma^{2}}{2d_{c}}\label{eq:var}
 \end{equation}
-and effective temperature $T_{\mathrm{eff}}=\sigma^{2}/(2d_{c})$. The FDT form $\sigma_{K}^{2}=2\kappa_{K}T_{\mathrm{eff}}$ defines $T_{\mathrm{eff}}=\sigma^{2}/(2d_{c})$, consistent with Law~II and Theorem~6. The Fokker--Planck equation yields a Boltzmann stationary distribution $\rho\propto\exp(-V/T_{\mathrm{eff}})$; the Clausius relation $\delta Q=T_{\mathrm{eff}}\,dS$ then follows for the OU process, with
+With this stationary variance, the FDT form $\sigma_{K}^{2}=2\kappa_{K}T_{\mathrm{eff}}$ defines the effective temperature $T_{\mathrm{eff}}=\sigma^{2}/(2d_{c})$, consistent with Law~II and Theorem~6. The Fokker--Planck equation yields a Boltzmann stationary distribution $\rho\propto\exp(-V/T_{\mathrm{eff}})$; the Clausius relation $\delta Q=T_{\mathrm{eff}}\,dS$ then follows for the OU process, with
 \[
 \delta Q := dV + \tfrac{1}{2}\sigma_{K}^{2}\,dt,\qquad \sigma_{K}=2\sigma\|Gx_{*}\|.
 \]
@@ -276,13 +276,7 @@ $\Box\phi=(r^2f)^{-1}\partial_r(r^2f\,\partial_r\phi)$ (the radial d'Alembertian
 \end{definition}
 
 \noindent
-The eigenvalue self-consistency condition $\sigma_2^2\,\Box\ln\sigma=1$ is imposed on each eigenvalue, giving $K_1=1$ and $K_2=1$.
-Both have the form
-$\sigma_2^2\,\Box\ln\sigma=1$:
-the d'Alembertian of each log-eigenvalue equals the angular
-curvature cost $1/\sigma_2^2$.
-Every eigenvalue must propagate at the rate set by the angular
-sector---a field-level analogue of the point-level balance $K{=}1$.
+The eigenvalue self-consistency condition $\sigma_2^2\,\Box\ln\sigma=1$, imposed on each eigenvalue ($K_1=1$ and $K_2=1$), states that the d'Alembertian of each log-eigenvalue equals the angular curvature cost $1/\sigma_2^2$. Every eigenvalue must propagate at the rate set by the angular sector---a field-level analogue of the point-level balance $K{=}1$.
 
 Expanding (direct computation using $\Box\ln\sigma_1=\Box\ln r+\tfrac{1}{2}\Box\ln f$):
 \begin{equation}\label{eq:K1exp}
@@ -317,14 +311,14 @@ $m=\frac{r}{2}(1{-}f)$ is constant: $dm/dr=(1{-}K_2)/2=0$.
 For~\eqref{eq:metric} with $f\in C^2(0,\infty)$:
 \begin{equation}\label{eq:equiv}
   \sigma_2^2\,\Box\ln\sigma_i=1\;\;\text{for }i=1,2
-  \quad\Longleftrightarrow\quad R_{\mu\nu}=0.
+  \quad\Longleftrightarrow\quad R_{\mu\nu}=0\;\cite{Einstein1915,Hilbert1915}.
 \end{equation}
 \end{theorem}
 
 \begin{proof}
 $(\Rightarrow)$\;
 $K_2{=}1$ gives $R_{\theta\theta}{=}0$.
-$K_1{-}K_2=rf'+\frac{r^2}{2}f''=0$ gives $f''=-2f'/r$, hence $R_{tt}{=}0$.
+$K_1{-}K_2=rf'+\frac{r^2}{2}f''=0$ gives $f''=-2f'/r$; hence $R_{tt}{=}0$ (by the observation $R_{tt}=\tfrac{f}{r^2}(K_1-K_2)$ above).
 
 $(\Leftarrow)$\;
 $R_{\theta\theta}{=}0$ gives $K_2{=}1$.
@@ -332,7 +326,7 @@ $R_{tt}{=}0$ gives $f''=-2f'/r$; substituting:
 $K_1=f+2rf'-rf'=f+rf'=K_2=1$.\qed
 \end{proof}
 
-\begin{corollary}\label{cor:solutions}
+\begin{corollary}
 The condition $K_1{=}1$ is the second-order linear ODE
 $f+2rf'+\frac{r^2}{2}f''=1$, equivalent to $R{=}0$, with general solution
 $f=1-C_1/r-C_2/r^2$; $K_2{=}1$ forces $C_2{=}0$,
@@ -415,7 +409,7 @@ Specialising to the $(t,r)$ Rindler wedge, $G=\mathrm{diag}(\sigma_1^2,-1)$ (Axi
 A direct consequence: when $\sigma_1=0$, $K=-x_2^2\le 0$ and $K{=}1$ has no solutions, so the framework is undefined there. The Schwarzschild singularity ($\sigma_1\to 0$ as $r\to 0$) lies
 outside the domain of the theory.
 
-\begin{proposition}[Self-consistency bound]\label{prop:domain}
+\begin{proposition}[Intrinsic resolution scale]\label{prop:domain}
 The $K{=}1$ framework is self-consistent only for
 $\sigma_1>\sigma_{1,c}:=\hbar/(4\pi)\approx\ell_P/(4\pi)$.
 \end{proposition}
@@ -427,7 +421,7 @@ $\ell=\sigma_1/\kappa$, so $T_{\mathrm{eff}}=\hbar\kappa/(2\pi\sigma_1)
 =\hbar/(4\pi\sigma_1)$ for Schwarzschild ($\kappa=1/(4M)$; near the horizon $r\to 2M$, $\sigma_1=r\sqrt{f}\to 0$).
 $\mathrm{Var}(K)\approx T_{\mathrm{eff}}$ (in the OU approximation); for $K{=}1$ to be a
 well-defined equilibrium, $\mathrm{Var}(K)<1$, hence
-$\sigma_1>\hbar/(4\pi)$.\qed
+$\sigma_1>\hbar/(4\pi)$. This is a self-consistent bound: the OU approximation is required to be valid, i.e., $\mathrm{Var}(K)<1$.\qed
 \end{proof}
 
 \noindent
@@ -469,7 +463,7 @@ For non-vacuum configurations, $\rho=(1{-}K_2)/(8\pi r^2)$: matter is the angula
 
 \subsection*{Extension to $(1{+}3)$ dimensions}
 
-In $(1{+}3)$ dimensions, $\{K{=}1\}\cong H^3$ carries $S^2$ cross-sections with area $4\pi(\kappa\ell)^2$. With $\alpha=1$, $\sigma_1=\kappa\ell$, so the cross-sectional area is $A=4\pi\sigma_1^2$ and the Bekenstein--Hawking entropy $S_{\mathrm{BH}}=A/4=\pi\sigma_1^2$, expressing both in terms of the same symplectic invariant. The coefficient $\eta=1/4$ follows from the Bekenstein-Hawking entropy-area law~\cite{Bekenstein} and the first law of black hole thermodynamics, and need not be separately assumed. Two structural changes accompany the extension: the equivalence $d_c>0\Leftrightarrow\mathrm{Sig}(G)=(1,1)$ weakens to a one-directional implication, and the uniqueness of~$J_G$ (guaranteed by $\dim(\mathrm{Skew}_2)=1$) requires a symplectic pairing choice when $\dim(\mathrm{Skew}_4)=6$. For the Rindler metric with isotropic spatial sector, the three standard pairings (block-diagonal, canonical~$J_4$, and anti-diagonal) yield identical~$d_c$; general pairings do not, and whether a natural selection principle exists is open.
+In $(1{+}3)$ dimensions, $\{K{=}1\}\cong H^3$ ($H^3$ being the unit spacelike hyperboloid in Minkowski $\mathbb{R}^{1,3}$, the natural higher-dimensional analogue of the unit $G$-hyperboloid) carries $S^2$ cross-sections with area $4\pi(\kappa\ell)^2$. With $\alpha=1$, $\sigma_1=\kappa\ell$, so the cross-sectional area is $A=4\pi\sigma_1^2$ and the Bekenstein--Hawking entropy $S_{\mathrm{BH}}=A/4=\pi\sigma_1^2$, expressing both in terms of the same symplectic invariant. The coefficient $\eta=1/4$ follows from the Bekenstein-Hawking entropy-area law~\cite{Bekenstein} and the first law of black hole thermodynamics, and need not be separately assumed. Two structural changes accompany the extension: the equivalence $d_c>0\Leftrightarrow\mathrm{Sig}(G)=(1,1)$ weakens to a one-directional implication (Lorentzian signature is necessary but no longer sufficient for $d_c>0$), and the uniqueness of~$J_G$ (guaranteed by $\dim(\mathrm{Skew}_2)=1$) requires a symplectic pairing choice when $\dim(\mathrm{Skew}_4)=6$. For the Rindler metric with isotropic spatial sector, the three standard pairings (block-diagonal, canonical~$J_4$, and anti-diagonal) yield identical~$d_c$; general pairings do not, and whether a natural selection principle exists is open.
 
 \subsection*{Beyond GENERIC}
 
