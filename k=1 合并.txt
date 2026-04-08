@@ -175,7 +175,11 @@ Let $G$ be a $2\times 2$ Lorentzian metric, $D=d_{c}I$, and $J_{G}=\alpha G^{-1}
 \begin{equation}
 \dot{K} = 4(K-1)\bigl[\alpha\,x^{\top}(JG)\,x - d_{c}\,x^{\top}G^{2}x\bigr].\label{eq:Kdot}
 \end{equation}
-At any $x_{*}\in\{K=1\}$ with $Gx_{*}=\lambda x_{*}$ and $x_{*}^{\top}G^{2}x_{*}=1$ (i.e., $x_*$ is a unit-eigenvalue $G$-eigenvector):
+At any $x_{*}\in\{K=1\}$ with $Gx_{*}=\lambda x_{*}$, the term $x_{*}^{\top}JGx_{*}=0$, so
+\begin{equation}
+\dot{K}\big|_{x=x_{*}} = -4\,d_{c}\,x_{*}^{\top}G^{2}x_{*}\cdot(K-1).\label{eq:Kdot_eigen}
+\end{equation}
+With the normalisation $x_{*}^{\top}G^{2}x_{*}=1$ (i.e., $x_*$ is a unit-eigenvalue $G$-eigenvector):
 \begin{equation}
 \dot{K} = -\kappa_{K}(K-1)+o(K-1),\qquad \kappa_{K}=4\,d_{c}.\label{eq:kappa}
 \end{equation}
@@ -341,7 +345,7 @@ so its independent content is purely nonlinear (strong-field).
 
 \begin{remark}[Non-vacuum and $\Lambda$]
 From the Einstein $G_{tt}$ component,
-$\rho = (1{-}K_2)/(8\pi r^2)$:
+$\rho = (1{-}K_2)/(8\pi r^2) = (1-\sigma_2^2\,\Box\ln\sigma_2)/(8\pi\sigma_2^2)$:
 matter is the angular eigenvalue's failure to self-consistently
 propagate, measured per unit area.
 For Schwarzschild--de~Sitter, $K_2=1{-}\Lambda r^2$ and
@@ -447,13 +451,13 @@ The condition $K{=}1$ has a self-referential character: the metric~$G$ defines t
 
 \subsection*{Stages}
 
-\noindent\textit{Stage~0:} The three axioms $\to$ $\mathrm{Sig}(G)=(1,1)$ (Theorem~4). Conversely, for definite~$G$ no critical damping threshold $d_c>0$ exists (Theorem~3): the framework produces physical content only when the cost structure is genuinely Lorentzian.
+\noindent\textit{Stage~0 (origin):} The three axioms $\to$ $\mathrm{Sig}(G)=(1,1)$ (Theorem~4). Conversely, for definite~$G$ no critical damping threshold $d_c>0$ exists (Theorem~3): the framework produces physical content only when the cost structure is genuinely Lorentzian.
 
 \medskip
-\noindent\textit{Stage~1:} $G$ defines light cones and causal structure. Whether a Lorentzian information geometry --- as opposed to the Riemannian Fisher geometry --- can be made precise remains open.
+\noindent\textit{Stage~1 (geometry):} $G$ defines light cones and causal structure. Whether a Lorentzian information geometry --- as opposed to the Riemannian Fisher geometry --- can be made precise remains open.
 
 \medskip
-\noindent\textit{Stage~2:} $K{=}1$ $\to$ OU $\to$ Class~A/B; Clausius follows (Proposition~\ref{prop:clausius}).
+\noindent\textit{Stage~2 (thermodynamics):} $K{=}1$ $\to$ OU $\to$ Class~A/B; Clausius follows (Proposition~\ref{prop:clausius}); within Class~A, the local noise temperature is position-dependent, determined by the metric.
 
 \medskip
 \noindent\textit{Stage~3 (field):} $\sigma_2^2\Box\ln\sigma_i=1\Leftrightarrow R_{\mu\nu}=0$ (Theorem~\ref{thm:field}, spherical).
@@ -464,7 +468,7 @@ For non-vacuum configurations, $\rho=(1{-}K_2)/(8\pi r^2)$: matter is the angula
 
 \subsection*{Extension to $(1{+}3)$ dimensions}
 
-In $(1{+}3)$ dimensions, $\{K{=}1\}\cong H^3$ ($H^3$ being the unit spacelike hyperboloid in Minkowski $\mathbb{R}^{1,3}$, the natural higher-dimensional analogue of the unit $G$-hyperboloid) carries $S^2$ cross-sections with area $4\pi(\kappa\ell)^2$. With $\alpha=1$, $\sigma_1=\kappa\ell$, so the cross-sectional area is $A=4\pi\sigma_1^2$ and the Bekenstein--Hawking entropy $S_{\mathrm{BH}}=A/4=\pi\sigma_1^2$, expressing both in terms of the same symplectic invariant. The coefficient $\eta=1/4$ is determined algebraically: for Schwarzschild, the first law $\delta M=T_{H}\,\delta S$ with $A_{H}=16\pi M^{2}$ gives $S_{\mathrm{BH}}=A_{H}/4$ directly, so $\eta=1/4$ need not be separately assumed; it is consistent with the Bekenstein-Hawking entropy-area law~\cite{Bekenstein}. Two structural changes accompany the extension: the equivalence $d_c>0\Leftrightarrow\mathrm{Sig}(G)=(1,1)$ weakens to a one-directional implication (Lorentzian signature is necessary but no longer sufficient for $d_c>0$), and the uniqueness of~$J_G$ (guaranteed by $\dim(\mathrm{Skew}_2)=1$) requires a symplectic pairing choice when $\dim(\mathrm{Skew}_4)=6$. For the Rindler metric with isotropic spatial sector, the three standard pairings (block-diagonal, canonical~$J_4$, and anti-diagonal) yield identical~$d_c$; general pairings do not, and whether a natural selection principle exists is open. The three Jacobson inputs thereby trace to a single symplectic invariant: $\sigma_1$.
+In $(1{+}3)$ dimensions, $\{K{=}1\}\cong H^3$ ($H^3$ being the unit spacelike hyperboloid in Minkowski $\mathbb{R}^{1,3}$, the natural higher-dimensional analogue of the unit $G$-hyperboloid) carries $S^2$ cross-sections with area $4\pi(\kappa\ell)^2$. With $\alpha=1$, $\sigma_1=\kappa\ell$, so the cross-sectional area is $A=4\pi\sigma_1^2$ and the Bekenstein--Hawking entropy $S_{\mathrm{BH}}=A/4=\pi\sigma_1^2$, expressing both in terms of the same symplectic invariant. The coefficient $\eta=1/4$ is determined algebraically: for Schwarzschild, the first law $\delta M=T_{H}\,\delta S$ with $A_{H}=16\pi M^{2}$ gives $S_{\mathrm{BH}}=A_{H}/4$ directly, so $\eta=1/4$ need not be separately assumed; it is consistent with the Bekenstein-Hawking entropy-area law~\cite{Bekenstein}. Two structural changes accompany the extension: the equivalence $d_c>0\Leftrightarrow\mathrm{Sig}(G)=(1,1)$ weakens to a one-directional implication (Lorentzian signature is necessary but no longer sufficient for $d_c>0$), and the uniqueness of~$J_G$ (guaranteed by $\dim(\mathrm{Skew}_2)=1$) requires a symplectic pairing choice when $\dim(\mathrm{Skew}_4)=6$. For the Rindler metric with isotropic spatial sector, the three standard pairings (block-diagonal, canonical~$J_4$, and anti-diagonal) yield identical~$d_c$; general pairings do not, and whether a natural selection principle exists is open. The three Jacobson inputs thereby trace to a single symplectic invariant: $\sigma_1$. The $2\times 2$ setting captures signature, light cones, and symplectic structure; conformal and spinor structure require the $(1{+}3)$-dimensional extension.
 
 \subsection*{Beyond GENERIC}
 
@@ -495,13 +499,13 @@ General relativity prescribes Lorentzian signature; the present work derives it 
 \bigskip
 \noindent\textbf{Statements and Declarations}
 
-\medskip\noindent\textbf{Funding.} No funding was received.
+\medskip\noindent\textbf{Funding.} No funding was received for conducting this study.
 
-\medskip\noindent\textbf{Competing interests.} None.
+\medskip\noindent\textbf{Competing interests.} The author has no relevant financial or non-financial interests to disclose.
 
 \medskip\noindent\textbf{Author contributions.} Y.\,Y.\,N.\ Li is the sole author of the work presented.
 
-\medskip\noindent\textbf{Data availability.} No datasets were generated. Supplementary test suite (172 checks) available from the author.
+\medskip\noindent\textbf{Data availability.} No datasets were generated or analysed during the current study. Supplementary test suite (172 checks) available from the author.
 
 \begin{thebibliography}{99}
 
