@@ -158,7 +158,7 @@ Let $G$ be non-degenerate and let $J_{G}=\alpha G^{-1}J$ \textup{(Theorem~1)}. S
 $A=G^{-1}(\alpha J-GD)=J_{G}-D$. Uniqueness is immediate: $J_{G}$ is fixed by Theorem~1 and $D\ge 0$ is prescribed.\qed
 \end{proof}
 
-The generator decomposes as $J_{G}=A_{\mathrm{skew}}+S$ where $S=(J_{G}+J_{G}^{\top})/2$. For Lorentzian $G$: $\mathrm{spec}(J_{G})\subset\mathbb{R}$, $S\neq 0$, $\mathrm{tr}\,S=0$. For definite $G$: $\mathrm{spec}(J_{G})\subset i\mathbb{R}$ and $S=0$ iff $G\propto I$. This is the Euclidean decomposition; in $G$-metric, $J_{G}$ is purely antisymmetric by construction ($GJ_{G}=\alpha J$ is skew).
+The generator $J_G$ has a non-zero symmetric part $S=(J_{G}+J_{G}^{\top})/2$. For Lorentzian $G$: $\mathrm{spec}(J_{G})\subset\mathbb{R}$, $S\neq 0$, $\mathrm{tr}\,S=0$. For definite $G$: $\mathrm{spec}(J_{G})\subset i\mathbb{R}$ and $S=0$ iff $G\propto I$. In $G$-metric, $J_{G}$ is purely antisymmetric by construction ($GJ_{G}=\alpha J$ is skew).
 
 The GENERIC formalism~\cite{GENERIC} requires Euclidean antisymmetry $L^{\top}=-L$. For $G=cI$, $J_{G}$ is antisymmetric and Law~II is consistent with isothermal GENERIC. For Lorentzian $G$, $J_{G}$ is $G$-antisymmetric but not Euclidean-antisymmetric, so Law~II extends beyond GENERIC.
 
@@ -275,7 +275,7 @@ Consider the static spherically symmetric metric
 with symplectic eigenvalues $\sigma_1:=r\sqrt{f}$, $\sigma_2:=r$
 (on each local Rindler wedge, $d_c\sigma_1=\alpha$, connecting $\sigma_1$ to the $2\times 2$ symplectic eigenvalue of~\S3),
 and d'Alembertian
-$\Box\phi=r^{-2}\partial_r(r^2f\,\partial_r\phi)$ (the radial d'Alembertian, exact for $r$-dependent $\phi$).
+$\Box\phi=r^{-2}\partial_r(r^2f\,\partial_r\phi)$ (the radial d'Alembertian, exact for $r$-dependent $\phi$; primes denote $d/dr$).
 
 \begin{definition}[Eigenvalue self-consistency functionals]\label{def:esc}
 \begin{align}
@@ -391,7 +391,7 @@ Table~\ref{tab:corr} summarises the point-field correspondence established in th
 \toprule
 & \textbf{Point level (2D)} & \textbf{Field level (4D)} \\
 \midrule
-Principle & $K = \boldsymbol{x}^T\!G\,\boldsymbol{x} = 1$
+Principle & $K = x^{\top}G\,x = 1$
   & $\sigma_2^2\,\Box\ln\sigma_i = 1\;\;\forall\,i$ \\[3pt]
 Balance & unit temporal cost ($K{=}1$) & $\Box\ln\sigma_i = 1/\sigma_2^2$ \\[3pt]
 Vacuum & $K{=}1$ & $K_1{=}K_2{=}1\;\Leftrightarrow\;R_{\mu\nu}{=}0$ \\[3pt]
@@ -477,7 +477,7 @@ For non-vacuum configurations, $\rho=(1{-}K_2)/(8\pi r^2)$: matter is the angula
 
 \subsection*{Extension to $(1{+}3)$ dimensions}
 
-In $(1{+}3)$ dimensions, $\{K{=}1\}\cong H^3$ ($H^3$ being the unit spacelike hyperboloid in Minkowski $\mathbb{R}^{1,3}$, the natural higher-dimensional analogue of the unit $G$-hyperboloid) carries $S^2$ cross-sections with area $4\pi(\kappa\ell)^2$. With $\alpha=1$, $\sigma_1=\kappa\ell$, so the cross-sectional area is $A=4\pi\sigma_1^2$ and the Bekenstein--Hawking entropy $S_{\mathrm{BH}}=A/4=\pi\sigma_1^2$, expressing both in terms of the same symplectic invariant. The coefficient $\eta=1/4$ follows from the first law $\delta M=T_{H}\,\delta S$ with $A_{H}=16\pi M^{2}$, which gives $S_{\mathrm{BH}}=A_{H}/4$ directly; this need not be separately assumed as it is consistent with the Bekenstein-Hawking entropy-area law~\cite{Bekenstein}. Two structural changes accompany the extension: the equivalence $d_c>0\Leftrightarrow\mathrm{Sig}(G)=(1,1)$ weakens to a one-directional implication (Lorentzian signature is necessary but no longer sufficient for $d_c>0$), and the uniqueness of~$J_G$ (guaranteed by $\dim(\mathrm{Skew}_2)=1$) requires a symplectic pairing choice when $\dim(\mathrm{Skew}_4)=6$. For the Rindler metric with isotropic spatial sector, the three standard pairings (block-diagonal, canonical~$J_4$, and anti-diagonal) yield identical~$d_c$; general pairings do not, and whether a natural selection principle exists is open. The three Jacobson inputs thereby trace to a single symplectic invariant: $\sigma_1$. The $2\times 2$ setting captures signature, light cones, and symplectic structure; conformal and spinor structure require the $(1{+}3)$-dimensional extension.
+In $(1{+}3)$ dimensions, $\{K{=}1\}\cong H^3$ ($H^3$ being the unit spacelike hyperboloid in Minkowski $\mathbb{R}^{1,3}$, the natural higher-dimensional analogue of the unit $G$-hyperboloid) carries $S^2$ cross-sections with area $4\pi(\kappa\ell)^2$. With $\alpha=1$, $\sigma_1=\kappa\ell$, so the cross-sectional area is $A=4\pi\sigma_1^2$ and the Bekenstein--Hawking entropy $S_{\mathrm{BH}}=A/4=\pi\sigma_1^2$, expressing both in terms of the same symplectic invariant. The coefficient $\eta=1/4$ follows from the first law $dM=T_{H}\,dS$ with $A_{H}=16\pi M^{2}$, which gives $S_{\mathrm{BH}}=A_{H}/4$ directly; this need not be separately assumed as it is consistent with the Bekenstein-Hawking entropy-area law~\cite{Bekenstein}. Two structural changes accompany the extension: the equivalence $d_c>0\Leftrightarrow\mathrm{Sig}(G)=(1,1)$ weakens to a one-directional implication (Lorentzian signature is necessary but no longer sufficient for $d_c>0$), and the uniqueness of~$J_G$ (guaranteed by $\dim(\mathrm{Skew}_2)=1$) requires a symplectic pairing choice when $\dim(\mathrm{Skew}_4)=6$. For the Rindler metric with isotropic spatial sector, the three standard pairings (block-diagonal, canonical~$J_4$, and anti-diagonal) yield identical~$d_c$; general pairings do not, and whether a natural selection principle exists is open. The three Jacobson inputs thereby trace to a single symplectic invariant: $\sigma_1$. The $2\times 2$ setting captures signature, light cones, and symplectic structure; conformal and spinor structure require the $(1{+}3)$-dimensional extension.
 
 \subsection*{Beyond GENERIC}
 
