@@ -58,7 +58,7 @@ Laws~I--III are axioms of the framework, not empirical laws. This section constr
 
 \medskip
 
-The information time $dt_{\mathrm{info}}:=d\Phi/H$, where $\Phi$ parametrises structural variation and $H>0$ is an entropic resistance, provides the metric through its Hessian: the local quadratic approximation $dt_{\mathrm{info}}^{2}\approx \delta x^{\top}G\,\delta x$ defines $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$. Here $H$ is the local cost per unit variation of $\Phi$. The quadratic form $K(x):=x^{\top}Gx$ quantifies local temporal cost, and $K=1$ identifies the self-consistent locus. This redefinition of time enters the theorems through $G$ alone: $dt_{\mathrm{info}}$ serves as the motivating construction for~$G$. The Hessian $G$ has the structure of an information metric --- it measures the local cost of displacement, as the Fisher metric measures the local cost of statistical distinguishability~\cite{Amari} --- but with Lorentzian rather than Riemannian signature.
+The information time $dt_{\mathrm{info}}:=d\Phi/H$, where $\Phi$ parametrises structural variation and $H>0$ is the local cost per unit variation of $\Phi$ (an entropic resistance), provides the metric through its Hessian: the local quadratic approximation $dt_{\mathrm{info}}^{2}\approx \delta x^{\top}G\,\delta x$ defines $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$. The quadratic form $K(x):=x^{\top}Gx$ quantifies local temporal cost, and $K=1$ identifies the self-consistent locus. This redefinition of time enters the theorems through $G$ alone: $dt_{\mathrm{info}}$ serves as the motivating construction for~$G$. The Hessian $G$ has the structure of an information metric --- it measures the local cost of displacement, as the Fisher metric measures the local cost of statistical distinguishability~\cite{Amari} --- but with Lorentzian rather than Riemannian signature.
 
 The specific nature of~$\Phi$ is not required by the theorems; what is required is that some directions carry vanishing cost --- equivalently, that the cost structure not be definite. The theorems follow from the asymmetry, not from the identity of the varying structure.
 
@@ -80,7 +80,7 @@ Let $G$ be a non-degenerate symmetric $2\times 2$ real matrix. Among all matrice
 the unique solution is $J_{G}=\alpha G^{-1}J$.
 \end{theorem}
 
-Here $\alpha>0$ is a normalisation constant fixed by condition~(ii); all subsequent results are homogeneous in $\alpha$, and $\alpha=1$ is adopted wherever $d_{c}$ is compared with thermal quantities. Condition~(ii) is the Euclidean normalisation: when $G=I$, the framework reduces to standard Hamiltonian mechanics.
+Here $\alpha>0$ is a normalisation constant fixed by condition~(ii); all results scale with $\alpha$, and $\alpha=1$ is adopted wherever $d_{c}$ is compared with thermal quantities. Condition~(ii) is the Euclidean normalisation: when $G=I$, the framework reduces to standard Hamiltonian mechanics.
 
 \begin{proof}
 Since $\dim(\mathrm{Skew}_{2})=1$ and $J$ spans $\mathrm{Skew}_{2}$, condition~(i) forces $GM=\beta J$ for some $\beta\in\mathbb{R}$, hence $M=\beta G^{-1}J$; condition~(ii) fixes $\beta=\alpha$.\qed
@@ -139,7 +139,7 @@ With $G=\mathrm{diag}(0.1,-10)$ and $H_{*}=\bigl(\begin{smallmatrix}1&0.9\\0.9&1
 \end{remark}
 
 \begin{remark}[Isotropy of $H_{*}$ for the Rindler metric]
-For $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$ and diagonal $H_{*}$, one has $\mathrm{tr}(J_{G}H_{*})=0$ identically, so $d_{c}=\alpha/(\kappa\ell)$ independently of the diagonal entries. The thermodynamic interpretation of \S\ref{sec:thermo} assumes $H_{*}$ diagonal; this is a necessary scope condition, satisfied by the Rindler metric $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$.
+For $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$ and diagonal $H_{*}$, one has $\mathrm{tr}(J_{G}H_{*})=0$ identically, so $d_{c}=\alpha/(\kappa\ell)$ independently of the diagonal entries. The thermodynamic interpretation of \S\ref{sec:thermo} assumes $H_{*}$ diagonal; this is a necessary scope condition, satisfied here.
 \end{remark}
 
 \medskip\noindent\textbf{Numerical illustration.} Among 2000 random symmetric $2\times 2$ matrices (sufficient for coverage): all 1420 with $\mathrm{Sig}=(1,1)$ had $d_{c}>0$; all 580 with definite signature had $d_{c}=0$.
@@ -203,7 +203,7 @@ Mixing the two classes conflates thermodynamic and kinematic degrees of freedom 
 
 This section connects the geometric structures of \S\S2--6 to spacetime thermodynamics; every connection requires at least one external identification, marked explicitly.
 
-For the Rindler metric $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, where $\kappa$ is the surface gravity and $\ell$ the proper distance from the horizon, eq.~\eqref{eq:dc} gives $d_{c}=\alpha/(\kappa\ell)=\alpha/\sqrt{|g_{00}|}$, with $g_{00}=-(\kappa\ell)^{2}$ the temporal component of the Rindler metric. With $T_{H}=\hbar\kappa/(2\pi)$~\cite{Hawking},
+For the Rindler metric $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, where $\kappa$ is the surface gravity and $\ell$ the proper distance from the horizon, eq.~\eqref{eq:dc} gives $d_{c}=\alpha/(\kappa\ell)$ (i.e., $\alpha/\sqrt{|g_{00}|}$ with $g_{00}=-(\kappa\ell)^{2}$ the temporal component of the Rindler metric). With $T_{H}=\hbar\kappa/(2\pi)$~\cite{Hawking},
 \begin{equation}
 d_{c}\cdot T_{H} = \frac{\alpha}{\kappa\ell}\cdot\frac{\hbar\kappa}{2\pi} = \frac{\alpha\hbar}{2\pi\ell},\label{eq:nearhorizon}
 \end{equation}
@@ -295,7 +295,7 @@ $R=-2\,\Box\ln\sigma_1+2/r^2$ for~\eqref{eq:metric}.
 \end{lemma}
 \begin{proof}
 $R=-f''-4f'/r+2(1{-}f)/r^2$.
-$\Box\ln\sigma_1=f/r^2+2f'/r+f''/2$.
+$\Box\ln\sigma_1=f/r^2+2f'/r+f''/2$ (from $K_1=r^2\Box\ln\sigma_1$ and eq.~\eqref{eq:K1exp}).
 Then $-2\Box\ln\sigma_1+2/r^2=R$.\qed
 \end{proof}
 
@@ -310,8 +310,9 @@ $m=\frac{r}{2}(1{-}f)$ is constant: $dm/dr=(1{-}K_2)/2=0$.
 For~\eqref{eq:metric} with $f\in C^2(0,\infty)$:
 \begin{equation}\label{eq:equiv}
   \sigma_2^2\,\Box\ln\sigma_i=1\;\;\text{for }i=1,2
-  \quad\Longleftrightarrow\quad R_{\mu\nu}=0\;\cite{Einstein1915,Hilbert1915}.
+  \quad\Longleftrightarrow\quad R_{\mu\nu}=0,
 \end{equation}
+where $R_{\mu\nu}=0$ are the vacuum Einstein field equations~\cite{Einstein1915,Hilbert1915}.
 \end{theorem}
 
 \begin{proof}
@@ -405,7 +406,7 @@ Specialising to the $(t,r)$ Rindler wedge, $G=\mathrm{diag}(\sigma_1^2,-1)$ (Axi
 \end{proof}
 
 \noindent
-A direct consequence: when $\sigma_1=0$, $K=-x_2^2\le 0$ and $K{=}1$ has no solutions. The Schwarzschild singularity ($\sigma_1\to 0$ as $r\to 0$) therefore lies outside the domain of the theory---the framework is undefined there, not incorrect.
+A direct consequence: when $\sigma_1=0$, $K=-x_2^2\le 0$ and $K{=}1$ has no solutions. The Schwarzschild singularity ($\sigma_1\to 0$ as $r\to 0$) therefore lies outside the domain of the theory --- the framework is undefined there, not incorrect.
 
 \begin{proposition}[Intrinsic resolution scale]\label{prop:domain}
 The $K{=}1$ framework is self-consistent only for
