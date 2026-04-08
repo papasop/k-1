@@ -54,15 +54,15 @@ Route~A is general but requires $S\propto A$; Route~B is thermodynamically indep
 Laws~I--III are axioms of the framework, not empirical laws; they define the cost structure and its dynamics. This section constructs $G$ from information time and establishes that nontrivial configurations require $\det G<0$.
 
 \medskip
-\noindent\textbf{Law~I.} \textit{The metric $G$ is a non-degenerate symmetric bilinear form measuring the local cost of temporal displacement, where `temporal' denotes the direction distinguished by positive cost \textup{(Assumption~T of~\cite{Realizability})}.}
+\noindent\textbf{Law~I.} \textit{The metric $G$ is a non-degenerate symmetric bilinear form measuring local displacement cost, where the temporal direction is that of positive cost \textup{(Assumption~T of~\cite{Realizability})}.}
 
 \medskip
 
-The information time $dt_{\mathrm{info}}:=d\Phi/H$, where $\Phi$ parametrises structural variation and $H>0$ is an entropic resistance (the local cost per unit variation of $\Phi$), provides the metric through its Hessian: the local quadratic approximation $dt_{\mathrm{info}}^{2}\approx \delta x^{\top}G\,\delta x$ defines $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$. The quadratic form $K(x):=x^{\top}Gx$ quantifies local temporal cost, and $K=1$ identifies the self-consistent locus. The redefinition enters the theorems through $G$ alone: $dt_{\mathrm{info}}$ serves as the motivating construction for~$G$. The Hessian $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$ has the structure of an information metric --- it measures the local cost of displacement, as the Fisher metric measures the local cost of statistical distinguishability~\cite{Amari} --- but with Lorentzian rather than Riemannian signature.
+The information time $dt_{\mathrm{info}}:=d\Phi/H$, where $\Phi$ parametrises structural variation and $H>0$ is an entropic resistance (the local cost per unit variation of $\Phi$), provides the metric through its Hessian: the local quadratic approximation $dt_{\mathrm{info}}^{2}\approx \delta x^{\top}G\,\delta x$ defines $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$. The quadratic form $K(x):=x^{\top}Gx$ quantifies local temporal cost, and $K=1$ identifies the self-consistent locus. The redefinition enters the theorems through $G$ alone: $dt_{\mathrm{info}}$ serves as the motivating construction for~$G$. This Hessian has the structure of an information metric --- it measures the local cost of displacement, as the Fisher metric measures the local cost of statistical distinguishability~\cite{Amari} --- but with Lorentzian rather than Riemannian signature.
 
 The specific nature of~$\Phi$ is not required by the theorems; what is required is that some directions carry vanishing cost --- equivalently, that the cost structure not be definite (Theorem~3). The theorems follow from the asymmetry, not from the identity of the varying structure.
 
-The cost structure of $dt_{\mathrm{info}}$ satisfies the three realizability conditions of~\cite{Realizability}. Assumption~E (quadratic expansion) holds because $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$ exists by the smoothness of~$\Phi$ and~$H$. Assumption~T (positive temporal cost) holds by construction: the temporal direction is defined as the direction along which $dt_{\mathrm{info}}>0$, so $G(e_{t},e_{t})>0$. For Assumption~R (zero-threshold spatial directions), suppose instead that $G$ were positive definite; then $K(x)=x^{\top}Gx>0$ for all $x\neq 0$, and the gradient flow $\dot{x}=-\nabla K$ drives every configuration to $x=0$: no nontrivial structure persists. Since the framework is intended to describe nontrivial physical states --- persistent configurations --- $G$ cannot be positive definite. Combined with $G(e_{t},e_{t})>0$, the only possibility for a non-degenerate $2\times 2$ form is $\mathrm{Sig}(G)=(1,1)$. A rigorous derivation from the three conditions alone, independent of the information-time construction, is given in~\cite{Realizability}.
+The cost structure of $dt_{\mathrm{info}}$ satisfies the three realizability conditions of~\cite{Realizability}. Assumption~E (quadratic expansion) holds because $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$ exists by the smoothness of~$\Phi$ and~$H$. Assumption~T (positive temporal cost) holds by construction: the temporal direction is defined as the direction along which $dt_{\mathrm{info}}>0$, so $G(e_{t},e_{t})>0$. For Assumption~R (zero-threshold spatial directions), suppose instead that $G$ were positive definite; then $K(x)=x^{\top}Gx>0$ for all $x\neq 0$, and the gradient flow $\dot{x}=-\nabla K$ drives every configuration to $x=0$: no nontrivial structure persists. Since the framework is intended to describe nontrivial physical states --- persistent configurations --- $G$ cannot be positive definite. Combined with $G(e_{t},e_{t})>0$ --- which rules out $\mathrm{Sig}(G)=(0,2)$ --- and non-degeneracy, the only remaining possibility for a non-degenerate $2\times 2$ form is $\mathrm{Sig}(G)=(1,1)$. A rigorous derivation from the three conditions alone, independent of the information-time construction, is given in~\cite{Realizability}.
 
 Lorentzian signature therefore emerges from the cost structure: $G$ is indefinite, with light cones (the null set $\{x:x^{\top}Gx=0\}$) and a causal structure determined by the sign of~$K$.
 
@@ -88,7 +88,7 @@ $\dim(\mathrm{Skew}_{2})=1$, so condition~(i) gives $GM=\beta J$, hence $M=\beta
 Theorem~1 requires only $\det G\neq 0$; it holds for any signature. The Lorentzian condition enters decisively only in Theorem~2, through the reality of the symplectic spectrum. Since $GJ_{G}=\alpha J$ is skew-symmetric, $J_{G}$ lies in the Lie algebra $\mathfrak{sp}(2,\mathbb{R})$; the Lorentzian condition forces $J_{G}$ to be a hyperbolic element (with real, nonzero eigenvalues), whose real eigenvalues yield $d_{c}>0$.
 \end{remark}
 
-\begin{theorem}[Spectral Survival]
+\begin{theorem}[Spectral Reality]
 Let $\mathrm{Sig}(G)=(1,1)$. The characteristic polynomial of $G^{-1}J$ is $\lambda^{2}+1/\det G=0$. Since $\det G<0$, the roots are real: $\lambda=\pm\sqrt{-1/\det G}$. The stability boundary is
 \begin{equation}
 d_{c}(\alpha)=\alpha\sqrt{-1/\det G}>0.\label{eq:dc}
@@ -115,7 +115,7 @@ The stability boundary $d_c>0$ of Theorem~4 is the critical damping threshold: a
 \begin{theorem}[Signature-Stability Equivalence]
 For non-degenerate symmetric $2\times 2$ real $G$, under the isotropic linearisation $H_{*}=I$, the following are equivalent:
 \begin{itemize}
-\item[\textup{(a)}] The metric admits a nontrivial stability boundary $d_{c}>0$.
+\item[\textup{(a)}] The metric admits a stability boundary $d_{c}>0$.
 \item[\textup{(b)}] $\mathrm{Sig}(G)=(1,1)$ \textup{(Lorentzian)}, equivalently $\det G<0$.
 \end{itemize}
 The equivalence fails for general $H_{*}$ \textup{(Remark~\ref{rem:Hstar_dep})}: $d_{c}$ is a signature invariant only within the isotropic class.
@@ -134,7 +134,7 @@ With $G=\mathrm{diag}(0.1,-10)$ and $H_{*}=\bigl(\begin{smallmatrix}1&0.9\\0.9&1
 \end{remark}
 
 \begin{remark}[Isotropy of $H_{*}$ for the Rindler metric]
-For $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$ and diagonal $H_{*}$, one has $\mathrm{tr}(J_{G}H_{*})=0$ identically, so $d_{c}=\alpha/(\kappa\ell)$ independently of the diagonal entries. The thermodynamic interpretation of \S\ref{sec:thermo} assumes $H_{*}$ diagonal; this is a necessary scope condition.
+For $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$ and diagonal $H_{*}$, one has $\mathrm{tr}(J_{G}H_{*})=0$ identically, so $d_{c}=\alpha/(\kappa\ell)$ independently of the diagonal entries. The thermodynamic interpretation of \S\ref{sec:thermo} assumes $H_{*}$ diagonal; this is a necessary scope condition, satisfied by the Rindler metric $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$.
 \end{remark}
 
 \medskip\noindent\textbf{Numerical illustration.} Among 2000 random symmetric $2\times 2$ matrices (sufficient for coverage): all 1420 with $\mathrm{Sig}=(1,1)$ had $d_{c}>0$; all 580 with definite signature had $d_{c}=0$.
@@ -145,6 +145,8 @@ For $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$ and diagonal $H_{*}$, one has $\mathr
 
 \noindent\textbf{Law~II.} \textit{The dynamics on $\{K=1\}$ take the unique form $\dot{x}=(J_{G}-D)\nabla V$, compatible with $GJ_{G}$ skew-symmetric and $D\ge 0$.}
 
+Law~II is the uniqueness statement: given $J_{G}$ and $D$, the dynamics are fixed.
+
 \begin{theorem}[Law~II Canonical Decomposition]
 Let $G$ be non-degenerate and let $J_{G}=\alpha G^{-1}J$ \textup{(Theorem~1)}. Suppose the generator $A$ splits as $GA = \alpha J - GD$, $D\ge 0$. Then for any smooth potential $V$, the unique evolution law is $\dot{x} = (J_{G}-D)\,\nabla V$.
 \end{theorem}
@@ -153,13 +155,13 @@ Let $G$ be non-degenerate and let $J_{G}=\alpha G^{-1}J$ \textup{(Theorem~1)}. S
 $A=G^{-1}(\alpha J-GD)=J_{G}-D$. Uniqueness is immediate: $J_{G}$ is fixed by Theorem~1 and $D\ge 0$ is prescribed.\qed
 \end{proof}
 
-The generator decomposes as $J_{G}=A_{\mathrm{skew}}+S$ where $S=(J_{G}+J_{G}^{\top})/2$. For Lorentzian $G$: $\mathrm{spec}(J_{G})\subset\mathbb{R}$, $S\neq 0$, $\mathrm{tr}\,S=0$. For definite $G$: $\mathrm{spec}(J_{G})\subset i\mathbb{R}$ and $S=0$ iff $G\propto I$.
+The generator decomposes as $J_{G}=A_{\mathrm{skew}}+S$ where $S=(J_{G}+J_{G}^{\top})/2$. For Lorentzian $G$: $\mathrm{spec}(J_{G})\subset\mathbb{R}$, $S\neq 0$, $\mathrm{tr}\,S=0$. For definite $G$: $\mathrm{spec}(J_{G})\subset i\mathbb{R}$ and $S=0$ iff $G\propto I$. This is the Euclidean decomposition; in $G$-metric, $J_{G}$ is purely antisymmetric by construction ($GJ_{G}=\alpha J$ is skew).
 
 The GENERIC formalism~\cite{GENERIC} requires Euclidean antisymmetry $L^{\top}=-L$. For $G=cI$, $J_{G}$ is antisymmetric and Law~II reduces to isothermal GENERIC. For Lorentzian $G$, $J_{G}$ is $G$-antisymmetric but not Euclidean-antisymmetric, so Law~II extends beyond GENERIC.
 
 \section{Critical damping and fluctuation structure (Law~III)}\label{sec:lawIII}
 
-\noindent\textbf{Law~III.} \textit{$K=1$ is selected by the stochastic dynamics as the unique self-consistent locus of the metric.}
+\noindent\textbf{Law~III.} \textit{$K=1$ is selected by the drift dynamics as the unique self-consistent locus of the metric.}
 
 \medskip
 
@@ -181,11 +183,11 @@ $\dot{K}=2x^{\top}G\dot{x}=4(K-1)\,x^{\top}G(J_{G}-d_{c}I)Gx$. Since $GJ_{G}=\al
 \end{proof}
 
 \begin{remark}[Base-point dependence]
-The local effective restoring rate is $\kappa_{K}(x_{*})=4d_{c}\cdot x_{*}^{\top}G^{2}x_{*}$; it depends on the base point. For the Rindler metric, $x_{*}=(0,1)$ is the unique $G$-eigenvector on $\{K{=}1\}$ with $x_{*}^{\top}G^{2}x_{*}=1$. The factor~$4=2\times 2$ reflects two sources: the quadratic observable $K$ and the quadratic penalty~$V$; each contributes a factor of~$2$ upon differentiation.
+The local effective restoring rate is $\kappa_{K}(x_{*})=4d_{c}\cdot x_{*}^{\top}G^{2}x_{*}$; it depends on the base point. For the Rindler metric, $x_{*}=(0,1)$ is the unique $G$-eigenvector on $\{K{=}1\}$ with $x_{*}^{\top}G^{2}x_{*}=1$. The factor~$4=2\times 2$ reflects two sources: the quadratic form~$K$ and the quadratic penalty~$V$; each contributes a factor of~$2$ upon differentiation.
 \end{remark}
 
 Adding isotropic white noise gives $dx=(J_{G}-D)\nabla V\,dt+\sigma\,dW_{t}$. Two classes arise:
-\textit{Class~A} (thermodynamic): fluctuations of $K$ perpendicular to $\{K=1\}$, variance $\sigma^{2}/(2d_{c})$, verified numerically for $\sigma\in\{0.3,0.6,1.0\}$.
+\textit{Class~A} (thermodynamic): fluctuations of $K$ perpendicular to $\{K=1\}$, variance $\sigma^{2}/(2d_{c})$, confirmed by simulation for $\sigma\in\{0.3,0.6,1.0\}$.
 
 \medskip\noindent
 \textit{Class~B} (kinematic, here also gauge): free diffusion along $\{K=1\}$ in the tangential (boost) direction, generating Lorentz boosts; the Hessian of $V$ restricted to $\{K=1\}$ is rank-one with null space containing this tangent, confirming that Class~B carries no restoring force and no heat.
@@ -200,7 +202,7 @@ For the Rindler metric $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, where $\kappa$ is
 \begin{equation}
 d_{c}\cdot T_{H} = \frac{\alpha}{\kappa\ell}\cdot\frac{\hbar\kappa}{2\pi} = \frac{\alpha\hbar}{2\pi\ell},\label{eq:nearhorizon}
 \end{equation}
-exhibiting exact $\kappa$-cancellation. Hence the Tolman temperature~\cite{Tolman} $T_{\mathrm{tol}}=d_{c}\cdot T_{H}=\alpha\hbar/(2\pi\ell)$.
+exhibiting exact $\kappa$-cancellation. The resulting $T_{\mathrm{tol}}=\alpha\hbar/(2\pi\ell)$ depends only on the proper distance $\ell$ from the horizon, not on the surface gravity $\kappa$. Hence the Tolman temperature~\cite{Tolman} $T_{\mathrm{tol}}=d_{c}\cdot T_{H}=\alpha\hbar/(2\pi\ell)$.
 
 \subsection*{Clausius relation as FDT consequence within Class~A}
 
@@ -208,7 +210,7 @@ Within Class~A (fixed inertial observer), the $K$-dynamics near $K=1$ is a one-d
 \begin{equation}
 \mathrm{Var}(K)\approx\frac{\sigma^{2}}{2d_{c}}\label{eq:var}
 \end{equation}
-and effective temperature $T_{\mathrm{eff}}=\sigma^{2}/(2d_{c})$. The fluctuation-dissipation relation $\sigma_{K}^{2}=2\kappa_{K}T_{\mathrm{eff}}$ follows algebraically from Law~II and Theorem~6. The Fokker--Planck equation yields a Boltzmann stationary distribution $\rho\propto\exp(-V/T_{\mathrm{eff}})$; the Clausius relation $\delta Q=T_{\mathrm{eff}}\,dS$ then follows for the OU process, with
+and effective temperature $T_{\mathrm{eff}}=\sigma^{2}/(2d_{c})$. The FDT form $\sigma_{K}^{2}=2\kappa_{K}T_{\mathrm{eff}}$ defines $T_{\mathrm{eff}}=\sigma^{2}/(2d_{c})$, consistent with Law~II and Theorem~6. The Fokker--Planck equation yields a Boltzmann stationary distribution $\rho\propto\exp(-V/T_{\mathrm{eff}})$; the Clausius relation $\delta Q=T_{\mathrm{eff}}\,dS$ then follows for the OU process, with
 \[
 \delta Q := dV + \tfrac{1}{2}\sigma_{K}^{2}\,dt,\qquad \sigma_{K}=2\sigma\|Gx_{*}\|.
 \]
@@ -230,7 +232,7 @@ Setting $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ gives $\sigma^{2}/(2d_{c})=d_{c}\cdo
 Three logically distinct inputs: (i)~the OU approximation, valid when $|K-1|\ll 1$ and Class~B diffusion is slow compared to Class~A relaxation; (ii)~the identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, the sole true external axiom; (iii)~the Tolman identity $T_{\mathrm{tol}}=d_{c}T_{H}$, which follows from~\eqref{eq:nearhorizon} and is independently verifiable via the Tolman-Ehrenfest relation~\cite{Tolman}.
 \end{remark}
 
-\subsection*{It\^{o} correction and local temperature}
+\subsection*{Position-dependent temperature and It\^{o} corrections}
 
 Applying It\^{o}'s formula to $K=x^{\top}Gx$ gives an additional drift $\sigma^{2}\,\mathrm{tr}(G)\,dt$. This shifts the mean of $K$ but not its variance: at any $G$-eigenvector base point, the FDT ratio $\sigma_{K}^{2}/(2\kappa_{K})$ cancels to $\sigma^{2}/(2d_{c})$ regardless of $x_{*}^{\top}G^{2}x_{*}$. Hence~\eqref{eq:var} and $T_{\mathrm{eff}}=\sigma^{2}/(2d_{c})$ hold for any Lorentzian $G$.
 
@@ -248,7 +250,7 @@ Combined with the entropy--area proportionality $S\propto A$ and the Jacobson ar
 
 %===================================================================
 %===================================================================
-\section{Eigenvalue self-consistency (Route~B)}\label{sec:field}
+\section{Eigenvalue self-consistency (Route~B: direct algebraic)}\label{sec:field}
 
 Route~A reaches the Einstein equations via thermodynamics.
 A direct algebraic route also exists in the
@@ -262,7 +264,7 @@ with symplectic eigenvalues $\sigma_1:=r\sqrt{f}$, $\sigma_2:=r$
 (on each local Rindler wedge, $\sigma_1$ coincides with the
 $2\times 2$ symplectic eigenvalue of~\S3),
 and d'Alembertian
-$\Box\phi=(r^2f)^{-1}\partial_r(r^2f\,\partial_r\phi)$.
+$\Box\phi=(r^2f)^{-1}\partial_r(r^2f\,\partial_r\phi)$ (the radial d'Alembertian, exact for $r$-dependent $\phi$).
 
 \begin{definition}[Eigenvalue self-consistency functionals]\label{def:esc}
 \begin{align}
@@ -334,7 +336,7 @@ $f+2rf'+\frac{r^2}{2}f''=1$, equivalent to $R{=}0$, with general solution
 $f=1-C_1/r-C_2/r^2$; $K_2{=}1$ forces $C_2{=}0$,
 recovering Schwarzschild uniquely (Birkhoff).
 In the weak field ($f=1+\varepsilon\varphi$),
-$K_2{=}1$ gives $\varphi=C/r$ (Newton) in one line;
+$K_2{=}1$ gives $\varphi=C/r$ (Newton) in one step;
 $K_1{=}1$ is automatically satisfied at linear order,
 so its independent content is purely nonlinear (strong-field).
 \end{corollary}
@@ -406,7 +408,7 @@ Axiom~T implies $\sigma_1>0$ wherever $K{=}1$ is imposed.
 \end{proposition}
 
 \begin{proof}
-The $2\times 2$ cost metric on each Rindler wedge is $G=\mathrm{diag}(\sigma_1^2,-1)$ (Axiom~T gives $G_{00}=\sigma_1^2>0$; cf.\ $g_{00}=-f<0$ for the spacetime metric). If $\sigma_1=0$ then $G_{00}=0$, violating Axiom~T.\qed
+Specialising to the $(t,r)$ Rindler wedge, $G=\mathrm{diag}(\sigma_1^2,-1)$ (Axiom~T gives $G_{00}=\sigma_1^2>0$; cf.\ $g_{00}=-f<0$ for the spacetime metric). If $\sigma_1=0$ then $G_{00}=0$, violating Axiom~T.\qed
 \end{proof}
 
 \noindent
@@ -423,7 +425,7 @@ Near the horizon, $T_{\mathrm{eff}}=T_{\mathrm{tol}}=d_c\cdot T_H=\alpha\hbar/(2
 (from~\eqref{eq:nearhorizon}). With $\alpha=1$ and $\sigma_1=\kappa\ell$,
 $\ell=\sigma_1/\kappa$, so $T_{\mathrm{eff}}=\hbar\kappa/(2\pi\sigma_1)
 =\hbar/(4\pi\sigma_1)$ for Schwarzschild ($\kappa=1/(4M)$; near the horizon $r\to 2M$, $\sigma_1=r\sqrt{f}\to 0$).
-$\mathrm{Var}(K)=T_{\mathrm{eff}}$; for $K{=}1$ to be a
+$\mathrm{Var}(K)\approx T_{\mathrm{eff}}$ (in the OU approximation); for $K{=}1$ to be a
 well-defined equilibrium, $\mathrm{Var}(K)<1$, hence
 $\sigma_1>\hbar/(4\pi)$.\qed
 \end{proof}
@@ -442,7 +444,7 @@ at action~$\sim\hbar$---derived entirely within the framework.
 
 The framework reaches the Einstein equations from the three cost axioms by two routes sharing the same starting point ($G$ indefinite, $K{=}1$, OU dynamics) but diverging thereafter. Route~A uses stochastic dynamics and the Jacobson bridge with $S\propto A$; Route~B uses the d'Alembertian of symplectic eigenvalues. In the spherically symmetric sector, Route~B is fully independent of Jacobson and of thermodynamics.
 
-The Jacobson argument~\cite{Jacobson} reconstructs the Einstein equations from three inputs: Lorentzian signature, the Clausius relation on every local Rindler horizon, and $S=A/4$. Route~A supplies the first two: signature is forced by realizability (Theorem~4) and Clausius follows algebraically on each horizon (Proposition~\ref{prop:clausius}); $S\propto A$ is then the sole remaining external input. The patching across horizon directions requires no additional assumptions: at each spacetime point, every null direction defines a two-dimensional normal plane on which $\dim(\mathrm{Skew}_2)=1$, so Theorem~1 guarantees a unique~$J_G$ with no pairing ambiguity.
+The Jacobson argument~\cite{Jacobson} reconstructs the Einstein equations from three inputs: Lorentzian signature, the Clausius relation on every local Rindler horizon, and $S=A/4$. Route~A supplies the first two: signature is forced by realizability (Theorem~4) and Clausius follows algebraically on each horizon (Proposition~\ref{prop:clausius}); $S\propto A$ is then the sole remaining external input. The patching across horizon directions requires no additional assumptions: at each spacetime point, every null direction defines a two-dimensional normal plane on which $\dim(\mathrm{Skew}_2)=1$, so Theorem~1 guarantees a unique~$J_G$ with no pairing ambiguity (cf.\ the $(1{+}3)$-dimensional extension below).
 
 \subsection*{The $K{=}1$ self-referential structure}
 
@@ -459,7 +461,7 @@ The condition $K{=}1$ has a self-referential character: the metric~$G$ defines t
 \noindent\textit{Stage~3 (field):} $\sigma_2^2\Box\ln\sigma_i=1\Leftrightarrow R_{\mu\nu}=0$ (Theorem~\ref{thm:field}, spherical).
 For non-vacuum configurations, $\rho=(1{-}K_2)/(8\pi r^2)$: matter is the angular eigenvalue's deficit from self-consistency per unit area. (This \emph{rewrites} the Einstein $G_{tt}$-component; the coefficient $8\pi$ is inherited from GR, not derived.)
 
-\noindent\textit{Stage~4 (quantum interface):} For $G=\mathrm{diag}(-(\kappa\ell)^2,1)$, defining $\sigma_1:=|\det G|^{1/2}/\alpha=\kappa\ell/\alpha$ gives $d_c\cdot\sigma_1=1$ identically. This is a reciprocity relation: the stabilisation cost~$d_c$ and the symplectic eigenvalue~$\sigma_1$ are reciprocal. The observable~$K$ and the boost angle~$\varphi$ along $\{K{=}1\}$ satisfy $\{K,\varphi\}_{J_G}=-2d_c$ (Poisson bracket with respect to the symplectic structure~$J_G$); whether quantisation of this conjugate pair yields a hard lower bound on~$\sigma_1$ remains open. Meanwhile, Axiom~T forces $\sigma_1>0$ (Proposition~\ref{prop:sigma1}) and the self-consistency bound gives $\sigma_1\gtrsim\ell_P$ (Proposition~\ref{prop:domain}).
+\noindent\textit{Stage~4 (quantum interface):} For $G=\mathrm{diag}(-(\kappa\ell)^2,1)$, defining $\sigma_1:=|\det G|^{1/2}/\alpha=\kappa\ell/\alpha$ gives $d_c\cdot\sigma_1=1$ identically. This is a reciprocity relation: the stabilisation cost~$d_c$ and the symplectic eigenvalue~$\sigma_1$ are reciprocal. The observable~$K$ and the boost angle~$\varphi$ along $\{K{=}1\}$ satisfy $\{K,\varphi\}_{J_G}=-2d_c$, where $\{\cdot,\cdot\}_{J_G}$ denotes the Poisson bracket induced by~$J_G$. Whether quantisation of this conjugate pair yields a hard lower bound on~$\sigma_1$ remains open. Meanwhile, Axiom~T forces $\sigma_1>0$ (Proposition~\ref{prop:sigma1}) and the self-consistency bound gives $\sigma_1\gtrsim\ell_P$ (Proposition~\ref{prop:domain}).
 
 \subsection*{Extension to $(1{+}3)$ dimensions}
 
@@ -467,7 +469,7 @@ In $(1{+}3)$ dimensions, $\{K{=}1\}\cong H^3$ carries $S^2$ cross-sections with 
 
 \subsection*{Beyond GENERIC}
 
-For Lorentzian~$G$, the symmetric part $S=(J_G+J_G^\top)/2\neq 0$ departs from the GENERIC formalism~\cite{GENERIC} while $d_c$ is controlled by $\det G$ alone, suggesting a Lorentzian extension of non-equilibrium thermodynamics in the spirit of Wiener's programme~\cite{Wiener}. The $2\times 2$ framework is not a truncation of a $(1{+}3)$-dimensional theory but the natural dimensionality of a single local Rindler horizon: one temporal and one spatial direction normal to the horizon.
+For Lorentzian~$G$, the symmetric part $S=(J_G+J_G^\top)/2\neq 0$ departs from the GENERIC formalism~\cite{GENERIC} while $d_c$ is controlled by $\det G$ alone, suggesting a Lorentzian extension of non-equilibrium thermodynamics in the spirit of Wiener's programme~\cite{Wiener}. The $2\times 2$ framework has its own physical motivation: a single local Rindler horizon defines exactly one temporal and one spatial direction normal to it.
 
 \subsection*{Limitations}
 
@@ -489,7 +491,7 @@ For Lorentzian~$G$, the symmetric part $S=(J_G+J_G^\top)/2\neq 0$ departs from t
 
 \subsection*{Conclusion}
 
-General relativity prescribes Lorentzian signature; the present work derives it from a cost asymmetry. At the point level, the Clausius relation follows algebraically. At the field level, the eigenvalue self-consistency principle yields the vacuum Einstein equations directly. Axiom~T excludes curvature singularities where $\sigma_1\to 0$ from the theory's domain, and the OU variance sets a Planck-scale resolution limit. What remains prescribed is the cost asymmetry itself: why one direction carries positive cost while others do not. This is Riemann's question in economic form.
+General relativity prescribes Lorentzian signature; the present work derives it from a cost asymmetry. At the point level, the Clausius relation follows algebraically. At the field level, the eigenvalue self-consistency principle yields the vacuum Einstein equations directly. Axiom~T excludes curvature singularities (where $\sigma_1$ degenerates) from the theory's domain, and the OU variance sets a Planck-scale resolution limit. What remains prescribed is the cost asymmetry itself: why one direction carries positive cost while others do not. This is Riemann's question in economic form.
 
 \bigskip
 \noindent\textbf{Statements and Declarations}
