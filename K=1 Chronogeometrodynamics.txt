@@ -138,8 +138,21 @@ $H_{*}$ denotes the cost-function weight matrix in $d(\delta x)/dt=(J_{G}-dI)H_{
 With $G=\mathrm{diag}(0.1,-10)$ and $H_{*}=\bigl(\begin{smallmatrix}1&0.9\\0.9&1\end{smallmatrix}\bigr)$, $d_{c}^{\mathrm{iso}}=1$ while $d_{c}(H_{*})=4.55$, confirming that $d_{c}$ may depend on $H_{*}$ outside the isotropic class.
 \end{remark}
 
-\begin{remark}[Isotropy of $H_{*}$ for the Rindler metric]
-For $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$ and diagonal $H_{*}$, one has $\mathrm{tr}(J_{G}H_{*})=0$ identically, so $d_{c}=\alpha/(\kappa\ell)$ independently of the diagonal entries. The thermodynamic interpretation of \S\ref{sec:thermo} assumes $H_{*}$ diagonal; this is a necessary scope condition, satisfied here.
+\begin{proposition}[Diagonal $H_{*}$ invariance]\label{prop:diag_inv}
+For any non-degenerate diagonal $G$ and any diagonal $H_{*}$,
+$\mathrm{tr}(J_{G}H_{*})=0$.
+\end{proposition}
+\begin{proof}
+$(G^{-1}J)_{ii}=(G^{-1})_{ii}J_{ii}=0$, so
+$\mathrm{tr}(J_{G}H_{*})=\alpha\sum_{i}(G^{-1}J)_{ii}(H_{*})_{ii}=0$.\qed
+\end{proof}
+\begin{remark}
+In particular, for the Rindler metric $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$,
+Proposition~\ref{prop:diag_inv} gives $d_{c}=\alpha/(\kappa\ell)$
+independently of the diagonal entries of $H_{*}$.
+The thermodynamic interpretation of \S\ref{sec:thermo} assumes
+$H_{*}$ diagonal; this is a necessary scope condition,
+satisfied here by Proposition~\ref{prop:diag_inv}.
 \end{remark}
 
 \medskip\noindent\textbf{Numerical illustration.} Among 2000 random symmetric $2\times 2$ matrices (sufficient for coverage): all 1420 with $\mathrm{Sig}=(1,1)$ had $d_{c}>0$; all 580 with definite signature had $d_{c}=0$.
@@ -243,7 +256,16 @@ $(\Leftarrow)$: $\sigma^{2}=2d_{c}\cdot T_{\mathrm{tol}}$ gives $T_{\mathrm{eff}
 \end{proof}
 
 \begin{remark}[Status of the approximation]
-Three logically distinct inputs: (i)~the OU approximation, valid when $|K-1|\ll 1$ and Class~B diffusion is slow compared to Class~A relaxation ($\tau=1/(4d_{c})$); (ii)~the identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, the sole external identification at the stochastic level, connecting the stochastic framework to Rindler thermodynamics; (iii)~the Tolman identity $T_{\mathrm{tol}}=d_{c}T_{H}$, which follows from~\eqref{eq:nearhorizon} and is independently verifiable via the Tolman-Ehrenfest relation~\cite{Tolman}.
+Two external inputs and one algebraic consequence enter
+Proposition~\ref{prop:clausius}: (i)~the OU approximation, valid
+when $|K-1|\ll 1$ and Class~B diffusion is slow compared to
+Class~A relaxation ($\tau=1/(4d_{c})$); (ii)~the identification
+$T_{\mathrm{eff}}=T_{\mathrm{tol}}$, the sole external
+identification at the stochastic level; (iii)~the Tolman identity
+$T_{\mathrm{tol}}=d_{c}T_{H}$, an algebraic consequence of
+eq.~\eqref{eq:dc} and $T_{H}=\hbar\kappa/(2\pi)$
+(the $\kappa$-factors cancel exactly), independently verifiable
+via the Tolman-Ehrenfest relation~\cite{Tolman}.
 \end{remark}
 
 \subsection*{Position-dependent temperature and It\^{o} corrections}
@@ -262,7 +284,6 @@ For macroscopic black holes, $T_{\mathrm{tol}}\ll d_{c}$; setting $D=T_{\mathrm{
 
 Combined with the entropy--area proportionality $S\propto A$ and the Jacobson argument~\cite{Jacobson}, Route~A yields $G_{\mu\nu}=8\pi T_{\mu\nu}$ for general metrics. The sole external input beyond the three realizability conditions is $S\propto A$.
 
-%===================================================================
 %===================================================================
 \section{Eigenvalue self-consistency (Route~B: direct algebraic)}\label{sec:field}
 
@@ -447,7 +468,6 @@ at action~$\sim\hbar$---derived from the framework's internal self-consistency, 
 
 If $K$ and the boost angle $\varphi$ along $\{K{=}1\}$ are canonically conjugate (Open Problem~2), the compactness of $\varphi\in[0,2\pi)$ upgrades the soft bound to a hard spectral gap: $\sigma_1\geq\hbar/(4\pi)$. Both the self-consistency argument and the conjugacy argument give $\sigma_{1,\min}\sim O(\ell_P)$; their order-of-magnitude agreement confirms that the Planck scale is the natural resolution limit of the framework, independently of whether the conjugacy conjecture is established.
 
-%===================================================================
 %===================================================================
 \section{Discussion}\label{sec:discussion}
 
