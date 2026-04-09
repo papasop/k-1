@@ -184,6 +184,12 @@ $v_{t}^{(i)}>0$ and $v_{i}^{(i)}\neq 0$. The three limiting directions span a
 subspace~$W$ with $Q|_{W}$ negative semidefinite.
 \end{definition}
 
+\noindent The negative-semidefinite condition on~$W$ is strictly stronger
+than pointwise vanishing at the three directions~$v^{(i)}$: it requires
+$Q\le 0$ on all linear combinations of those directions. This rules out
+split signatures such as $(2,2)$, for which no three-dimensional
+negative-semidefinite subspace exists.
+
 \begin{definition}[E4]\label{def:E4}
 There is a quadratic form $Q$ on~$\mathbb{R}^{4}$ with
 $d(x;\delta x)^{2} = \bigl(Q(\delta x)\bigr)_{+} + o\!\left(\|\delta x\|^{2}\right)$.
