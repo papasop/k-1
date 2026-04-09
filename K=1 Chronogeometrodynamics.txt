@@ -1,55 +1,3 @@
-% -- v8 (Noether L1 final fixes, 2026-04-09) -----------------
-% N2 (L1-new-2): §6 "confirmed by simulation" 改为引用
-%                Gardiner(1985) OU稳态分布解析结果。新增bibitem。
-% N3 (L1-new-3): §7末尾"Combined with..."前加一句:
-%                每个局部Rindler视界的G形式相同，
-%                故Proposition 8对每个视界成立。
-% L1-new-1 不修复: V4 argument-by-type已覆盖。
-% -- v7 (Noether Discussion-section fixes, 2026-04-09) -------
-% D1: Two routes 节加 non-degeneracy of G (Law I)。
-% D4: Stage 0 加 together with non-degeneracy of Law I。
-% D6: BH 熵声明加 (given T_H from [Hawking] as external input)。
-% D2 不修复: patching vs (1+3)D 无矛盾（主语不同）。
-% -- v6 (Noether necessity-verified, 2026-04-09) -------------
-% A: 摘要加 non-degeneracy of G from Law I。
-% D: Thm11证明加 R_rr=f²R_tt，引 Wald(1984)，新增bibitem。
-% E: OU近似 Class B slow 量化为 T_eff≪1。
-% B不修复: 数值证实恢复力在非特征向量处也成立。
-% C不修复: rank-one为标准性质。
-% -- v5 (Noether L1 second-round, 2026-04-09) ----------------
-%
-% N1 (L1-8a): Law III 改为局部表述。
-% N2 (L1-8b): 开放问题新增第5条（全局吸引性）。
-% N3 (L1-6):  Prop5 Remark 追加等价性在对角H*下继承说明。
-% N4 (L1-9):  §7 Rindler 引入处加外部来源标注。
-% N5 (L1-12): Prop14 外部标注移至证明首行。
-\documentclass[11pt,a4paper]{article}
-% ─────────────────────────────────────────────────────────────
-% REVISION LOG (Layer-0 automated fixes, 2026-04-09)
-%
-% CRITICAL fixes:
-%   C1. Added \label{thm:lawII} and \label{thm:restoring} to
-%       Theorems 6 & 7 (previously unlabeled).
-%   C2. Abstract (ii)(iii)(iv) and Introduction "Main results":
-%       replaced hard-coded "Theorem~5/6, Proposition~7" with
-%       \ref{thm:lawII}, \ref{thm:restoring}, \ref{prop:clausius}.
-%       (Proposition~5 occupies counter slot #5, shifting all
-%        subsequent numbers; \ref avoids future mismatches.)
-%
-% WARNING fixes:
-%   W1. eq:equiv  — added \eqref in Discussion and Stages §.
-%   W2. eq:noise  — added \eqref in abstract Route-A sentence.
-%   W3. eq:K1def / eq:K2def — added \eqref after Definition 9.
-%   W4. eq:Kdot_eigen — added \eqref in Theorem 7 body.
-%   W5. eq:Tloc   — added \eqref in temperature paragraph.
-%   W6. sec:lawI / sec:thermo — §§ range in intro now uses \ref.
-%   (sec:symplectic, sec:lawIII remain label-only; no natural
-%    cross-reference site identified without content changes.)
-%
-% MINOR fixes:
-%   M1. Standardised d_{c} → d_{c} throughout source (9 instances).
-% ─────────────────────────────────────────────────────────────
-
 \usepackage[T1]{fontenc}
 \usepackage[margin=1in]{geometry}
 \setlength{\emergencystretch}{1.5em}
@@ -593,7 +541,7 @@ For Lorentzian~$G$, the symmetric part $S=(J_G+J_G^\top)/2\neq 0$ departs from t
 \item Derive the $8\pi$ factor from the cost framework (non-vacuum Route~B).
 \item Identify testable strong-field predictions.
 \item Prove global attractivity of $K=1$: show that for any $x_0\in\mathbb{R}^{2}$,
-the trajectory of $\dot{x}=(J_G-d_cI)\nabla V$ with $V=\tfrac{1}{2}(K-1)^2$
+the trajectory of $\dot{x}=(J_G-d_{c}I)\nabla V$ with $V=\tfrac{1}{2}(K-1)^2$
 satisfies $K(x(t))\to 1$ as $t\to\infty$.
 \end{enumerate}
 
