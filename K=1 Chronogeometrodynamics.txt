@@ -50,8 +50,6 @@ Route~A is general but requires $S\propto A$; Route~B is thermodynamically indep
 
 \section{Metric from information time (Law~I)}\label{sec:lawI}
 
-Laws~I--III are axioms of the framework, not empirical laws. This section constructs $G$ from information time and establishes that nontrivial configurations require $\det G<0$. Law~I defines the cost structure; Law~II uniquely determines the dynamics on it; Law~III identifies $K=1$ as the resulting attractor.
-
 \medskip
 \noindent\textbf{Law~I.} \textit{The metric $G$ is a non-degenerate symmetric bilinear form measuring local displacement cost \textup{(in the sense of~\cite{Realizability})}, where the temporal direction is that of positive cost \textup{(Axiom~T of~\cite{Realizability})}.}
 
@@ -68,8 +66,6 @@ Lorentzian signature therefore emerges from the cost structure: $G$ is indefinit
 In general relativity, the Lorentzian metric is prescribed on a pre-existing differentiable manifold; here $G$ and its causal structure are derived.
 
 \section{Symplectic structure from $G$}\label{sec:symplectic}
-
-This section establishes the symplectic generator $J_G$ (Theorem~1), analyses its spectrum (Theorem~2), and shows that Lorentzian signature is necessary for $d_{c}>0$ (Theorem~3).
 
 The requirement that the Hamiltonian flow preserve the cost structure, together with a Euclidean normalisation condition, singles out a unique symplectic generator.
 
@@ -111,8 +107,6 @@ $\det G>0$ gives $1/\det G>0$, so $\lambda^{2}=-1/\det G<0$ and both roots are p
 \end{proof}
 
 \section{The stability boundary}\label{sec:stability}
-
-The stability boundary $d_{c}>0$ of Theorem~2 (eq.~\eqref{eq:dc}) is the critical damping threshold: above it, $K=1$ is stabilised; at it, marginal stability obtains (the dominant eigenvalue of $J_G-d_{c}I$ is exactly zero).
 
 \begin{theorem}[Signature-Stability Equivalence]
 For non-degenerate symmetric $2\times 2$ real $G$, under the isotropic linearisation $H_{*}=I$, the following are equivalent:
@@ -171,12 +165,10 @@ Let $G$ be non-degenerate and let $J_{G}=\alpha G^{-1}J$ \textup{(Theorem~1)}. B
 \end{theorem}
 
 \begin{proof}
-$A=G^{-1}(\alpha J-GD)=J_{G}-D$. Uniqueness is immediate: $J_{G}$ is fixed by Theorem~1 and $D\ge 0$ is prescribed.\qed
+$A=G^{-1}(\alpha J-GD)=J_{G}-D$.\qed
 \end{proof}
 
-The generator $J_G$ has a non-zero symmetric part $S=(J_{G}+J_{G}^{\top})/2$. For Lorentzian $G$: $\mathrm{spec}(J_{G})\subset\mathbb{R}$, $S\neq 0$, $\mathrm{tr}\,S=0$. For definite $G$: $\mathrm{spec}(J_{G})\subset i\mathbb{R}$ and $S=0$ iff $G\propto I$. In $G$-metric, $J_{G}$ is purely antisymmetric by construction ($GJ_{G}=\alpha J$ is skew).
-
-The GENERIC formalism~\cite{GENERIC} requires Euclidean antisymmetry $L^{\top}=-L$. For $G=cI$, $J_{G}$ is antisymmetric and Law~II is consistent with isothermal GENERIC. For Lorentzian $G$, $J_{G}$ is $G$-antisymmetric but not Euclidean-antisymmetric, so Law~II extends beyond GENERIC.
+For Lorentzian $G$, $J_G$ has symmetric part $S=(J_{G}+J_{G}^{\top})/2\neq 0$, departing from the GENERIC requirement of Euclidean antisymmetry; see \S~\ref{sec:discussion} (\textit{Departure from GENERIC}).
 
 \section{Critical damping and fluctuation structure (Law~III)}\label{sec:lawIII}
 
@@ -261,19 +253,10 @@ $(\Rightarrow)$: Setting $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ gives $\sigma^{2}/(
 $(\Leftarrow)$: $\sigma^{2}=2d_{c}\cdot T_{\mathrm{tol}}$ gives $T_{\mathrm{eff}}=\sigma^{2}/(2d_{c})=T_{\mathrm{tol}}$, hence Clausius holds.\qed
 \end{proof}
 
-\begin{remark}[Status of the approximation]
-Two external inputs and one algebraic consequence enter
-Proposition~\ref{prop:clausius}: (i)~the OU approximation, valid
-when $|K-1|\ll 1$ and Class~B diffusion is slow compared to
-Class~A relaxation ($\tau=1/(4d_{c})$),
-equivalently $T_{\mathrm{eff}}\ll 1$ in natural units
-(satisfied for macroscopic black holes where $T_H\ll d_{c}$); (ii)~the identification
-$T_{\mathrm{eff}}=T_{\mathrm{tol}}$, the sole external
-identification at the stochastic level; (iii)~the Tolman identity
-$T_{\mathrm{tol}}=d_{c}T_{H}$, an algebraic consequence of
-eq.~\eqref{eq:dc} and $T_{H}=\hbar\kappa/(2\pi)$
-(the $\kappa$-factors cancel exactly), independently verifiable
-via the Tolman-Ehrenfest relation~\cite{Tolman}.
+\begin{remark}[Assumptions of Proposition~\ref{prop:clausius}]
+(i)~OU approximation: $|K-1|\ll 1$, equivalently $T_{\mathrm{eff}}\ll 1$.
+(ii)~External identification: $T_{\mathrm{eff}}=T_{\mathrm{tol}}$.
+(iii)~Tolman identity: $T_{\mathrm{tol}}=d_{c}T_{H}$ (algebraic; $\kappa$-factors cancel in eq.~\eqref{eq:nearhorizon}).
 \end{remark}
 
 \subsection*{Position-dependent temperature and It\^{o} corrections}
@@ -296,16 +279,7 @@ Combined with the entropy-area proportionality $S\propto A$ and the Jacobson arg
 %===================================================================
 \section{Eigenvalue self-consistency (Route~B: direct algebraic)}\label{sec:field}
 
-Route~A reaches the Einstein equations via thermodynamics.
-The present section establishes a complementary result in the
-spherically symmetric sector: an \emph{equivalence theorem} showing that
-a motivated field-level analogue of $K{=}1$ is algebraically equivalent
-to $R_{\mu\nu}=0$, using no thermodynamic input.
-This is not a second derivation of the Einstein equations from the framework's axioms;
-the field-level condition is introduced as a conjecture (a motivated analogue,
-not an axiom), and Theorem~\ref{thm:field} establishes its equivalence
-to the vacuum field equations. The result shows that the $K{=}1$ language
-connects coherently to the field equations in this sector.
+The eigenvalue self-consistency condition $\sigma_2^2\,\Box\ln\sigma_i=1$ is a motivated field-level analogue of $K{=}1$, introduced as a conjecture rather than derived from the framework's axioms; Theorem~\ref{thm:field} establishes its algebraic equivalence to $R_{\mu\nu}=0$ in the spherically symmetric sector, with no thermodynamic input.
 
 Consider the static spherically symmetric metric
 \begin{equation}\label{eq:metric}
