@@ -512,7 +512,7 @@ General relativity prescribes Lorentzian signature; the present work derives it 
 
 \medskip\noindent\textbf{Author contributions.} Y.\,Y.\,N.\ Li is the sole author of the work presented.
 
-\medskip\noindent\textbf{Data availability.} No datasets were generated or analysed during the current study. Supplementary test suite (172 checks) available from the author.
+\medskip\noindent\textbf{Data availability.} No datasets were generated or analysed during the current study.
 
 \begin{thebibliography}{99}
 
