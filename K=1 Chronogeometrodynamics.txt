@@ -31,7 +31,7 @@
 
 \section{Introduction: time as consequence}
 
-\textit{The problem.} Every standard formulation of spacetime physics assumes a metric or a causal structure as input. The Jacobson derivation~\cite{Jacobson} obtains the Einstein equations from thermodynamics on local Rindler horizons, but Lorentzian signature is universally assumed --- as in the approaches of Padmanabhan~\cite{Padmanabhan} and Verlinde~\cite{Verlinde}. The EPS axiomatisation~\cite{EPS} derives causal structure from free-fall and light propagation, but uses kinematic primitives. In every approach to Riemann's open problem --- what determines the metric? --- either the signature is prescribed or the derivation presupposes kinematic primitives.
+\textit{The problem.} Every standard formulation of spacetime physics assumes a metric or a causal structure as input. The Jacobson argument~\cite{Jacobson} obtains the Einstein equations from thermodynamics on local Rindler horizons, but Lorentzian signature is universally assumed --- as in the approaches of Padmanabhan~\cite{Padmanabhan} and Verlinde~\cite{Verlinde}. The EPS axiomatisation~\cite{EPS} derives causal structure from free-fall and light propagation, but uses kinematic primitives. In every approach to Riemann's open problem --- what determines the metric? --- either the signature is prescribed or the derivation presupposes kinematic primitives.
 
 \textit{The gap.} No existing approach derives Lorentzian signature itself.\footnote{Approaches that address related but distinct questions include: Gibbons and Rasheed~\cite{Gibbons1995} on Born--Infeld electrodynamics and signature; Kiefer~\cite{Kiefer2012} on signature change in quantum cosmology; and Isham~\cite{Isham1993} on the problem of time, which takes the causal structure as given. This paper distinguishes \emph{kinematic} approaches (which take free-fall, light propagation, or causal structure as primitive) from \emph{cost-based} approaches (which derive both the metric and its signature from a scalar cost function). The claim is that no existing cost-based derivation yields Lorentzian signature. Entropic gravity approaches~\cite{Verlinde,Padmanabhan} presuppose Lorentzian spacetime and derive gravitational dynamics; the present work operates at the prior level of deriving the Lorentzian signature itself.} The present work fills this gap.
 
@@ -443,7 +443,7 @@ Both the self-consistency bound (Proposition~\ref{prop:domain}) and the canonica
 
 \subsection*{Two routes: one derivation, one equivalence theorem}
 
-Route~A reaches $G_{\mu\nu}=8\pi T_{\mu\nu}$ via stochastic dynamics and the Jacobson bridge (\S\ref{sec:thermo}); Route~B establishes $R_{\mu\nu}=0$ algebraically, with no thermodynamic input, in the spherically symmetric sector (\S\ref{sec:field}).
+Route~A reaches $G_{\mu\nu}=8\pi T_{\mu\nu}$ via stochastic dynamics and the Jacobson argument (\S\ref{sec:thermo}); Route~B establishes $R_{\mu\nu}=0$ algebraically, with no thermodynamic input, in the spherically symmetric sector (\S\ref{sec:field}).
 
 The Jacobson argument~\cite{Jacobson} reconstructs the Einstein equations from three inputs: Lorentzian signature, the Clausius relation on every local Rindler horizon, and $S=A/4$. Route~A supplies the first two: signature is forced by realizability (Theorem~4) and Clausius follows on each horizon (Proposition~\ref{prop:clausius}, given $T_{\mathrm{eff}}=T_{\mathrm{tol}}$). The sole remaining external input is $S\propto A$. Patching across horizon directions requires no additional assumptions (see $(1{+}3)$-dimensional extension below).
 
@@ -501,7 +501,7 @@ satisfies $K(x(t))\to 1$ as $t\to\infty$.
 
 \subsection*{Conclusion}
 
-General relativity prescribes Lorentzian signature; the present work derives it from a cost asymmetry and shows that the resulting metric enforces its own normalisation. At the point level, the Clausius relation follows algebraically. At the field level, the eigenvalue self-consistency principle is algebraically equivalent to the vacuum Einstein equations, connecting the $K{=}1$ language to the field level. Axiom~T excludes curvature singularities (where $\sigma_1$ degenerates) from the theory's domain, and the OU variance sets a Planck-scale resolution limit. What remains prescribed is the cost asymmetry itself: why one direction carries positive cost while others do not. This is Riemann's question in economic form.
+General relativity prescribes Lorentzian signature; the present work derives it from a cost asymmetry and shows that the resulting metric enforces its own normalisation. At the point level, the Clausius relation follows algebraically. The eigenvalue self-consistency principle is algebraically equivalent to the vacuum Einstein equations, extending the $K{=}1$ language to the field level. Axiom~T excludes curvature singularities (where $\sigma_1$ degenerates) from the theory's domain, and the OU variance sets a Planck-scale resolution limit. What remains prescribed is the cost asymmetry itself: why one direction carries positive cost while others do not. This is Riemann's question in economic form.
 
 \bigskip
 \noindent\textbf{Statements and Declarations}
