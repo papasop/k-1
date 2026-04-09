@@ -33,7 +33,7 @@
 
 \textit{The problem.} Every standard formulation of spacetime physics assumes a metric or a causal structure as input. The Jacobson derivation~\cite{Jacobson} obtains the Einstein equations from thermodynamics on local Rindler horizons, but Lorentzian signature is universally assumed --- as in the approaches of Padmanabhan~\cite{Padmanabhan} and Verlinde~\cite{Verlinde}. The EPS axiomatisation~\cite{EPS} derives causal structure from free-fall and light propagation, but uses kinematic primitives. In every approach to Riemann's open problem --- what determines the metric? --- either the signature is prescribed or the derivation presupposes kinematic primitives.
 
-\textit{The gap.} No existing approach derives Lorentzian signature itself.\footnote{Approaches that address related but distinct questions include: Gibbons and Rasheed~\cite{Gibbons1995} on Born--Infeld electrodynamics and signature; Kiefer~\cite{Kiefer2012} on signature change in quantum cosmology; and Isham~\cite{Isham1993} on the problem of time, which takes the causal structure as given. The distinction the present work draws is between \emph{kinematic} approaches (which take free-fall, light propagation, or causal structure as primitive) and a \emph{cost-based} approach (which derives both the metric and its signature from a scalar cost function). The claim is that no existing cost-based derivation yields Lorentzian signature. Entropic gravity approaches~\cite{Verlinde,Padmanabhan} presuppose Lorentzian spacetime and derive gravitational dynamics; the present work operates at the prior level of deriving the Lorentzian signature itself.} The present work fills this gap.
+\textit{The gap.} No existing approach derives Lorentzian signature itself.\footnote{Approaches that address related but distinct questions include: Gibbons and Rasheed~\cite{Gibbons1995} on Born--Infeld electrodynamics and signature; Kiefer~\cite{Kiefer2012} on signature change in quantum cosmology; and Isham~\cite{Isham1993} on the problem of time, which takes the causal structure as given. This paper distinguishes \emph{kinematic} approaches (which take free-fall, light propagation, or causal structure as primitive) from \emph{cost-based} approaches (which derive both the metric and its signature from a scalar cost function). The claim is that no existing cost-based derivation yields Lorentzian signature. Entropic gravity approaches~\cite{Verlinde,Padmanabhan} presuppose Lorentzian spacetime and derive gravitational dynamics; the present work operates at the prior level of deriving the Lorentzian signature itself.} The present work fills this gap.
 
 \textit{The solution.} Here time is neither coordinate nor metric primitive: it is the cost of change, so the metric --- including its Lorentzian signature --- is a consequence. This resolves the question in the $2\times 2$ setting dictated by a single local Rindler horizon. Information time, defined as $dt_{\mathrm{info}}:=d\Phi/H$, yields the metric $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$; requiring persistent configurations forces $\det G<0$ (\S\ref{sec:lawI}; see~\cite{Realizability}). Lorentzian signature, real symplectic eigenvalues, and $d_{c}>0$ are then algebraic consequences of a single sign. The quadratic form $K(x)=x^{\top}Gx$ quantifies local temporal cost; departures from $K{=}1$ generate a restoring drift (Law~III), making $K=1$ a dynamical attractor.
 
@@ -163,7 +163,7 @@ For Lorentzian $G$, $J_G$ has symmetric part $S=(J_{G}+J_{G}^{\top})/2\neq 0$, d
 
 \medskip
 
-The auxiliary linear system $\dot{x}=(J_{G}-d_{c}I)x$ has eigenvalues $0$ and $-2d_{c}$ at critical damping (from $\mathrm{spec}(J_{G})=\{\pm d_{c}\}$ at $d=d_{c}$). Theorem~\ref{thm:restoring} concerns the nonlinear system $\dot{x}=(J_{G}-d_{c}I)\nabla V$, $V=\tfrac{1}{2}(K{-}1)^2$, where departure from $K{=}1$ generates a penalty~$V$. The choice $D=d_{c}I$ is the unique marginally stable isotropic damping: it is the minimum isotropic dissipation that stabilises $K{=}1$, and yields the most explicit restoring-rate formula (eq.~\eqref{eq:kappa}).
+The auxiliary linear system $\dot{x}=(J_{G}-d_{c}I)x$ has eigenvalues $0$ and $-2d_{c}$ at critical damping (from $\mathrm{spec}(J_{G})=\{\pm d_{c}\}$ at $d=d_{c}$). Theorem~\ref{thm:restoring} concerns the nonlinear system $\dot{x}=(J_{G}-d_{c}I)\nabla V$, $V=\tfrac{1}{2}(K{-}1)^2$, where departure from $K{=}1$ generates a penalty~$V$. The choice $D=d_{c}I$ is the unique marginally stable isotropic damping: the minimum isotropic dissipation stabilising $K{=}1$, and yielding the most explicit restoring-rate formula (eq.~\eqref{eq:kappa}).
 
 \begin{theorem}[Local Effective Restoring Rate]\label{thm:restoring}
 Let $G$ be a $2\times 2$ Lorentzian metric, $D=d_{c}I$, and $J_{G}=\alpha G^{-1}J$ (Theorem~1). Define $K(x)=x^{\top}Gx$, $V=\tfrac{1}{2}(K-1)^{2}$, with drift $\dot{x}=(J_{G}-d_{c}I)\nabla V$. Then for all $x\in\mathbb{R}^{2}$:
@@ -284,7 +284,7 @@ $\Box\phi=r^{-2}\partial_r(r^2f\,\partial_r\phi)$ (the radial d'Alembertian, exa
 \end{definition}
 
 \noindent
-The eigenvalue self-consistency condition $\sigma_2^2\,\Box\ln\sigma=1$, imposed on each eigenvalue ($K_1=1$, eq.~\eqref{eq:K1def}, and $K_2=1$, eq.~\eqref{eq:K2def}), states that the d'Alembertian of each log-eigenvalue equals the angular curvature cost $1/\sigma_2^2$. This is a motivated field-level analogue of the point-level balance $K{=}1$: each eigenvalue is required to propagate at the rate set by the angular sector, in the same way that $K=1$ requires the quadratic cost form $K$ to reproduce its own normalisation.
+The eigenvalue self-consistency condition $\sigma_2^2\,\Box\ln\sigma=1$, imposed on each eigenvalue ($K_1=1$, eq.~\eqref{eq:K1def}, and $K_2=1$, eq.~\eqref{eq:K2def}), states that the d'Alembertian of each log-eigenvalue equals the angular curvature cost $1/\sigma_2^2$. This is a motivated field-level analogue of the point-level balance $K{=}1$: each eigenvalue must propagate at the rate set by the angular sector, in the same way that $K=1$ requires the quadratic cost form $K$ to reproduce its own normalisation.
 
 Expanding (direct computation using $\Box\ln\sigma_1=\Box\ln r+\tfrac{1}{2}\Box\ln f$):
 \begin{equation}\label{eq:K1exp}
@@ -407,7 +407,7 @@ Axiom~T implies $\sigma_1>0$ wherever $K{=}1$ holds.
 \end{proposition}
 
 \begin{proof}
-For the $(t,r)$ wedge (and by the same argument for any $2\times 2$ Lorentzian $G$), $G=\mathrm{diag}(\sigma_1^2,-1)$: Axiom~T gives $G_{00}=\sigma_1^2>0$; cf.\ $g_{00}=-f<0$ for the spacetime metric; the sign convention here differs from \S\ref{sec:thermo} but gives the same $d_{c}$, since $\det G=-\sigma_1^2$ in both cases. If $\sigma_1=0$ then $G_{00}=0$, violating Axiom~T.\qed
+For the $(t,r)$ wedge (and by the same argument for any $2\times 2$ Lorentzian $G$), $G=\mathrm{diag}(\sigma_1^2,-1)$: Axiom~T gives $G_{00}=\sigma_1^2>0$; contrast: $g_{00}=-f<0$ for the spacetime metric; the sign convention here differs from \S\ref{sec:thermo} but gives the same $d_{c}$, since $\det G=-\sigma_1^2$ in both cases. If $\sigma_1=0$ then $G_{00}=0$, violating Axiom~T.\qed
 \end{proof}
 
 \noindent
@@ -465,7 +465,7 @@ The condition $K{=}1$ has a self-referential character: the metric~$G$ defines t
 
 \medskip
 \noindent\textit{Stage~3 (field):} $\sigma_2^2\Box\ln\sigma_i=1\Leftrightarrow R_{\mu\nu}=0$ (eq.~\eqref{eq:equiv}; Theorem~\ref{thm:field}, spherical).
-For non-vacuum configurations, $\rho=(1{-}K_2)/(8\pi r^2)$: matter is the angular eigenvalue's deficit from self-consistency per unit area. (This \emph{rewrites} the Einstein $G_{tt}$-component; the coefficient $8\pi$ is inherited from GR, not derived.)
+For non-vacuum configurations, $\rho=(1{-}K_2)/(8\pi r^2)$: matter is the angular eigenvalue's deficit from self-consistency per unit area. This \emph{rewrites} the Einstein $G_{tt}$-component; the coefficient $8\pi$ is inherited from GR, not derived.
 
 \medskip
 \noindent\textit{Stage~4 (quantum interface):} $d_{c}\cdot\sigma_1=\alpha$ identically (reciprocity: stabilisation cost and symplectic eigenvalue are reciprocal). The observable $K$ and boost angle $\varphi$ satisfy $\{K,\varphi\}_{J}=-2$ (constant on $\{K{=}1\}$); whether quantisation yields a hard $\sigma_1$ bound (Open Problem~2) or connects to the Bekenstein bound~\cite{Bekenstein} remains open. Axiom~T forces $\sigma_1>0$ (Proposition~\ref{prop:sigma1}); the self-consistency bound gives $\sigma_1\gtrsim\ell_P$ (Proposition~\ref{prop:domain}).
