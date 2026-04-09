@@ -1,4 +1,30 @@
 \documentclass[11pt,a4paper]{article}
+% ─────────────────────────────────────────────────────────────
+% REVISION LOG (Layer-0 automated fixes, 2026-04-09)
+%
+% CRITICAL fixes:
+%   C1. Added \label{thm:lawII} and \label{thm:restoring} to
+%       Theorems 6 & 7 (previously unlabeled).
+%   C2. Abstract (ii)(iii)(iv) and Introduction "Main results":
+%       replaced hard-coded "Theorem~5/6, Proposition~7" with
+%       \ref{thm:lawII}, \ref{thm:restoring}, \ref{prop:clausius}.
+%       (Proposition~5 occupies counter slot #5, shifting all
+%        subsequent numbers; \ref avoids future mismatches.)
+%
+% WARNING fixes:
+%   W1. eq:equiv  — added \eqref in Discussion and Stages §.
+%   W2. eq:noise  — added \eqref in abstract Route-A sentence.
+%   W3. eq:K1def / eq:K2def — added \eqref after Definition 9.
+%   W4. eq:Kdot_eigen — added \eqref in Theorem 7 body.
+%   W5. eq:Tloc   — added \eqref in temperature paragraph.
+%   W6. sec:lawI / sec:thermo — §§ range in intro now uses \ref.
+%   (sec:symplectic, sec:lawIII remain label-only; no natural
+%    cross-reference site identified without content changes.)
+%
+% MINOR fixes:
+%   M1. Standardised d_{c} → d_{c} throughout source (9 instances).
+% ─────────────────────────────────────────────────────────────
+
 \usepackage[T1]{fontenc}
 \usepackage[margin=1in]{geometry}
 \setlength{\emergencystretch}{1.5em}
@@ -23,9 +49,9 @@
 \begin{abstract}
 \textit{Background.} From Newton's absolute time to proper time in relativistic physics, time has invariably entered physics as a primitive --- an underived input whose form changes but whose foundational status does not.
 
-\textit{Framework.} Redefining time as the cost of change, the Hessian $G:=\nabla^{2}(dt_{\mathrm{info}}^{2})$ is forced to be indefinite by the three realizability conditions of~\cite{Realizability} (Assumptions~R, E, T): positive definiteness is excluded by contradiction, and the unique outcome is $\det G<0$. The sign of $\det G$ encodes three equivalent manifestations: Lorentzian signature, real symplectic eigenvalues, and a critical damping threshold $d_{c}>0$ (Theorem~4). The quadratic form $K(x)=x^{\top}Gx$ quantifies local temporal cost; $K=1$, the unit level set of $G$, selects configurations of unit cost. The evolution law, subject to the $G$-induced symplectic structure and $D\ge 0$, is unique (Theorem~5); at critical damping, the restoring rate is $\kappa_{K}=4d_{c}$ (Theorem~6).
+\textit{Framework.} Redefining time as the cost of change, the Hessian $G:=\nabla^{2}(dt_{\mathrm{info}}^{2})$ is forced to be indefinite by the three realizability conditions of~\cite{Realizability} (Assumptions~R, E, T): positive definiteness is excluded by contradiction, and the unique outcome is $\det G<0$. The sign of $\det G$ encodes three equivalent manifestations: Lorentzian signature, real symplectic eigenvalues, and a critical damping threshold $d_{c}>0$ (Theorem~4). The quadratic form $K(x)=x^{\top}Gx$ quantifies local temporal cost; $K=1$, the unit level set of $G$, selects configurations of unit cost. The evolution law, subject to the $G$-induced symplectic structure and $D\ge 0$, is unique (Theorem~\ref{thm:lawII}); at critical damping, the restoring rate is $\kappa_{K}=4d_{c}$ (Theorem~\ref{thm:restoring}).
 
-\textit{Thermodynamic content.} In the stationary regime near $K=1$, the Clausius relation uniquely fixes the noise amplitude as a function of the Tolman temperature (Proposition~7). Geometrically, the $K=1$ manifold carries two classes of fluctuation: thermodynamic (Class~A, normal to $K=1$) and kinematic (Class~B, tangential, along Lorentz boost orbits). The sole external identification is $T_{\mathrm{eff}}=T_{\mathrm{tol}}$; Route~B requires none.
+\textit{Thermodynamic content.} In the stationary regime near $K=1$, the Clausius relation uniquely fixes the noise amplitude as a function of the Tolman temperature (Proposition~\ref{prop:clausius}, eq.~\eqref{eq:noise}). Geometrically, the $K=1$ manifold carries two classes of fluctuation: thermodynamic (Class~A, normal to $K=1$) and kinematic (Class~B, tangential, along Lorentz boost orbits). The sole external identification is $T_{\mathrm{eff}}=T_{\mathrm{tol}}$; Route~B requires none.
 
 \textit{Gravitational content.} For static, spherically symmetric metrics with symplectic eigenvalues $\sigma_1:=r\sqrt{f}$ and $\sigma_2:=r$, the motivated field-level analogue $\sigma_2^2\,\Box\ln\sigma_i=1$ ($i=1,2$) is algebraically equivalent to $R_{\mu\nu}=0$ (Theorem~\ref{thm:field}). Axiom~T (positive temporal cost) forces $\sigma_1>0$ (Proposition~\ref{prop:sigma1}), excluding curvature singularities (where $\sigma_1$ degenerates) from the theory's domain; the Ornstein-Uhlenbeck variance bound $\mathrm{Var}(K)<1$ yields an intrinsic resolution scale $\sigma_1\gtrsim\ell_P$ (Proposition~\ref{prop:domain}).
 \end{abstract}
@@ -45,7 +71,7 @@
 \end{itemize}
 Route~A is general but requires $S\propto A$; Route~B is thermodynamically independent but currently limited to spherical symmetry. The singularity structure (\S\ref{sec:singularity}) and scope (\S\ref{sec:discussion}) are discussed at the end.
 
-\textit{Main results:} (i)~$d_{c}>0\Leftrightarrow\mathrm{Sig}(G)=(1,1)$ (Theorem~4); (ii)~uniqueness of the evolution law (Theorem~5); (iii)~$\kappa_{K}=4d_{c}$ at critical damping (Theorem~6); (iv)~Clausius relation via stochastic dynamics within Class~A (Proposition~7); (v)~$\sigma_2^2\Box\ln\sigma_i=1\Leftrightarrow R_{\mu\nu}=0$ (Theorem~\ref{thm:field}); (vi)~$\sigma_1>0$ from Axiom~T (Proposition~\ref{prop:sigma1}); (vii)~intrinsic resolution scale $\sigma_1\gtrsim\ell_P$ (Proposition~\ref{prop:domain}).
+\textit{Main results:} (i)~$d_{c}>0\Leftrightarrow\mathrm{Sig}(G)=(1,1)$ (Theorem~4); (ii)~uniqueness of the evolution law (Theorem~\ref{thm:lawII}); (iii)~$\kappa_{K}=4d_{c}$ at critical damping (Theorem~\ref{thm:restoring}); (iv)~Clausius relation via stochastic dynamics within Class~A (Proposition~\ref{prop:clausius}); (v)~$\sigma_2^2\Box\ln\sigma_i=1\Leftrightarrow R_{\mu\nu}=0$ (Theorem~\ref{thm:field}, eq.~\eqref{eq:equiv}); (vi)~$\sigma_1>0$ from Axiom~T (Proposition~\ref{prop:sigma1}); (vii)~intrinsic resolution scale $\sigma_1\gtrsim\ell_P$ (Proposition~\ref{prop:domain}).
 
 \medskip\noindent\textbf{Notation.} $\mathrm{spec}(A)$: spectrum of $A$. $\mathrm{Sig}(G)=(p,q)$: inertia ($p$ positive, $q$ negative eigenvalues). $J=\bigl(\begin{smallmatrix}0&1\\-1&0\end{smallmatrix}\bigr)$: canonical symplectic matrix. $\|\cdot\|$: Euclidean norm on~$\mathbb{R}^{2}$. $\nabla$: Euclidean gradient on~$\mathbb{R}^{2}$.
 
@@ -70,7 +96,7 @@ In general relativity, the Lorentzian metric is prescribed on a pre-existing dif
 
 \section{Symplectic structure from $G$}\label{sec:symplectic}
 
-This section establishes the symplectic generator $J_G$ (Theorem~1), analyses its spectrum (Theorem~2), and shows that Lorentzian signature is necessary for $d_c>0$ (Theorem~3).
+This section establishes the symplectic generator $J_G$ (Theorem~1), analyses its spectrum (Theorem~2), and shows that Lorentzian signature is necessary for $d_{c}>0$ (Theorem~3).
 
 The requirement that the Hamiltonian flow preserve the cost structure, together with a Euclidean normalisation condition, singles out a unique symplectic generator.
 
@@ -101,7 +127,7 @@ d_{c}(\alpha)=\alpha\sqrt{-1/\det G}>0.\label{eq:dc}
 $\mathrm{tr}(G^{-1}J)=0$ and $\det(G^{-1}J)=1/\det G$; the characteristic polynomial $\lambda^{2}+1/\det G=0$ then gives $\mathrm{spec}(J_{G})=\{\pm d_{c}\}$. For the isotropic case $H_{*}=I$ (the linearisation of $H$ at the base point; see \S\ref{sec:stability}), $\max\mathrm{Re}\,\mathrm{spec}(J_{G}-dI)=d_{c}-d$, which vanishes at $d=d_{c}$.\qed
 \end{proof}
 
-Near threshold, $\lambda_{\max}(d)=-(d-d_{c})$ and the relaxation time $\tau\sim(d-d_{c})^{-1}$ diverge, confirming $d_c$ as a bifurcation point.
+Near threshold, $\lambda_{\max}(d)=-(d-d_{c})$ and the relaxation time $\tau\sim(d-d_{c})^{-1}$ diverge, confirming $d_{c}$ as a bifurcation point.
 
 \begin{theorem}[Necessity of Lorentzian Signature]
 If $\mathrm{Sig}(G)=(2,0)$ or $(0,2)$, then $\det G>0$, so $\lambda^{2}+1/\det G=0$ has purely imaginary roots and $d_{c}=0$.
@@ -113,7 +139,7 @@ $\det G>0$ gives $1/\det G>0$, so $\lambda^{2}=-1/\det G<0$ and both roots are p
 
 \section{The stability boundary}\label{sec:stability}
 
-The stability boundary $d_c>0$ of Theorem~2 (eq.~\eqref{eq:dc}) is the critical damping threshold: above it, $K=1$ is stabilised; at it, marginal stability obtains (the dominant eigenvalue of $J_G-d_cI$ is exactly zero).
+The stability boundary $d_{c}>0$ of Theorem~2 (eq.~\eqref{eq:dc}) is the critical damping threshold: above it, $K=1$ is stabilised; at it, marginal stability obtains (the dominant eigenvalue of $J_G-d_{c}I$ is exactly zero).
 
 \begin{theorem}[Signature-Stability Equivalence]
 For non-degenerate symmetric $2\times 2$ real $G$, under the isotropic linearisation $H_{*}=I$, the following are equivalent:
@@ -165,7 +191,7 @@ Law~II is the uniqueness statement: once $G$ fixes $J_{G}$ (Theorem~1) and $D\ge
 
 The two structural conditions --- $GJ_{G}$ skew-symmetric (symplectic structure from Theorem~1) and $D\ge 0$ (dissipation) --- together force the generator to split canonically as $GA=\alpha J-GD$.
 
-\begin{theorem}[Law~II Canonical Decomposition]
+\begin{theorem}[Law~II Canonical Decomposition]\label{thm:lawII}
 Let $G$ be non-degenerate and let $J_{G}=\alpha G^{-1}J$ \textup{(Theorem~1)}. Suppose the generator $A$ splits as $GA = \alpha J - GD$, $D\ge 0$. Then for any smooth potential $V$, the unique evolution law is $\dot{x} = (J_{G}-D)\,\nabla V$.
 \end{theorem}
 
@@ -183,9 +209,9 @@ The GENERIC formalism~\cite{GENERIC} requires Euclidean antisymmetry $L^{\top}=-
 
 \medskip
 
-The auxiliary linear system $\dot{x}=(J_{G}-d_{c}I)x$ has eigenvalues $0$ and $-2d_{c}$ at critical damping (from $\mathrm{spec}(J_{G})=\{\pm d_{c}\}$ at $d=d_{c}$). Theorem~6 concerns the nonlinear system $\dot{x}=(J_{G}-d_{c}I)\nabla V$, $V=\tfrac{1}{2}(K{-}1)^2$, where departure from $K{=}1$ generates a penalty~$V$. The choice $D=d_{c}I$ is the unique marginally stable isotropic damping: it is the minimum isotropic dissipation that stabilises $K{=}1$, and yields the cleanest restoring-rate formula (eq.~\eqref{eq:kappa}). On $\{K{=}1\}$ one has $\nabla V=0$, so $x_*$ is an equilibrium; the Jacobian at $x_*$ is $(J_{G}-d_{c}I)\nabla^{2}V(x_*)$, which differs from $J_{G}-d_{c}I$ because $\nabla^{2}V(x_*)$ is rank-one.
+The auxiliary linear system $\dot{x}=(J_{G}-d_{c}I)x$ has eigenvalues $0$ and $-2d_{c}$ at critical damping (from $\mathrm{spec}(J_{G})=\{\pm d_{c}\}$ at $d=d_{c}$). Theorem~\ref{thm:restoring} concerns the nonlinear system $\dot{x}=(J_{G}-d_{c}I)\nabla V$, $V=\tfrac{1}{2}(K{-}1)^2$, where departure from $K{=}1$ generates a penalty~$V$. The choice $D=d_{c}I$ is the unique marginally stable isotropic damping: it is the minimum isotropic dissipation that stabilises $K{=}1$, and yields the cleanest restoring-rate formula (eq.~\eqref{eq:kappa}). On $\{K{=}1\}$ one has $\nabla V=0$, so $x_*$ is an equilibrium; the Jacobian at $x_*$ is $(J_{G}-d_{c}I)\nabla^{2}V(x_*)$, which differs from $J_{G}-d_{c}I$ because $\nabla^{2}V(x_*)$ is rank-one.
 
-\begin{theorem}[Local Effective Restoring Rate]
+\begin{theorem}[Local Effective Restoring Rate]\label{thm:restoring}
 Let $G$ be a $2\times 2$ Lorentzian metric, $D=d_{c}I$, and $J_{G}=\alpha G^{-1}J$ (Theorem~1). Define $K(x)=x^{\top}Gx$, $V=\tfrac{1}{2}(K-1)^{2}$, with drift $\dot{x}=(J_{G}-d_{c}I)\nabla V$. Then for all $x\in\mathbb{R}^{2}$:
 \begin{equation}
 \dot{K} = 4(K-1)\bigl[\alpha\,x^{\top}(JG)\,x - d_{c}\,x^{\top}G^{2}x\bigr].\label{eq:Kdot}
@@ -194,7 +220,7 @@ At any $x_{*}\in\{K=1\}$ with $Gx_{*}=\lambda x_{*}$, the term $x_{*}^{\top}JGx_
 \begin{equation}
 \dot{K}\big|_{x=x_{*}} = -4\,d_{c}\,x_{*}^{\top}G^{2}x_{*}\cdot(K-1).\label{eq:Kdot_eigen}
 \end{equation}
-With the normalisation $x_{*}^{\top}G^{2}x_{*}=1$ (i.e., $x_*$ is a unit-eigenvalue $G$-eigenvector):
+With the normalisation $x_{*}^{\top}G^{2}x_{*}=1$ (i.e., $x_*$ is a unit-eigenvalue $G$-eigenvector; see eq.~\eqref{eq:Kdot_eigen}):
 \begin{equation}
 \dot{K} = -\kappa_{K}(K-1)+o(K-1),\qquad \kappa_{K}=4\,d_{c}.\label{eq:kappa}
 \end{equation}
@@ -236,7 +262,7 @@ Within Class~A (fixed inertial observer), the $K$-dynamics near $K=1$ is a one-d
 \begin{equation}
 \mathrm{Var}(K)\approx\frac{\sigma^{2}}{2d_{c}}.\label{eq:var}
 \end{equation}
-With this stationary variance, the FDT form $\sigma_{K}^{2}=2\kappa_{K}T_{\mathrm{eff}}$ defines the effective temperature $T_{\mathrm{eff}}=\sigma^{2}/(2d_{c})$, consistent with Law~II and Theorem~6. The Fokker--Planck equation yields a Boltzmann stationary distribution $\rho\propto\exp(-V/T_{\mathrm{eff}})$; the Clausius relation $\delta Q=T_{\mathrm{eff}}\,dS$ then follows from detailed balance for the OU process, with
+With this stationary variance, the FDT form $\sigma_{K}^{2}=2\kappa_{K}T_{\mathrm{eff}}$ defines the effective temperature $T_{\mathrm{eff}}=\sigma^{2}/(2d_{c})$, consistent with Law~II and Theorem~\ref{thm:restoring}. The Fokker--Planck equation yields a Boltzmann stationary distribution $\rho\propto\exp(-V/T_{\mathrm{eff}})$; the Clausius relation $\delta Q=T_{\mathrm{eff}}\,dS$ then follows from detailed balance for the OU process, with
 \[
 \delta Q := dV + \tfrac{1}{2}\sigma_{K}^{2}\,dt,\qquad \sigma_{K}=2\sigma\|Gx_{*}\|.
 \]
@@ -272,7 +298,7 @@ via the Tolman-Ehrenfest relation~\cite{Tolman}.
 
 Applying It\^{o}'s formula to $K=x^{\top}Gx$ gives an additional drift $\sigma^{2}\,\mathrm{tr}(G)\,dt$. This shifts the mean of $K$ but not its variance: at any $G$-eigenvector base point, the FDT ratio $\sigma_{K}^{2}/(2\kappa_{K})$ cancels to $\sigma^{2}/(2d_{c})$ regardless of $x_{*}^{\top}G^{2}x_{*}$. Hence~\eqref{eq:var} and $T_{\mathrm{eff}}=\sigma^{2}/(2d_{c})$ hold for any Lorentzian $G$.
 
-The $K$-space noise amplitude $\sigma_{K}(x)=2\sigma\|Gx\|$ varies along $\{K=1\}$, yielding a position-dependent temperature:
+The $K$-space noise amplitude $\sigma_{K}(x)=2\sigma\|Gx\|$ varies along $\{K=1\}$, yielding a position-dependent temperature (eq.~\eqref{eq:Tloc}):
 \begin{equation}
 T_{\mathrm{loc}}(x) := \frac{\sigma_{K}(x)^{2}}{2\kappa_{K}(x_{*})} = \frac{\sigma^{2}\,x^{\top}G^{2}x}{2d_{c}\,x_{*}^{\top}G^{2}x_{*}}.\label{eq:Tloc}
 \end{equation}
@@ -297,7 +323,7 @@ Consider the static spherically symmetric metric
   ds^2=-f(r)\,dt^2+f(r)^{-1}dr^2+r^2\,d\Omega^2,
 \end{equation}
 with symplectic eigenvalues $\sigma_1:=r\sqrt{f}$, $\sigma_2:=r$
-(on each local Rindler wedge, $d_c\sigma_1=\alpha$, connecting $\sigma_1$ to the $2\times 2$ symplectic eigenvalue of~\S3),
+(on each local Rindler wedge, $d_{c}\sigma_1=\alpha$, connecting $\sigma_1$ to the $2\times 2$ symplectic eigenvalue of~\S3),
 and d'Alembertian
 $\Box\phi=r^{-2}\partial_r(r^2f\,\partial_r\phi)$ (the radial d'Alembertian, exact for $r$-dependent $\phi$; primes denote $d/dr$).
 
@@ -309,7 +335,7 @@ $\Box\phi=r^{-2}\partial_r(r^2f\,\partial_r\phi)$ (the radial d'Alembertian, exa
 \end{definition}
 
 \noindent
-The eigenvalue self-consistency condition $\sigma_2^2\,\Box\ln\sigma=1$, imposed on each eigenvalue ($K_1=1$ and $K_2=1$), states that the d'Alembertian of each log-eigenvalue equals the angular curvature cost $1/\sigma_2^2$. This is a motivated field-level analogue of the point-level balance $K{=}1$: each eigenvalue is required to propagate at the rate set by the angular sector, in the same way that $K=1$ requires the cost form to reproduce its own normalisation. The analogy is a conjecture, not a derivation from the framework's axioms; Theorem~\ref{thm:field} shows that it is algebraically equivalent to the vacuum Einstein equations, establishing that the $K{=}1$ language connects coherently to the field equations.
+The eigenvalue self-consistency condition $\sigma_2^2\,\Box\ln\sigma=1$, imposed on each eigenvalue ($K_1=1$, eq.~\eqref{eq:K1def}, and $K_2=1$, eq.~\eqref{eq:K2def}), states that the d'Alembertian of each log-eigenvalue equals the angular curvature cost $1/\sigma_2^2$. This is a motivated field-level analogue of the point-level balance $K{=}1$: each eigenvalue is required to propagate at the rate set by the angular sector, in the same way that $K=1$ requires the cost form to reproduce its own normalisation. The analogy is a conjecture, not a derivation from the framework's axioms; Theorem~\ref{thm:field} shows that it is algebraically equivalent to the vacuum Einstein equations, establishing that the $K{=}1$ language connects coherently to the field equations.
 
 Expanding (direct computation using $\Box\ln\sigma_1=\Box\ln r+\tfrac{1}{2}\Box\ln f$):
 \begin{equation}\label{eq:K1exp}
@@ -438,7 +464,7 @@ Axiom~T implies $\sigma_1>0$ wherever $K{=}1$ holds.
 \end{proposition}
 
 \begin{proof}
-For the $(t,r)$ wedge (and by the same argument for any $2\times 2$ Lorentzian $G$), $G=\mathrm{diag}(\sigma_1^2,-1)$: Axiom~T gives $G_{00}=\sigma_1^2>0$; cf.\ $g_{00}=-f<0$ for the spacetime metric; the sign convention here differs from \S\ref{sec:thermo} but gives the same $d_c$, since $\det G=-\sigma_1^2$ in both cases. If $\sigma_1=0$ then $G_{00}=0$, violating Axiom~T.\qed
+For the $(t,r)$ wedge (and by the same argument for any $2\times 2$ Lorentzian $G$), $G=\mathrm{diag}(\sigma_1^2,-1)$: Axiom~T gives $G_{00}=\sigma_1^2>0$; cf.\ $g_{00}=-f<0$ for the spacetime metric; the sign convention here differs from \S\ref{sec:thermo} but gives the same $d_{c}$, since $\det G=-\sigma_1^2$ in both cases. If $\sigma_1=0$ then $G_{00}=0$, violating Axiom~T.\qed
 \end{proof}
 
 \noindent
@@ -483,7 +509,7 @@ The condition $K{=}1$ has a self-referential character: the metric~$G$ defines t
 
 \subsection*{Stages}
 
-\noindent\textit{Stage~0 (origin):} The three axioms $\to$ $\mathrm{Sig}(G)=(1,1)$ (Theorem~4). Conversely, for definite~$G$ no critical damping threshold $d_c>0$ exists (Theorem~3): the framework is self-limiting, producing physical content only when the cost structure is genuinely Lorentzian.
+\noindent\textit{Stage~0 (origin):} The three axioms $\to$ $\mathrm{Sig}(G)=(1,1)$ (Theorem~4). Conversely, for definite~$G$ no critical damping threshold $d_{c}>0$ exists (Theorem~3): the framework is self-limiting, producing physical content only when the cost structure is genuinely Lorentzian.
 
 \medskip
 \noindent\textit{Stage~1 (geometry):} $G$ defines light cones and causal structure. Whether a Lorentzian information geometry --- as opposed to the Riemannian Fisher geometry --- can be made precise remains open.
@@ -492,19 +518,19 @@ The condition $K{=}1$ has a self-referential character: the metric~$G$ defines t
 \noindent\textit{Stage~2 (thermodynamics):} $K{=}1$ $\to$ OU $\to$ Class~A/B; Clausius follows (Proposition~\ref{prop:clausius}); within Class~A, the local noise temperature is position-dependent, determined by the metric.
 
 \medskip
-\noindent\textit{Stage~3 (field):} $\sigma_2^2\Box\ln\sigma_i=1\Leftrightarrow R_{\mu\nu}=0$ (Theorem~\ref{thm:field}, spherical).
+\noindent\textit{Stage~3 (field):} $\sigma_2^2\Box\ln\sigma_i=1\Leftrightarrow R_{\mu\nu}=0$ (eq.~\eqref{eq:equiv}; Theorem~\ref{thm:field}, spherical).
 For non-vacuum configurations, $\rho=(1{-}K_2)/(8\pi r^2)$: matter is the angular eigenvalue's deficit from self-consistency per unit area. (This \emph{rewrites} the Einstein $G_{tt}$-component; the coefficient $8\pi$ is inherited from GR, not derived.)
 
 \medskip
-\noindent\textit{Stage~4 (quantum interface):} For $G=\mathrm{diag}(-(\kappa\ell)^2,1)$, defining $\sigma_1:=|\det G|^{1/2}/\alpha=\kappa\ell/\alpha$ (with $\alpha=1$, this matches $\sigma_1:=r\sqrt{f}$ of \S\ref{sec:field}) gives $d_c\cdot\sigma_1=1$ identically (this holds for any Lorentzian $G$ with $\det G<0$). This is a reciprocity relation: the stabilisation cost~$d_c$ and the symplectic eigenvalue~$\sigma_1$ are reciprocal, so tighter self-consistency demands larger~$\sigma_1$. The observable~$K$ and the boost angle~$\varphi$ along $\{K{=}1\}$ satisfy $\{K,\varphi\}_{J}=-2$, where $\{\cdot,\cdot\}_{J}$ denotes the canonical Poisson bracket $\{f,g\}_J=(\nabla f)^\top J(\nabla g)$ (this is a constant, independent of the base point and of $d_c$). Whether quantisation of this conjugate pair yields a hard lower bound on~$\sigma_1$ remains open, as does whether such a bound connects to the Bekenstein entropy bound~\cite{Bekenstein}. Meanwhile, Axiom~T forces $\sigma_1>0$ (Proposition~\ref{prop:sigma1}) and the self-consistency bound gives $\sigma_1\gtrsim\ell_P$ (Proposition~\ref{prop:domain}).
+\noindent\textit{Stage~4 (quantum interface):} For $G=\mathrm{diag}(-(\kappa\ell)^2,1)$, defining $\sigma_1:=|\det G|^{1/2}/\alpha=\kappa\ell/\alpha$ (with $\alpha=1$, this matches $\sigma_1:=r\sqrt{f}$ of \S\ref{sec:field}) gives $d_{c}\cdot\sigma_1=1$ identically (this holds for any Lorentzian $G$ with $\det G<0$). This is a reciprocity relation: the stabilisation cost~$d_{c}$ and the symplectic eigenvalue~$\sigma_1$ are reciprocal, so tighter self-consistency demands larger~$\sigma_1$. The observable~$K$ and the boost angle~$\varphi$ along $\{K{=}1\}$ satisfy $\{K,\varphi\}_{J}=-2$, where $\{\cdot,\cdot\}_{J}$ denotes the canonical Poisson bracket $\{f,g\}_J=(\nabla f)^\top J(\nabla g)$ (this is a constant, independent of the base point and of $d_{c}$). Whether quantisation of this conjugate pair yields a hard lower bound on~$\sigma_1$ remains open, as does whether such a bound connects to the Bekenstein entropy bound~\cite{Bekenstein}. Meanwhile, Axiom~T forces $\sigma_1>0$ (Proposition~\ref{prop:sigma1}) and the self-consistency bound gives $\sigma_1\gtrsim\ell_P$ (Proposition~\ref{prop:domain}).
 
 \subsection*{Extension to $(1{+}3)$ dimensions}
 
-In $(1{+}3)$ dimensions, $\{K{=}1\}\cong H^3$ ($H^3$ being the unit spacelike hyperboloid in Minkowski $\mathbb{R}^{1,3}$, the natural higher-dimensional analogue of the unit $G$-hyperboloid) carries $S^2$ cross-sections with area $4\pi(\kappa\ell)^2$. With $\alpha=1$, $\sigma_1=\kappa\ell$, so the cross-sectional area is $A=4\pi\sigma_1^2$ and the Bekenstein--Hawking entropy $S_{\mathrm{BH}}=A/4=\pi\sigma_1^2$, expressing both in terms of the same symplectic invariant. The coefficient $\eta=1/4$ follows from the first law $dM=T_{H}\,dS$ with $A_{H}=16\pi M^{2}$, which gives $S_{\mathrm{BH}}=A_{H}/4$ directly; this need not be separately assumed, the first law recovering the Bekenstein--Hawking entropy-area law~\cite{Bekenstein} directly. Two structural changes accompany the extension: the equivalence $d_c>0\Leftrightarrow\mathrm{Sig}(G)=(1,1)$ weakens to a one-directional implication (Lorentzian signature is necessary but no longer sufficient for $d_c>0$), and the uniqueness of~$J_G$ (guaranteed by $\dim(\mathrm{Skew}_2)=1$) requires a symplectic pairing choice when $\dim(\mathrm{Skew}_4)=6$. For the Rindler metric with isotropic spatial sector, the three standard pairings (block-diagonal, canonical~$J_4$, and anti-diagonal) yield identical~$d_c$; general pairings do not, and whether a natural selection principle exists is open. The three Jacobson inputs thereby trace to a single symplectic invariant: $\sigma_1$. The $2\times 2$ setting captures signature, light cones, and symplectic structure; conformal and spinor structure require the $(1{+}3)$-dimensional extension.
+In $(1{+}3)$ dimensions, $\{K{=}1\}\cong H^3$ ($H^3$ being the unit spacelike hyperboloid in Minkowski $\mathbb{R}^{1,3}$, the natural higher-dimensional analogue of the unit $G$-hyperboloid) carries $S^2$ cross-sections with area $4\pi(\kappa\ell)^2$. With $\alpha=1$, $\sigma_1=\kappa\ell$, so the cross-sectional area is $A=4\pi\sigma_1^2$ and the Bekenstein--Hawking entropy $S_{\mathrm{BH}}=A/4=\pi\sigma_1^2$, expressing both in terms of the same symplectic invariant. The coefficient $\eta=1/4$ follows from the first law $dM=T_{H}\,dS$ with $A_{H}=16\pi M^{2}$, which gives $S_{\mathrm{BH}}=A_{H}/4$ directly; this need not be separately assumed, the first law recovering the Bekenstein--Hawking entropy-area law~\cite{Bekenstein} directly. Two structural changes accompany the extension: the equivalence $d_{c}>0\Leftrightarrow\mathrm{Sig}(G)=(1,1)$ weakens to a one-directional implication (Lorentzian signature is necessary but no longer sufficient for $d_{c}>0$), and the uniqueness of~$J_G$ (guaranteed by $\dim(\mathrm{Skew}_2)=1$) requires a symplectic pairing choice when $\dim(\mathrm{Skew}_4)=6$. For the Rindler metric with isotropic spatial sector, the three standard pairings (block-diagonal, canonical~$J_4$, and anti-diagonal) yield identical~$d_{c}$; general pairings do not, and whether a natural selection principle exists is open. The three Jacobson inputs thereby trace to a single symplectic invariant: $\sigma_1$. The $2\times 2$ setting captures signature, light cones, and symplectic structure; conformal and spinor structure require the $(1{+}3)$-dimensional extension.
 
 \subsection*{Beyond GENERIC}
 
-For Lorentzian~$G$, the symmetric part $S=(J_G+J_G^\top)/2\neq 0$ departs from the GENERIC formalism~\cite{GENERIC} while $d_c$ is controlled by $\det G$ alone, suggesting a Lorentzian extension of non-equilibrium thermodynamics in the spirit of Wiener's programme~\cite{Wiener}. The $2\times 2$ framework has its own physical motivation: a single local Rindler horizon defines exactly one temporal and one spatial direction normal to it.
+For Lorentzian~$G$, the symmetric part $S=(J_G+J_G^\top)/2\neq 0$ departs from the GENERIC formalism~\cite{GENERIC} while $d_{c}$ is controlled by $\det G$ alone, suggesting a Lorentzian extension of non-equilibrium thermodynamics in the spirit of Wiener's programme~\cite{Wiener}. The $2\times 2$ framework has its own physical motivation: a single local Rindler horizon defines exactly one temporal and one spatial direction normal to it.
 
 \subsection*{Limitations}
 
