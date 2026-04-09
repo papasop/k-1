@@ -246,8 +246,8 @@ the current study.
 \bibitem{EPS}
 Ehlers, J., Pirani, F.A.E., Schild, A.:
 The geometry of free fall and light propagation.
-In: O'Raifeartaigh, L. (ed.) General Relativity,
-pp.~63--84. Clarendon Press, Oxford (1972).
+In: O'Raifeartaigh, L. (ed.) General Relativity, pp.~63--84.
+Clarendon Press, Oxford (1972).
 Republished: Gen.\ Relativ.\ Gravit.\ \textbf{44}, 1587--1609 (2012).
 \url{https://doi.org/10.1007/s10714-012-1353-4}
 
@@ -273,6 +273,7 @@ Canonical quantum gravity and the problem of time.
 In: Ibort, L.\,A., Rodr\'\i{}guez, M.\,A. (eds.)
 Integrable Systems, Quantum Groups, and Quantum Field Theories,
 pp.~157--287. Kluwer, Dordrecht (1993).
+\url{https://doi.org/10.1007/978-94-011-1980-1_6}
 
 \bibitem{Verlinde2011}
 Verlinde, E.:
