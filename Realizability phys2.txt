@@ -45,11 +45,21 @@ We show that a Lorentzian causal structure follows from a minimal asymmetry betw
 temporal and spatial displacement costs together with a quadratic leading-order
 expansion. The closest precursor is the EPS axiomatisation~\cite{EPS}; unlike EPS,
 no particles, light signals, or worldlines appear as primitives --- only a scalar
-cost function.
+cost function.\footnote{Approaches that address related but distinct questions
+include: Gibbons and Rasheed~\cite{Gibbons1995} on Born--Infeld electrodynamics
+and signature change; Kiefer~\cite{Kiefer2012} on signature change in quantum
+cosmology; and Isham~\cite{Isham1993} on the problem of time, which takes the
+causal structure as given. This paper distinguishes \emph{kinematic} approaches
+(which take free-fall, light propagation, or causal structure as primitive) from
+\emph{cost-based} approaches (which derive both the metric and its signature from
+a scalar cost function). Entropic gravity approaches~\cite{Verlinde2011} presuppose
+Lorentzian spacetime and derive gravitational dynamics; the present work operates
+at the prior level of deriving the Lorentzian signature itself.}
 
 The title warrants a brief clarification. By \textit{origin of causality} we mean a
 logical rather than a physical origin: a minimal set of conditions on a cost function
 from which Lorentzian causal structure follows as the unique algebraic consequence.
+The physical origin of the cost asymmetry itself lies outside the scope of the present paper.
 
 \medskip
 \noindent\textbf{Main Theorem (informal).}
@@ -107,7 +117,8 @@ Definition~\ref{def:T} (Assumption~T) fixes the positive cost of pure temporal d
 Assume~E. If $\delta x_{n}\to 0$ with $\delta t_{n}>0$,
 $d(x;\delta x_{n})/\|\delta x_{n}\|\to 0$, and a subsequence converges to
 $v\in S^{1}$, then $Q(v)\le 0$. Conversely, if $Q(v)\le 0$ and
-$\delta x_{n}/\|\delta x_{n}\|\to v$, then $d(x;\delta x_{n})/\|\delta x_{n}\|\to 0$.
+$\delta x_{n}/\|\delta x_{n}\|\to v$ with $\delta t_{n}>0$,
+then $d(x;\delta x_{n})/\|\delta x_{n}\|\to 0$.
 \end{lemma}
 
 \begin{proof}
@@ -235,6 +246,31 @@ Gen.\ Relativ.\ Gravit.\ \textbf{44}, 1587 (2012).
 Jacobson, T.:
 Phys.\ Rev.\ Lett.\ \textbf{75}, 1260 (1995).
 \url{https://doi.org/10.1103/PhysRevLett.75.1260}
+
+\bibitem{Gibbons1995}
+Gibbons, G.\,W., Rasheed, D.\,A.:
+Electric-magnetic duality rotations in non-linear electrodynamics.
+Nucl.\ Phys.\ B \textbf{454}, 185--206 (1995).
+\url{https://doi.org/10.1016/0550-3213(95)00409-L}
+
+\bibitem{Kiefer2012}
+Kiefer, C.:
+Quantum Gravity, 3rd edn.
+Oxford University Press, Oxford (2012).
+
+\bibitem{Isham1993}
+Isham, C.\,J.:
+Canonical quantum gravity and the problem of time.
+In: Ibort, L.\,A., Rodr\'\i{}guez, M.\,A. (eds.)
+Integrable Systems, Quantum Groups, and Quantum Field Theories,
+pp.~157--287. Kluwer, Dordrecht (1993).
+
+\bibitem{Verlinde2011}
+Verlinde, E.:
+On the origin of gravity and the laws of Newton.
+J.\ High Energy Phys.\ \textbf{2011}, 29 (2011).
+\url{https://doi.org/10.1007/JHEP04(2011)029}
+
 \end{thebibliography}
 
 \end{document}
