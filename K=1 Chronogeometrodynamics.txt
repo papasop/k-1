@@ -59,7 +59,7 @@ The information time $dt_{\mathrm{info}}:=d\Phi/H$, where $\Phi$ parametrises st
 
 The specific form of~$\Phi$ does not affect the theorems: what matters is that the cost structure satisfies the three axioms, which forces $\mathrm{Sig}(G)=(1,1)$ regardless of~$\Phi$. This is an \emph{argument by type} --- the theorems constrain the algebraic type of~$G$ (its signature), not its specific values.
 
-The cost structure of $dt_{\mathrm{info}}$ satisfies the three realizability conditions of~\cite{Realizability}. Axiom~E (quadratic expansion in $\delta x$) holds because $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$ exists by the smoothness of~$\Phi$ and~$H$. Axiom~T (positive temporal cost) holds by construction: the temporal direction is defined as the direction along which $dt_{\mathrm{info}}>0$, so $G(e_{t},e_{t})>0$. This convention identifies time with the direction of positive structural cost. For Axiom~R (zero-threshold spatial directions), suppose instead that $G$ were positive definite; then $K(x)=x^{\top}Gx>0$ for all $x\neq 0$, and the gradient flow $\dot{x}=-\nabla K$ (a minimal cost-reduction flow) drives every configuration to $x=0$: no nontrivial structure persists. Since the framework is intended to describe nontrivial physical states --- persistent configurations --- $G$ cannot be positive definite. Combined with $G(e_{t},e_{t})>0$ --- which rules out $\mathrm{Sig}(G)=(0,2)$ --- and non-degeneracy, the only remaining possibility for a non-degenerate $2\times 2$ form is $\mathrm{Sig}(G)=(1,1)$. A rigorous derivation from the three conditions alone, independent of the information-time construction, is given in~\cite{Realizability}.
+The cost structure of $dt_{\mathrm{info}}$ satisfies the three realizability conditions of~\cite{Realizability}. Axiom~E (quadratic expansion in $\delta x$) holds because $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$ exists by the smoothness of~$\Phi$ and~$H$. Axiom~T (positive temporal cost) holds by construction: the temporal direction is defined as the direction along which $dt_{\mathrm{info}}>0$, so $G(e_{t},e_{t})>0$. This convention identifies time with the direction of positive structural cost. Axiom~R requires that some directions carry vanishing cost; positive definiteness is excluded because it would force all configurations to $x=0$ (no persistent structure). A rigorous derivation is in~\cite{Realizability}.
 
 Lorentzian signature therefore emerges from the cost structure: $G$ is indefinite, with light cones (the null set $\{x:x^{\top}Gx=0\}$) and a causal structure determined by the sign of~$K$.
 
@@ -152,9 +152,7 @@ Proposition~\ref{prop:diag_inv} shows $d_{c}=\alpha\sqrt{-1/\det G}$ is unchange
 so the threshold condition and the equivalence both hold.
 \end{remark}
 
-\medskip\noindent\textbf{Numerical illustration.} Among 2000 random symmetric $2\times 2$ matrices (sufficient for coverage): all 1420 with $\mathrm{Sig}=(1,1)$ had $d_{c}>0$; all 580 with definite signature had $d_{c}=0$.
-
-\section{Unique dynamics (Law~II)}\label{sec:lawII}
+\medskip\section{Unique dynamics (Law~II)}\label{sec:lawII}
 
 \noindent\textbf{Law~II.} \textit{The generator of the dynamics splits as $GA = \alpha J - GD$ with $D\ge 0$ (positive-semidefinite dissipation). This symplectic-dissipative decomposition is the content of Law~II; it is a structural axiom, not derived from Laws~I or~III, motivated by the universal Helmholtz-type splitting of physical evolution into reversible (symplectic) and irreversible (dissipative) parts~\cite{GENERIC}. Under this axiom, the unique evolution law for any smooth potential $V$ is $\dot{x}=(J_{G}-D)\nabla V$, and $\{K=1\}$ emerges as the self-consistent attractor.}
 
@@ -266,7 +264,7 @@ The $K$-space noise amplitude $\sigma_{K}(x)=2\sigma\|Gx\|$ varies along $\{K=1\
 \begin{equation}
 T_{\mathrm{loc}}(x) := \frac{\sigma_{K}(x)^{2}}{2\kappa_{K}(x_{*})} = \frac{\sigma^{2}\,x^{\top}G^{2}x}{2d_{c}\,x_{*}^{\top}G^{2}x_{*}}.\label{eq:Tloc}
 \end{equation}
-For $\kappa\ell=1$ and $x(t)=(\sinh t,\cosh t)$ (with base point $x_{*}=(0,1)$, so $x_{*}^{\top}G^{2}x_{*}=1$): $T_{\mathrm{loc}}(t)=\sigma^{2}\cosh(2t)/(2d_{c})$, showing that the local temperature is an intrinsic property of the metric. For the Rindler metric, $\sigma^{2}\,\mathrm{tr}(G)=\sigma^{2}(1-(\kappa\ell)^{2})$; the OU approximation is exact at $\kappa\ell=1$ and accurate when $|(\kappa\ell)^{2}-1|\ll 1$.
+For $\kappa\ell=1$ and $x(t)=(\sinh t,\cosh t)$ (with base point $x_{*}=(0,1)$, so $x_{*}^{\top}G^{2}x_{*}=1$): $T_{\mathrm{loc}}(t)=\sigma^{2}\cosh(2t)/(2d_{c})$, showing that the local temperature is an intrinsic property of the metric.
 
 \begin{remark}[Stability constraint]
 For macroscopic black holes, $T_{\mathrm{tol}}\ll d_{c}$; setting $D=T_{\mathrm{tol}}I$ renders $K=1$ unstable. Stability requires $D\ge d_{c}I$; critical damping $D=d_{c}I$ is the unique marginally stable choice.
@@ -383,17 +381,7 @@ by comparing $v=(e_0\pm\frac{e_i+e_j}{\sqrt{2}})$ and $v=(e_0\pm\frac{e_i-e_j}{\
 forces $R_{00}=0$.)
 \end{remark}
 
-\begin{remark}[Route~A vs.\ Route~B]
-Route~A (Proposition~\ref{prop:clausius} $+$ Jacobson) applies to all
-metrics but requires $S\propto A$.
-Route~B (Theorem~\ref{thm:field}) requires no thermodynamic input ---
-no Clausius relation, no $S=A/4$, no horizon entropy ---
-but is proved only for spherical symmetry.
-The general extension requires null-surface Gauss--Codazzi and shares
-Jacobson's null-direction patching architecture;
-in the spherically symmetric sector, however, the derivation is
-entirely independent.
-\end{remark}
+
 
 Table~\ref{tab:corr} summarises the point-field correspondence established in this section.
 
@@ -505,7 +493,7 @@ For Lorentzian~$G$, the symmetric part $S=(J_G+J_G^\top)/2\neq 0$ departs from t
 \subsection*{Limitations}
 
 \begin{enumerate}
-\item Route~B is proved for spherical symmetry only. \textit{(scope)}
+\item Route~B is proved for spherical symmetry only (general extension requires null-surface Gauss--Codazzi). \textit{(scope)}
 \item Route~A requires $S\propto A$. \textit{(external input)}
 \item No deviation from GR is predicted in vacuum. \textit{(predictive gap)}
 \item The $\sigma_1$ bound is soft, not hard. \textit{(strength)}
