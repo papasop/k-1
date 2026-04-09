@@ -47,7 +47,7 @@ expansion. The closest precursor is the EPS axiomatisation~\cite{EPS}; unlike EP
 no particles, light signals, or worldlines appear as primitives --- only a scalar
 cost function.\footnote{Approaches that address related but distinct questions
 include: Gibbons and Rasheed~\cite{Gibbons1995} on Born--Infeld electrodynamics
-and signature change; Kiefer~\cite{Kiefer2012} on signature change in quantum
+and metric signature; Kiefer~\cite{Kiefer2012} on signature change in quantum
 cosmology; and Isham~\cite{Isham1993} on the problem of time, which takes the
 causal structure as given. This paper distinguishes \emph{kinematic} approaches
 (which take free-fall, light propagation, or causal structure as primitive) from
@@ -245,7 +245,10 @@ the current study.
 \begin{thebibliography}{2}
 \bibitem{EPS}
 Ehlers, J., Pirani, F.A.E., Schild, A.:
-Gen.\ Relativ.\ Gravit.\ \textbf{44}, 1587 (2012).
+The geometry of free fall and light propagation.
+In: O'Raifeartaigh, L. (ed.) General Relativity,
+pp.~63--84. Clarendon Press, Oxford (1972).
+Republished: Gen.\ Relativ.\ Gravit.\ \textbf{44}, 1587--1609 (2012).
 \url{https://doi.org/10.1007/s10714-012-1353-4}
 
 \bibitem{Jacobson}
