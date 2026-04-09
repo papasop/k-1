@@ -47,7 +47,7 @@ itself is derived rather than assumed.
 We show that a Lorentzian causal structure follows from a minimal asymmetry between
 temporal and spatial displacement costs together with a quadratic leading-order
 expansion. The closest precursor is the EPS axiomatisation~\cite{EPS}; unlike EPS,
-no particles, light signals, or worldlines appear as primitives --- only a scalar
+no particles, light signals, or worldlines appear as primitives---only a scalar
 cost function.\footnote{Approaches that address related but distinct questions
 include: Gibbons and Rasheed~\cite{Gibbons1995} on Born--Infeld electrodynamics
 and metric signature; Kiefer~\cite{Kiefer2012} on signature change in quantum
@@ -212,8 +212,8 @@ Both Theorem~\ref{thm:lorentz} and Theorem~\ref{thm:4d} take nondegeneracy
 of~$Q$ as an explicit hypothesis.
 In $(1{+}1)$ dimensions, ruling out degeneracy from Assumptions~R, E, T alone
 is not possible: the degenerate form $Q=(dt-\lambda\,dr)^{2}$ satisfies all
-three assumptions for any $\lambda\neq 0$ (choosing the sign so that the null
-direction has $v_{t}>0$).
+three assumptions for any $\lambda\neq 0$
+(choosing the null direction so that $v_{t}>0$).
 Nondegeneracy is therefore an explicit scope condition in both theorems,
 not a hidden assumption.
 \end{remark}
