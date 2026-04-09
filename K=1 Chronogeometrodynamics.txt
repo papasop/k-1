@@ -60,14 +60,14 @@
 
 \textit{The problem.} Every standard formulation of spacetime physics assumes a metric or a causal structure as input. The Jacobson derivation~\cite{Jacobson} obtains the Einstein equations from thermodynamics on local Rindler horizons, but Lorentzian signature is universally assumed --- as in the approaches of Padmanabhan~\cite{Padmanabhan} and Verlinde~\cite{Verlinde}. The EPS axiomatisation~\cite{EPS} derives causal structure from free-fall and light propagation, but uses kinematic primitives. In every approach to Riemann's open problem --- what determines the metric? --- either the signature is prescribed or the derivation requires kinematic primitives.
 
-\textit{The gap.} No existing approach derives Lorentzian signature itself. The present work fills this gap.
+\textit{The gap.} No existing approach derives Lorentzian signature itself.\footnote{Approaches that address related but distinct questions include: Gibbons and Rasheed~\cite{Gibbons1995} on Born--Infeld electrodynamics and signature; Kiefer~\cite{Kiefer2012} on signature change in quantum cosmology; and Isham~\cite{Isham1993} on the problem of time, which takes the causal structure as given. The distinction the present work draws is between \emph{kinematic} approaches (which take free-fall, light propagation, or causal structure as primitive) and a \emph{cost-based} approach (which derives both the metric and its signature from a scalar cost function). The claim is that no existing cost-based derivation yields Lorentzian signature.} The present work fills this gap.
 
 \textit{The solution.} Here time is neither coordinate nor metric primitive: it is the cost of change, so the metric --- including its Lorentzian signature --- is a consequence. This resolves the question in the $2\times 2$ setting dictated by a single local Rindler horizon. Information time, defined as $dt_{\mathrm{info}}:=d\Phi/H$, yields the metric $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$; requiring persistent configurations forces $\det G<0$ (\S2, see also~\cite{Realizability}). Lorentzian signature, real symplectic eigenvalues, and $d_{c}>0$ are then algebraic consequences of a single sign. The quadratic form $K(x)=x^{\top}Gx$ quantifies local temporal cost; departures from $K{=}1$ generate a restoring drift (Law~III), making $K=1$ a dynamical attractor. Geometrically, $\{K{=}1\}$ is the unit $G$-hyperboloid.
 
 \textit{Two routes to Einstein.}
 \begin{itemize}
 \item[\textbf{A.}] \emph{Thermodynamic bridge} (\S\S2--7): $K{=}1\xrightarrow{\mathrm{lin.}}\mathrm{OU}\to\mathrm{Clausius}$; combined with $S\propto A$ and the Jacobson argument~\cite{Jacobson}, this yields $G_{\mu\nu}=8\pi T_{\mu\nu}$ for general metrics.
-\item[\textbf{B.}] \emph{Direct algebraic route} (\S~\ref{sec:field}): the eigenvalue self-consistency condition $\sigma_2^2\Box\ln\sigma_i=1$ is algebraically equivalent to $R_{\mu\nu}=0$ for spherically symmetric metrics, with \emph{no thermodynamic input}.
+\item[\textbf{B.}] \emph{Equivalence theorem} (\S~\ref{sec:field}): in the spherically symmetric sector, the eigenvalue self-consistency condition $\sigma_2^2\Box\ln\sigma_i=1$ --- a motivated field-level analogue of $K{=}1$, introduced as a conjecture --- is algebraically equivalent to $R_{\mu\nu}=0$, with \emph{no thermodynamic input}. This is not a derivation of the Einstein equations from the framework axioms, but a new equivalent formulation of the vacuum equations in the language of the $K{=}1$ framework.
 \end{itemize}
 Route~A is general but requires $S\propto A$; Route~B is thermodynamically independent but currently limited to spherical symmetry. The singularity structure (\S\ref{sec:singularity}) and scope (\S\ref{sec:discussion}) are discussed at the end.
 
@@ -86,7 +86,7 @@ Laws~I--III are axioms of the framework, not empirical laws. This section constr
 
 The information time $dt_{\mathrm{info}}:=d\Phi/H$, where $\Phi$ parametrises structural variation and $H>0$ is the local cost per unit variation of $\Phi$ (an entropic resistance), provides the metric through the Hessian of $dt_{\mathrm{info}}^{2}$: the local quadratic approximation $dt_{\mathrm{info}}^{2}\approx \delta x^{\top}G\,\delta x$, with $G:=\nabla^{2}(dt_{\mathrm{info}}^{2})$. The quadratic form $K(x):=x^{\top}Gx$ quantifies local temporal cost, and $K=1$ identifies the self-consistent locus. This redefinition of time enters the theorems through $G$ alone: $dt_{\mathrm{info}}$ serves as the motivating construction for~$G$ (the leading-order form $Q$ of~\cite{Realizability}). The Hessian $G$ has the structure of an information metric --- it measures the local cost of displacement, as the Fisher metric measures the local cost of statistical distinguishability~\cite{Amari} --- but with Lorentzian rather than Riemannian signature.
 
-The specific nature of~$\Phi$ is not required by the theorems; what is required is that some directions carry vanishing cost --- equivalently, that the cost structure not be definite. The theorems follow from the asymmetry, not from the identity of the varying structure.
+The specific nature of~$\Phi$ is not required by the theorems; what is required is that some directions carry vanishing cost --- equivalently, that the cost structure not be definite. The theorems follow from the asymmetry, not from the identity of the varying structure. More precisely: different choices of~$\Phi$ yield different Hessians~$G$, so $G$ is not uniquely determined by~$\Phi$ alone. What is uniquely determined is the \emph{signature} of~$G$: regardless of which~$\Phi$ satisfies the three axioms, the resulting~$G$ must have $\mathrm{Sig}(G)=(1,1)$. This is an argument by type --- the theorems constrain the algebraic type of~$G$ (its signature), not its specific numerical values.
 
 The cost structure of $dt_{\mathrm{info}}$ satisfies the three realizability conditions of~\cite{Realizability}. Axiom~E (quadratic expansion in $\delta x$) holds because $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$ exists by the smoothness of~$\Phi$ and~$H$. Axiom~T (positive temporal cost) holds by construction: the temporal direction is defined as the direction along which $dt_{\mathrm{info}}>0$, so $G(e_{t},e_{t})>0$. This convention identifies time with the direction of positive structural cost. For Axiom~R (zero-threshold spatial directions), suppose instead that $G$ were positive definite; then $K(x)=x^{\top}Gx>0$ for all $x\neq 0$, and the gradient flow $\dot{x}=-\nabla K$ (a minimal cost-reduction flow) drives every configuration to $x=0$: no nontrivial structure persists. Since the framework is intended to describe nontrivial physical states --- persistent configurations --- $G$ cannot be positive definite. Combined with $G(e_{t},e_{t})>0$ --- which rules out $\mathrm{Sig}(G)=(0,2)$ --- and non-degeneracy, the only remaining possibility for a non-degenerate $2\times 2$ form is $\mathrm{Sig}(G)=(1,1)$. A rigorous derivation from the three conditions alone, independent of the information-time construction, is given in~\cite{Realizability}.
 
@@ -185,14 +185,12 @@ satisfied here by Proposition~\ref{prop:diag_inv}.
 
 \section{Unique dynamics (Law~II)}\label{sec:lawII}
 
-\noindent\textbf{Law~II.} \textit{The evolution law takes the unique form $\dot{x}=(J_{G}-D)\nabla V$ for any smooth $V$, compatible with $GJ_{G}$ skew-symmetric and $D\ge 0$ ($D$ a $2\times 2$ positive-semidefinite dissipation matrix); $\{K=1\}$ emerges as the self-consistent attractor under this dynamics.}
+\noindent\textbf{Law~II.} \textit{The generator of the dynamics splits as $GA = \alpha J - GD$ with $D\ge 0$ (positive-semidefinite dissipation). This symplectic-dissipative decomposition is the content of Law~II; it is a structural axiom, not derived from Laws~I or~III, motivated by the universal Helmholtz-type splitting of physical evolution into reversible (symplectic) and irreversible (dissipative) parts~\cite{GENERIC}. Under this axiom, the unique evolution law for any smooth potential $V$ is $\dot{x}=(J_{G}-D)\nabla V$, and $\{K=1\}$ emerges as the self-consistent attractor.}
 
-Law~II is the uniqueness statement: once $G$ fixes $J_{G}$ (Theorem~1) and $D\ge 0$ is prescribed, the dynamics are completely determined.
-
-The two structural conditions --- $GJ_{G}$ skew-symmetric (symplectic structure from Theorem~1) and $D\ge 0$ (dissipation) --- together force the generator to split canonically as $GA=\alpha J-GD$.
+Law~II is the uniqueness statement: once $G$ fixes $J_{G}$ (Theorem~1), $D\ge 0$ is prescribed, and the symplectic-dissipative splitting of Law~II is in force, the dynamics are completely determined. The splitting $GA=\alpha J-GD$ is the axiomatic content of Law~II; Theorem~\ref{thm:lawII} derives the explicit evolution law from it.
 
 \begin{theorem}[Law~II Canonical Decomposition]\label{thm:lawII}
-Let $G$ be non-degenerate and let $J_{G}=\alpha G^{-1}J$ \textup{(Theorem~1)}. Suppose the generator $A$ splits as $GA = \alpha J - GD$, $D\ge 0$. Then for any smooth potential $V$, the unique evolution law is $\dot{x} = (J_{G}-D)\,\nabla V$.
+Let $G$ be non-degenerate and let $J_{G}=\alpha G^{-1}J$ \textup{(Theorem~1)}. By Law~II, the generator $A$ satisfies $GA = \alpha J - GD$ for some $D\ge 0$. Then for any smooth potential $V$, the unique evolution law is $\dot{x} = (J_{G}-D)\,\nabla V$; uniqueness holds within the class of generators satisfying the Law~II splitting.
 \end{theorem}
 
 \begin{proof}
@@ -314,9 +312,15 @@ Combined with the entropy-area proportionality $S\propto A$ and the Jacobson arg
 \section{Eigenvalue self-consistency (Route~B: direct algebraic)}\label{sec:field}
 
 Route~A reaches the Einstein equations via thermodynamics.
-A complementary algebraic route exists in the
-spherically symmetric sector, using no thermodynamic input:
-rather than deriving the field equations from the framework's axioms, it establishes an algebraic equivalence between a motivated field-level analogue of $K{=}1$ and $R_{\mu\nu}=0$.
+The present section establishes a complementary result in the
+spherically symmetric sector: an \emph{equivalence theorem} showing that
+a motivated field-level analogue of $K{=}1$ is algebraically equivalent
+to $R_{\mu\nu}=0$, using no thermodynamic input.
+This is not a second derivation of the Einstein equations from the framework's axioms;
+the field-level condition is introduced as a conjecture (a motivated analogue,
+not an axiom), and Theorem~\ref{thm:field} establishes its equivalence
+to the vacuum field equations. The result shows that the $K{=}1$ language
+connects coherently to the field equations in this sector.
 
 Consider the static spherically symmetric metric
 \begin{equation}\label{eq:metric}
@@ -499,7 +503,7 @@ If $K$ and the boost angle $\varphi$ along $\{K{=}1\}$ are canonically conjugate
 %===================================================================
 \section{Discussion}\label{sec:discussion}
 
-\subsection*{Two routes to Einstein}
+\subsection*{Two routes: one derivation, one equivalence theorem}
 
 The framework reaches the Einstein equations by two routes sharing the same starting point ($G$ indefinite, $K{=}1$, both following from the three realizability conditions) but diverging thereafter. Route~A uses stochastic dynamics and the Jacobson bridge with $S\propto A$; Route~B establishes algebraic equivalence between the $K{=}1$ field-level analogue and $R_{\mu\nu}=0$, without thermodynamic input but via a motivated condition rather than a derivation from the axioms. In the spherically symmetric sector, Route~B is fully independent of Jacobson and of thermodynamics.
 
@@ -648,6 +652,24 @@ Information Geometry and Its Applications.
 Springer (2016).
 \url{https://doi.org/10.1007/978-4-431-55978-8}
 
+
+\bibitem{Gibbons1995}
+G.\,W.~Gibbons, D.\,A.~Rasheed,
+Electric-magnetic duality rotations in non-linear electrodynamics.
+Nucl.\ Phys.\ B \textbf{454}, 185 (1995).
+\url{https://doi.org/10.1016/0550-3213(95)00409-L}
+
+\bibitem{Kiefer2012}
+C.~Kiefer,
+Quantum Gravity, 3rd ed.
+Oxford University Press (2012).
+
+\bibitem{Isham1993}
+C.\,J.~Isham,
+Canonical quantum gravity and the problem of time.
+In: \textit{Integrable Systems, Quantum Groups, and Quantum Field Theories},
+NATO ASI Series, Springer (1993).
+\url{https://doi.org/10.1007/978-94-011-1980-1_6}
 \end{thebibliography}
 
 \end{document}
