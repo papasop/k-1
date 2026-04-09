@@ -635,7 +635,8 @@ Springer, Berlin (1996).
 
 \bibitem{Connes1994}
 A.~Connes, C.~Rovelli,
-Von Neumann algebras and thermal time.
+Von Neumann algebra automorphisms and time-thermodynamics relation
+in general covariant quantum theories.
 Class.\ Quantum Grav.\ \textbf{11}, 2899--2917 (1994).
 \url{https://doi.org/10.1088/0264-9381/11/12/007}
 \end{thebibliography}
