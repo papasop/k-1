@@ -1,19 +1,3 @@
-% ─────────────────────────────────────────────────────────────
-% REVISION LOG (Noether-Feynman-vonNeumann review, 2026-04-09)
-%
-% F1 (L1-must): Theorem 1 — 非退化性改为显式假设;
-%               删去 Step 4（替换错误+反例存在）;
-%               原 Step 5 重编为 Step 4。
-% F2 (L1-must): 摘要删去 "forced to be nondegenerate",
-%               改为 "indefinite, provided Q is nondegenerate"。
-% F3 (L1-must): Remark (iii) 不再引用 Step 4,
-%               改为引用非退化性假设。
-% F4 (L0-must): 4D定理备注删去 "whereas Theorem 1 derives it";
-%               新增退化反例说明 Q=(dt-λdr)²。
-% F5 (L0-must): 5个孤立 \label 通过在 §2 末尾添加引用段落解决。
-% F6 (L0-rec):  §2 开头新增 Notation 说明段。
-% 核心结论不变：非退化假设下 R+E+T → Sig(Q)=(1,1)。
-% ─────────────────────────────────────────────────────────────
 \documentclass[11pt,a4paper]{article}
 \usepackage{fontspec}
 \setmainfont{Latin Modern Roman}
@@ -32,36 +16,54 @@
 \maketitle
 \begin{abstract}
 Zeno's paradox implicitly assumes that spatial displacements carry irreducible positive
-cost at every scale. We negate this: if spatial displacement sequences exist whose cost-to-magnitude ratio vanishes (Assumption~R), while pure temporal displacements retain positive
-cost (Assumption~T), then in $(1{+}1)$ dimensions any quadratic leading-order expansion of the
-cost function is indefinite---provided the quadratic form is nondegenerate,
-an explicit condition that is separately required. After normalisation,
+cost at every scale. We negate this: if spatial displacement sequences exist whose
+cost-to-magnitude ratio vanishes (Assumption~R), while pure temporal displacements
+retain positive cost (Assumption~T), then in $(1{+}1)$ dimensions any quadratic
+leading-order expansion of the cost function is indefinite---provided the quadratic
+form is nondegenerate, an explicit condition that is separately required.
+After normalisation,
 \[
 Q = dt^{2} - c_{\max}^{-2}\,dr^{2}.
 \]
 Lorentzian signature therefore emerges from the asymmetry between temporal and spatial
 displacement costs rather than from any geometric postulate. Every non-Lorentzian
-alternative (positive-definite, negative-definite, and degenerate) is excluded by explicit
-contradiction with the assumptions. In $(1{+}3)$~dimensions, under a strengthened
-three-directional zero-threshold condition together with nondegeneracy of~$Q$, the only
-possible signature is $\mathrm{Sig}(Q)=(1,3)$.
-The present derivation differs from the EPS axiomatisation~\cite{EPS} in its starting point: no
-particles, light signals, or kinematic objects are presupposed---only a scalar cost function.
-This provides a more primitive geometric foundation for the thermodynamic derivation
-of Einstein's equations~\cite{Jacobson}: Lorentzian signature itself is derived rather than
-assumed.
+alternative (positive-definite, negative-definite, and degenerate) is excluded by
+explicit contradiction with the assumptions. In $(1{+}3)$~dimensions, under a
+strengthened three-directional zero-threshold condition together with nondegeneracy
+of~$Q$, the only possible signature is $\mathrm{Sig}(Q)=(1,3)$.
+
+The present derivation differs from the EPS axiomatisation~\cite{EPS} in its starting
+point: no particles, light signals, or kinematic objects are presupposed---only a
+scalar cost function. This provides a more primitive geometric foundation for the
+thermodynamic derivation of Einstein's equations~\cite{Jacobson}: Lorentzian signature
+itself is derived rather than assumed.
 \end{abstract}
+
 \section{Introduction}
-We show that a Lorentzian causal structure follows from a minimal asymmetry between temporal and spatial displacement costs together with a quadratic leading-order expansion.
-The closest precursor is the EPS axiomatisation~\cite{EPS}; unlike EPS, no particles, light signals, or worldlines appear as primitives --- only a scalar cost function.
-The title warrants a brief clarification. By \textit{origin of causality} we mean a logical rather than a physical origin: a minimal set of conditions on a cost function from which Lorentzian causal structure follows as the unique algebraic consequence.
+
+We show that a Lorentzian causal structure follows from a minimal asymmetry between
+temporal and spatial displacement costs together with a quadratic leading-order
+expansion. The closest precursor is the EPS axiomatisation~\cite{EPS}; unlike EPS,
+no particles, light signals, or worldlines appear as primitives --- only a scalar
+cost function.
+
+The title warrants a brief clarification. By \textit{origin of causality} we mean a
+logical rather than a physical origin: a minimal set of conditions on a cost function
+from which Lorentzian causal structure follows as the unique algebraic consequence.
+
 \medskip
 \noindent\textbf{Main Theorem (informal).}
-Under Assumptions~R, E, and~T (and no others), the leading quadratic form~$Q$ is Lorentzian in $(1{+}1)$ dimensions:
+Under Assumptions~R, E, T, and nondegeneracy of~$Q$, the leading quadratic
+form~$Q$ is Lorentzian in $(1{+}1)$ dimensions:
 \[
 Q = dt^{2} - c_{\max}^{-2}\,dr^{2}, \qquad c_{\max}>0,
 \]
-up to normalisation and an invertible linear change of variables. In $(1{+}3)$ dimensions, under R4, E4, T, and nondegeneracy of~$Q$, the only possible signature is $\mathrm{Sig}(Q)=(1,3)$.
+up to normalisation and an invertible linear change of variables. In $(1{+}3)$
+dimensions, under R4, E4, T, and nondegeneracy of~$Q$, the only possible signature
+is $\mathrm{Sig}(Q)=(1,3)$.
+
+The precise setup, statements, and proofs are given in Sections~2--4.
+
 \section{Setup}
 
 \noindent\textbf{Notation.}
@@ -74,29 +76,48 @@ $c_{t}>0$: lower bound on temporal cost per unit displacement (Assumption~T).
 $\|\cdot\|$: any norm on~$\mathbb{R}^{2}$; conclusions are norm-independent.
 $S^{1}=\{u\in\mathbb{R}^{2}:\|u\|=1\}$: unit circle.
 
+\medskip
 Let $U\subset\mathbb{R}^{2}$ be open with chart $(t,r)$, and fix $x\in U$.
+
 \begin{definition}[R --- Zero-threshold realizability]\label{def:R}
-There exists a sequence $\delta x_{n}=(\delta t_{n},\delta r_{n})\to 0$ with $\delta t_{n}>0$, $\delta r_{n}\neq 0$ such that $\frac{d(x;\delta x_{n})}{\|\delta x_{n}\|}\longrightarrow 0$, and a subsequence $v_{n_{k}}\to v=(v_{t},v_{r})$ with $v_{t}>0$ and $v_{r}\neq 0$.
+There exists a sequence $\delta x_{n}=(\delta t_{n},\delta r_{n})\to 0$ with
+$\delta t_{n}>0$, $\delta r_{n}\neq 0$ such that
+$\frac{d(x;\delta x_{n})}{\|\delta x_{n}\|}\longrightarrow 0$,
+and a subsequence $v_{n_{k}}\to v=(v_{t},v_{r})$ with $v_{t}>0$ and $v_{r}\neq 0$.
 \end{definition}
+
 \begin{definition}[E --- Quadratic expansion]\label{def:E}
-There is a quadratic form $Q(\delta t,\delta r)=a\,\delta t^{2}+2\kappa\,\delta t\,\delta r+b\,\delta r^{2}$ such that $d(x;\delta x)^{2} = \bigl(Q(\delta x)\bigr)_{+} + o\!\left(\|\delta x\|^{2}\right)$.
+There is a quadratic form $Q(\delta t,\delta r)=a\,\delta t^{2}+2\kappa\,\delta t\,\delta r+b\,\delta r^{2}$
+such that $d(x;\delta x)^{2} = \bigl(Q(\delta x)\bigr)_{+} + o\!\left(\|\delta x\|^{2}\right)$.
 \end{definition}
+
 \begin{definition}[T --- Temporal cost]\label{def:T}
-There exists $c_{t}>0$ such that for all sufficiently small $\Delta t>0$, $d\bigl(x;(\Delta t,0)\bigr)\ge c_{t}\,\Delta t$.
+There exists $c_{t}>0$ such that for all sufficiently small $\Delta t>0$,
+$d\bigl(x;(\Delta t,0)\bigr)\ge c_{t}\,\Delta t$.
 \end{definition}
+
 \noindent The three assumptions are summarised as follows:
 Definition~\ref{def:R} (Assumption~R) provides a zero-cost spatial direction;
 Definition~\ref{def:E} (Assumption~E) establishes the quadratic leading-order structure;
 Definition~\ref{def:T} (Assumption~T) fixes the positive cost of pure temporal displacement.
 
 \section{Main result in $(1{+}1)$ dimensions}
+
 \begin{lemma}[Null--Sign equivalence]\label{lem:null}
-Assume~E. If $\delta x_{n}\to 0$ with $\delta t_{n}>0$, $d(x;\delta x_{n})/\|\delta x_{n}\|\to 0$, and a subsequence converges to $v\in S^{1}$, then $Q(v)\le 0$. Conversely, if $Q(v)\le 0$ and $\delta x_{n}/\|\delta x_{n}\|\to v$, then $d(x;\delta x_{n})/\|\delta x_{n}\|\to 0$.
+Assume~E. If $\delta x_{n}\to 0$ with $\delta t_{n}>0$,
+$d(x;\delta x_{n})/\|\delta x_{n}\|\to 0$, and a subsequence converges to
+$v\in S^{1}$, then $Q(v)\le 0$. Conversely, if $Q(v)\le 0$ and
+$\delta x_{n}/\|\delta x_{n}\|\to v$, then $d(x;\delta x_{n})/\|\delta x_{n}\|\to 0$.
 \end{lemma}
+
 \begin{proof}
-\textit{Forward:} $(d/\|\delta x_{n_{k}}\|)^{2}=(Q(v_{n_{k}}))_{+}+o(1)\to 0$, so $(Q(v))_{+}=0$.
-\textit{Converse:} $(Q(v_{n}))_{+}\to 0$, so $(Q(\delta x_{n}))_{+}=\|\delta x_{n}\|^{2}(Q(v_{n}))_{+}=o(\|\delta x_{n}\|^{2})$, giving $d/\|\delta x_{n}\|\to 0$.\qed
+\textit{Forward:} $(d/\|\delta x_{n_{k}}\|)^{2}=(Q(v_{n_{k}}))_{+}+o(1)\to 0$,
+so $(Q(v))_{+}=0$.
+\textit{Converse:} $(Q(v_{n}))_{+}\to 0$, so
+$(Q(\delta x_{n}))_{+}=\|\delta x_{n}\|^{2}(Q(v_{n}))_{+}=o(\|\delta x_{n}\|^{2})$,
+giving $d/\|\delta x_{n}\|\to 0$.\qed
 \end{proof}
+
 \begin{theorem}[Lorentzian signature from realizability]\label{thm:lorentz}
 Assume R, E, T, and that $Q$ is nondegenerate.
 Then $Q$ is indefinite, and after rescaling~$t$ so that $Q(1,0)=1$
@@ -104,53 +125,106 @@ and applying an invertible linear change of variables,
 $Q = dt^{2} - c_{\max}^{-2}\,dr^{2}$ for some $c_{\max}>0$.
 The null set consists of exactly two directions $dr/dt=\pm c_{\max}$.
 \end{theorem}
+
 \begin{proof}
 \textbf{Step~1.} By~R and Lemma~\ref{lem:null}, $Q(v)\le 0$.
+
 \textbf{Step~2.} $Q(1,0)>0$ by~T.
+
 \textbf{Step~3.} IVT gives $w$ with $Q(w)=0$, $w_{t}>0$, $w_{r}\neq 0$.
+
 \textbf{Step~4 (Signature and normalisation).}
-By Step~2, $Q$ takes a positive value; by Step~3, $Q$ vanishes on a nonzero vector $w$
-with $w_{t}>0$. Since $Q$ is nondegenerate (hypothesis), a nondegenerate quadratic
-form on~$\mathbb{R}^{2}$ that takes both positive values and zero on a nonzero vector
-cannot be definite; hence $Q$ is indefinite and $\mathrm{Sig}(Q)=(1,1)$.
-Rescaling~$t$ so that $Q(1,0)=1$ and applying an invertible linear change of variables
-gives $Q=dt^{2}-c_{\max}^{-2}\,dr^{2}$.\qedhere
+By Step~2, $Q$ takes a positive value; by Step~3, $Q$ vanishes on a nonzero
+vector~$w$ with $w_{t}>0$. Since $Q$ is nondegenerate (hypothesis), a nondegenerate
+quadratic form on~$\mathbb{R}^{2}$ that takes both positive values and zero on a
+nonzero vector cannot be definite; hence $Q$ is indefinite and
+$\mathrm{Sig}(Q)=(1,1)$. Rescaling~$t$ so that $Q(1,0)=1$ and applying an
+invertible linear change of variables gives
+$Q=dt^{2}-c_{\max}^{-2}\,dr^{2}$.\qedhere
 \end{proof}
-\begin{remark}[The speed $c_{\max}$] $c_{\max}$ arises from the cost structure, not as an independent postulate.\end{remark}
-\begin{remark}[Physical interpretation of $d$] The derivation requires only R, E, and T, not a specific physical origin.\end{remark}
+
+\begin{remark}[The speed $c_{\max}$]
+$c_{\max}$ arises from the cost structure, not as an independent postulate.
+\end{remark}
+
+\begin{remark}[Physical interpretation of $d$]
+The derivation requires only R, E, and T, not a specific physical origin.
+\end{remark}
+
 \section{Extension to $(1{+}3)$ dimensions}
 
 Definition~\ref{def:R4} (Assumption~R4) strengthens the two-dimensional
 Assumption~R to three independent spatial directions.
-Definition~\ref{def:E4} (Assumption~E4) extends the quadratic expansion to $\mathbb{R}^{4}$.
+Definition~\ref{def:E4} (Assumption~E4) extends the quadratic expansion to~$\mathbb{R}^{4}$.
 
 \begin{definition}[R4]\label{def:R4}
-For each $i\in\{1,2,3\}$ there exists a sequence converging to $v^{(i)}$ with $v_{t}^{(i)}>0$ and $v_{i}^{(i)}\neq 0$. The three limiting directions span a subspace~$W$ with $Q|_{W}$ negative semidefinite.
+For each $i\in\{1,2,3\}$ there exists a sequence converging to $v^{(i)}$ with
+$v_{t}^{(i)}>0$ and $v_{i}^{(i)}\neq 0$. The three limiting directions span a
+subspace~$W$ with $Q|_{W}$ negative semidefinite.
 \end{definition}
+
 \begin{definition}[E4]\label{def:E4}
-There is a quadratic form $Q$ on~$\mathbb{R}^{4}$ with $d(x;\delta x)^{2} = \bigl(Q(\delta x)\bigr)_{+} + o\!\left(\|\delta x\|^{2}\right)$.
+There is a quadratic form $Q$ on~$\mathbb{R}^{4}$ with
+$d(x;\delta x)^{2} = \bigl(Q(\delta x)\bigr)_{+} + o\!\left(\|\delta x\|^{2}\right)$.
 \end{definition}
+
 \begin{theorem}[Lorentzian signature --- $(1{+}3)$D]\label{thm:4d}
 Assume R4, E4, T, and nondegeneracy of~$Q$. Then $\mathrm{Sig}(Q)=(1,3)$.
 \end{theorem}
+
 \begin{proof}
-T gives positive index $\ge 1$. R4 gives negative index $\ge 3$. Nondegeneracy forces sum $=4$, so $\mathrm{Sig}(Q)=(1,3)$.\qed
+T gives positive index $\ge 1$. R4 gives negative index $\ge 3$. Nondegeneracy
+forces sum~$=4$, so $\mathrm{Sig}(Q)=(1,3)$.\qed
 \end{proof}
+
 \begin{remark}[Nondegeneracy]
 Both Theorem~\ref{thm:lorentz} and Theorem~\ref{thm:4d} take nondegeneracy
 of~$Q$ as an explicit hypothesis.
 In $(1{+}1)$ dimensions, ruling out degeneracy from Assumptions~R, E, T alone
 is not possible: the degenerate form $Q=(dt-\lambda\,dr)^{2}$ satisfies all
-three assumptions for any $\lambda\neq 0$ with $\lambda>0$ or $\lambda<0$
-(choosing the sign so that the null direction has $v_{t}>0$).
+three assumptions for any $\lambda\neq 0$ (choosing the sign so that the null
+direction has $v_{t}>0$).
 Nondegeneracy is therefore an explicit scope condition in both theorems,
 not a hidden assumption.
 \end{remark}
+
 \begin{remark}[Exclusion of non-Lorentzian signatures]
-(i) Positive-definite excluded by R and Lemma~\ref{lem:null}. (ii) Negative-definite excluded by T. (iii) Degenerate forms are excluded by the nondegeneracy hypothesis of Theorem~\ref{thm:lorentz}: under that hypothesis, a nonzero null vector (Step~3) forces the form to be indefinite rather than degenerate. (iv) Split signature $(2,2)$ excluded by R4.
+(i)~Positive-definite excluded by R and Lemma~\ref{lem:null}.
+(ii)~Negative-definite excluded by T.
+(iii)~Degenerate forms are excluded by the nondegeneracy hypothesis of
+Theorem~\ref{thm:lorentz}: under that hypothesis, a nonzero null vector
+(Step~3) forces the form to be indefinite rather than degenerate.
+(iv)~Split signature $(2,2)$ excluded by R4.
 \end{remark}
+
+\bigskip
+\noindent\textbf{Statements and Declarations}
+
+\medskip
+\noindent\textbf{Funding.} No funding was received for conducting this study.
+
+\medskip
+\noindent\textbf{Competing interests.} The author has no relevant financial or
+non-financial interests to disclose.
+
+\medskip
+\noindent\textbf{Author contributions.} Y.\,Y.\,N.\ Li is the sole author of the
+work presented.
+
+\medskip
+\noindent\textbf{Data availability.} No datasets were generated or analysed during
+the current study.
+
 \begin{thebibliography}{2}
-\bibitem{EPS} Ehlers, J., Pirani, F.A.E., Schild, A.: Gen.\ Relativ.\ Gravit.\ \textbf{44}, 1587 (2012). \url{https://doi.org/10.1007/s10714-012-1353-4}
-\bibitem{Jacobson} Jacobson, T.: Phys.\ Rev.\ Lett.\ \textbf{75}, 1260 (1995). \url{https://doi.org/10.1103/PhysRevLett.75.1260}
+\bibitem{EPS}
+Ehlers, J., Pirani, F.A.E., Schild, A.:
+Gen.\ Relativ.\ Gravit.\ \textbf{44}, 1587 (2012).
+\url{https://doi.org/10.1007/s10714-012-1353-4}
+
+\bibitem{Jacobson}
+Jacobson, T.:
+Phys.\ Rev.\ Lett.\ \textbf{75}, 1260 (1995).
+\url{https://doi.org/10.1103/PhysRevLett.75.1260}
 \end{thebibliography}
+
 \end{document}
