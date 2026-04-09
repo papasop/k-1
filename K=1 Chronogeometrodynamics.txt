@@ -1,3 +1,10 @@
+% -- v5 (Noether L1 second-round, 2026-04-09) ----------------
+%
+% N1 (L1-8a): Law III 改为局部表述。
+% N2 (L1-8b): 开放问题新增第5条（全局吸引性）。
+% N3 (L1-6):  Prop5 Remark 追加等价性在对角H*下继承说明。
+% N4 (L1-9):  §7 Rindler 引入处加外部来源标注。
+% N5 (L1-12): Prop14 外部标注移至证明首行。
 \documentclass[11pt,a4paper]{article}
 % ─────────────────────────────────────────────────────────────
 % REVISION LOG (Layer-0 automated fixes, 2026-04-09)
@@ -179,6 +186,10 @@ independently of the diagonal entries of $H_{*}$.
 The thermodynamic interpretation of \S~\ref{sec:thermo} assumes
 $H_{*}$ diagonal; this is a necessary scope condition,
 satisfied here by Proposition~\ref{prop:diag_inv}.
+Consequently, the equivalence $d_{c}>0\Leftrightarrow\mathrm{Sig}(G)=(1,1)$
+of Theorem~4, established under $H_{*}=I$, extends to the diagonal $H_{*}$ class:
+Proposition~\ref{prop:diag_inv} shows $d_{c}=\alpha\sqrt{-1/\det G}$ is unchanged,
+so the threshold condition and the equivalence both hold.
 \end{remark}
 
 \medskip\noindent\textbf{Numerical illustration.} Among 2000 random symmetric $2\times 2$ matrices (sufficient for coverage): all 1420 with $\mathrm{Sig}=(1,1)$ had $d_{c}>0$; all 580 with definite signature had $d_{c}=0$.
@@ -203,7 +214,7 @@ The GENERIC formalism~\cite{GENERIC} requires Euclidean antisymmetry $L^{\top}=-
 
 \section{Critical damping and fluctuation structure (Law~III)}\label{sec:lawIII}
 
-\noindent\textbf{Law~III.} \textit{$K=1$ is selected by the stochastic dynamics as the unique self-consistent locus of the metric.}
+\noindent\textbf{Law~III.} \textit{Near any $G$-eigenvector on $\{K=1\}$, the stochastic dynamics generates a restoring drift towards $K=1$ (Theorem~\ref{thm:restoring}): $K=1$ is a \emph{locally} self-consistent locus. Whether global attractivity holds remains open (Open Problem~5 in \S\ref{sec:discussion}).}
 
 \medskip
 
@@ -248,7 +259,11 @@ Mixing the two classes conflates thermodynamic and kinematic degrees of freedom 
 
 This section connects the geometric structures of \S\S2--6 to spacetime thermodynamics; every connection requires at least one external identification, marked explicitly.
 
-For the Rindler metric $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, where $\kappa$ is the surface gravity and $\ell$ the proper distance from the horizon, eq.~\eqref{eq:dc} gives $d_{c}=\alpha/(\kappa\ell)$ (i.e., $\alpha/\sqrt{|g_{00}|}$ with $g_{00}=-(\kappa\ell)^{2}$ the temporal component of the Rindler metric). With $T_{H}=\hbar\kappa/(2\pi)$~\cite{Hawking},
+As a concrete realisation, we apply the framework to the Rindler metric
+$G=\mathrm{diag}(-(\kappa\ell)^{2},1)$
+\textup{[external: $G$ is the standard Rindler metric from GR, not derived from Law~I]},
+where $\kappa$ is the surface gravity and $\ell$ the proper distance
+from the horizon. Equation~\eqref{eq:dc} gives $d_{c}=\alpha/(\kappa\ell)$ (i.e., $\alpha/\sqrt{|g_{00}|}$ with $g_{00}=-(\kappa\ell)^{2}$ the temporal component of the Rindler metric). With $T_{H}=\hbar\kappa/(2\pi)$~\cite{Hawking},
 \begin{equation}
 d_{c}\cdot T_{H} = \frac{\alpha}{\kappa\ell}\cdot\frac{\hbar\kappa}{2\pi} = \frac{\alpha\hbar}{2\pi\ell},\label{eq:nearhorizon}
 \end{equation}
@@ -482,6 +497,8 @@ $\sigma_1>\sigma_{1,c}:=\hbar/(4\pi)=\ell_P/(4\pi)$.
 \end{proposition}
 
 \begin{proof}
+\textup{[External identification: $T_{\mathrm{eff}}=T_{\mathrm{tol}}$,
+as in \S~\ref{sec:thermo}; all other steps are internal.]}
 Near the horizon, $T_{\mathrm{eff}}=T_{\mathrm{tol}}=\hbar\kappa/(2\pi\sqrt{f})$
 (Tolman redshift factor; cf.~\eqref{eq:nearhorizon} with $\alpha=1$). With $\sigma_1=r\sqrt{f}$ and $r\approx 2M$, $\kappa=1/(4M)$ near the Schwarzschild horizon:
 \begin{equation*}
@@ -496,7 +513,7 @@ $\sigma_1>\hbar/(4\pi)$. This is a self-consistent bound: the OU approximation i
 Below $\sigma_{1,c}$, thermal fluctuations of $K$ exceed its
 mean value and the semiclassical metric loses its classical meaning.
 This is a \emph{soft} bound---analogous to classical mechanics
-at action~$\sim\hbar$---derived from the framework's internal self-consistency, given the sole external identification at the stochastic level $T_{\mathrm{eff}}=T_{\mathrm{tol}}$. The bound is self-consistent in the following sense: the OU approximation requires $\mathrm{Var}(K)<1$, which demands $\sigma_1>\sigma_{1,c}$; in that regime $\mathrm{Var}(K)<1$ is indeed satisfied, so the approximation is valid wherever it is invoked.
+at action~$\sim\hbar$---derived from the framework's internal self-consistency, the bound is self-consistent: the OU approximation requires $\mathrm{Var}(K)<1$, which demands $\sigma_1>\sigma_{1,c}$; in that regime $\mathrm{Var}(K)<1$ is satisfied.
 
 If $K$ and the boost angle $\varphi$ along $\{K{=}1\}$ are canonically conjugate (Open Problem~2), the compactness of $\varphi\in[0,2\pi)$ upgrades the soft bound to a hard spectral gap: $\sigma_1\geq\hbar/(4\pi)$. Both the self-consistency argument and the conjugacy argument give $\sigma_{1,\min}\sim O(\ell_P)$; their order-of-magnitude agreement confirms that the Planck scale is the natural resolution limit of the framework, independently of whether the conjugacy conjecture is established.
 
@@ -554,6 +571,9 @@ For Lorentzian~$G$, the symmetric part $S=(J_G+J_G^\top)/2\neq 0$ departs from t
 \item Prove $\sigma_{1,\min}\geq\hbar/(4\pi)$ (hard bound) from $K$--$\varphi$ conjugacy, where $\varphi$ is the boost angle along $\{K{=}1\}$.
 \item Derive the $8\pi$ factor from the cost framework (non-vacuum Route~B).
 \item Identify testable strong-field predictions.
+\item Prove global attractivity of $K=1$: show that for any $x_0\in\mathbb{R}^{2}$,
+the trajectory of $\dot{x}=(J_G-d_cI)\nabla V$ with $V=\tfrac{1}{2}(K-1)^2$
+satisfies $K(x(t))\to 1$ as $t\to\infty$.
 \end{enumerate}
 
 \subsection*{Conclusion}
