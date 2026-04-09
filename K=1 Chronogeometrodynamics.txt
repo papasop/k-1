@@ -501,7 +501,7 @@ satisfies $K(x(t))\to 1$ as $t\to\infty$.
 
 \subsection*{Conclusion}
 
-General relativity prescribes Lorentzian signature; the present work derives it from a cost asymmetry and shows that the resulting metric enforces its own normalisation. At the point level, the Clausius relation follows algebraically. The eigenvalue self-consistency principle is algebraically equivalent to the vacuum Einstein equations, extending the $K{=}1$ language to the field level. Axiom~T excludes curvature singularities (where $\sigma_1$ degenerates) from the theory's domain, and the OU variance sets a Planck-scale resolution limit. What remains prescribed is the cost asymmetry itself: why one direction carries positive cost while others do not. This is Riemann's question in economic form.
+General relativity prescribes Lorentzian signature; the present work derives it from a cost asymmetry and shows that the resulting metric enforces its own normalisation. At the point level, the Clausius relation follows algebraically. The eigenvalue self-consistency principle is algebraically equivalent to the vacuum Einstein equations, connecting the $K{=}1$ language to the field level. Axiom~T excludes curvature singularities (where $\sigma_1$ degenerates) from the theory's domain, and the OU variance sets a Planck-scale resolution limit. What remains prescribed is the cost asymmetry itself: why one direction carries positive cost while others do not. This is Riemann's question in economic form.
 
 \bigskip
 \noindent\textbf{Statements and Declarations}
