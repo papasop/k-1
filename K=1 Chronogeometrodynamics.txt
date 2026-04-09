@@ -33,7 +33,7 @@
 
 \textit{The problem.} Every standard formulation of spacetime physics assumes a metric or a causal structure as input. The Jacobson derivation~\cite{Jacobson} obtains the Einstein equations from thermodynamics on local Rindler horizons, but Lorentzian signature is universally assumed --- as in the approaches of Padmanabhan~\cite{Padmanabhan} and Verlinde~\cite{Verlinde}. The EPS axiomatisation~\cite{EPS} derives causal structure from free-fall and light propagation, but uses kinematic primitives. In every approach to Riemann's open problem --- what determines the metric? --- either the signature is prescribed or the derivation requires kinematic primitives.
 
-\textit{The gap.} No existing approach derives Lorentzian signature itself.\footnote{Approaches that address related but distinct questions include: Gibbons and Rasheed~\cite{Gibbons1995} on Born--Infeld electrodynamics and signature; Kiefer~\cite{Kiefer2012} on signature change in quantum cosmology; and Isham~\cite{Isham1993} on the problem of time, which takes the causal structure as given. The distinction the present work draws is between \emph{kinematic} approaches (which take free-fall, light propagation, or causal structure as primitive) and a \emph{cost-based} approach (which derives both the metric and its signature from a scalar cost function). The claim is that no existing cost-based derivation yields Lorentzian signature.} The present work fills this gap.
+\textit{The gap.} No existing approach derives Lorentzian signature itself.\footnote{Approaches that address related but distinct questions include: Gibbons and Rasheed~\cite{Gibbons1995} on Born--Infeld electrodynamics and signature; Kiefer~\cite{Kiefer2012} on signature change in quantum cosmology; and Isham~\cite{Isham1993} on the problem of time, which takes the causal structure as given. The distinction the present work draws is between \emph{kinematic} approaches (which take free-fall, light propagation, or causal structure as primitive) and a \emph{cost-based} approach (which derives both the metric and its signature from a scalar cost function). The claim is that no existing cost-based derivation yields Lorentzian signature. Entropic gravity approaches~\cite{Verlinde,Padmanabhan} presuppose Lorentzian spacetime and derive gravitational dynamics; the present work operates at the prior level of deriving the Lorentzian signature itself.} The present work fills this gap.
 
 \textit{The solution.} Here time is neither coordinate nor metric primitive: it is the cost of change, so the metric --- including its Lorentzian signature --- is a consequence. This resolves the question in the $2\times 2$ setting dictated by a single local Rindler horizon. Information time, defined as $dt_{\mathrm{info}}:=d\Phi/H$, yields the metric $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$; requiring persistent configurations forces $\det G<0$ (\S2, see also~\cite{Realizability}). Lorentzian signature, real symplectic eigenvalues, and $d_{c}>0$ are then algebraic consequences of a single sign. The quadratic form $K(x)=x^{\top}Gx$ quantifies local temporal cost; departures from $K{=}1$ generate a restoring drift (Law~III), making $K=1$ a dynamical attractor. Geometrically, $\{K{=}1\}$ is the unit $G$-hyperboloid.
 
@@ -247,7 +247,7 @@ With this stationary variance, the FDT form $\sigma_{K}^{2}=2\kappa_{K}T_{\mathr
 \]
 (The heat definition follows the Sekimoto--Seifert stochastic thermodynamics convention~\cite{Sekimoto}.)
 The only external input is the identification $T_{\mathrm{eff}}(x_{*})=T_{\mathrm{tol}}(x_{*})$; everything else is derived internally.
-A natural candidate for the physical basis of this identification is the KMS condition~\cite{Haag}: local thermal equilibrium at a Rindler horizon requires correlation functions to satisfy a periodicity condition, which forces the local temperature to equal~$T_{\mathrm{tol}}$. A derivation of the identification from KMS within the present framework is left for future work.
+A natural candidate for the physical basis of this identification is the KMS condition~\cite{Haag,Connes1994}: local thermal equilibrium at a Rindler horizon requires correlation functions to satisfy a periodicity condition, which forces the local temperature to equal~$T_{\mathrm{tol}}$. A derivation of the identification from KMS within the present framework is left for future work.
 
 \begin{proposition}[Local Clausius Equivalence]\label{prop:clausius}
 Under local thermal equilibrium and the identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, the Clausius relation $\delta Q=T_{\mathrm{tol}}\,dS$ is equivalent to
@@ -683,6 +683,12 @@ R.~Haag,
 Local Quantum Physics: Fields, Particles, Algebras, 2nd ed.
 Springer, Berlin (1996).
 (Sec.~V.1: KMS condition and thermal equilibrium states.)
+
+\bibitem{Connes1994}
+A.~Connes, C.~Rovelli,
+Von Neumann algebras and thermal time.
+Class.\ Quantum Grav.\ \textbf{11}, 2899--2917 (1994).
+\url{https://doi.org/10.1088/0264-9381/11/12/007}
 \end{thebibliography}
 
 \end{document}
