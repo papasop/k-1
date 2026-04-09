@@ -167,7 +167,7 @@ so the threshold condition and the equivalence both hold.
 Law~II is the uniqueness statement: once $G$ fixes $J_{G}$ (Theorem~1), $D\ge 0$ is prescribed, and the symplectic-dissipative splitting of Law~II is in force, the dynamics are completely determined. The splitting $GA=\alpha J-GD$ is the axiomatic content of Law~II; Theorem~\ref{thm:lawII} derives the explicit evolution law from it.
 
 \begin{theorem}[Law~II Canonical Decomposition]\label{thm:lawII}
-Let $G$ be non-degenerate and let $J_{G}=\alpha G^{-1}J$ \textup{(Theorem~1)}. By Law~II, the generator $A$ satisfies $GA = \alpha J - GD$ for some $D\ge 0$. Then for any smooth potential $V$, the unique evolution law is $\dot{x} = (J_{G}-D)\,\nabla V$; uniqueness holds within the class of generators satisfying the Law~II splitting.
+Let $G$ be non-degenerate and let $J_{G}=\alpha G^{-1}J$ \textup{(Theorem~1)}. By Law~II, the generator $A$ satisfies $GA = \alpha J - GD$ for some $D\ge 0$. Then for any smooth potential $V$, the unique evolution law is $\dot{x} = (J_{G}-D)\,\nabla V$; uniqueness holds within the class of generators with $D\ge 0$; since every $2\times 2$ matrix $A$ admits a unique decomposition $GA = \alpha J - GD$ (splitting into skew and symmetric parts, $\dim(\mathrm{Skew}_2)+\dim(\mathrm{Sym}_2)=4=\dim(M_{2\times 2})$), this class exhausts all physically dissipative evolution laws.
 \end{theorem}
 
 \begin{proof}
@@ -250,7 +250,7 @@ The only external input is the identification $T_{\mathrm{eff}}(x_{*})=T_{\mathr
 A natural candidate for the physical basis of this identification is the KMS condition~\cite{Haag,Connes1994}: local thermal equilibrium at a Rindler horizon requires correlation functions to satisfy a periodicity condition, which forces the local temperature to equal~$T_{\mathrm{tol}}$. A derivation of the identification from KMS within the present framework is left for future work.
 
 \begin{proposition}[Local Clausius Equivalence]\label{prop:clausius}
-Under local thermal equilibrium and the identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, the Clausius relation $\delta Q=T_{\mathrm{tol}}\,dS$ is equivalent to
+Under local thermal equilibrium (in the KMS sense of the preceding remark) and the identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, the Clausius relation $\delta Q=T_{\mathrm{tol}}\,dS$ is equivalent to
 \begin{equation}
 \sigma^{2} = 2\,d_{c}\cdot T_{\mathrm{tol}} = 2\,d_{c}^{2}\cdot T_{H}.\label{eq:noise}
 \end{equation}
