@@ -1,36 +1,3 @@
-% -- v5 (Noether L1 second-round, 2026-04-09) ----------------
-%
-% N1 (L1-8a): Law III 改为局部表述。
-% N2 (L1-8b): 开放问题新增第5条（全局吸引性）。
-% N3 (L1-6):  Prop5 Remark 追加等价性在对角H*下继承说明。
-% N4 (L1-9):  §7 Rindler 引入处加外部来源标注。
-% N5 (L1-12): Prop14 外部标注移至证明首行。
-\documentclass[11pt,a4paper]{article}
-% ─────────────────────────────────────────────────────────────
-% REVISION LOG (Layer-0 automated fixes, 2026-04-09)
-%
-% CRITICAL fixes:
-%   C1. Added \label{thm:lawII} and \label{thm:restoring} to
-%       Theorems 6 & 7 (previously unlabeled).
-%   C2. Abstract (ii)(iii)(iv) and Introduction "Main results":
-%       replaced hard-coded "Theorem~5/6, Proposition~7" with
-%       \ref{thm:lawII}, \ref{thm:restoring}, \ref{prop:clausius}.
-%       (Proposition~5 occupies counter slot #5, shifting all
-%        subsequent numbers; \ref avoids future mismatches.)
-%
-% WARNING fixes:
-%   W1. eq:equiv  — added \eqref in Discussion and Stages §.
-%   W2. eq:noise  — added \eqref in abstract Route-A sentence.
-%   W3. eq:K1def / eq:K2def — added \eqref after Definition 9.
-%   W4. eq:Kdot_eigen — added \eqref in Theorem 7 body.
-%   W5. eq:Tloc   — added \eqref in temperature paragraph.
-%   W6. sec:lawI / sec:thermo — §§ range in intro now uses \ref.
-%   (sec:symplectic, sec:lawIII remain label-only; no natural
-%    cross-reference site identified without content changes.)
-%
-% MINOR fixes:
-%   M1. Standardised d_{c} → d_{c} throughout source (9 instances).
-% ─────────────────────────────────────────────────────────────
 
 \usepackage[T1]{fontenc}
 \usepackage[margin=1in]{geometry}
@@ -56,7 +23,7 @@
 \begin{abstract}
 \textit{Background.} From Newton's absolute time to proper time in relativistic physics, time has invariably entered physics as a primitive --- an underived input whose form changes but whose foundational status does not.
 
-\textit{Framework.} Redefining time as the cost of change, the Hessian $G:=\nabla^{2}(dt_{\mathrm{info}}^{2})$ is forced to be indefinite by the three realizability conditions of~\cite{Realizability} (Axioms~R, E, T): positive definiteness is excluded by contradiction, and the unique outcome is $\det G<0$. The sign of $\det G$ encodes three equivalent manifestations: Lorentzian signature, real symplectic eigenvalues, and a critical damping threshold $d_{c}>0$ (Theorem~4). The quadratic form $K(x)=x^{\top}Gx$ quantifies local temporal cost; $K=1$, the unit level set of $G$, selects configurations of unit cost. The evolution law, subject to the $G$-induced symplectic structure and $D\ge 0$, is unique (Theorem~\ref{thm:lawII}); at critical damping, the restoring rate is $\kappa_{K}=4d_{c}$ (Theorem~\ref{thm:restoring}).
+\textit{Framework.} Redefining time as the cost of change, the Hessian $G:=\nabla^{2}(dt_{\mathrm{info}}^{2})$ is forced to be indefinite by the three realizability conditions of~\cite{Realizability} (Axioms~R, E, T) together with the non-degeneracy of~$G$ assumed in Law~I: positive definiteness is excluded by contradiction, and the unique outcome is $\det G<0$. The sign of $\det G$ encodes three equivalent manifestations: Lorentzian signature, real symplectic eigenvalues, and a critical damping threshold $d_{c}>0$ (Theorem~4). The quadratic form $K(x)=x^{\top}Gx$ quantifies local temporal cost; $K=1$, the unit level set of $G$, selects configurations of unit cost. The evolution law, subject to the $G$-induced symplectic structure and $D\ge 0$, is unique (Theorem~\ref{thm:lawII}); at critical damping, the restoring rate is $\kappa_{K}=4d_{c}$ (Theorem~\ref{thm:restoring}).
 
 \textit{Thermodynamic content.} In the stationary regime near $K=1$, the Clausius relation uniquely fixes the noise amplitude as a function of the Tolman temperature (Proposition~\ref{prop:clausius}, eq.~\eqref{eq:noise}). Geometrically, the $K=1$ manifold carries two classes of fluctuation: thermodynamic (Class~A, normal to $K=1$) and kinematic (Class~B, tangential, along Lorentz boost orbits). The sole external identification is $T_{\mathrm{eff}}=T_{\mathrm{tol}}$; Route~B requires none.
 
@@ -298,7 +265,9 @@ $(\Leftarrow)$: $\sigma^{2}=2d_{c}\cdot T_{\mathrm{tol}}$ gives $T_{\mathrm{eff}
 Two external inputs and one algebraic consequence enter
 Proposition~\ref{prop:clausius}: (i)~the OU approximation, valid
 when $|K-1|\ll 1$ and Class~B diffusion is slow compared to
-Class~A relaxation ($\tau=1/(4d_{c})$); (ii)~the identification
+Class~A relaxation ($\tau=1/(4d_{c})$),
+equivalently $T_{\mathrm{eff}}\ll 1$ in natural units
+(satisfied for macroscopic black holes where $T_H\ll d_{c}$); (ii)~the identification
 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, the sole external
 identification at the stochastic level; (iii)~the Tolman identity
 $T_{\mathrm{tol}}=d_{c}T_{H}$, an algebraic consequence of
@@ -394,7 +363,7 @@ where $R_{\mu\nu}=0$ are the vacuum Einstein field equations~\cite{Einstein1915,
 \begin{proof}
 $(\Rightarrow)$\;
 $K_2{=}1$ gives $R_{\theta\theta}{=}0$.
-$K_1{-}K_2=rf'+\frac{r^2}{2}f''=0$ (from eqs.~\eqref{eq:K1exp}--\eqref{eq:K2exp}) gives $f''=-2f'/r$; hence $R_{tt}{=}0$ (by the observation $R_{tt}=\tfrac{f}{r^2}(K_1-K_2)$ above). ($R_{rr}=0$ is equivalent to $R_{tt}=0$ for this diagonal ansatz.)
+$K_1{-}K_2=rf'+\frac{r^2}{2}f''=0$ (from eqs.~\eqref{eq:K1exp}--\eqref{eq:K2exp}) gives $f''=-2f'/r$; hence $R_{tt}{=}0$ (by the observation $R_{tt}=\tfrac{f}{r^2}(K_1-K_2)$ above). (For this metric $R_{rr}=f^{2}R_{tt}$~\cite{Wald1984}, so $R_{tt}=0\Leftrightarrow R_{rr}=0$.)
 
 $(\Leftarrow)$\;
 $R_{\theta\theta}{=}0$ gives $K_2{=}1$.
@@ -690,6 +659,13 @@ Canonical quantum gravity and the problem of time.
 In: \textit{Integrable Systems, Quantum Groups, and Quantum Field Theories},
 NATO ASI Series, Springer (1993).
 \url{https://doi.org/10.1007/978-94-011-1980-1_6}
+
+\bibitem{Wald1984}
+R.\,M.~Wald,
+General Relativity.
+University of Chicago Press (1984).
+(For the Ricci tensor components of static spherically symmetric metrics,
+see Appendix~E.)
 \end{thebibliography}
 
 \end{document}
