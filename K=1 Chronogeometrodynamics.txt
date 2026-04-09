@@ -35,7 +35,7 @@
 
 \textit{The gap.} No existing approach derives Lorentzian signature itself.\footnote{Approaches that address related but distinct questions include: Gibbons and Rasheed~\cite{Gibbons1995} on Born--Infeld electrodynamics and signature; Kiefer~\cite{Kiefer2012} on signature change in quantum cosmology; and Isham~\cite{Isham1993} on the problem of time, which takes the causal structure as given. This paper distinguishes \emph{kinematic} approaches (which take free-fall, light propagation, or causal structure as primitive) from \emph{cost-based} approaches (which derive both the metric and its signature from a scalar cost function). The claim is that no existing cost-based derivation yields Lorentzian signature. Entropic gravity approaches~\cite{Verlinde,Padmanabhan} presuppose Lorentzian spacetime and derive gravitational dynamics; the present work operates at the prior level of deriving the Lorentzian signature itself.} The present work fills this gap.
 
-\textit{The solution.} Here time is neither coordinate nor metric primitive: it is the cost of change, so the metric --- including its Lorentzian signature --- is a consequence. This resolves the question in the $2\times 2$ setting dictated by a single local Rindler horizon. Information time, defined as $dt_{\mathrm{info}}:=d\Phi/H$, yields the metric $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$; requiring persistent configurations forces $\det G<0$ (\S\ref{sec:lawI}; see~\cite{Realizability}). Lorentzian signature, real symplectic eigenvalues, and $d_{c}>0$ are then algebraic consequences of a single sign. The quadratic form $K(x)=x^{\top}Gx$ quantifies local temporal cost; departures from $K{=}1$ generate a restoring drift (Law~III), making $K=1$ a dynamical attractor.
+\textit{The solution.} Here time is neither coordinate nor metric primitive: it is the cost of change, so the metric --- including its Lorentzian signature --- is a consequence. This resolves the question in the $2\times 2$ setting dictated by a single local Rindler horizon. Information time, defined as $dt_{\mathrm{info}}:=d\Phi/H$, yields the metric $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$; Persistence of configurations forces $\det G<0$ (\S\ref{sec:lawI}; see~\cite{Realizability}). Lorentzian signature, real symplectic eigenvalues, and $d_{c}>0$ are then algebraic consequences of a single sign. The quadratic form $K(x)=x^{\top}Gx$ quantifies local temporal cost; departures from $K{=}1$ generate a restoring drift (Law~III), making $K=1$ a dynamical attractor.
 
 \textit{Two routes to Einstein.}
 \begin{itemize}
@@ -225,7 +225,7 @@ With this stationary variance, the FDT form $\sigma_{K}^{2}=2\kappa_{K}T_{\mathr
 \]
 (The heat definition follows the Sekimoto--Seifert stochastic thermodynamics convention~\cite{Sekimoto}.)
 The only external input is the identification $T_{\mathrm{eff}}(x_{*})=T_{\mathrm{tol}}(x_{*})$; everything else is derived internally.
-A natural candidate for the physical basis of this identification is the KMS condition~\cite{Haag,Connes1994}: local thermal equilibrium at a Rindler horizon requires correlation functions to satisfy a periodicity condition, which forces the local temperature to equal~$T_{\mathrm{tol}}$. A derivation of the identification from KMS within the present framework is left for future work.
+A natural candidate for the physical basis of this identification is the KMS condition~\cite{Haag,Connes1994}: local thermal equilibrium at a Rindler horizon requires correlation functions to satisfy a periodicity condition, which forces the local temperature to equal~$T_{\mathrm{tol}}$. A derivation of the identification from KMS within the present framework remains for future work.
 
 \begin{proposition}[Local Clausius Equivalence]\label{prop:clausius}
 Under local thermal equilibrium (in the KMS sense of the preceding remark) and the identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, the Clausius relation $\delta Q=T_{\mathrm{tol}}\,dS$ is equivalent to
@@ -247,7 +247,7 @@ $(\Leftarrow)$: $\sigma^{2}=2d_{c}\cdot T_{\mathrm{tol}}$ gives $T_{\mathrm{eff}
 
 \subsection*{Position-dependent temperature and It\^{o} corrections}
 
-Applying It\^{o}'s formula to $K=x^{\top}Gx$ gives an additional drift $\sigma^{2}\,\mathrm{tr}(G)\,dt$. This shifts the mean of $K$ but not its variance: at any $G$-eigenvector base point, the FDT ratio $\sigma_{K}^{2}/(2\kappa_{K})$ cancels to $\sigma^{2}/(2d_{c})$ regardless of $x_{*}^{\top}G^{2}x_{*}$. Hence~\eqref{eq:var} and $T_{\mathrm{eff}}=\sigma^{2}/(2d_{c})$ hold for any Lorentzian $G$.
+Applying It\^{o}'s formula to $K=x^{\top}Gx$ gives an additional drift $\sigma^{2}\,\mathrm{tr}(G)\,dt$. This shifts the mean of $K$ but not its variance: at any $G$-eigenvector base point, the FDT ratio $\sigma_{K}^{2}/(2\kappa_{K})$ reduces to $\sigma^{2}/(2d_{c})$ regardless of $x_{*}^{\top}G^{2}x_{*}$. Hence~\eqref{eq:var} and $T_{\mathrm{eff}}=\sigma^{2}/(2d_{c})$ hold for any Lorentzian $G$.
 
 The $K$-space noise amplitude $\sigma_{K}(x)=2\sigma\|Gx\|$ varies along $\{K=1\}$, yielding a position-dependent temperature (eq.~\eqref{eq:Tloc}):
 \begin{equation}
@@ -428,7 +428,7 @@ T_{\mathrm{eff}}\approx\frac{\hbar\cdot(1/(4M))}{2\pi\cdot\sigma_1/(2M)}=\frac{\
 \end{equation*}
 $\mathrm{Var}(K)\approx T_{\mathrm{eff}}$ (from eq.~\eqref{eq:var} and $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, in the OU approximation); for $K{=}1$ to be a
 well-defined equilibrium, $\mathrm{Var}(K)<1$, hence
-$\sigma_1>\hbar/(4\pi)$. This is a self-consistent bound: the OU approximation is required to be valid, i.e., $\mathrm{Var}(K)<1$.\qed
+$\sigma_1>\hbar/(4\pi)$. This is a self-consistent bound: the OU approximation must be valid, i.e., $\mathrm{Var}(K)<1$.\qed
 \end{proof}
 
 \noindent
@@ -472,7 +472,7 @@ For non-vacuum configurations, $\rho=(1{-}K_2)/(8\pi r^2)$: matter is the angula
 
 \subsection*{Extension to $(1{+}3)$ dimensions}
 
-In $(1{+}3)$ dimensions, $\{K{=}1\}\cong H^3$ ($H^3$ being the unit spacelike hyperboloid in Minkowski $\mathbb{R}^{1,3}$, the natural higher-dimensional analogue of the unit $G$-hyperboloid) carries $S^2$ cross-sections with area $4\pi(\kappa\ell)^2$. With $\alpha=1$, $\sigma_1=\kappa\ell$, so the cross-sectional area is $A=4\pi\sigma_1^2$ and the Bekenstein--Hawking entropy $S_{\mathrm{BH}}=A/4=\pi\sigma_1^2$, expressing both in terms of the same symplectic invariant. The coefficient $\eta=1/4$ follows from the first law $dM=T_{H}\,dS$ with $A_{H}=16\pi M^{2}$, which gives $S_{\mathrm{BH}}=A_{H}/4$ directly; this need not be separately assumed (given $T_{H}=\hbar\kappa/(2\pi)$~\cite{Hawking} as external input), the first law yielding the Bekenstein--Hawking entropy-area law~\cite{Bekenstein} directly. Two structural changes accompany the extension: the equivalence $d_{c}>0\Leftrightarrow\mathrm{Sig}(G)=(1,1)$ weakens to a one-directional implication (Lorentzian signature is necessary but no longer sufficient for $d_{c}>0$), and the uniqueness of~$J_G$ (guaranteed by $\dim(\mathrm{Skew}_2)=1$) requires a symplectic pairing choice when $\dim(\mathrm{Skew}_4)=6$. For the Rindler metric with isotropic spatial sector, the three standard pairings (block-diagonal, canonical~$J_4$, and anti-diagonal) yield identical~$d_{c}$; general pairings do not, and whether a canonical selection rule exists is open. The three Jacobson inputs thereby trace to a single symplectic invariant: $\sigma_1$. The $2\times 2$ setting captures signature, light cones, and symplectic structure; conformal and spinor structure require the $(1{+}3)$-dimensional extension.
+In $(1{+}3)$ dimensions, $\{K{=}1\}\cong H^3$ ($H^3$ being the unit spacelike hyperboloid in Minkowski $\mathbb{R}^{1,3}$, the natural higher-dimensional analogue of the unit $G$-hyperboloid) carries $S^2$ cross-sections with area $4\pi(\kappa\ell)^2$. With $\alpha=1$, $\sigma_1=\kappa\ell$, so the cross-sectional area is $A=4\pi\sigma_1^2$ and the Bekenstein--Hawking entropy $S_{\mathrm{BH}}=A/4=\pi\sigma_1^2$, expressing both in terms of the same symplectic invariant. The coefficient $\eta=1/4$ follows from the first law $dM=T_{H}\,dS$ with $A_{H}=16\pi M^{2}$, which gives $S_{\mathrm{BH}}=A_{H}/4$ directly; this need not be separately assumed (given $T_{H}=\hbar\kappa/(2\pi)$~\cite{Hawking} as external input), the first law yielding the Bekenstein--Hawking entropy-area law~\cite{Bekenstein}. Two structural changes accompany the extension: the equivalence $d_{c}>0\Leftrightarrow\mathrm{Sig}(G)=(1,1)$ weakens to a one-directional implication (Lorentzian signature is necessary but no longer sufficient for $d_{c}>0$), and the uniqueness of~$J_G$ (guaranteed by $\dim(\mathrm{Skew}_2)=1$) requires a symplectic pairing choice when $\dim(\mathrm{Skew}_4)=6$. For the Rindler metric with isotropic spatial sector, the three standard pairings (block-diagonal, canonical~$J_4$, and anti-diagonal) yield identical~$d_{c}$; general pairings do not, and whether a canonical selection rule exists is open. The three Jacobson inputs thereby trace to a single symplectic invariant: $\sigma_1$. The $2\times 2$ setting captures signature, light cones, and symplectic structure; conformal and spinor structure require the $(1{+}3)$-dimensional extension.
 
 \subsection*{Departure from GENERIC}
 
@@ -481,7 +481,7 @@ For Lorentzian~$G$, the symmetric part $S=(J_G+J_G^\top)/2\neq 0$ departs from t
 \subsection*{Limitations}
 
 \begin{enumerate}
-\item Route~B is proved for spherical symmetry only (general extension requires null-surface Gauss--Codazzi). \textit{(scope)}
+\item Route~B is proved for spherical symmetry only; general extension requires null-surface Gauss--Codazzi. \textit{(scope)}
 \item Route~A requires $S\propto A$. \textit{(external input)}
 \item No deviation from GR is predicted in vacuum. \textit{(predictive gap)}
 \item The $\sigma_1$ bound is soft, not hard. \textit{(strength)}
