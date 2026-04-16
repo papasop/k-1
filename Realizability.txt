@@ -244,7 +244,7 @@ work presented.
 \noindent\textbf{Data availability.} No datasets were generated or analysed during
 the current study.
 
-\begin{thebibliography}{2}
+\begin{thebibliography}{3}
 \bibitem{EPS}
 Ehlers, J., Pirani, F.A.E., Schild, A.:
 The geometry of free fall and light propagation.
