@@ -48,11 +48,7 @@ We show that a Lorentzian causal structure follows from a minimal asymmetry betw
 temporal and spatial displacement costs together with a quadratic leading-order
 expansion. The closest precursor is the EPS axiomatisation~\cite{EPS}; unlike EPS,
 no particles, light signals, or worldlines appear as primitives---only a scalar
-cost function.\footnote{Approaches that address related but distinct questions
-include: Gibbons and Rasheed~\cite{Gibbons1995} on Born--Infeld electrodynamics
-and metric signature; Kiefer~\cite{Kiefer2012} on signature change in quantum
-cosmology; and Isham~\cite{Isham1993} on the problem of time, which takes the
-causal structure as given. This paper distinguishes \emph{kinematic} approaches
+cost function.\footnote{This paper distinguishes \emph{kinematic} approaches
 (which take free-fall, light propagation, or causal structure as primitive) from
 \emph{cost-based} approaches (which derive both the metric and its signature from
 a scalar cost function). Entropic gravity approaches~\cite{Verlinde2011} presuppose
@@ -261,25 +257,6 @@ Republished: Gen.\ Relativ.\ Gravit.\ \textbf{44}, 1587--1609 (2012).
 Jacobson, T.:
 Phys.\ Rev.\ Lett.\ \textbf{75}, 1260 (1995).
 \url{https://doi.org/10.1103/PhysRevLett.75.1260}
-
-\bibitem{Gibbons1995}
-Gibbons, G.\,W., Rasheed, D.\,A.:
-Electric-magnetic duality rotations in non-linear electrodynamics.
-Nucl.\ Phys.\ B \textbf{454}, 185--206 (1995).
-\url{https://doi.org/10.1016/0550-3213(95)00409-L}
-
-\bibitem{Kiefer2012}
-Kiefer, C.:
-Quantum Gravity, 3rd edn.
-Oxford University Press, Oxford (2012).
-
-\bibitem{Isham1993}
-Isham, C.\,J.:
-Canonical quantum gravity and the problem of time.
-In: Ibort, L.\,A., Rodr\'\i{}guez, M.\,A. (eds.)
-Integrable Systems, Quantum Groups, and Quantum Field Theories,
-pp.~157--287. Kluwer, Dordrecht (1993).
-\url{https://doi.org/10.1007/978-94-011-1980-1_6}
 
 \bibitem{Verlinde2011}
 Verlinde, E.:
