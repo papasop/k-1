@@ -98,6 +98,8 @@ and a subsequence $v_{n_{k}}\to v=(v_{t},v_{r})$ with $v_{t}>0$ and $v_{r}\neq 0
 \begin{definition}[E --- Quadratic expansion]\label{def:E}
 There is a quadratic form $Q(\delta t,\delta r)=a\,\delta t^{2}+2\kappa\,\delta t\,\delta r+b\,\delta r^{2}$
 such that $d(x;\delta x)^{2} = \bigl(Q(\delta x)\bigr)_{+} + o\!\left(\|\delta x\|^{2}\right)$.
+The positive part ensures compatibility with $d\ge 0$: the quadratic form~$Q$ may take
+negative values along directions where $Q<0$, but the squared cost~$d^{2}$ cannot.
 \end{definition}
 
 \begin{definition}[T --- Temporal cost]\label{def:T}
