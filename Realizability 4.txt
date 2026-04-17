@@ -133,7 +133,11 @@ $v_{r}\neq 0$, where $v_{n_{k}}:=\delta x_{n_{k}}/\|\delta x_{n_{k}}\|$.
 The condition $\delta t_{n}>0$ restricts attention to forward-in-time displacements.
 Requiring the same condition for $\delta t_{n}<0$ would strengthen the assumption
 without changing the conclusion: the proof uses only one null direction, which
-the single-sided condition already provides.
+the single-sided condition already provides. The sign choice itself, however,
+is a choice of time orientation rather than a loss of generality: the symmetric
+$\delta t_{n}<0$ version yields a time-reversed statement with the resulting
+null vector on the opposite leaf of the null cone. We fix $\delta t_{n}>0$
+as a convention throughout.
 
 Assumption~E formalises the leading-order structure of the cost function within which Assumption~R operates.
 
