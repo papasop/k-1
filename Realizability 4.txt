@@ -1,6 +1,6 @@
 \documentclass[11pt,a4paper]{article}
 
-% Font setup — match original: Latin Modern Roman via fontspec (XeLaTeX)
+% Font setup — Latin Modern Roman via fontspec (XeLaTeX)
 \usepackage{fontspec}
 \setmainfont{Latin Modern Roman}
 
@@ -312,10 +312,9 @@ There is a quadratic form $Q$ on~$\mathbb{R}^{4}$ such that
 \[
 d(x;\delta x)^{2} = \bigl(Q(\delta x)\bigr)_{+} + o\!\left(\|\delta x\|^{2}\right) \quad\text{as } \delta x\to 0 \text{ with } \delta t>0.
 \]
-As in Assumption~E, $Q$ is an algebraic object on the full linear
-space~$\mathbb{R}^{4}$; Assumption~E4 controls the asymptotic behaviour of~$d^{2}$
-only on $\{\delta t>0\}$, whereas the inertia $\mathrm{Sig}(Q)$ is a property of~$Q$
-as a quadratic form on all of~$\mathbb{R}^{4}$.
+The algebraic-object caveat of Definition~\ref{def:E} applies verbatim, with
+$\mathbb{R}^{2}$ replaced by $\mathbb{R}^{4}$: E4 controls only $\{\delta t>0\}$,
+while $\mathrm{Sig}(Q)$ is a property of~$Q$ on all of~$\mathbb{R}^{4}$.
 \end{definition}
 
 Assumption~T carries over unchanged.
