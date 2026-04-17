@@ -75,9 +75,10 @@ cost function.\footnote{This paper distinguishes \emph{kinematic} approaches
 a scalar cost function). Entropic gravity approaches~\cite{Verlinde2011} presuppose
 Lorentzian spacetime and derive gravitational dynamics; the present work operates
 at the prior level of deriving the Lorentzian signature itself.}
-The result thus provides a foundation one step earlier than the Jacobson
-derivation~\cite{Jacobson}: causal structure itself, not only gravitational
-dynamics, is obtained from the cost function.
+Whereas Jacobson's derivation~\cite{Jacobson} presupposes a Lorentzian
+spacetime, the present work operates at the prior level of deriving the
+Lorentzian signature pointwise; the integration of this pointwise structure
+into the global causal geometry Jacobson presupposes lies outside the present scope.
 
 The title warrants a brief clarification. By \textit{origin of causality} we mean a
 logical rather than a physical origin: a minimal set of conditions on a cost function
