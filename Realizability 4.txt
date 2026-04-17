@@ -75,8 +75,9 @@ cost function.\footnote{This paper distinguishes \emph{kinematic} approaches
 a scalar cost function). Entropic gravity approaches~\cite{Verlinde2011} presuppose
 Lorentzian spacetime and derive gravitational dynamics; the present work operates
 at the prior level of deriving the Lorentzian signature itself.}
-The result provides a foundation one step earlier than the Jacobson
-derivation~\cite{Jacobson}: Lorentzian signature itself is derived rather than assumed.
+The result thus provides a foundation one step earlier than the Jacobson
+derivation~\cite{Jacobson}: causal structure itself, not only gravitational
+dynamics, is obtained from the cost function.
 
 The title warrants a brief clarification. By \textit{origin of causality} we mean a
 logical rather than a physical origin: a minimal set of conditions on a cost function
@@ -113,9 +114,11 @@ $S^{1}=\{u\in\mathbb{R}^{2}:\|u\|=1\}$: unit circle.
 \medskip
 Let $U\subset\mathbb{R}^{2}$ be open with chart $(t,r)$, and fix $x\in U$. For small
 $\delta x=(\delta t,\delta r)$ with $\delta t>0$, the cost $d(x;\delta x)\ge 0$ is
-defined. The chart variables $t$ and $r$ label a distinguished direction (carrying
-positive cost, Assumption~T) and its complement; no metric or causal structure
-on~$U$ is assumed at this stage.
+defined. The chart variables $t$ and $r$ are mere labels: $t$ labels a direction
+that will be required to carry positive cost (Assumption~T below), and $r$ labels
+its complement. No metric or causal structure on~$U$ is assumed at this stage;
+in particular, the conclusion that $t$ plays the role of a timelike direction in
+the resulting Lorentzian form is a \emph{consequence} of the framework, not an input.
 
 \begin{definition}[R --- Zero-threshold realizability]\label{def:R}
 There exists a sequence $\delta x_{n}=(\delta t_{n},\delta r_{n})\to 0$ with
@@ -136,11 +139,16 @@ Assumption~E formalises the leading-order structure of the cost function within 
 
 \begin{definition}[E --- Quadratic expansion]\label{def:E}
 There is a quadratic form $Q(\delta t,\delta r)=a\,\delta t^{2}+2\kappa\,\delta t\,\delta r+b\,\delta r^{2}$
-such that
+on~$\mathbb{R}^{2}$ such that
 \[
 d(x;\delta x)^{2} = \bigl(Q(\delta x)\bigr)_{+} + o\!\left(\|\delta x\|^{2}\right) \quad\text{as } \delta x\to 0 \text{ with } \delta t>0,
 \]
 where $(u)_{+}:=\max\{u,0\}$.
+Here $Q$ is an algebraic object on the full linear space~$\mathbb{R}^{2}$, determined
+by its three coefficients; Assumption~E only controls the asymptotic behaviour of
+$d^{2}$ on the half-plane $\{\delta t>0\}$, whereas the inertia $\mathrm{Sig}(Q)$
+analysed in Sections~3--4 is a property of~$Q$ as a quadratic form on all
+of~$\mathbb{R}^{2}$.
 The positive part ensures compatibility with $d\ge0$: the quadratic form~$Q$ may take
 negative values along directions where $Q<0$, but the squared cost~$d^{2}$ cannot.
 \end{definition}
@@ -163,7 +171,7 @@ Definition~\ref{def:T} (Assumption~T) fixes the positive cost of pure temporal d
 Assume~E. If $\delta x_{n}\to 0$ with $\delta t_{n}>0$,
 $d(x;\delta x_{n})/\|\delta x_{n}\|\to 0$, and a subsequence of
 $v_{n}:=\delta x_{n}/\|\delta x_{n}\|$ converges to $v\in S^{1}$, then $Q(v)\le 0$.
-Conversely, if $Q(v)\le 0$ and $\delta x_{n}\to 0$ with
+Conversely, if $Q(v)\le 0$ and $\delta x_{n}\to 0$ satisfies $\delta t_{n}>0$ and
 $\delta x_{n}/\|\delta x_{n}\|\to v$, then $d(x;\delta x_{n})/\|\delta x_{n}\|\to 0$.
 \end{lemma}
 
@@ -259,11 +267,6 @@ $Q=a\,dt^{2}$ holds only when the kernel vector $u$ satisfies $u_{t}=0$; the
 example above shows that the kernel can have $u_{t}\neq 0$, in which case no
 contradiction arises. Nondegeneracy is therefore a genuinely independent
 condition, not derivable from R, E, T.
-
-Geometrically: the degenerate form has a single null line (its kernel), while a
-nondegenerate Lorentzian form has two distinct null lines (the light cone).
-Assumption~R witnesses only one null direction, not the full light cone;
-nondegeneracy is what promotes one to two.
 \end{remark}
 
 \section{Extension to $(1{+}3)$ dimensions}
@@ -309,6 +312,10 @@ There is a quadratic form $Q$ on~$\mathbb{R}^{4}$ such that
 \[
 d(x;\delta x)^{2} = \bigl(Q(\delta x)\bigr)_{+} + o\!\left(\|\delta x\|^{2}\right) \quad\text{as } \delta x\to 0 \text{ with } \delta t>0.
 \]
+As in Assumption~E, $Q$ is an algebraic object on the full linear
+space~$\mathbb{R}^{4}$; Assumption~E4 controls the asymptotic behaviour of~$d^{2}$
+only on $\{\delta t>0\}$, whereas the inertia $\mathrm{Sig}(Q)$ is a property of~$Q$
+as a quadratic form on all of~$\mathbb{R}^{4}$.
 \end{definition}
 
 Assumption~T carries over unchanged.
@@ -325,13 +332,21 @@ Theorem~\ref{thm:lorentz}: if $Q(e_{t})\le 0$ then
 $d(x;(\Delta t,0,0,0))=o(\Delta t)$, contradicting~T. Hence the positive
 inertia index of~$Q$ is at least~1.
 
-\textbf{Step~2 (Negative-semidefinite spatial subspace).}
+\textbf{Step~2 (Negative inertia index at least~3).}
 By Definition~\ref{def:R4}, the limiting directions
 $\{v^{(1)},v^{(2)},v^{(3)}\}$ span a three-dimensional subspace $W\subset\mathbb{R}^{4}$
-on which $Q(w)\le 0$ for all $w\in W$. Since $Q$ is nondegenerate on~$\mathbb{R}^{4}$,
-its kernel is trivial, so $Q|_{W}$ has zero radical; combined with $Q|_{W}\le 0$,
-this means $Q|_{W}$ is negative definite. By Sylvester's law of inertia, the
-negative inertia index of~$Q$ is therefore at least~3.
+on which $Q(w)\le 0$ for all $w\in W$. We claim that the negative inertia index
+of~$Q$ is at least~$\dim W=3$.
+
+Indeed, let $\mathrm{Sig}(Q)=(p,q)$ with $p+q=4$ (by nondegeneracy of~$Q$), and
+let $V_{+}\subset\mathbb{R}^{4}$ be a maximal positive-definite subspace of~$Q$,
+so $\dim V_{+}=p$. Any $w\in W\cap V_{+}$ satisfies both $Q(w)\le 0$
+(since $w\in W$) and $Q(w)\ge 0$ with equality only at~$0$ (since $V_{+}$ is
+positive definite); hence $W\cap V_{+}=\{0\}$. By the dimension formula,
+\[
+\dim W + \dim V_{+} = \dim(W+V_{+}) + \dim(W\cap V_{+}) \le 4 + 0,
+\]
+so $3 + p \le 4$, giving $p\le 1$ and therefore $q = 4-p \ge 3$.
 
 \textbf{Step~3 (Inertia count).}
 Since $Q$ is nondegenerate on~$\mathbb{R}^{4}$, the positive and negative inertia
@@ -375,7 +390,8 @@ independent of R, E, T (Remark~\ref{rem:nondeg}).
 \begin{itemize}
 \item[(iv)] The split signature $(2,2)$ is excluded by the negative-semidefinite
 subspace condition of~R4: together with nondegeneracy, that condition forces the
-negative inertia index of~$Q$ to be at least~3, which is incompatible with $(2,2)$.
+negative inertia index of~$Q$ to be at least~3 (Step~2 of Theorem~\ref{thm:4d}),
+which is incompatible with $(2,2)$.
 Other non-Lorentzian signatures $(4,0)$, $(0,4)$, and $(3,1)$ are excluded by
 the inertia count of Steps~1--3.
 \end{itemize}
