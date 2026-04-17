@@ -370,31 +370,23 @@ Under the hypotheses of Theorem~\ref{thm:lorentz} in $(1{+}1)$ dimensions, and o
 Theorem~\ref{thm:4d} in $(1{+}3)$ dimensions, every non-Lorentzian signature is excluded.
 
 \smallskip
-\noindent\emph{In $(1{+}1)$ dimensions:}
-\begin{itemize}
-\item[(i)] Positive-definite signature $\mathrm{Sig}(Q)=(2,0)$ is excluded by
-Assumption~R together with Lemma~\ref{lem:null}: they yield a nonzero limiting
-direction~$v$ with $v_{t}>0$ and $Q(v)\le 0$, which is impossible for a
-positive-definite form.
-\item[(ii)] Negative-definite signature $\mathrm{Sig}(Q)=(0,2)$ is excluded by
-Assumption~T (Step~2 of Theorem~\ref{thm:lorentz}): negative definiteness gives
-$Q(1,0)<0$, contradicting Assumption~T.
-\item[(iii)] Degenerate forms ($\det Q=0$, $Q\not\equiv 0$) are excluded by the
-nondegeneracy hypothesis of Theorem~\ref{thm:lorentz}. This hypothesis is genuinely
-independent of R, E, T (Remark~\ref{rem:nondeg}).
-\end{itemize}
+\noindent\textbf{In $(1{+}1)$ dimensions}, the three non-Lorentzian alternatives are
+excluded as summarised in the abstract: positive-definite by Assumption~R together
+with Lemma~\ref{lem:null}, negative-definite by Assumption~T (Step~2 of
+Theorem~\ref{thm:lorentz}), and degenerate forms by the nondegeneracy hypothesis of
+Theorem~\ref{thm:lorentz} --- itself an independent condition, not derivable from
+R, E, T (Remark~\ref{rem:nondeg}).
 
 \smallskip
-\noindent\emph{In $(1{+}3)$ dimensions (Theorem~\ref{thm:4d}):}
-\begin{itemize}
-\item[(iv)] The split signature $(2,2)$ is excluded by the negative-semidefinite
-subspace condition of~R4: together with nondegeneracy, that condition forces the
-negative inertia index of~$Q$ to be at least~3 (Step~2 of Theorem~\ref{thm:4d}),
-which is incompatible with $(2,2)$.
-Other non-Lorentzian signatures $(4,0)$, $(0,4)$, and $(3,1)$ are excluded by
-the inertia count of Steps~1--3.
-\end{itemize}
+\noindent\textbf{In $(1{+}3)$ dimensions} (Theorem~\ref{thm:4d}), the additional case
+requiring attention is the split signature $(2,2)$: it is excluded by the
+negative-semidefinite subspace condition of~R4, which together with nondegeneracy
+forces the negative inertia index of~$Q$ to be at least~3 (Step~2 of
+Theorem~\ref{thm:4d}), incompatible with $(2,2)$. The remaining non-Lorentzian
+signatures $(4,0)$, $(0,4)$, and $(3,1)$ are excluded by the inertia count of
+Steps~1--3.
 
+\smallskip
 Lorentzian signature is therefore not merely compatible with the cost asymmetry
 --- it is the unique outcome under the stated hypotheses.
 \end{remark}
