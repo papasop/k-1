@@ -116,8 +116,9 @@ $\mathrm{Sig}(Q)=(p,q)$: inertia of~$Q$ ($p$~positive, $q$~negative eigenvalues)
 $(u)_{+}:=\max\{u,0\}$: positive part.
 $c_{\max}>0$: maximal propagation speed encoded in~$Q$.
 $c_{t}>0$: lower bound on temporal cost per unit displacement (Assumption~T).
-$\|\cdot\|$: any norm on~$\mathbb{R}^{2}$; all conclusions are norm-independent.
-$S^{1}=\{u\in\mathbb{R}^{2}:\|u\|=1\}$: unit circle.
+$\|\cdot\|$: any norm on the ambient space ($\mathbb{R}^{2}$ in Section~3,
+$\mathbb{R}^{4}$ in Section~4); all conclusions are norm-independent.
+$S^{1}=\{u\in\mathbb{R}^{2}:\|u\|=1\}$: unit circle (used in Section~3).
 
 \medskip
 Let $U\subset\mathbb{R}^{2}$ be open with chart $(t,r)$, and fix $x\in U$. For small
@@ -277,7 +278,7 @@ together with $Q(e_{t})>0$ should imply, in suitable coordinates,
 that $Q(\delta t,\delta r)=a\,\delta t^{2}$,
 forcing any null vector to have $t$-component zero and thereby contradicting the
 $w_{t}>0$ conclusion of Step~3. This argument fails because the reduction
-$Q=a\,\delta t^{2}$ holds only when the kernel vector $u$ satisfies $u_{t}=0$; the
+$Q(\delta t,\delta r)=a\,\delta t^{2}$ holds only when the kernel vector $u$ satisfies $u_{t}=0$; the
 example above shows that the kernel can have $u_{t}\neq 0$, in which case no
 contradiction arises. Nondegeneracy is therefore a genuinely independent
 condition, not derivable from R, E, T.
