@@ -287,10 +287,10 @@ For the four-dimensional extension, let $U\subset\mathbb{R}^{4}$ be open, fix
 $x\in U$, and consider the chart $(t,x^{1},x^{2},x^{3})$; write
 $e_{t}=(1,0,0,0)$ for the temporal basis vector. The two-dimensional case is the
 minimal realisation: a single spatial direction suffices. To address the
-$(3{+}1)$-dimensional case of physical interest, we impose the realizability
-condition along three independent spatial directions. The paper does not explain
-why physical spacetime should supply exactly such a 3D nonpositive sector; it
-only shows what follows if it does.
+$(3{+}1)$-dimensional case of physical interest, we impose a three-directional
+realizability condition together with a nonpositive spatial coherence condition.
+The paper does not explain why physical spacetime should supply exactly such a
+3D nonpositive sector; it only shows what follows if it does.
 
 Definition~\ref{def:R4} (Assumption~R4) strengthens the two-dimensional
 Assumption~R to three independent spatial directions.
