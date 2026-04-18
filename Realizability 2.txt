@@ -120,10 +120,16 @@ Suppose $d^{2}$ admits a quadratic leading-order expansion at~$x$: there exists 
 form $Q(\delta t,\delta r)=a\,\delta t^{2}+2\kappa\,\delta t\,\delta r+b\,\delta r^{2}$, determined by
 the second-order behaviour of~$d^{2}$, such that
 \[
+d(x;\delta x)^{2} = \bigl(Q(\delta x)\bigr)_{+} + r(\delta x),
+\qquad
+\frac{r(\delta x)}{\|\delta x\|^{2}}\to 0
+\]
+as $\delta x\to 0$ with $\delta t>0$. Equivalently,
+\[
 d(x;\delta x)^{2} = \bigl(Q(\delta x)\bigr)_{+} + o\!\left(\|\delta x\|^{2}\right)
 \quad\text{as } \delta x\to 0 \text{ with } \delta t>0,
 \]
-where $(u)_{+}:=\max\{u,0\}$.
+where the remainder is understood uniformly for all directions with $\delta t>0$. Here $(u)_{+}:=\max\{u,0\}$.
 \end{definition}
 
 The notation $\mathrm{Sig}(Q)=(p,q)$ denotes the inertia of~$Q$: $p$ positive and $q$ negative eigenvalues.
@@ -153,7 +159,7 @@ The physical identification of~$d$---whether as an information-theoretic cost, a
 \begin{lemma}[Null--Sign equivalence]\label{lem:null}
 Assume~E. If $\delta x_{n}\to 0$ with $\delta t_{n}>0$, $d(x;\delta x_{n})/\|\delta x_{n}\|\to 0$,
 and a subsequence of $v_{n}:=\delta x_{n}/\|\delta x_{n}\|$ converges to $v\in S^{1}$, then $Q(v)\le 0$. Conversely, if
-$Q(v)\le 0$ and $\delta x_{n}\to 0$ with $\delta x_{n}/\|\delta x_{n}\|\to v$, then $d(x;\delta x_{n})/\|\delta x_{n}\|\to 0$.
+$Q(v)\le 0$ and $\delta x_{n}\to 0$ with $\delta t_{n}>0$ and $\delta x_{n}/\|\delta x_{n}\|\to v$, then $d(x;\delta x_{n})/\|\delta x_{n}\|\to 0$.
 \end{lemma}
 
 \begin{proof}
@@ -205,7 +211,7 @@ Define
 Since $v_{r}\neq 0$ (Assumption~R), the denominator is nonzero for all $s\in[0,1]$, so $\gamma$ is well-defined.
 Since $v_{t}>0$, the numerator has strictly positive $t$-component throughout, so $\gamma$ is a continuous
 path in $S^{1}\cap\{u_{t}>0\}$. Then $Q(\gamma(0))=Q(1,0)>0$ and $Q(\gamma(1))=Q(v)\le 0$, so by the
-intermediate value theorem there exists~$s^{*}$ with $Q(\gamma(s^{*}))=0$. Set $w:=\gamma(s^{*})$; then $w_{t}>0$. Since $Q(w)=0$ but $Q(1,0)>0$, $w\neq(1,0)$, so $w_{r}\neq 0$.
+intermediate value theorem there exists~$s^{*}$ with $Q(\gamma(s^{*}))=0$. Set $w:=\gamma(s^{*})$; then $w_{t}>0$. If $w_{r}=0$, then $w=(1,0)$ because $w\in S^{1}$ and $w_{t}>0$, which would imply $Q(w)=Q(1,0)>0$, contradicting $Q(w)=0$. Hence $w_{r}\neq 0$.
 
 \textbf{Step~4 (Signature and normalisation).}
 By Step~2, $Q$ takes a positive value; by Step~3,
@@ -214,13 +220,31 @@ a nondegenerate quadratic form on~$\mathbb{R}^{2}$ with a nonzero null
 vector cannot be definite; hence it is indefinite, and in two dimensions the signature is $(1,1)$.
 Rescaling~$t$ so that $Q(1,0)=1$ and applying an invertible linear change of variables gives
 \[
-Q = dt^{2} - c_{\max}^{-2}\,dr^{2}.\qedhere
+Q = dt^{2} - c_{\max}^{-2}\,dr^{2}.
 \]
+Explicitly, the change of variables
+$dt'\!:=\!\sqrt{a}\bigl(dt+(\kappa/a)\,dr\bigr)$, $dr'\!:=\!dr$
+puts $Q$ in the displayed form with $c_{\max}^{-2}=(\kappa^{2}-ab)/a$, which is positive
+because $ab-\kappa^{2}<0$ by indefiniteness and $a>0$ by Step~2.\qedhere
 \end{proof}
 
 \begin{remark}[The speed $c_{\max}$]
 The constant $c_{\max}$ is not an independent postulate but arises from the cost structure. It represents the maximal propagation speed, determined by the relative
-coefficients of~$Q$. $c_{\max}$ may vary from point to point; the present result is local. A
+coefficients of~$Q$. To exhibit its geometric meaning, after rescaling so that $Q(1,0)=1$ write
+\[
+Q = dt^{2}+2\kappa\,dt\,dr+b\,dr^{2}.
+\]
+The null directions are determined by
+\[
+1+2\kappa\,\frac{dr}{dt}+b\!\left(\frac{dr}{dt}\right)^{2}=0,
+\]
+which has two real roots since $Q$ is Lorentzian. After the change of variables of Step~4 brings $Q$ to the diagonal form $Q=dt'^{2}-c_{\max}^{-2}\,dr'^{2}$, the null slopes become
+\[
+\frac{dr'}{dt'}=\pm c_{\max};
+\]
+equivalently, if $Q=dt^{2}-\alpha\,dr^{2}$ in diagonal form with $\alpha>0$, then $c_{\max}=\alpha^{-1/2}$. Thus $c_{\max}$ is the absolute value of the null slope in the normalised coordinates.
+
+The constant $c_{\max}$ may vary from point to point; the present result is local. A
 global constant $c_{\max}$ would follow from additional homogeneity assumptions on the cost function,
 which are not required here.
 \end{remark}
