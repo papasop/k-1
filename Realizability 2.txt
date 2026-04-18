@@ -62,8 +62,7 @@ assumed.
 
 \section{Introduction}
 
-We show that a Lorentzian causal structure follows from a minimal asymmetry between temporal and spatial displacement costs together with a quadratic leading-order expansion. This
-asymmetry forces the associated quadratic form to be indefinite, yielding Lorentzian causal
+We show that a Lorentzian causal structure follows from a minimal asymmetry between temporal and spatial displacement costs together with a quadratic leading-order expansion. Together with nondegeneracy of the leading quadratic form~$Q$, this asymmetry forces $Q$ to be indefinite, yielding Lorentzian causal
 structure without assuming any metric or \textit{a priori} causal cone. The closest precursor is the EPS
 axiomatisation~\cite{EPS}; unlike EPS, no particles, light signals, or worldlines appear as primitives ---
 only a scalar cost function. The result provides a foundation one step earlier than the Jacobson
@@ -72,7 +71,7 @@ derivation~\cite{Jacobson}: Lorentzian signature itself is derived rather than a
 The title warrants a brief clarification. By \textit{origin of causality} we mean a logical rather than
 a physical origin: a minimal set of conditions on a cost function from which Lorentzian causal
 structure follows as the unique algebraic consequence, with no other signature possible. The
-present paper identifies this set as Assumptions~R, E, and~T. The physical origin of the cost
+present paper identifies this set as Assumptions~R, E, T, together with nondegeneracy of~$Q$. The physical origin of the cost
 asymmetry itself lies outside the scope of the present paper.
 
 \medskip
@@ -200,7 +199,7 @@ which are not required here.
 The cost function $d(x;\delta x)$ is treated here as an abstract primitive.
 Its physical identification---whether as an information-theoretic cost, a
 thermodynamic work function, or otherwise---lies outside the present scope.
-The derivation requires only the three structural properties R, E, and~T,
+The derivation requires only the three structural properties R, E, and~T together with nondegeneracy of~$Q$,
 not a specific physical origin.
 \end{remark}
 
