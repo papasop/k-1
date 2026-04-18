@@ -54,8 +54,7 @@ $\mathrm{Sig}(Q)=(1,3)$.
 The present derivation differs from the EPS axiomatisation~\cite{EPS} in its starting point: no
 particles, light signals, or kinematic objects are presupposed---only a scalar cost function.
 This provides a more primitive geometric foundation for the thermodynamic derivation
-of Einstein's equations~\cite{Jacobson}: Lorentzian signature itself is derived rather than
-assumed.
+of Einstein's equations~\cite{Jacobson}, at the logical level of the metric signature itself.
 \end{abstract}
 
 \medskip
@@ -182,8 +181,11 @@ By~R, there exists a subsequence $v_{n_{k}}\to v\in S^{1}$ with
 $v_{t}>0$, $v_{r}\neq 0$. By Lemma~\ref{lem:null}, $Q(v)\le 0$.
 
 \textbf{Step~2 (Temporal direction positive).}
-If $Q(1,0)\le 0$ then E gives $d(x;(\Delta t,0))=o(\Delta t)$,
-contradicting~T. Hence $Q(1,0)>0$.
+If $Q(1,0)\le 0$, then Assumption~E gives
+\[
+d(x;(\Delta t,0))^{2}=o(\Delta t^{2}),
+\]
+hence $d(x;(\Delta t,0))=o(\Delta t)$, contradicting~T. Therefore $Q(1,0)>0$.
 
 \textbf{Step~3 (Null vector by IVT).}
 Define
@@ -300,7 +302,7 @@ Lemma~\ref{lem:null}: it yields a nonzero limiting direction~$v$ with $v_{t}>0$ 
 impossible for a positive-definite form.
 \item[(ii)] Negative-definite signature $\mathrm{Sig}(Q)=(0,2)$ is excluded by Assumption~T: negative definiteness gives $Q(1,0)<0$, contradicting Step~2 of Theorem~\ref{thm:lorentz}.
 \item[(iii)] Degenerate forms are excluded by the nondegeneracy hypothesis of Theorem~\ref{thm:lorentz}: under that hypothesis,
-a nonzero null vector forces the form to be indefinite rather than degenerate.
+the existence of a nonzero null vector rules out definiteness, so the form must be indefinite rather than degenerate.
 \end{itemize}
 In $(1{+}3)$ dimensions:
 \begin{itemize}
