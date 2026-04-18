@@ -265,9 +265,11 @@ nondegenerate. Then $\mathrm{Sig}(Q)=(1,3)$.
 
 \begin{proof}
 \textbf{Step~1 (Temporal direction positive).}
-Assumption~T implies $Q(e_{t})>0$ by the same
-argument as Step~2 of Theorem~\ref{thm:lorentz}: if $Q(e_{t})\le 0$ then $d(x;(\Delta t,0,0,0))=o(\Delta t)$, contradicting~T.
-Hence the positive inertia index of~$Q$ is at least~1.
+If $Q(e_{t})\le 0$, then by homogeneity $Q(\Delta t,0,0,0)=\Delta t^{2}Q(e_{t})\le 0$,
+hence $(Q(\Delta t,0,0,0))_{+}=0$. Assumption~E4 therefore gives
+$d(x;(\Delta t,0,0,0))^{2}=o(\Delta t^{2})$, so $d(x;(\Delta t,0,0,0))=o(\Delta t)$,
+contradicting~T. Therefore $Q(e_{t})>0$, and the positive inertia index of~$Q$
+is at least~1.
 
 \textbf{Step~2 (Negative-semidefinite spatial subspace).}
 By Definition~\ref{def:R4}, the limiting directions
@@ -303,10 +305,13 @@ holds because the kernel of $Q$ is spanned by $(\lambda,1)$. Choose the
 sign so that the $t$-component is positive, call this kernel vector $u$,
 and set $\delta x_{n}:=\varepsilon_{n}u$ with $\varepsilon_{n}\downarrow 0$.
 Then $\delta x_{n}\to 0$, $\delta x_{n}/\|\delta x_{n}\|\to u/\|u\|$ (a
-direction with positive $t$-component), and $Q(\delta x_{n})=\varepsilon_{n}^{2}Q(u)=0$;
-by the converse direction of Lemma~\ref{lem:null},
-$d(x;\delta x_{n})/\|\delta x_{n}\|\to 0$. The sequence $(\delta x_{n})$
-thus realises R.
+direction with positive $t$-component), and $Q(\delta x_{n})=\varepsilon_{n}^{2}Q(u)=0$,
+so by the construction of $d$,
+\[
+d(x;\delta x_{n})=\sqrt{(Q(\delta x_{n}))_{+}}=0
+\]
+for every $n$. Hence $d(x;\delta x_{n})/\|\delta x_{n}\|=0\to 0$, and the
+sequence $(\delta x_{n})$ realises R.
 
 A tempting argument would be that degeneracy together with $Q(e_{t})>0$
 should imply, in suitable coordinates, that $Q=a\,dt^{2}$, forcing any
