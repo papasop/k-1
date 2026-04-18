@@ -129,7 +129,7 @@ as $\delta x\to 0$ with $\delta t>0$. Equivalently,
 d(x;\delta x)^{2} = \bigl(Q(\delta x)\bigr)_{+} + o\!\left(\|\delta x\|^{2}\right)
 \quad\text{as } \delta x\to 0 \text{ with } \delta t>0,
 \]
-where the remainder is understood uniformly on compact subsets of $\{u\in S^{1}:u_{t}>0\}$. Here $(u)_{+}:=\max\{u,0\}$.
+where the remainder is uniform for normalized directions ranging over compact subsets of $\{u\in S^{1}:u_{t}>0\}$. Here $(u)_{+}:=\max\{u,0\}$.
 \end{definition}
 
 The notation $\mathrm{Sig}(Q)=(p,q)$ denotes the inertia of~$Q$: $p$ positive and $q$ negative eigenvalues.
@@ -270,7 +270,7 @@ form $Q$ on~$\mathbb{R}^{4}$, determined by the second-order behaviour of~$d^{2}
 d(x;\delta x)^{2} = \bigl(Q(\delta x)\bigr)_{+} + o\!\left(\|\delta x\|^{2}\right)
 \quad\text{as } \delta x\to 0 \text{ with } \delta t>0,
 \]
-where the remainder is understood uniformly on compact subsets of $\{u\in S^{3}:u_{t}>0\}$.
+where the remainder is uniform for normalized directions ranging over compact subsets of $\{u\in S^{3}:u_{t}>0\}$.
 \end{definition}
 
 Assumption~T carries over unchanged.
