@@ -42,15 +42,14 @@ leading-order expansion of the cost function is indefinite---provided the quadra
 form is nondegenerate, an explicit condition that is separately required.
 After normalisation,
 \[
-Q = dt^{2} - c_{\max}^{-2}\,dr^{2}.
+Q(\delta t,\delta r) = \delta t^{2} - c_{\max}^{-2}\,\delta r^{2}.
 \]
 Lorentzian signature therefore emerges from the stated asymmetry assumptions
-together with nondegeneracy, rather than from any a priori metric or causal cone.
+rather than from any a priori metric or causal cone.
 Among nondegenerate quadratic forms, Lorentzian signature is the unique possibility
 under the stated assumptions: positive-definite is excluded by Assumption~R together
 with the Lemma, and negative-definite by Assumption~T. In $(1{+}3)$~dimensions, under
-a strengthened three-directional realizability condition together with a 3D nonpositive
-coherence condition and nondegeneracy of~$Q$, the only possible signature is
+Assumptions~R4, E4, T, and nondegeneracy of~$Q$, the only possible signature is
 $\mathrm{Sig}(Q)=(1,3)$.
 
 The present derivation differs from the EPS axiomatisation~\cite{EPS} in its starting
@@ -69,9 +68,10 @@ by the thermodynamic derivation of Einstein's equations~\cite{Jacobson}.
 We show that in $(1{+}1)$ dimensions a Lorentzian causal structure follows from
 a minimal asymmetry between temporal and spatial displacement costs together with
 a quadratic leading-order expansion; in $(1{+}3)$ dimensions an additional spatial
-coherence hypothesis is required. This asymmetry forces the associated quadratic
-form to be indefinite, yielding Lorentzian causal structure without assuming any
-metric or \textit{a priori} causal cone. The closest precursor is the EPS axiomatisation~\cite{EPS}; unlike EPS,
+coherence hypothesis is required. Together with nondegeneracy of the associated
+quadratic form, this asymmetry forces the quadratic form to be indefinite, yielding
+Lorentzian causal structure without assuming any metric or \textit{a priori} causal cone.
+The closest precursor is the EPS axiomatisation~\cite{EPS}; unlike EPS,
 no particles, light signals, or worldlines appear as primitives---only a scalar
 cost function together with temporal positivity (Assumption~T) and spatial
 realizability (Assumption~R; in 4D strengthened to a coherence condition, Assumption~R4).\footnote{This paper distinguishes \emph{kinematic} approaches
@@ -88,18 +88,18 @@ into the global causal geometry Jacobson presupposes lies outside the present sc
 The title warrants a brief clarification. By \textit{origin of causality} we mean
 only the algebraic origin of Lorentzian causal signature --- a logical rather than
 a physical origin, and specifically not the origin of global causal structure,
-causal stability, light-cone propagation, or worldline realisability. We identify
-a minimal set of conditions on a cost function from which Lorentzian signature
-follows as the unique algebraic consequence: Assumptions~R, E, T, together with
-nondegeneracy of~$Q$. The physical origin of the cost asymmetry itself lies
-outside the scope of the present paper.
+causal stability, light-cone propagation, or worldline realisability. In $(1{+}1)$
+dimensions, we identify a minimal set of conditions on a cost function from which
+Lorentzian signature follows as the unique algebraic consequence: Assumptions~R, E,
+T, together with nondegeneracy of~$Q$. The physical origin of the cost asymmetry
+itself lies outside the scope of the present paper.
 
 \medskip
 \noindent\textbf{Main Theorem (informal).}
 Under Assumptions~R, E, T, and nondegeneracy of~$Q$, the leading quadratic
 form~$Q$ is Lorentzian in $(1{+}1)$ dimensions:
 \[
-Q = dt^{2} - c_{\max}^{-2}\,dr^{2}, \qquad c_{\max}>0,
+Q(\delta t,\delta r) = \delta t^{2} - c_{\max}^{-2}\,\delta r^{2}, \qquad c_{\max}>0,
 \]
 up to normalisation and an invertible linear change of variables. In $(1{+}3)$
 dimensions, under R4, E4, T, and nondegeneracy of~$Q$, the only possible signature
@@ -116,8 +116,9 @@ $\mathrm{Sig}(Q)=(p,q)$: inertia of~$Q$ ($p$~positive, $q$~negative eigenvalues)
 $(u)_{+}:=\max\{u,0\}$: positive part.
 $c_{\max}>0$: maximal propagation speed encoded in~$Q$.
 $c_{t}>0$: lower bound on temporal cost per unit displacement (Assumption~T).
-$\|\cdot\|$: any norm on~$\mathbb{R}^{2}$; all conclusions are norm-independent.
-$S^{1}=\{u\in\mathbb{R}^{2}:\|u\|=1\}$: unit circle.
+$\|\cdot\|$: any norm on the ambient space ($\mathbb{R}^{2}$ in Section~3,
+$\mathbb{R}^{4}$ in Section~4); all conclusions are norm-independent.
+$S^{1}=\{u\in\mathbb{R}^{2}:\|u\|=1\}$: unit circle (used in Section~3).
 
 \medskip
 Let $U\subset\mathbb{R}^{2}$ be open with chart $(t,r)$, and fix $x\in U$. For small
@@ -163,6 +164,10 @@ analysed in Sections~3--4 is a property of~$Q$ as a quadratic form on all
 of~$\mathbb{R}^{2}$.
 The positive part ensures compatibility with $d\ge0$: the quadratic form~$Q$ may take
 negative values along directions where $Q<0$, but the squared cost~$d^{2}$ cannot.
+Provided the open set $\{\delta t>0\}\cap\{Q>0\}$ is nonempty, the truncation
+is inactive there, and $Q$ is uniquely determined by its values on this
+set---a quadratic form is determined by its values on any nonempty open
+subset of~$\mathbb{R}^{2}$.
 \end{definition}
 
 \begin{definition}[T --- Temporal cost]\label{def:T}
@@ -207,10 +212,10 @@ Assume R, E, T, and that $Q$ is nondegenerate.
 Then $Q$ is indefinite, and in suitable linear coordinates (obtained by rescaling
 and an invertible linear change of variables so that $Q(1,0)=1$),
 \[
-Q = dt^{2} - c_{\max}^{-2}\,dr^{2}
+Q(\delta t,\delta r) = \delta t^{2} - c_{\max}^{-2}\,\delta r^{2}
 \]
-for some $c_{\max}>0$. The null set consists of exactly two directions
-$dr/dt=\pm c_{\max}$ in these coordinates.
+for some $c_{\max}>0$. The null set consists of exactly two directions,
+$\delta r/\delta t=\pm c_{\max}$, in these coordinates.
 \end{theorem}
 
 \begin{proof}
@@ -243,7 +248,7 @@ nonzero vector cannot be definite; hence $Q$ is indefinite, and in two dimension
 $\mathrm{Sig}(Q)=(1,1)$. Rescaling~$t$ so that $Q(1,0)=1$ and applying an
 invertible linear change of variables gives
 \[
-Q = dt^{2} - c_{\max}^{-2}\,dr^{2}.\qedhere
+Q(\delta t,\delta r) = \delta t^{2} - c_{\max}^{-2}\,\delta r^{2}.\qedhere
 \]
 \end{proof}
 
@@ -267,15 +272,17 @@ together with nondegeneracy of~$Q$, not a specific physical origin.
 Both Theorem~\ref{thm:lorentz} and Theorem~\ref{thm:4d} take nondegeneracy
 of~$Q$ as an explicit hypothesis. In $(1{+}1)$ dimensions, ruling out degeneracy
 from Assumptions~R, E, T alone is not possible: the degenerate form
-$Q=(dt-\lambda\,dr)^{2}$ satisfies all three assumptions for any $\lambda\neq 0$.
+$Q(\delta t,\delta r)=(\delta t-\lambda\,\delta r)^{2}$ satisfies all three
+assumptions for any $\lambda\neq 0$.
 (Its kernel is spanned by $u=(\lambda,1)$ with $u_{t}=\lambda\neq 0$, so~$u$
 itself serves as the null realizer required by~R, while $Q(e_{t})=1>0$ supplies~T.)
 
 One might attempt to rule out degeneracy by the following argument: degeneracy
-together with $Q(e_{t})>0$ should imply, in suitable coordinates, that $Q=a\,dt^{2}$,
+together with $Q(e_{t})>0$ should imply, in suitable coordinates,
+that $Q(\delta t,\delta r)=a\,\delta t^{2}$,
 forcing any null vector to have $t$-component zero and thereby contradicting the
 $w_{t}>0$ conclusion of Step~3. This argument fails because the reduction
-$Q=a\,dt^{2}$ holds only when the kernel vector $u$ satisfies $u_{t}=0$; the
+$Q(\delta t,\delta r)=a\,\delta t^{2}$ holds only when the kernel vector $u$ satisfies $u_{t}=0$; the
 example above shows that the kernel can have $u_{t}\neq 0$, in which case no
 contradiction arises. Nondegeneracy is therefore a genuinely independent
 condition, not derivable from R, E, T.
@@ -333,6 +340,12 @@ while $\mathrm{Sig}(Q)$ is a property of~$Q$ on all of~$\mathbb{R}^{4}$.
 
 Assumption~T carries over unchanged.
 
+The proof of Theorem~\ref{thm:4d} uses only the existence of a
+three-dimensional subspace $W\subset\mathbb{R}^{4}$ on which $Q$ is
+nonpositive; the realizability sequences in Definition~\ref{def:R4}
+serve to motivate this hypothesis operationally but do not enter the
+technical argument.
+
 \begin{theorem}[Lorentzian signature --- $(1{+}3)$D]\label{thm:4d}
 Assume R4, E4, and~T, and suppose that $Q$ is nondegenerate.
 Then $\mathrm{Sig}(Q)=(1,3)$.
@@ -375,7 +388,7 @@ from Assumptions~R4, E4, T alone requires additional input (e.g.\ realizability
 along a fourth independent direction). The nondegeneracy hypothesis in
 Theorem~\ref{thm:4d} is therefore an explicit scope condition, not a hidden
 assumption. See Remark~\ref{rem:nondeg} for the $(1{+}1)$-dimensional analogue
-and the explicit degenerate example $Q=(dt-\lambda\,dr)^{2}$ illustrating why
+and the explicit degenerate example $Q(\delta t,\delta r)=(\delta t-\lambda\,\delta r)^{2}$ illustrating why
 this hypothesis cannot be dispensed with.
 \end{remark}
 
@@ -449,3 +462,4 @@ J.\ High Energy Phys.\ \textbf{2011}, 29 (2011).
 \end{thebibliography}
 
 \end{document}
+
