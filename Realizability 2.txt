@@ -43,10 +43,10 @@ condition that is separately required. After normalisation,
 Q = dt^{2} - c_{\max}^{-2}\,dr^{2}.
 \]
 Lorentzian signature therefore emerges from the asymmetry between temporal and spatial
-displacement costs rather than from any geometric postulate. Every non-Lorentzian
-alternative is excluded: positive-definite by Assumption~R together with the Lemma;
-negative-definite by Assumption~T; and degenerate by the nondegeneracy hypothesis of
-Theorem~\ref{thm:lorentz}. In $(1{+}3)$~dimensions, under a strengthened
+displacement costs rather than from any geometric postulate. Among nondegenerate
+quadratic forms, every non-Lorentzian alternative is excluded: positive-definite by
+Assumption~R together with the Lemma, and negative-definite by Assumption~T.
+Degenerate forms lie outside this class by hypothesis. In $(1{+}3)$~dimensions, under a strengthened
 three-directional zero-threshold condition together with nondegeneracy of~$Q$, the only
 possible signature is $\mathrm{Sig}(Q)=(1,3)$.
 
@@ -70,7 +70,7 @@ derivation~\cite{Jacobson}: Lorentzian signature itself is derived rather than a
 
 The title warrants a brief clarification. By \textit{origin of causality} we mean a logical rather than
 a physical origin: a minimal set of conditions on a cost function from which Lorentzian causal
-structure follows as the unique algebraic consequence, with no other signature possible. The
+structure follows as the unique algebraic consequence, with no other signature possible. In $(1{+}1)$ dimensions, the
 present paper identifies this set as Assumptions~R, E, T, together with nondegeneracy of~$Q$. The physical origin of the cost
 asymmetry itself lies outside the scope of the present paper.
 
