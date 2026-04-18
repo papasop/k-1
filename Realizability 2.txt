@@ -181,11 +181,19 @@ By~R, there exists a subsequence $v_{n_{k}}\to v\in S^{1}$ with
 $v_{t}>0$, $v_{r}\neq 0$. By Lemma~\ref{lem:null}, $Q(v)\le 0$.
 
 \textbf{Step~2 (Temporal direction positive).}
-If $Q(1,0)\le 0$, then Assumption~E gives
+If $Q(1,0)\le 0$, then by homogeneity
+\[
+Q(\Delta t,0)=\Delta t^{2}Q(1,0),
+\]
+hence
+\[
+\bigl(Q(\Delta t,0)\bigr)_{+}=\Delta t^{2}\bigl(Q(1,0)\bigr)_{+}=0.
+\]
+Assumption~E therefore gives
 \[
 d(x;(\Delta t,0))^{2}=o(\Delta t^{2}),
 \]
-hence $d(x;(\Delta t,0))=o(\Delta t)$, contradicting~T. Therefore $Q(1,0)>0$.
+so $d(x;(\Delta t,0))=o(\Delta t)$, contradicting~T. Therefore $Q(1,0)>0$.
 
 \textbf{Step~3 (Null vector by IVT).}
 Define
