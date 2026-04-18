@@ -294,12 +294,19 @@ indices sum to~4. The positive index is at least~1 (Step~1) and the negative ind
 \begin{remark}[Nondegeneracy]
 Both Theorem~\ref{thm:lorentz} and Theorem~\ref{thm:4d} take nondegeneracy
 of~$Q$ as an explicit hypothesis. In $(1{+}1)$ dimensions, ruling out degeneracy
-from Assumptions~R, E, T alone is not possible: the degenerate form
-$Q=(dt-\lambda\,dr)^{2}$ satisfies all three assumptions for any $\lambda\neq 0$.
-Its kernel is spanned by $(\lambda,1)$; choosing the sign so that the
-$t$-component is positive gives a null vector satisfying the direction
-requirement of~R. Assumption~E together with $Q(e_{t})=1>0$ gives
-$d(x;(\Delta t,0))=\Delta t+o(\Delta t)$, which supplies~T.
+from Assumptions~R, E, T alone is not possible. Consider
+$Q=(dt-\lambda\,dr)^{2}$ with $\lambda\neq 0$, realised by the concrete cost
+function $d(x;\delta x):=\sqrt{(Q(\delta x))_{+}}$. Assumption~E holds with
+this $Q$ as an exact identity (no $o$-term needed). Assumption~T holds
+because $Q(e_{t})=1$ gives $d(x;(\Delta t,0))=\Delta t$. Assumption~R
+holds because the kernel of $Q$ is spanned by $(\lambda,1)$. Choose the
+sign so that the $t$-component is positive, call this kernel vector $u$,
+and set $\delta x_{n}:=\varepsilon_{n}u$ with $\varepsilon_{n}\downarrow 0$.
+Then $\delta x_{n}\to 0$, $\delta x_{n}/\|\delta x_{n}\|\to u/\|u\|$ (a
+direction with positive $t$-component), and $Q(\delta x_{n})=\varepsilon_{n}^{2}Q(u)=0$;
+by the converse direction of Lemma~\ref{lem:null},
+$d(x;\delta x_{n})/\|\delta x_{n}\|\to 0$. The sequence $(\delta x_{n})$
+thus realises R.
 
 A tempting argument would be that degeneracy together with $Q(e_{t})>0$
 should imply, in suitable coordinates, that $Q=a\,dt^{2}$, forcing any
