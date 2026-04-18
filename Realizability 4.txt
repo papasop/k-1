@@ -66,11 +66,12 @@ by the thermodynamic derivation of Einstein's equations~\cite{Jacobson}.
 
 \section{Introduction}
 
-We show that a Lorentzian causal structure follows from a minimal asymmetry between
-temporal and spatial displacement costs together with a quadratic leading-order
-expansion. This asymmetry forces the associated quadratic form to be indefinite,
-yielding Lorentzian causal structure without assuming any metric or \textit{a priori}
-causal cone. The closest precursor is the EPS axiomatisation~\cite{EPS}; unlike EPS,
+We show that in $(1{+}1)$ dimensions a Lorentzian causal structure follows from
+a minimal asymmetry between temporal and spatial displacement costs together with
+a quadratic leading-order expansion; in $(1{+}3)$ dimensions an additional spatial
+coherence hypothesis is required. This asymmetry forces the associated quadratic
+form to be indefinite, yielding Lorentzian causal structure without assuming any
+metric or \textit{a priori} causal cone. The closest precursor is the EPS axiomatisation~\cite{EPS}; unlike EPS,
 no particles, light signals, or worldlines appear as primitives---only a scalar
 cost function together with temporal positivity (Assumption~T) and spatial
 realizability (Assumption~R; in 4D strengthened to a coherence condition, Assumption~R4).\footnote{This paper distinguishes \emph{kinematic} approaches
