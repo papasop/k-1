@@ -266,8 +266,10 @@ $\{v^{(1)},v^{(2)},v^{(3)}\}$ span a three-dimensional subspace $W\subset\mathbb
 Q(w)\le 0 \quad\text{for all } w\in W.
 \]
 Let $V_{+}\subset\mathbb{R}^{4}$ be a maximal positive-definite subspace of~$Q$, so
-$\dim V_{+}=p$. For $w\in W\cap V_{+}$, one has simultaneously $Q(w)\le 0$ and
-$Q(w)>0$ unless $w=0$; hence $W\cap V_{+}=\{0\}$. Therefore
+$\dim V_{+}=p$. For $w\in W\cap V_{+}$, $Q(w)\le 0$ since $w\in W$, while
+$Q(w)>0$ for every nonzero $w\in V_{+}$ because $V_{+}$ is positive definite.
+Hence no nonzero vector can lie in $W\cap V_{+}$, so $W\cap V_{+}=\{0\}$.
+Therefore
 \[
 \dim W+\dim V_{+}=\dim(W+V_{+})+\dim(W\cap V_{+})\le 4,
 \]
