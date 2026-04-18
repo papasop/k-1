@@ -176,9 +176,9 @@ Hence Assumption~E gives $d(x;\delta x_{n})^{2}=o(\|\delta x_{n}\|^{2})$, so $d(
 \begin{theorem}[Lorentzian signature from realizability]\label{thm:lorentz}
 Assume R, E, T, and that $Q$ is nondegenerate. Then $Q$ is indefinite, and an invertible linear change of variables brings $Q$ to the form
 \[
-Q = dt^{2} - c_{\max}^{-2}\,dr^{2}
+Q = dt'^{2} - c_{\max}^{-2}\,dr'^{2}
 \]
-for some $c_{\max}>0$. The null set consists of exactly two directions $dr/dt=\pm c_{\max}$.
+for some $c_{\max}>0$. In these diagonalised coordinates, the null set consists of exactly two directions $dr'/dt'=\pm c_{\max}$.
 \end{theorem}
 
 \begin{proof}
@@ -268,8 +268,9 @@ $d^{2}$ admits a quadratic leading-order expansion at~$x$: there exists a quadra
 form $Q$ on~$\mathbb{R}^{4}$, determined by the second-order behaviour of~$d^{2}$, such that
 \[
 d(x;\delta x)^{2} = \bigl(Q(\delta x)\bigr)_{+} + o\!\left(\|\delta x\|^{2}\right)
-\quad\text{as } \delta x\to 0 \text{ with } \delta t>0.
+\quad\text{as } \delta x\to 0 \text{ with } \delta t>0,
 \]
+where the remainder is understood uniformly on compact subsets of $\{u\in S^{3}:u_{t}>0\}$.
 \end{definition}
 
 Assumption~T carries over unchanged.
