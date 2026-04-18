@@ -142,8 +142,8 @@ This is what makes the Lorentzian signature theorem nontrivial: the geometry is 
 
 The truncation $(Q)_{+}$ is not a repair inserted merely because $d^{2}\ge 0$. Rather, it records the fact that
 only positive quadratic contributions of~$Q$ appear in the leading behaviour of~$d^{2}$.
-Along directions where $Q\le 0$, the cost is null-realizable in the sense that
-$d(x;\delta x)/\|\delta x\|\to 0$, so $d^{2}$ is of lower than quadratic order.
+For a sequence $\delta x_{n}\to 0$ whose normalized directions converge to a vector~$v$ with $Q(v)\le 0$,
+we have $d(x;\delta x_{n})/\|\delta x_{n}\|\to 0$ (by Lemma~\ref{lem:null} below), so $d^{2}$ is of lower than quadratic order along such sequences.
 \end{remark}
 
 \section{Main result in $(1{+}1)$ dimensions}
@@ -333,9 +333,9 @@ Under the hypotheses of Theorem~\ref{thm:lorentz} in $(1{+}1)$ dimensions, and o
 \item[(i)] Positive-definite signature $\mathrm{Sig}(Q)=(2,0)$ is excluded by Assumption~R together with
 Lemma~\ref{lem:null}: it yields a nonzero limiting direction~$v$ with $v_{t}>0$ and $Q(v)\le 0$, which is
 impossible for a positive-definite form.
-\item[(ii)] Negative-definite signature $\mathrm{Sig}(Q)=(0,2)$ is excluded by Assumption~T: negative definiteness gives $Q(1,0)<0$, contradicting Step~2 of Theorem~\ref{thm:lorentz}.
+\item[(ii)] Negative-definite signature $\mathrm{Sig}(Q)=(0,2)$ is excluded by Assumption~T: negative definiteness gives $Q(1,0)<0$, hence $(Q(\Delta t,0))_{+}=0$ for all sufficiently small $\Delta t>0$; Assumption~E therefore yields $d(x;(\Delta t,0))^{2}=o(\Delta t^{2})$, so $d(x;(\Delta t,0))=o(\Delta t)$, contradicting~T.
 \item[(iii)] Degenerate forms are excluded by the nondegeneracy hypothesis of Theorem~\ref{thm:lorentz}: under that hypothesis,
-the existence of a nonzero null vector rules out definiteness, so the form must be indefinite rather than degenerate.
+the existence of a nonzero null vector rules out definiteness; hence the form must be indefinite.
 \end{itemize}
 In $(1{+}3)$ dimensions:
 \begin{itemize}
