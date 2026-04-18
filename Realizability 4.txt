@@ -164,6 +164,9 @@ analysed in Sections~3--4 is a property of~$Q$ as a quadratic form on all
 of~$\mathbb{R}^{2}$.
 The positive part ensures compatibility with $d\ge0$: the quadratic form~$Q$ may take
 negative values along directions where $Q<0$, but the squared cost~$d^{2}$ cannot.
+The form~$Q$ is uniquely determined: on the nonempty open set
+$\{\delta t>0,\,Q>0\}$ the truncation is inactive, and a quadratic form is
+determined by its values on any nonempty open subset of~$\mathbb{R}^{2}$.
 \end{definition}
 
 \begin{definition}[T --- Temporal cost]\label{def:T}
