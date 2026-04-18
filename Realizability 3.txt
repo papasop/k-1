@@ -264,7 +264,7 @@ assumptions on the cost function, which are not required here.
 The cost function $d(x;\delta x)$ is treated here as an abstract primitive.
 Its physical identification---whether as an information-theoretic cost, a
 thermodynamic work function, or otherwise---lies outside the present scope.
-The derivation requires only the three structural properties R, E, and~T
+The $(1{+}1)$ derivation requires only the three structural properties R, E, and~T
 together with nondegeneracy of~$Q$, not a specific physical origin.
 \end{remark}
 
@@ -323,10 +323,12 @@ it guarantees a three-dimensional subspace on which $Q$ is negative semidefinite
 thereby ruling out signatures such as $(2,2)$. This condition is strictly stronger
 than pointwise vanishing at the three directions~$v^{(i)}$: it requires $Q\le 0$
 on all linear combinations of those directions, a coherence condition on the
-spatial sector as a whole. In $(1{+}1)$ dimensions, Assumption~R alone suffices;
-the negative-semidefinite condition is the additional structural input required
-for $(1{+}3)$. Why the spatial dimension is three, and why the target structure
-supplies such a 3D nonpositive sector, are independent questions outside the scope here.
+spatial sector as a whole. In $(1{+}1)$ dimensions, Assumption~R supplies a null
+direction candidate, but the Lorentzian conclusion of Theorem~\ref{thm:lorentz}
+additionally requires nondegeneracy of~$Q$; the negative-semidefinite condition
+is the additional structural input required for $(1{+}3)$. Why the spatial
+dimension is three, and why the target structure supplies such a 3D nonpositive
+sector, are independent questions outside the scope here.
 
 \begin{definition}[E4 --- Quadratic expansion in 4D]\label{def:E4}
 There is a quadratic form $Q$ on~$\mathbb{R}^{4}$ such that
@@ -462,4 +464,6 @@ J.\ High Energy Phys.\ \textbf{2011}, 29 (2011).
 \end{thebibliography}
 
 \end{document}
+
+
 
