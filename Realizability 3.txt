@@ -35,12 +35,10 @@
 
 \begin{abstract}
 Zeno's paradox implicitly assumes that spatial displacements carry irreducible positive
-cost at every scale. We negate this: if spatial displacement sequences exist whose
-cost-to-magnitude ratio vanishes (Assumption~R), while pure temporal displacements
-retain positive cost (Assumption~T), then in $(1{+}1)$ dimensions any quadratic
-leading-order expansion of the cost function is indefinite---provided the quadratic
-form is nondegenerate, an explicit condition that is separately required.
-After normalisation,
+cost at every scale. We negate this: if spatial displacement sequences exist whose cost-to-magnitude ratio vanishes (Assumption~R), while pure temporal displacements retain positive
+cost (Assumption~T), then in $(1{+}1)$ dimensions any quadratic leading-order expansion of the
+cost function is indefinite---provided the quadratic form is nondegenerate, an explicit
+condition that is separately required. After normalisation,
 \[
 Q = dt^{2} - c_{\max}^{-2}\,dr^{2}.
 \]
@@ -205,38 +203,12 @@ The $(1{+}1)$ derivation requires only the three structural properties R, E, and
 not a specific physical origin.
 \end{remark}
 
-\begin{remark}[Why nondegeneracy is an independent hypothesis]\label{rem:nondeg}
-Both Theorem~\ref{thm:lorentz} and Theorem~\ref{thm:4d} take nondegeneracy
-of~$Q$ as an explicit hypothesis. In $(1{+}1)$ dimensions, ruling out degeneracy
-from Assumptions~R, E, T alone is not possible: the degenerate form
-$Q(\delta t,\delta r)=(\delta t-\lambda\,\delta r)^{2}$ satisfies all three
-assumptions for any $\lambda\neq 0$.
-(Its kernel is spanned by $u=(\lambda,1)$ with $u_{t}=\lambda\neq 0$, so~$u$
-itself serves as the null realizer required by~R, while $Q(e_{t})=1>0$ supplies~T.)
-
-One might attempt to rule out degeneracy by the following argument: degeneracy
-together with $Q(e_{t})>0$ should imply, in suitable coordinates,
-that $Q(\delta t,\delta r)=a\,\delta t^{2}$,
-forcing any null vector to have $t$-component zero and thereby contradicting the
-$w_{t}>0$ conclusion of Step~3. This argument fails because the reduction
-$Q(\delta t,\delta r)=a\,\delta t^{2}$ holds only when the kernel vector $u$ satisfies $u_{t}=0$; the
-example above shows that the kernel can have $u_{t}\neq 0$, in which case no
-contradiction arises. Nondegeneracy is therefore a genuinely independent
-condition, not derivable from R, E, T.
-
-In four dimensions, ruling out degeneracy from Assumptions~R4, E4, T alone
-requires additional input (e.g.\ realizability along a fourth independent
-direction). The nondegeneracy hypothesis is therefore an explicit scope
-condition in both theorems, not a hidden assumption.
-\end{remark}
-
 \section{Extension to $(1{+}3)$ dimensions}
 
 For the four-dimensional extension, let $U\subset\mathbb{R}^{4}$ be open, fix $x\in U$, and consider the chart
 $(t,x^{1},x^{2},x^{3})$; write $e_{t}=(1,0,0,0)$ for the temporal basis vector. The two-dimensional case is the minimal realisation: a single spatial direction
 suffices. In physical spacetime, the condition must be imposed along all three independent
-spatial directions. The paper does not explain why physical spacetime should supply
-exactly such a 3D nonpositive sector; it only shows what follows if it does.
+spatial directions.
 
 \begin{definition}[R4 --- Three-directional zero-threshold realizability]\label{def:R4}
 For each $i\in\{1,2,3\}$ there
@@ -260,6 +232,9 @@ In $(1{+}1)$ dimensions, Assumption~R supplies a null direction candidate, but t
 Lorentzian conclusion in Theorem~\ref{thm:lorentz} additionally requires nondegeneracy
 of~$Q$; the negative-semidefinite condition is the further structural input required
 for $(1{+}3)$.
+The question of why physical spacetime satisfies this coherence
+condition, and why it has precisely three spatial directions rather than more or fewer, lies outside
+the scope of the present paper.
 
 \begin{definition}[E4 --- Quadratic expansion in 4D]\label{def:E4}
 There is a quadratic form $Q$ on~$\mathbb{R}^{4}$ such that
@@ -269,11 +244,6 @@ d(x;\delta x)^{2} = \bigl(Q(\delta x)\bigr)_{+} + o\!\left(\|\delta x\|^{2}\righ
 \end{definition}
 
 Assumption~T carries over unchanged.
-
-The proof of Theorem~\ref{thm:4d} uses only the existence of a three-dimensional
-subspace $W\subset\mathbb{R}^{4}$ on which $Q$ is nonpositive; the realizability
-sequences in Definition~\ref{def:R4} serve to motivate this hypothesis
-operationally but do not enter the technical argument.
 
 \begin{theorem}[Lorentzian signature --- $(1{+}3)$D]\label{thm:4d}
 Assume R4, E4, and~T, and suppose that $Q$ is
@@ -306,6 +276,22 @@ Since $Q$ is nondegenerate on~$\mathbb{R}^{4}$, the positive and negative inerti
 indices sum to~4. The positive index is at least~1 (Step~1) and the negative index is at least~3
 (Step~2); hence the only possibility is $\mathrm{Sig}(Q)=(1,3)$.
 \end{proof}
+
+\begin{remark}[Nondegeneracy]
+Both Theorem~\ref{thm:lorentz} and Theorem~\ref{thm:4d} take nondegeneracy
+of~$Q$ as an explicit hypothesis. In $(1{+}1)$ dimensions, ruling out degeneracy
+from Assumptions~R, E, T alone is not possible: the degenerate form
+$Q=(dt-\lambda\,dr)^{2}$ satisfies all three assumptions for any $\lambda\neq 0$.
+Its kernel is spanned by $u=(\lambda,1)$ with $u_{t}=\lambda\neq 0$, so~$u$ itself
+serves as the null realizer required by~R, while $Q(e_{t})=1>0$ supplies~T.
+Note that $Q(e_{t})>0$ does not, by itself, suffice to rule out degeneracy:
+the reduction $Q(\delta t,\delta r)=a\,\delta t^{2}$ holds only when the kernel
+vector has vanishing $t$-component, which need not be the case.
+In four dimensions, ruling out degeneracy
+from Assumptions~R4, E4, T alone requires additional input (e.g.\ realizability along a fourth
+independent direction). The nondegeneracy hypothesis is therefore an explicit
+scope condition in both theorems, not a hidden assumption.
+\end{remark}
 
 \begin{remark}[Exclusion of non-Lorentzian signatures]
 Under the hypotheses of Theorem~\ref{thm:lorentz} in $(1{+}1)$ dimensions, and of Theorem~\ref{thm:4d} in $(1{+}3)$ dimensions, every non-Lorentzian signature is excluded. In $(1{+}1)$ dimensions:
@@ -361,5 +347,4 @@ Phys.\ Rev.\ Lett.\ \textbf{75}, 1260--1263 (1995).
 \end{thebibliography}
 
 \end{document}
-
 
