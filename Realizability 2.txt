@@ -144,6 +144,8 @@ The truncation $(Q)_{+}$ is not a repair inserted merely because $d^{2}\ge 0$. R
 only positive quadratic contributions of~$Q$ appear in the leading behaviour of~$d^{2}$.
 For a sequence $\delta x_{n}\to 0$ whose normalized directions converge to a vector~$v$ with $Q(v)\le 0$,
 we have $d(x;\delta x_{n})/\|\delta x_{n}\|\to 0$ (by Lemma~\ref{lem:null} below), so $d^{2}$ is of lower than quadratic order along such sequences.
+
+The physical identification of~$d$---whether as an information-theoretic cost, a thermodynamic work function, or otherwise---lies outside the present scope; only the three structural properties R, E, and~T enter the derivation.
 \end{remark}
 
 \section{Main result in $(1{+}1)$ dimensions}
@@ -225,7 +227,7 @@ which are not required here.
 
 \section{Extension to $(1{+}3)$ dimensions}
 
-Before presenting the four-dimensional extension, two scope conditions should be stated explicitly.
+The two-dimensional case of Theorem~\ref{thm:lorentz} is the minimal realisation---a single spatial direction suffices. Extending to physical spacetime (three spatial dimensions) requires two additional scope conditions stated explicitly before the four-dimensional extension.
 First, the paper takes the existence of three spatial directions as given; it does not explain why physical spacetime has exactly three spatial dimensions.
 Second, the three realizable limiting directions are required not merely to exist individually, but to span a three-dimensional subspace on which $Q$ is negative semidefinite. This is an additional coherence condition on the spatial sector.
 
