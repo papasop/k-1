@@ -296,8 +296,19 @@ Both Theorem~\ref{thm:lorentz} and Theorem~\ref{thm:4d} take nondegeneracy
 of~$Q$ as an explicit hypothesis. In $(1{+}1)$ dimensions, ruling out degeneracy
 from Assumptions~R, E, T alone is not possible: the degenerate form
 $Q=(dt-\lambda\,dr)^{2}$ satisfies all three assumptions for any $\lambda\neq 0$.
-In four dimensions, ruling out degeneracy
-from Assumptions~R4, E4, T alone requires additional input (for example, realizability along a fourth
+Its kernel is spanned by $u=(\lambda,1)$ with $u_{t}=\lambda\neq 0$, so $u$ itself
+serves as the null realizer required by~R, while $Q(e_{t})=1>0$ supplies~T.
+
+A tempting argument would be that degeneracy together with $Q(e_{t})>0$
+should imply, in suitable coordinates, that $Q=a\,dt^{2}$, forcing any
+null vector to have vanishing $t$-component. This is not valid, however,
+because the reduction $Q=a\,dt^{2}$ holds only when the kernel vector has
+vanishing $t$-component; the example above shows that the kernel may
+instead satisfy $u_{t}\neq 0$. Nondegeneracy is therefore a genuinely
+independent condition, not derivable from R, E, T.
+
+In four dimensions, ruling out degeneracy from Assumptions~R4, E4, T alone
+requires additional input (for example, realizability along a fourth
 independent direction). The nondegeneracy hypothesis is therefore an explicit
 scope condition in both theorems, not a hidden assumption.
 \end{remark}
@@ -353,4 +364,3 @@ Phys.\ Rev.\ Lett.\ \textbf{75}, 1260--1263 (1995).
 \end{thebibliography}
 
 \end{document}
-
