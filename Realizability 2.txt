@@ -129,7 +129,7 @@ as $\delta x\to 0$ with $\delta t>0$. Equivalently,
 d(x;\delta x)^{2} = \bigl(Q(\delta x)\bigr)_{+} + o\!\left(\|\delta x\|^{2}\right)
 \quad\text{as } \delta x\to 0 \text{ with } \delta t>0,
 \]
-where the remainder is understood uniformly for all directions with $\delta t>0$. Here $(u)_{+}:=\max\{u,0\}$.
+where the remainder is understood uniformly on compact subsets of $\{u\in S^{1}:u_{t}>0\}$. Here $(u)_{+}:=\max\{u,0\}$.
 \end{definition}
 
 The notation $\mathrm{Sig}(Q)=(p,q)$ denotes the inertia of~$Q$: $p$ positive and $q$ negative eigenvalues.
@@ -151,7 +151,7 @@ only positive quadratic contributions of~$Q$ appear in the leading behaviour of~
 For a sequence $\delta x_{n}\to 0$ whose normalized directions converge to a vector~$v$ with $Q(v)\le 0$,
 we have $d(x;\delta x_{n})/\|\delta x_{n}\|\to 0$ (by Lemma~\ref{lem:null} below), so $d^{2}$ is of lower than quadratic order along such sequences.
 
-The physical identification of~$d$---whether as an information-theoretic cost, a thermodynamic work function, or otherwise---lies outside the present scope; only the three structural properties R, E, and~T enter the derivation.
+The physical identification of~$d$---whether as an information-theoretic cost, a thermodynamic work function, or otherwise---lies outside the present scope. The assumptions R, E, and~T constrain the primitive cost function~$d$ directly; the Lorentzian conclusion in Theorem~\ref{thm:lorentz} additionally requires nondegeneracy of~$Q$.
 \end{remark}
 
 \section{Main result in $(1{+}1)$ dimensions}
