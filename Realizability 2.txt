@@ -1,8 +1,8 @@
 \documentclass[11pt,a4paper]{article}
 
-% Font setup — Latin Modern Roman via fontspec (XeLaTeX)
-\usepackage{fontspec}
-\setmainfont{Latin Modern Roman}
+% Font setup — pdflatex-compatible, uses default Computer Modern
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
 
 % Math fonts
 \usepackage{amsmath,amssymb,amsthm}
@@ -129,7 +129,7 @@ as $\delta x\to 0$ with $\delta t>0$. Equivalently,
 d(x;\delta x)^{2} = \bigl(Q(\delta x)\bigr)_{+} + o\!\left(\|\delta x\|^{2}\right)
 \quad\text{as } \delta x\to 0 \text{ with } \delta t>0,
 \]
-where the remainder is understood uniformly on compact subsets of $\{u\in S^{1}:u_{t}>0\}$. Here $(u)_{+}:=\max\{u,0\}$.
+where the remainder satisfies $r(\rho u)/\rho^{2}\to 0$ as $\rho\downarrow 0$, uniformly for $u$ in compact subsets of $\{u\in S^{1}:u_{t}>0\}$. Here $(u)_{+}:=\max\{u,0\}$.
 \end{definition}
 
 The notation $\mathrm{Sig}(Q)=(p,q)$ denotes the inertia of~$Q$: $p$ positive and $q$ negative eigenvalues.
@@ -223,7 +223,7 @@ Q = dt'^{2} - c_{\max}^{-2}\,dr'^{2}.
 Explicitly, the change of variables
 $dt'\!:=\!\sqrt{a}\bigl(dt+(\kappa/a)\,dr\bigr)$, $dr'\!:=\!dr$
 puts $Q$ in the displayed form with $c_{\max}^{-2}=(\kappa^{2}-ab)/a$, which is positive
-because $ab-\kappa^{2}<0$ by indefiniteness and $a>0$ by Step~2.\qedhere
+because $ab-\kappa^{2}<0$ by indefiniteness and $a=Q(1,0)>0$ by Step~2.\qedhere
 \end{proof}
 
 \begin{remark}[The speed $c_{\max}$]
@@ -270,7 +270,7 @@ form $Q$ on~$\mathbb{R}^{4}$, representing the second-order behaviour of~$d^{2}$
 d(x;\delta x)^{2} = \bigl(Q(\delta x)\bigr)_{+} + o\!\left(\|\delta x\|^{2}\right)
 \quad\text{as } \delta x\to 0 \text{ with } \delta t>0,
 \]
-where the remainder is understood uniformly on compact subsets of $\{u\in S^{3}:u_{t}>0\}$.
+where the remainder satisfies $r(\rho u)/\rho^{2}\to 0$ as $\rho\downarrow 0$, uniformly for $u$ in compact subsets of $\{u\in S^{3}:u_{t}>0\}$.
 \end{definition}
 
 Assumption~T carries over unchanged.
@@ -309,6 +309,10 @@ Since $Q$ is nondegenerate on~$\mathbb{R}^{4}$, the positive and negative inerti
 indices sum to~4. The positive index is at least~1 (Step~1) and the negative index is at least~3
 (Step~2); hence the only possibility is $\mathrm{Sig}(Q)=(1,3)$.
 \end{proof}
+
+\begin{remark}[Logical content of R4]
+The coherence condition built into R4---namely, that $Q|_{W}\le 0$ on a three-dimensional subspace~$W$---directly supplies the negative-semidefinite subspace used in Step~2. The substantive content of Theorem~\ref{thm:4d} is therefore: given this coherence input, together with~T and nondegeneracy, the signature is forced to be $(1,3)$. Theorem~\ref{thm:4d} is not a derivation of Lorentzian signature from the existence of three independent null directions alone; the coherence condition is an essential additional input.
+\end{remark}
 
 \begin{remark}[Nondegeneracy]
 Both Theorem~\ref{thm:lorentz} and Theorem~\ref{thm:4d} take nondegeneracy
@@ -358,7 +362,7 @@ In $(1{+}3)$ dimensions:
 \begin{itemize}
 \item[(iv)] The split signature $(2,2)$ is excluded by the negative-semidefinite subspace condition of~R4, which forces the negative inertia index of~$Q$ to be at least~3.
 \end{itemize}
-The remaining non-Lorentzian signatures are excluded by the inertia count in the proof of Theorem~\ref{thm:4d}. Lorentzian signature is therefore not merely compatible with the cost asymmetry; it is the unique outcome.
+The remaining non-Lorentzian signatures are excluded by the inertia count in the proof of Theorem~\ref{thm:4d}. Lorentzian signature is therefore not merely compatible with the cost asymmetry; within the class defined by R, E, T, and nondegeneracy in $(1{+}1)$ dimensions, and by R4, E4, T, and nondegeneracy in $(1{+}3)$ dimensions, it is the unique outcome.
 \end{remark}
 
 \bigskip
