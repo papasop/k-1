@@ -5,6 +5,8 @@
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{hyperref}
 \usepackage{booktabs}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning, decorations.pathmorphing, shapes.geometric}
 \hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue}
 \newtheorem{theorem}{Theorem}
 \newtheorem{proposition}[theorem]{Proposition}
@@ -69,6 +71,59 @@ The cost structure associated with $dt_{\mathrm{info}}$ is required to satisfy A
 Lorentzian signature therefore emerges from the cost structure: $G$ is indefinite, with light cones (the null set $\{x:x^{\top}Gx=0\}$) and a causal structure determined by the sign of~$K$.
 
 In general relativity, the Lorentzian metric is prescribed on a pre-existing differentiable manifold; here $G$ and its causal structure are derived.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[
+    node distance=0.85cm and 0.9cm,
+    box/.style={rectangle, draw=black!70, rounded corners=3pt, minimum height=0.8cm, align=center, font=\small},
+    inpbox/.style={box, fill=gray!10, minimum width=2.3cm},
+    objbox/.style={box, fill=blue!8, minimum width=2.3cm},
+    outbox/.style={box, fill=green!10, minimum width=2.5cm},
+    lawbox/.style={box, fill=orange!10, minimum width=2.9cm},
+    condbox/.style={box, fill=green!14, draw=black!80, thick, minimum width=2.5cm},
+    arr/.style={-{Stealth[length=2mm]}, thick, draw=black!60},
+    layerlab/.style={font=\footnotesize\bfseries, text=black!70}
+]
+% Layer 1: inputs -> G + R,E,T => Sig(G)
+\node[inpbox] (phi) {$\Phi,\ H$};
+\node[inpbox, right=of phi] (ti) {$dt_{\mathrm{info}}$};
+\node[objbox, right=of ti] (G1) {$G\equiv Q$};
+\node[inpbox, below=0.5cm of ti, minimum width=3.2cm] (RET) {R, E, T + nondeg.};
+\node[circle, draw=black!60, fill=yellow!15, inner sep=1.5pt, font=\scriptsize, right=0.4cm of G1] (conj) {$\wedge$};
+\node[outbox, right=0.35cm of conj] (sig) {$\mathrm{Sig}(G){=}(1,1)$};
+\draw[arr] (phi) -- (ti);
+\draw[arr, dashed] (ti) -- node[font=\tiny\itshape, text=black!55, above=-1pt] {heuristic} (G1);
+\draw[arr, shorten >=1pt] (G1) -- (conj);
+\draw[arr, shorten >=1pt] (RET.east) -- ++(0.25cm,0) |- (conj);
+\draw[arr] (conj) -- (sig);
+\node[layerlab, above=0.05cm of phi.north west, anchor=south west] {Layer 1: information time \& realizability};
+
+% Layer 2: point-level object
+\node[objbox, below=1.7cm of phi] (G2) {$G$};
+\node[objbox, right=of G2] (K) {$K(x)=x^{\top}Gx$};
+\node[condbox, right=of K] (K1) {$K=1$\\[-1pt]\scriptsize extra condition};
+\draw[arr] (G2) -- (K);
+\draw[arr] (K) -- node[font=\tiny\itshape, text=black!55, above=-1pt] {def.} (K1);
+\node[layerlab, above=0.05cm of G2.north west, anchor=south west] {Layer 2: point-level objects};
+
+% Layer 3: dynamics
+\node[objbox, below=1.1cm of G2] (G3) {$G$};
+\node[objbox, right=of G3] (JG) {$J_G=\alpha G^{-1}J$};
+\node[lawbox, right=of JG] (law2) {Law II\\[-1pt]\scriptsize $\dot x=(J_G{-}D)\nabla V$};
+\node[rectangle, draw=gray!55, fill=gray!8, rounded corners=2pt, font=\scriptsize, align=center, above=0.05cm of law2, inner sep=2pt] {Structural constraint:\\ $GA=\alpha J-GD$, $D\ge 0$};
+\draw[arr] (G3) -- (JG);
+\draw[arr] (JG) -- (law2);
+\node[objbox, below=0.4cm of G3] (K1b) {$K=1$};
+\node[objbox, right=of K1b] (V) {$V=\tfrac{1}{2}(K-1)^2$};
+\node[lawbox, right=of V] (law3) {Law III\\[-1pt]\scriptsize $D{=}d_{c}I$, local restoring at eigenvector base};
+\draw[arr] (K1b) -- (V);
+\draw[arr] (V) -- (law3);
+\node[layerlab, above=0.05cm of G3.north west, anchor=south west] {Layer 3: dynamics};
+\end{tikzpicture}
+\caption{Logical dependency of the $K{=}1$ framework. \emph{Layer 1} (information time \& realizability): the signed leading quadratic form $G\equiv Q$ is associated with $dt_{\mathrm{info}}$ (heuristic bridge; see main text). Axioms~R, E, T together with nondegeneracy act on the \emph{conditions} satisfied by $G$, forcing $\mathrm{Sig}(G)=(1,1)$ (i.e.\ $\det G<0$), rather than generating $G$ itself. \emph{Layer 2} (point-level objects): $G$ defines $K(x)=x^{\top}Gx$; the condition $K=1$ is an \emph{extra} self-consistency condition introduced in the present paper, not a consequence of the axioms. \emph{Layer 3} (dynamics): $G$ induces the symplectic generator $J_G$; Law~II further requires the \emph{structural constraint} $GA=\alpha J-GD$ ($D\ge 0$), yielding $\dot x=(J_G-D)\nabla V$. Together with the restoring potential $V=\tfrac12(K{-}1)^2$, $K=1$ gives Law~III, whose restoring conclusion additionally depends on critical damping $D=d_{c}I$, the eigenvector base point of $G$, and local linearisation. Dashed arrows indicate heuristic bridges; solid arrows indicate definitions, cited theorems, or algebraic consequences within the present paper. The field-level analogue $\sigma_2^2\Box\ln\sigma_i=1$ (a conjecture) is shown in Fig.~\ref{fig:routes}.}
+\label{fig:framework}
+\end{figure}
 
 \section{Symplectic structure from \texorpdfstring{$G$}{G}}\label{sec:symplectic}
 
@@ -146,6 +201,34 @@ $\mathrm{tr}(J_{G}H_{*})=\alpha\sum_{i}(G^{-1}J)_{ii}(H_{*})_{ii}=0$.\qed
 For the Rindler metric with diagonal $H_{*}>0$, the zero-eigenvalue threshold of $(J_{G}-dI)H_{*}$ remains $d_{c}=\alpha/(\kappa\ell)$. The thermodynamic applications of \S~\ref{sec:thermo} use this threshold directly, without requiring the full isotropic equivalence of Theorem~\ref{thm:equivalence}.
 \end{remark}
 
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[
+    node distance=2.2cm,
+    corebox/.style={rectangle, draw=black!80, thick, rounded corners=4pt, fill=red!12, minimum height=0.9cm, minimum width=2.2cm, align=center, font=\small\bfseries},
+    eqbox/.style={rectangle, draw=black!70, rounded corners=3pt, fill=blue!8, minimum height=0.95cm, minimum width=3.3cm, align=center, font=\small},
+    equiv/.style={{Stealth[length=2mm]}-{Stealth[length=2mm]}, thick, draw=black!65},
+    label/.style={font=\scriptsize\itshape, text=black!55}
+]
+\node[corebox] (core) {$\det G<0$\\[1pt]\scriptsize (2D nondegenerate)};
+\node[eqbox, above=1.6cm of core] (sig) {$\mathrm{Sig}(G)=(1,1)$\\[1pt]\scriptsize (Lorentzian signature)};
+\node[eqbox, below left=1.3cm and 0.8cm of core] (spec) {$\lambda_{\pm}{=}\pm\alpha\sqrt{-1/\det G}\in\mathbb{R}$\\[1pt]\scriptsize (real symplectic spectrum)};
+\node[eqbox, below right=1.3cm and 0.8cm of core] (dc) {$d_{c}>0$\\[1pt]\scriptsize (positive stability threshold)};
+\draw[equiv] (core) -- node[label, right] {2D inertia} (sig);
+\draw[equiv] (core) -- node[label, above left=-2pt, sloped] {spectral} (spec);
+\draw[equiv] (core) -- node[label, above right=-2pt, sloped] {$d_{c}$ definition} (dc);
+% H_*=I badge near d_c box (only the stability interpretation requires it)
+\node[rectangle, draw=black!60, fill=yellow!15, rounded corners=2pt, font=\footnotesize\bfseries, right=0.35cm of dc, inner sep=3pt] (isoflag) {$H_{*}=I$};
+\node[font=\scriptsize\itshape, text=black!60, below=0.02cm of isoflag, align=center] {required for\\ stability reading};
+\node[font=\footnotesize, text=black!60, below=2.6cm of core, text width=10cm, align=center] {
+   One sign $\det G<0$, three corresponding expressions.\\
+   (General $H_{*}$ may shift the stability-threshold reading; see Remark~\ref{rem:Hstar_dep})
+};
+\end{tikzpicture}
+\caption{Signature-spectrum-stability triple correspondence. The core algebraic sign $\det G<0$ corresponds, under 2D nondegeneracy, to three expressions: Lorentzian signature $\mathrm{Sig}(G)=(1,1)$ (geometric, by Sylvester's inertia law); the symplectic generator $J_{G}$ having real eigenvalues $\lambda_{\pm}=\pm\alpha\sqrt{-1/\det G}$ (spectral, by direct computation); and a positive stability threshold $d_{c}>0$ (dynamical, \emph{whose stability interpretation requires isotropic linearisation $H_{*}=I$}). Theorems~\ref{thm:spectral}--\ref{thm:equivalence} together with Eq.~\eqref{eq:dc} establish these correspondences. General $H_{*}$ may break the $d_{c}$ stability equivalence (see Remark~\ref{rem:Hstar_dep}).}
+\label{fig:triangle}
+\end{figure}
+
 \section{Unique dynamics (Law~II)}\label{sec:lawII}
 
 \noindent\textbf{Law~II.} \textit{The generator of the dynamics splits as $GA = \alpha J - GD$ with $D\ge 0$ (positive-semidefinite dissipation). This symplectic-dissipative decomposition is the content of Law~II; it is a structural axiom, not derived from Laws~I or~III, motivated by the universal Helmholtz-type splitting of physical evolution into reversible (symplectic) and irreversible (dissipative) parts~\cite{GENERIC}. Under this axiom, the unique evolution law for any smooth potential $V$ is $\dot{x}=(J_{G}-D)\nabla V$. The local restoring role of $\{K=1\}$ is specified separately by Law~III.}
@@ -203,6 +286,38 @@ Adding isotropic additive white noise (It\^{o} convention) to Law~II gives $dx=(
 
 \medskip\noindent
 \textit{Class~B} (kinematic; thermodynamically inert here): free tangential diffusion along $\{K=1\}$ in the boost direction. For the Rindler metric $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, $\{K=1\}$ is the hyperbola $-(\kappa\ell)^{2}x_{1}^{2}+x_{2}^{2}=1$; motion along it generates Lorentz boosts, changing the inertial observer but not the thermodynamic state. The Hessian of $V$ restricted to $\{K=1\}$ is rank-one with null space containing this tangent, confirming that Class~B carries no restoring force and no heat.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[scale=1.15,
+    axis/.style={-{Stealth[length=2mm]}, thick, draw=black!70},
+    hyp/.style={thick, draw=blue!70!black},
+    lightcone/.style={dashed, draw=gray!60},
+    normal/.style={-{Stealth[length=2.2mm]}, very thick, draw=red!70!black},
+    tangent/.style={-{Stealth[length=2.2mm]}, very thick, draw=green!50!black},
+    label/.style={font=\footnotesize}
+]
+\draw[axis] (-3, 0) -- (3, 0) node[right, label] {$x_{1}$ (time-like direction)};
+\draw[axis] (0, -2.2) -- (0, 2.5) node[above, label] {$x_{2}$ (space-like direction)};
+\draw[lightcone] (-2.5, -2.5) -- (2.5, 2.5);
+\draw[lightcone] (-2.5, 2.5) -- (2.5, -2.5);
+\node[label, gray, rotate=45] at (2.2, 2.0) {light cone};
+\draw[hyp, domain=-2.3:2.3, smooth, variable=\x] plot ({\x}, {sqrt(1 + \x*\x)});
+\draw[hyp, domain=-2.3:2.3, smooth, variable=\x] plot ({\x}, {-sqrt(1 + \x*\x)});
+\node[label, blue!70!black] at (2.0, 2.7) {$\{K=1\}$};
+\fill[black] (0, 1) circle (1.8pt) node[left=2pt, label] {$x_{*}$};
+\draw[normal] (0, 1) -- (0, 1.8);
+\draw[normal] (0, 1) -- (0, 0.3);
+\node[label, red!70!black, right] at (0.05, 1.9) {Class A (thermal)};
+\node[label, red!70!black, right] at (0.05, 0.2) {$K\neq 1$ fluct.};
+\draw[tangent] (0, 1) -- (1.0, 1);
+\draw[tangent] (0, 1) -- (-1.0, 1);
+\node[label, green!50!black, right] at (1.05, 1.0) {Class B (kinematic)};
+\node[label, green!50!black, left] at (-1.05, 1.0) {boost};
+\end{tikzpicture}
+\caption{The $\{K=1\}$ manifold for the Rindler metric $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$. The hyperbola's asymptotes are the light cone. At the base point $x_{*}$: Class A (red, two-way arrows) — thermodynamic fluctuations \emph{along the normal} to $\{K=1\}$; Class B (green) — tangential boost along the curve, thermodynamically inert — at $x_{*}=(0,1)$, $dx_{2}/dx_{1}|_{x_{*}}=0$, so the tangent is exactly horizontal. The figure is drawn with $\kappa\ell=1$ and $x_{*}=(0,1)$, satisfying the normalisation $x_{*}^{\top}G^{2}x_{*}=1$; the restoring rate then reduces to $\kappa_{K}=4d_{c}$ (the general-base-point formula appears in \S\ref{sec:lawIII}).}
+\label{fig:K1geometry}
+\end{figure}
 
 
 \section{Spacetime thermodynamics (Route~A)}\label{sec:thermo}
@@ -272,7 +387,7 @@ For macroscopic black holes, $T_{\mathrm{tol}}\ll d_{c}$; setting $D=T_{\mathrm{
 \end{remark}
 
 Since every local Rindler horizon admits the standard Rindler approximation~\cite{Jacobson} with $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$ (where $\kappa$ and $\ell$ vary by location), Proposition~\ref{prop:clausius} applies to each such horizon, yielding the Clausius relation locally.
-Together with Jacobson's argument~\cite{Jacobson}, this supplies the local Clausius input needed for the Einstein equations. The remaining thermodynamic input needed to invoke Jacobson's argument is $S\propto A$.
+Together with Jacobson's argument~\cite{Jacobson}, this supplies the local Clausius input needed for the Einstein equations. Once $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ has been given (and thus local Clausius obtained), the remaining external input required to invoke Jacobson's argument is $S\propto A$.
 
 %===================================================================
 \section{Eigenvalue self-consistency (Route~B: direct algebraic)}\label{sec:field}
@@ -460,6 +575,56 @@ Route~A reaches $G_{\mu\nu}=8\pi T_{\mu\nu}$ via stochastic dynamics and the Jac
 The Jacobson argument~\cite{Jacobson} reconstructs the Einstein equations from three inputs: Lorentzian signature, the Clausius relation on every local Rindler horizon, and $S=A/4$. Route~A supplies the first two: signature is forced by realizability after identifying $G$ with the signed leading quadratic form, and its equivalence with $d_{c}>0$ under isotropic linearisation is given by Theorem~\ref{thm:equivalence}; Clausius follows on each horizon (Proposition~\ref{prop:clausius}, given $T_{\mathrm{eff}}=T_{\mathrm{tol}}$). The sole remaining external input is $S\propto A$. Patching across horizon directions requires no additional assumptions (see $(1{+}3)$-dimensional extension below).
 
 The two routes meet in the vacuum sector: Route~B establishes $R_{\mu\nu}=0$ directly, while Route~A recovers the same conclusion via $G_{\mu\nu}=8\pi T_{\mu\nu}$ with $T_{\mu\nu}=0$.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[
+    node distance=0.55cm and 0.9cm,
+    box/.style={rectangle, draw=black!70, rounded corners=3pt, minimum height=0.7cm, minimum width=2.3cm, align=center, font=\footnotesize},
+    startbox/.style={box, fill=blue!12},
+    thermo/.style={box, fill=orange!15},
+    algebra/.style={box, fill=green!12},
+    endbox/.style={box, fill=red!10},
+    jacbox/.style={box, fill=yellow!15, draw=black!75, thick, minimum width=2.4cm},
+    extinp/.style={rectangle, draw=gray!60, dashed, rounded corners=2pt, minimum height=0.5cm, minimum width=1.7cm, align=center, font=\scriptsize\itshape, fill=gray!5},
+    arr/.style={-{Stealth[length=2mm]}, thick, draw=black!60},
+    biarr/.style={{Stealth[length=2mm]}-{Stealth[length=2mm]}, thick, draw=black!70},
+    conjarr/.style={-{Stealth[length=2mm]}, thick, dashed, draw=black!60},
+    extarr/.style={-{Stealth[length=1.5mm]}, draw=gray!50, dashed},
+    title/.style={font=\small\bfseries}
+]
+\node[startbox] (K1) {$\{K=1\}$\\[-1pt]\scriptsize extra condition};
+
+% Route A (LEFT)
+\node[thermo, below left=0.9cm and 1.6cm of K1] (OU) {OU dynamics\\[-1pt]\scriptsize (near $K{=}1$, Class A)};
+\node[thermo, below=of OU] (Clau) {local Clausius};
+\node[jacbox, below=0.9cm of Clau] (jac) {Jacobson argument\\[-1pt]\scriptsize \cite{Jacobson}};
+\node[endbox, below=of jac] (Ein) {$G_{\mu\nu}=8\pi T_{\mu\nu}$};
+\draw[arr] (K1) to[bend right=10] node[left=1pt, font=\tiny\itshape, text=black!60, align=right] {near $K{=}1$\\ Class A/OU} (OU);
+\draw[arr] (OU) -- (Clau);
+\draw[arr] (Clau) -- (jac);
+\draw[arr] (jac) -- (Ein);
+% External inputs
+\node[extinp, left=0.4cm of OU] (Teff) {$T_{\mathrm{eff}}=T_{\mathrm{tol}}$};
+\draw[extarr] (Teff) -- (Clau);
+\node[extinp, left=0.4cm of jac, yshift=4pt] (sigin) {Law I: $\mathrm{Sig}(G){=}(1,1)$};
+\node[extinp, left=0.4cm of jac, yshift=-14pt] (SAin) {$S\propto A$};
+\draw[extarr] (sigin) -- (jac.west);
+\draw[extarr] (SAin) -- (jac.west);
+
+% Route B (RIGHT)
+\node[algebra, below right=0.9cm and 1.6cm of K1] (sigma) {$\sigma_2^2\,\Box\ln\sigma_i = 1$};
+\node[endbox, below=1.5cm of sigma] (vac) {$R_{\mu\nu}=0$\\[-1pt]\scriptsize (spherical vacuum)};
+\draw[conjarr] (K1) to[bend left=10] node[right=1pt, font=\tiny\itshape, text=black!60] {field-level analogue/conjecture} (sigma);
+\draw[biarr] (sigma) -- node[right, font=\tiny\itshape, text=black!60, align=left] {strict algebraic\\equivalence\\(spherical vacuum)} (vac);
+
+\node[font=\scriptsize, text=black!55, below=0.3cm of Ein, text width=3.2cm, align=center] {meets right side at $T_{\mu\nu}{=}0$};
+\node[title, above=0.1cm of OU] {Route A: thermodynamic bridge};
+\node[title, above=0.1cm of sigma] {Route B: equivalence theorem};
+\end{tikzpicture}
+\caption{Two routes connecting to the Einstein equations. \emph{Route A} (left, thermodynamic bridge): Class A fluctuations near $\{K=1\}$ $\to$ OU dynamics $\to$ local Clausius $\to$ Jacobson argument $\to$ Einstein equations. Jacobson requires three inputs (grey dashed): Lorentzian signature $\mathrm{Sig}(G)=(1,1)$ (supplied by realizability axioms~R, E, T with $G\equiv Q$; its equivalence to $d_{c}>0$ is Theorem~\ref{thm:equivalence}); local Clausius (provided by the present paper; itself relies on the external temperature identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$); and the entropy-area law $S\propto A$ (external). Hence Route~A overall requires \emph{two} external inputs: $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ and $S\propto A$. \emph{Route B} (right, equivalence theorem): $K{=}1\!\to\!\sigma_2^2\Box\ln\sigma_i=1$ is dashed (field-level analogue/conjecture, not a strict derivation); $\sigma_2^2\Box\ln\sigma_i=1\Leftrightarrow R_{\mu\nu}=0$ is a \emph{strict algebraic equivalence} in spherically symmetric vacuum (Theorem~\ref{thm:field}, bidirectional arrow).}
+\label{fig:routes}
+\end{figure}
 
 \subsection*{Physical content of Axiom~R}
 
