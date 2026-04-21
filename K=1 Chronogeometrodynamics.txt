@@ -34,7 +34,7 @@
 
 \textit{The problem.} Every standard formulation of spacetime physics assumes a metric or a causal structure as input. The Jacobson argument~\cite{Jacobson} obtains the Einstein equations from thermodynamics on local Rindler horizons, but Lorentzian signature is universally assumed --- as in the approaches of Padmanabhan~\cite{Padmanabhan} and Verlinde~\cite{Verlinde}. The EPS axiomatisation~\cite{EPS} derives causal structure from free-fall and light propagation, but uses kinematic primitives. In every approach to Riemann's open problem --- what determines the metric? --- either the signature is prescribed or the derivation presupposes kinematic primitives.
 
-\textit{The gap.} No existing cost-based approach appears to derive Lorentzian signature itself in this sense.\footnote{Approaches that address related but distinct questions include: Gibbons and Rasheed~\cite{Gibbons1995} on Born--Infeld electrodynamics and signature; Kiefer~\cite{Kiefer2012} on signature change in quantum cosmology; and Isham~\cite{Isham1993} on the problem of time, which takes the causal structure as given. This paper distinguishes \emph{kinematic} approaches (which take free-fall, light propagation, or causal structure as primitive) from \emph{cost-based} approaches (which derive both the metric and its signature from a scalar cost function). Entropic gravity approaches~\cite{Verlinde,Padmanabhan} presuppose Lorentzian spacetime and derive gravitational dynamics; the present work operates at the prior level of deriving the Lorentzian signature itself.}
+\textit{The gap.} No existing cost-based approach appears to derive Lorentzian signature itself in this sense.\footnote{Related but distinct questions include Born--Infeld signature issues, signature change in quantum cosmology, and the problem of time~\cite{Gibbons1995,Kiefer2012,Isham1993}. Entropic gravity approaches~\cite{Verlinde,Padmanabhan} presuppose Lorentzian spacetime and derive gravitational dynamics; the present work addresses the prior cost-based signature question.}
 
 \textit{The solution.} Here time is neither coordinate nor metric primitive: it is the cost of change, so the metric --- including its Lorentzian signature --- is a consequence. This resolves the question in the $2\times 2$ setting dictated by a single local Rindler horizon. Information time, defined as $dt_{\mathrm{info}}:=d\Phi/H$, yields a signed leading quadratic form $G$ associated with $dt_{\mathrm{info}}^{2}$ (denoted heuristically by $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$, identified with the leading quadratic form of~\cite{Realizability}); the three realizability axioms~R, E, T together with nondegeneracy force $\det G<0$ (\S\ref{sec:lawI}). Lorentzian signature, real symplectic eigenvalues, and $d_{c}>0$ are then algebraic consequences of a single sign. The quadratic form $K(x)=x^{\top}Gx$ quantifies local temporal cost; departures from $K{=}1$ generate a local restoring drift near suitable base points (Law~III), making $K=1$ a locally self-consistent locus.
 
@@ -270,7 +270,7 @@ For macroscopic black holes, $T_{\mathrm{tol}}\ll d_{c}$; setting $D=T_{\mathrm{
 \end{remark}
 
 Since every local Rindler horizon admits the standard Rindler approximation~\cite{Jacobson} with $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$ (where $\kappa$ and $\ell$ vary by location), Proposition~\ref{prop:clausius} applies to each such horizon, yielding the Clausius relation locally.
-Combined with the entropy-area proportionality $S\propto A$ and the Jacobson argument~\cite{Jacobson}, Route~A yields $G_{\mu\nu}=8\pi T_{\mu\nu}$ for general metrics. The remaining thermodynamic input needed to invoke Jacobson's argument is $S\propto A$.
+Together with Jacobson's argument~\cite{Jacobson}, this supplies the local Clausius input needed for the Einstein equations. The remaining thermodynamic input needed to invoke Jacobson's argument is $S\propto A$.
 
 %===================================================================
 \section{Eigenvalue self-consistency (Route~B: direct algebraic)}\label{sec:field}
@@ -465,32 +465,19 @@ Physically, Axiom~R expresses the persistence of configurations through arbitrar
 
 \subsection*{The $K{=}1$ self-referential structure}
 
-The condition $K{=}1$ has a self-referential character: the metric~$G$ defines the quadratic form~$K$, and $K{=}1$ requires that this form reproduce~$G$'s own normalisation. The residual $K{-}1$ is the metric's own measure of departure from self-consistency; the leading-order restoring potential $V=\frac{1}{2}(K{-}1)^2$ is therefore fixed by smoothness and the requirements $V\geq 0$, $V=0$ at $K{=}1$ alone. At the field level, this self-referential loop extends: the eigenvalue principle $\sigma_2^2\Box\ln\sigma_i=1$ requires each symplectic eigenvalue to propagate at the rate determined by the metric it inhabits.
+The condition $K{=}1$ is self-referential: $G$ defines $K$, while $K{=}1$ fixes the normalisation against which deviations are measured. The restoring potential $V=\frac{1}{2}(K-1)^2$ is the leading smooth penalty for departures from this locus. At the field level, the conjectural analogue is $\sigma_2^2\Box\ln\sigma_i=1$.
 
 \subsection*{Stages}
 
-\noindent\textit{Stage~0 (origin):} Axioms~R, E, T together with nondegeneracy imply $\mathrm{Sig}(G)=(1,1)$ by~\cite{Realizability}; under isotropic linearisation this is equivalent to $d_{c}>0$ by Theorem~\ref{thm:equivalence}. Conversely, for definite~$G$ no critical damping threshold $d_{c}>0$ exists (Theorem~\ref{thm:necessity}): the framework is self-limiting, producing physical content only when the cost structure is Lorentzian.
-
-\medskip
-\noindent\textit{Stage~1 (geometry):} $G$ defines light cones and causal structure. Whether a Lorentzian information geometry --- as opposed to the Riemannian Fisher geometry --- can be made precise remains open.
-
-\medskip
-\noindent\textit{Stage~2 (thermodynamics):} $K{=}1$ $\to$ OU $\to$ Class~A/B; Clausius follows (Proposition~\ref{prop:clausius}); within Class~A, the local noise temperature is position-dependent, determined by the metric.
-
-\medskip
-\noindent\textit{Stage~3 (field):} $\sigma_2^2\Box\ln\sigma_i=1\Leftrightarrow R_{\mu\nu}=0$ (eq.~\eqref{eq:equiv}; Theorem~\ref{thm:field}, spherical).
-For non-vacuum configurations, $\rho=(1{-}K_2)/(8\pi r^2)$: matter is the angular eigenvalue's deficit from self-consistency per unit area. This \emph{rewrites} the Einstein $G_{tt}$-component; the coefficient $8\pi$ is inherited from GR, not derived.
-
-\medskip
-\noindent\textit{Stage~4 (quantum interface):} $d_{c}\cdot\sigma_1=\alpha$ identically (reciprocity: stabilisation cost and symplectic eigenvalue are reciprocal). The observable $K$ and boost angle $\varphi$ satisfy $\{K,\varphi\}_{J}=-2$ (constant on $\{K{=}1\}$); whether quantisation yields a hard $\sigma_1$ bound (Open Problem~2) or connects to the Bekenstein bound~\cite{Bekenstein} remains open. Axiom~T forces $\sigma_1>0$ (Proposition~\ref{prop:sigma1}); the self-consistency bound gives $\sigma_1\gtrsim\ell_P$ (Proposition~\ref{prop:domain}).
+The framework proceeds in four steps: the Realizability axioms fix the Lorentzian type of $G$; $K{=}1$ supplies a local self-consistency condition; Route~A connects the resulting OU dynamics to Clausius under $T_{\mathrm{eff}}=T_{\mathrm{tol}}$; and Route~B gives an algebraic spherical equivalence to $R_{\mu\nu}=0$. The quantum and global-attractor questions remain open.
 
 \subsection*{Extension to $(1{+}3)$ dimensions}
 
-In $(1{+}3)$ dimensions, $\{K{=}1\}\cong H^3$ ($H^3$ being the unit spacelike hyperboloid in Minkowski $\mathbb{R}^{1,3}$, the natural higher-dimensional analogue of the unit $G$-hyperboloid) carries $S^2$ cross-sections with area $4\pi(\kappa\ell)^2$. With $\alpha=1$, $\sigma_1=\kappa\ell$, so the cross-sectional area is $A=4\pi\sigma_1^2$ and the Bekenstein--Hawking entropy $S_{\mathrm{BH}}=A/4=\pi\sigma_1^2$, expressing both in terms of the same symplectic invariant. The coefficient $\eta=1/4$ follows from the first law $dM=T_{H}\,dS$ with $A_{H}=16\pi M^{2}$, which gives $S_{\mathrm{BH}}=A_{H}/4$ directly; this need not be separately assumed (given $T_{H}=\hbar\kappa/(2\pi)$~\cite{Hawking} as external input), the first law yielding the Bekenstein--Hawking entropy-area law~\cite{Bekenstein}. Two structural changes accompany the extension: the equivalence $d_{c}>0\Leftrightarrow\mathrm{Sig}(G)=(1,1)$ weakens to a one-directional implication (Lorentzian signature is necessary but no longer sufficient for $d_{c}>0$), and the uniqueness of~$J_G$ (guaranteed by $\dim(\mathrm{Skew}_2)=1$) requires a symplectic pairing choice when $\dim(\mathrm{Skew}_4)=6$. For the Rindler metric with isotropic spatial sector, the three standard pairings (block-diagonal, canonical~$J_4$, and anti-diagonal) yield identical~$d_{c}$; general pairings do not, and whether a canonical selection rule exists is open. The three Jacobson inputs thereby trace to a single symplectic invariant: $\sigma_1$. The $2\times 2$ setting captures signature, light cones, and symplectic structure; conformal and spinor structure require the $(1{+}3)$-dimensional extension.
+In $(1{+}3)$ dimensions, $\{K{=}1\}\cong H^3$ carries $S^2$ cross-sections with area $4\pi\sigma_1^2$ when $\alpha=1$ and $\sigma_1=\kappa\ell$. This relates the same symplectic invariant to the Bekenstein--Hawking area variable~\cite{Bekenstein}, while the coefficient $1/4$ still relies on the usual Hawking temperature~\cite{Hawking}/first-law input. Two structural changes remain: $d_{c}>0\Leftrightarrow\mathrm{Sig}(G)=(1,1)$ weakens beyond $2\times 2$ (Lorentzian signature becomes necessary but not sufficient), and $J_G$ requires a symplectic pairing choice when $\dim(\mathrm{Skew}_4)=6$.
 
 \subsection*{Departure from GENERIC}
 
-For Lorentzian~$G$, the symmetric part $S=(J_G+J_G^\top)/2\neq 0$ departs from the GENERIC formalism~\cite{GENERIC} while $d_{c}$ is controlled by $\det G$ alone, suggesting a Lorentzian extension of non-equilibrium thermodynamics in the spirit of Wiener's programme~\cite{Wiener}. The $2\times 2$ framework has its own physical motivation: a single local Rindler horizon defines exactly one temporal and one spatial direction normal to it.
+For Lorentzian~$G$, $J_G$ is $G$-antisymmetric but not Euclidean antisymmetric, so the framework departs from the standard GENERIC setting~\cite{GENERIC}.
 
 \subsection*{Limitations}
 
@@ -547,9 +534,6 @@ M.~Grmela, H.\,C.~\"Ottinger,
 Dynamics and thermodynamics of complex fluids.~I.
 Phys.\ Rev.\ E \textbf{56}, 6620 (1997).
 \url{https://doi.org/10.1103/PhysRevE.56.6620}
-
-\bibitem{Wiener}
-N.~Wiener, Cybernetics. MIT Press (1948).
 
 \bibitem{Einstein1915}
 A.~Einstein,
