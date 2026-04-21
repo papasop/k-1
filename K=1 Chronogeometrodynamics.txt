@@ -34,7 +34,7 @@
 
 \textit{The problem.} Every standard formulation of spacetime physics assumes a metric or a causal structure as input. The Jacobson argument~\cite{Jacobson} obtains the Einstein equations from thermodynamics on local Rindler horizons, but Lorentzian signature is universally assumed --- as in the approaches of Padmanabhan~\cite{Padmanabhan} and Verlinde~\cite{Verlinde}. The EPS axiomatisation~\cite{EPS} derives causal structure from free-fall and light propagation, but uses kinematic primitives. In every approach to Riemann's open problem --- what determines the metric? --- either the signature is prescribed or the derivation presupposes kinematic primitives.
 
-\textit{The gap.} No existing cost-based approach appears to derive Lorentzian signature itself in this sense.\footnote{Approaches that address related but distinct questions include: Gibbons and Rasheed~\cite{Gibbons1995} on Born--Infeld electrodynamics and signature; Kiefer~\cite{Kiefer2012} on signature change in quantum cosmology; and Isham~\cite{Isham1993} on the problem of time, which takes the causal structure as given. This paper distinguishes \emph{kinematic} approaches (which take free-fall, light propagation, or causal structure as primitive) from \emph{cost-based} approaches (which derive both the metric and its signature from a scalar cost function). The claim is that no existing cost-based derivation yields Lorentzian signature. Entropic gravity approaches~\cite{Verlinde,Padmanabhan} presuppose Lorentzian spacetime and derive gravitational dynamics; the present work operates at the prior level of deriving the Lorentzian signature itself.} The present work fills this gap.
+\textit{The gap.} No existing cost-based approach appears to derive Lorentzian signature itself in this sense.\footnote{Approaches that address related but distinct questions include: Gibbons and Rasheed~\cite{Gibbons1995} on Born--Infeld electrodynamics and signature; Kiefer~\cite{Kiefer2012} on signature change in quantum cosmology; and Isham~\cite{Isham1993} on the problem of time, which takes the causal structure as given. This paper distinguishes \emph{kinematic} approaches (which take free-fall, light propagation, or causal structure as primitive) from \emph{cost-based} approaches (which derive both the metric and its signature from a scalar cost function). Entropic gravity approaches~\cite{Verlinde,Padmanabhan} presuppose Lorentzian spacetime and derive gravitational dynamics; the present work operates at the prior level of deriving the Lorentzian signature itself.}
 
 \textit{The solution.} Here time is neither coordinate nor metric primitive: it is the cost of change, so the metric --- including its Lorentzian signature --- is a consequence. This resolves the question in the $2\times 2$ setting dictated by a single local Rindler horizon. Information time, defined as $dt_{\mathrm{info}}:=d\Phi/H$, yields a signed leading quadratic form $G$ associated with $dt_{\mathrm{info}}^{2}$ (denoted heuristically by $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$, identified with the leading quadratic form of~\cite{Realizability}); the three realizability axioms~R, E, T together with nondegeneracy force $\det G<0$ (\S\ref{sec:lawI}). Lorentzian signature, real symplectic eigenvalues, and $d_{c}>0$ are then algebraic consequences of a single sign. The quadratic form $K(x)=x^{\top}Gx$ quantifies local temporal cost; departures from $K{=}1$ generate a local restoring drift near suitable base points (Law~III), making $K=1$ a locally self-consistent locus.
 
@@ -45,7 +45,7 @@
 \end{itemize}
 Route~A is general but requires $S\propto A$; Route~B is thermodynamically independent but currently limited to spherical symmetry. \textit{Main results:} under isotropic linearisation, $d_{c}>0\Leftrightarrow\mathrm{Sig}(G)=(1,1)$ (Theorem~\ref{thm:equivalence}) and $\sigma_2^2\,\Box\ln\sigma_i=1\Leftrightarrow R_{\mu\nu}=0$ (Theorem~\ref{thm:field}); full statements follow in \S\S\ref{sec:lawII}--\ref{sec:singularity}.
 
-\medskip\noindent\textbf{Notation.} $\mathrm{spec}(A)$: spectrum of $A$. $\mathrm{Sig}(G)=(p,q)$: inertia ($p$ positive, $q$ negative eigenvalues). $J=\bigl(\begin{smallmatrix}0&1\\-1&0\end{smallmatrix}\bigr)$: canonical symplectic matrix. $\|\cdot\|$: Euclidean norm on~$\mathbb{R}^{2}$. $\nabla$: Euclidean gradient on~$\mathbb{R}^{2}$. $\alpha>0$: normalisation constant ($\alpha=1$ when compared with thermal quantities). $\kappa$: surface gravity of the horizon (distinct from the restoring rate $\kappa_{K}$). $\ell$: proper distance from the horizon. $\sigma>0$: noise amplitude in the stochastic dynamics; $\sigma_{1}:=r\sqrt{f}$, $\sigma_{2}:=r$: symplectic eigenvalues of the metric. $D\ge 0$: $2\times 2$ positive-semidefinite dissipation matrix. $H_{*}=I$: isotropic linearisation of the cost-weight matrix (see \S\ref{sec:stability}). $\Box\phi := r^{-2}\partial_{r}(r^{2}f\,\partial_{r}\phi)$: \emph{radial} d'Alembertian, exact for $r$-dependent $\phi$ (not the full $4$-dimensional wave operator).
+\medskip\noindent\textbf{Notation.} $\mathrm{spec}(A)$: spectrum of $A$. $\mathrm{Sig}(G)=(p,q)$: inertia ($p$ positive, $q$ negative eigenvalues). $J=\bigl(\begin{smallmatrix}0&1\\-1&0\end{smallmatrix}\bigr)$: canonical symplectic matrix. $\|\cdot\|$: Euclidean norm on~$\mathbb{R}^{2}$. $\nabla$: Euclidean gradient on~$\mathbb{R}^{2}$. $\alpha>0$: normalisation constant ($\alpha=1$ when compared with thermal quantities). $\kappa$: surface gravity of the horizon (distinct from the restoring rate $\kappa_{K}$). $\ell$: proper distance from the horizon. $\sigma>0$: noise amplitude in the stochastic dynamics; $\sigma_{1}:=r\sqrt{f}$, $\sigma_{2}:=r$: symplectic eigenvalues of the metric. $D\ge 0$: $2\times 2$ positive-semidefinite dissipation matrix. $\Box\phi := r^{-2}\partial_{r}(r^{2}f\,\partial_{r}\phi)$: \emph{radial} d'Alembertian, exact for $r$-dependent $\phi$ (not the full $4$-dimensional wave operator).
 
 \section{Metric from information time (Law~I)}\label{sec:lawI}
 
@@ -54,7 +54,7 @@ Route~A is general but requires $S\propto A$; Route~B is thermodynamically indep
 
 \medskip
 
-The information time $dt_{\mathrm{info}}:=d\Phi/H$, where $\Phi$ parametrises structural variation and $H>0$ is the local cost per unit variation of $\Phi$ (an entropic resistance), provides a signed leading quadratic form $G$ associated with $dt_{\mathrm{info}}^{2}$ (denoted heuristically by $G:=\nabla^{2}(dt_{\mathrm{info}}^{2})$): the local quadratic approximation $dt_{\mathrm{info}}^{2}\approx \delta x^{\top}G\,\delta x$. The quadratic form $K(x):=x^{\top}Gx$ quantifies local temporal cost, and $K=1$ identifies the self-consistent locus. This redefinition of time enters the theorems through $G$ alone: $dt_{\mathrm{info}}$ serves as the motivating construction for~$G$ (the leading-order form $Q$ of~\cite{Realizability}). The form $G$ has the structure of an information metric --- it measures the local cost of displacement, as the Fisher metric measures the local cost of statistical distinguishability~\cite{Amari} --- but with Lorentzian rather than Riemannian signature.
+The information time $dt_{\mathrm{info}}:=d\Phi/H$, where $\Phi$ parametrises structural variation and $H>0$ is the local cost per unit variation of $\Phi$ (an entropic resistance), provides a signed leading quadratic form $G$ associated with $dt_{\mathrm{info}}^{2}$ (denoted heuristically by $G:=\nabla^{2}(dt_{\mathrm{info}}^{2})$): the local quadratic approximation $dt_{\mathrm{info}}^{2}\approx \delta x^{\top}G\,\delta x$. The quadratic form $K(x):=x^{\top}Gx$ quantifies local temporal cost, and $K=1$ identifies the self-consistent locus. This redefinition of time enters the theorems through $G$ alone: $dt_{\mathrm{info}}$ serves as the motivating construction for~$G$ (the leading-order form $Q$ of~\cite{Realizability}).
 
 \medskip\noindent\textit{Bridge to the Realizability framework.} The notation $G:=\nabla^{2}(dt_{\mathrm{info}}^{2})$ is used as a shorthand: strictly, $G$ denotes the \emph{signed leading quadratic coefficient form} associated with $dt_{\mathrm{info}}^{2}$, identified with the leading quadratic form $Q$ of~\cite{Realizability}. The nonnegative information-time cost itself is represented to leading order by the positive part $(x^{\top}Gx)_{+}$, as in~\cite{Realizability}; $G$ is the underlying signed coefficient form, which may take both signs even though $dt_{\mathrm{info}}^{2}\ge 0$. Hence the main theorem of~\cite{Realizability} applies directly: Axioms~R, E, T together with nondegeneracy imply $\mathrm{Sig}(G)=(1,1)$, equivalently $\det G<0$. The condition $K=x^{\top}Gx=1$ is not a conclusion of~\cite{Realizability}, but the additional self-consistency condition introduced in the present paper.
 
@@ -98,8 +98,6 @@ d_{c}(\alpha)=\alpha\sqrt{-1/\det G}>0.\label{eq:dc}
 \begin{proof}
 $\mathrm{tr}(G^{-1}J)=0$ and $\det(G^{-1}J)=1/\det G$; the characteristic polynomial $\lambda^{2}+1/\det G=0$ then gives $\mathrm{spec}(J_{G})=\{\pm d_{c}\}$. For the isotropic case $H_{*}=I$ (the linearisation of $H$ at the base point; see \S\ref{sec:stability}), $\max\mathrm{Re}\,\mathrm{spec}(J_{G}-dI)=d_{c}-d$, which vanishes at $d=d_{c}$.\qed
 \end{proof}
-
-Near threshold, $\lambda_{\max}(d)=-(d-d_{c})$ and the relaxation time $\tau\sim(d-d_{c})^{-1}$ diverge, confirming $d_{c}$ as a bifurcation point.
 
 \begin{theorem}[Necessity of Lorentzian Signature]\label{thm:necessity}
 If $\mathrm{Sig}(G)=(2,0)$ or $(0,2)$, then $\det G>0$, so $\lambda^{2}+1/\det G=0$ has purely imaginary roots and $d_{c}=0$.
@@ -234,7 +232,7 @@ With this stationary variance, the FDT form $\sigma_{K}^{2}=2\kappa_{K}T_{\mathr
 \delta Q := dV + \tfrac{1}{2}\sigma_{K}^{2}\,dt,\qquad \sigma_{K}=2\sigma\|Gx_{*}\|.
 \]
 (The heat definition follows the Sekimoto--Seifert stochastic thermodynamics convention~\cite{Sekimoto}.)
-A natural candidate for the physical basis of this identification is the KMS condition~\cite{Haag,Connes1994}: local thermal equilibrium at a Rindler horizon requires correlation functions to satisfy a periodicity condition, which forces the local temperature to equal~$T_{\mathrm{tol}}$. A derivation of the identification from KMS within the present framework remains for future work.
+A derivation of the identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, possibly from a KMS condition~\cite{Haag,Connes1994}, remains open.
 
 \begin{proposition}[Local Clausius Equivalence]\label{prop:clausius}
 Under local thermal equilibrium (in the KMS sense of the preceding remark) and the identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, the Clausius relation $\delta Q=T_{\mathrm{tol}}\,dS$ is equivalent to
@@ -265,7 +263,7 @@ The $K$-space noise amplitude $\sigma_{K}(x)=2\sigma\|Gx\|$ varies along $\{K=1\
 \begin{equation}
 T_{\mathrm{loc}}(x) := \frac{\sigma_{K}(x)^{2}}{2\kappa_{K}(x_{*})} = \frac{\sigma^{2}\,x^{\top}G^{2}x}{2d_{c}\,x_{*}^{\top}G^{2}x_{*}}.\label{eq:Tloc}
 \end{equation}
-For $\kappa\ell=1$ and $x(t)=(\sinh t,\cosh t)$ (with base point $x_{*}=(0,1)$, so $x_{*}^{\top}G^{2}x_{*}=1$): $T_{\mathrm{loc}}(t)=\sigma^{2}\cosh(2t)/(2d_{c})$, showing that the local temperature is an intrinsic property of the metric. This variation reflects the temperature assigned along different points of the boost orbit, not a thermodynamic fluctuation; Class~B remains thermodynamically inert and carries no heat.
+This position dependence should not be read as a Class~B heat fluctuation: variation along the boost orbit changes the observer/position assignment, while Class~B remains thermodynamically inert and carries no heat.
 
 \begin{remark}[Stability constraint]
 For macroscopic black holes, $T_{\mathrm{tol}}\ll d_{c}$; setting $D=T_{\mathrm{tol}}I$ renders $K=1$ unstable. Stability requires $D\ge d_{c}I$; critical damping $D=d_{c}I$ is the unique marginally stable choice.
@@ -517,7 +515,7 @@ satisfies $K(x(t))\to 1$ as $t\to\infty$.
 
 \subsection*{Conclusion}
 
-General relativity prescribes Lorentzian signature; the present work derives it from a cost asymmetry and shows that the resulting metric locally enforces its own normalisation. At the point level, the Clausius relation follows algebraically once the local effective temperature is identified with the Tolman temperature. The eigenvalue self-consistency principle is algebraically equivalent to the vacuum Einstein equations in the spherically symmetric sector, connecting the $K{=}1$ language to the field level. Axiom~T leaves curvature singularities (where $\sigma_1$ degenerates) outside the theory's domain, where the framework is undefined rather than incorrect, and the OU variance sets a soft Planck-scale resolution limit. What remains prescribed is the cost asymmetry itself: why one direction carries positive cost while others do not. This is Riemann's question in economic form.
+General relativity prescribes Lorentzian signature; the present work derives it from a cost asymmetry and shows that the resulting metric locally enforces its own normalisation. At the point level, within the stochastic thermodynamics framework, the Clausius relation follows once the local effective temperature is identified with the Tolman temperature. In the spherically symmetric sector, the eigenvalue self-consistency principle is algebraically equivalent to the vacuum Einstein equations, connecting the $K{=}1$ language to the field level. Axiom~T leaves curvature singularities (where $\sigma_1$ degenerates) outside the theory's domain, where the framework is undefined rather than incorrect, and the OU variance sets a soft Planck-scale resolution limit. What remains prescribed is the cost asymmetry itself: why one direction carries positive cost while others do not. This is Riemann's question in economic form.
 
 \bigskip
 \noindent\textbf{Statements and Declarations}
@@ -604,12 +602,6 @@ K.~Sekimoto,
 Stochastic Energetics.
 Lecture Notes in Physics \textbf{799}, Springer (2010).
 \url{https://doi.org/10.1007/978-3-642-05411-2}
-
-\bibitem{Amari}
-S.~Amari,
-Information Geometry and Its Applications.
-Springer (2016).
-\url{https://doi.org/10.1007/978-4-431-55978-8}
 
 \bibitem{Gibbons1995}
 G.\,W.~Gibbons, D.\,A.~Rasheed,
