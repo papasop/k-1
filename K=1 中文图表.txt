@@ -70,7 +70,7 @@
 \begin{abstract}
 \noindent\textbf{背景.\ } 时间通常作为物理学中的原始概念出现——一种未被推导的输入。
 
-\smallskip\noindent\textbf{框架.\ } 本文将时间建模为变化的代价。若与 $dt_{\mathrm{info}}^{2}$ 相关的符号化主二次型 $G$ 被识别为~\cite{Realizability} 中满足公理 R, E, T 的主二次型, 则在非退化性下必有 $\mathrm{Sig}(G)=(1,1)$, 等价于 $\det G<0$。在各向同性线性化之下, 符号 $\det G<0$ 有三种等价表述: Lorentz 号差、实辛特征值以及 $d_{c}>0$(定理~\ref{thm:equivalence}); $K(x)=x^{\top}Gx=1$ 是本文引入的单位代价轨迹, 作为附加的自洽条件。在律 II 的辛-耗散生成子类内, $G$ 诱导的辛结构与 $D\ge 0$ 约束唯一确定演化律(定理~\ref{thm:lawII}); 在临界阻尼处且归一化特征向量基点上, 恢复速率为 $\kappa_{K}=4d_{c}$(定理~\ref{thm:restoring})。
+\smallskip\noindent\textbf{框架.\ } 本文将时间建模为变化的代价。若与 $dt_{\mathrm{info}}^{2}$ 相关的符号化主二次型 $G$ 被识别为~\cite{Realizability} 中满足公理 R, E, T 的主二次型, 则在非退化性下必有 $\mathrm{Sig}(G)=(1,1)$, 等价于 $\det G<0$。在各向同性线性化之下, 符号 $\det G<0$ 有三种等价表述: Lorentz 号差、实辛特征值以及 $d_{c}>0$(定理~\ref{thm:equivalence}); $K(x)=x^{\top}Gx=1$ 是本文引入的单位代价轨迹, 作为附加的自洽条件。在律 II 所指定的辛-耗散生成子类 $GA=\alpha J-GD$ 内, $G$ 诱导的辛结构使演化律唯一化为 $\dot x=(J_G-D)\nabla V$(定理~\ref{thm:lawII}); 在临界阻尼处且归一化特征向量基点上, 恢复速率为 $\kappa_{K}=4d_{c}$(定理~\ref{thm:restoring})。
 
 \smallskip\noindent\textbf{热力学内容.\ } 在 $K=1$ 附近的稳态区, Clausius 关系按 Tolman 温度与稳定性边界 $d_{c}$ 唯一地确定噪声幅度(命题~\ref{prop:clausius}, 式~\eqref{eq:noise})。在该热力学桥内, 唯一的外部温度等同是 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$; 途径 B(\S~\ref{sec:field})不使用热力学输入, 但目前仅给出球对称真空情形的代数等价。
 
@@ -83,14 +83,14 @@
 
 \smallskip\noindent\textbf{缺口.\ } 在本文采用的``局部代价主二次型''意义下, 现有方法通常把 Lorentz 号差或等价的因果结构作为输入; 本文关注的是位于此前一层的问题: 代价结构本身何时强制 Lorentz 型主符号。\footnote{探讨相关但不同问题的方法包括: Born--Infeld 号差问题、量子宇宙学中的号差变化, 以及时间问题~\cite{Gibbons1995,Kiefer2012,Isham1993}。熵引力方法~\cite{Verlinde,Padmanabhan} 以 Lorentz 时空为前提并推导引力动力学; 本文处理的是位于此前一层的、基于代价的号差问题。}
 
-\smallskip\noindent\textbf{解决方案.\ } 在本文的建模中, 时间既非坐标, 也非度规原语, 而是变化的代价; 在本文的 $2\times 2$ 局部可实现性框架中, 一旦符号化主二次型 $G$ 与满足公理 R, E, T 的主二次型相识别, 其 Lorentz 号差即成为代数结果。\emph{本文采用结构性框架而非具体物理模型: $\Phi$ 与 $H$ 不被指定为特定物理量; 只要它们诱导出的代价结构满足公理 R, E, T 与非退化性, 后续结论即约束所得主二次型的代数类型。因而物理内容在于这些公理的代数后果, 而非 $\Phi, H$ 的具体实例化。通过选择 $H$ 的单位, $dt_{\mathrm{info}}$ 按定义具有时间量纲。} 这个问题在单一局部 Rindler 视界所决定的 $2\times 2$ 情形中得到一个局部回答。信息时间 $dt_{\mathrm{info}}:=d\Phi/H$ 给出与 $dt_{\mathrm{info}}^{2}$ 相关的符号化主二次型 $G$(启发式地记为 $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$, 等同于~\cite{Realizability} 的主二次型); 三个可实现性公理 R, E, T 连同非退化性强制 $\det G<0$(\S\ref{sec:lawI})。Lorentz 号差、实辛特征值以及 $d_{c}>0$, 随后都是单一符号的代数推论。二次型 $K(x)=x^{\top}Gx$ 量度局部时间代价; 偏离 $K=1$ 在合适基点附近产生局部恢复漂移(律 III), 从而 $K=1$ 成为局部自洽的轨迹。
+\smallskip\noindent\textbf{局部回答.\ } 在本文的建模中, 时间既非坐标, 也非度规原语, 而是变化的代价; 在本文采用的 $2\times 2$ 局部可实现性框架中, 一旦符号化主二次型 $G$ 与满足公理 R, E, T 的主二次型相识别, 其 Lorentz 号差即成为代数结果。\emph{本文采用结构性框架而非具体物理模型: $\Phi$ 与 $H$ 不被指定为特定物理量; 只要它们诱导出的代价结构满足公理 R, E, T 与非退化性, 后续结论即约束所得主二次型的代数类型。因而物理内容在于这些公理的代数后果, 而非 $\Phi, H$ 的具体实例化。通过选择 $H$ 的单位, $dt_{\mathrm{info}}$ 按定义具有时间量纲。} 这个问题在单一局部 Rindler 视界所决定的 $2\times 2$ 情形中得到一个局部回答。信息时间 $dt_{\mathrm{info}}:=d\Phi/H$ 给出与 $dt_{\mathrm{info}}^{2}$ 相关的符号化主二次型 $G$(启发式地记为 $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$, 等同于~\cite{Realizability} 的主二次型); 三个可实现性公理 R, E, T 连同非退化性强制 $\det G<0$(\S\ref{sec:lawI})。Lorentz 号差、实辛特征值以及 $d_{c}>0$, 随后都是单一符号的代数推论。二次型 $K(x)=x^{\top}Gx$ 量度局部时间代价; 偏离 $K=1$ 在合适基点附近产生局部恢复漂移(律 III), 从而 $K=1$ 成为局部自洽的轨迹。
 
 \smallskip\noindent\textbf{与爱因斯坦方程相连的两条路径.}
 \begin{itemize}[leftmargin=2em, itemsep=0.4ex, parsep=0pt, topsep=0.3ex]
 \item[\textbf{A.}] \textbf{热力学桥} (\S\S\ref{sec:lawI}--\ref{sec:thermo}):\ $K{=}1\xrightarrow{\mathrm{lin.}}\mathrm{OU}\to\mathrm{Clausius}$; 在 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 与 $S\propto A$ 两个外部输入下, 结合 Jacobson 论证~\cite{Jacobson}, 对一般度规给出 $G_{\mu\nu}=8\pi T_{\mu\nu}$。
 \item[\textbf{B.}] \textbf{等价定理} (\S~\ref{sec:field}):\ 在球对称部分, 特征值自洽条件 $\sigma_2^2\Box\ln\sigma_i=1$——$K{=}1$ 在场级上带有动机的类似物, 作为一个猜想提出——在代数上等价于 $R_{\mu\nu}=0$, \emph{不引入任何热力学输入}。这不是从框架公理推导出爱因斯坦方程, 而是用 $K{=}1$ 的语言重新表述真空方程的等价形式。
 \end{itemize}
-途径 A 适用于局部 Rindler 视界的普适热力学桥, 但需要 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 与 $S\propto A$ 两个外部输入; 途径 B 在热力学上独立但目前仅限球对称。
+途径 A 是以局部 Rindler 视界为背景的热力学桥, 但需要 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 与 $S\propto A$ 两个外部输入; 途径 B 在热力学上独立但目前仅限球对称。
 
 \smallskip\noindent\textbf{主要结果.\ } \emph{点级结果}: 在各向同性线性化之下, Lorentz 号差、实辛谱与正稳定阈值 $d_{c}>0$ 等价(定理~\ref{thm:equivalence})。\emph{场级结果}: 在静态球对称真空度规中, 所猜想的特征值自洽条件 $\sigma_2^2\,\Box\ln\sigma_i=1$ 在代数上等价于 $R_{\mu\nu}=0$(定理~\ref{thm:field})。完整表述见 \S\S\ref{sec:symplectic}--\ref{sec:singularity}。
 
