@@ -83,7 +83,7 @@
 
 \smallskip\noindent\textbf{缺口.\ } 就本文所述的意义而言, 似乎没有现成的基于代价的方法能推出 Lorentz 号差本身。\footnote{探讨相关但不同问题的方法包括: Born--Infeld 号差问题、量子宇宙学中的号差变化, 以及时间问题~\cite{Gibbons1995,Kiefer2012,Isham1993}。熵引力方法~\cite{Verlinde,Padmanabhan} 以 Lorentz 时空为前提并推导引力动力学; 本文处理的是位于此前一层的、基于代价的号差问题。}
 
-\smallskip\noindent\textbf{解决方案.\ } 此处时间既非坐标, 也非度规原语: 它是变化的代价; 在本文的 $2\times 2$ 局部可实现性框架中, 度规——包括其 Lorentz 号差——成为推出的结果。这个问题在单一局部 Rindler 视界所决定的 $2\times 2$ 情形中被解决。信息时间 $dt_{\mathrm{info}}:=d\Phi/H$ 给出与 $dt_{\mathrm{info}}^{2}$ 相关的符号化主二次型 $G$(启发式地记为 $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$, 等同于~\cite{Realizability} 的主二次型); 三个可实现性公理 R, E, T 连同非退化性强制 $\det G<0$(\S\ref{sec:lawI})。Lorentz 号差、实辛特征值以及 $d_{c}>0$, 随后都是单一符号的代数推论。二次型 $K(x)=x^{\top}Gx$ 量度局部时间代价; 偏离 $K=1$ 在合适基点附近产生局部恢复漂移(律 III), 从而 $K=1$ 成为局部自洽的轨迹。
+\smallskip\noindent\textbf{解决方案.\ } 此处时间既非坐标, 也非度规原语: 它是变化的代价; 在本文的 $2\times 2$ 局部可实现性框架中, 度规——包括其 Lorentz 号差——成为推出的结果。\emph{本文采用结构性框架(而非具体物理模型): $\Phi$ 与 $H$ 不被指定为特定物理量, 框架对任何满足公理 R, E, T 的配对均成立; 物理内容在于公理的代数后果, 而非 $\Phi, H$ 本身的具体实例化. 通过选择 $H$ 的单位, $dt_{\mathrm{info}}$ 按定义具有时间量纲.} 这个问题在单一局部 Rindler 视界所决定的 $2\times 2$ 情形中被解决。信息时间 $dt_{\mathrm{info}}:=d\Phi/H$ 给出与 $dt_{\mathrm{info}}^{2}$ 相关的符号化主二次型 $G$(启发式地记为 $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$, 等同于~\cite{Realizability} 的主二次型); 三个可实现性公理 R, E, T 连同非退化性强制 $\det G<0$(\S\ref{sec:lawI})。Lorentz 号差、实辛特征值以及 $d_{c}>0$, 随后都是单一符号的代数推论。二次型 $K(x)=x^{\top}Gx$ 量度局部时间代价; 偏离 $K=1$ 在合适基点附近产生局部恢复漂移(律 III), 从而 $K=1$ 成为局部自洽的轨迹。
 
 \smallskip\noindent\textbf{通向爱因斯坦方程的两条路径.}
 \begin{itemize}[leftmargin=2em, itemsep=0.4ex, parsep=0pt, topsep=0.3ex]
@@ -100,6 +100,7 @@
 \item $\|\cdot\|$: $\mathbb{R}^{2}$ 上的欧氏范数; $\nabla$: $\mathbb{R}^{2}$ 上的欧氏梯度。
 \item $\alpha>0$: 归一化常数(与热力学量比较时取 $\alpha=1$); $\kappa$: 视界的表面引力(与恢复速率 $\kappa_{K}$ 区别); $\ell$: 距视界的固有距离。
 \item $\sigma>0$: 随机动力学中的噪声幅度; $\sigma_{1}:=r\sqrt{f}$, $\sigma_{2}:=r$: 度规的辛特征值; $D\ge 0$: $2\times 2$ 半正定耗散矩阵。
+\item \emph{$H$ 与 $H_{*}$ 是不同数学对象}: $H$(标量, 定义于 \S\ref{sec:lawI}) 是 $\Phi$ 单位变化的局部代价(熵阻抗), 出现于 $dt_{\mathrm{info}}=d\Phi/H$; $H_{*}$(矩阵, 出现于 \S\ref{sec:stability}) 是代价函数在基点处的二阶权重矩阵, 出现于 $d(\delta x)/dt=(J_{G}-dI)H_{*}\delta x$. 字母相似只是沿用惯例, 两者无直接关系。
 \item $\Box\phi := r^{-2}\partial_{r}(r^{2}f\,\partial_{r}\phi)$: \emph{径向}达朗贝尔算子, 对仅依赖 $r$ 的 $\phi$ 精确(非完整四维波算子)。
 \end{itemize}
 
@@ -109,7 +110,7 @@
 
 \medskip
 
-信息时间 $dt_{\mathrm{info}}:=d\Phi/H$, 其中 $\Phi$ 参数化结构变化, $H>0$ 是 $\Phi$ 单位变化的局部代价(熵阻抗), 给出与 $dt_{\mathrm{info}}^{2}$ 相关的符号化主二次型 $G$ (启发式地记为 $G:=\nabla^{2}(dt_{\mathrm{info}}^{2})$): 局部二次近似 $dt_{\mathrm{info}}^{2}\approx \delta x^{\top}G\,\delta x$。二次型 $K(x):=x^{\top}Gx$ 量度局部时间代价, $K=1$ 标识自洽轨迹。时间的这种重新定义仅通过 $G$ 进入诸定理:$dt_{\mathrm{info}}$ 作为对 $G$(即~\cite{Realizability} 的主二次型 $Q$)的启发式构造。
+信息时间 $dt_{\mathrm{info}}:=d\Phi/H$, 其中 $\Phi$ 参数化结构变化, $H>0$ 是 $\Phi$ 单位变化的局部\emph{标量}代价(熵阻抗; 注意 $H$ 与 \S\ref{sec:stability} 中的权重矩阵 $H_{*}$ 无关), 给出与 $dt_{\mathrm{info}}^{2}$ 相关的符号化主二次型 $G$ (启发式地记为 $G:=\nabla^{2}(dt_{\mathrm{info}}^{2})$): 局部二次近似 $dt_{\mathrm{info}}^{2}\approx \delta x^{\top}G\,\delta x$。二次型 $K(x):=x^{\top}Gx$ 量度局部时间代价, $K=1$ 标识自洽轨迹。时间的这种重新定义仅通过 $G$ 进入诸定理:$dt_{\mathrm{info}}$ 作为对 $G$(即~\cite{Realizability} 的主二次型 $Q$)的启发式构造。
 
 \medskip\noindent\textit{通向可实现性框架的桥接.} 记号 $G:=\nabla^{2}(dt_{\mathrm{info}}^{2})$ 是一种简写: 严格地说, $G$ 表示与 $dt_{\mathrm{info}}^{2}$ 相关的\emph{符号化主二次系数形式}, 等同于~\cite{Realizability} 的主二次型 $Q$。非负的信息时间代价本身由其正部 $(x^{\top}Gx)_{+}$ 做主导阶近似, 正如~\cite{Realizability} 中所做; $G$ 则是其下面的符号化系数形式, 即便 $dt_{\mathrm{info}}^{2}\ge 0$, $G$ 仍可取正负两种符号。因此~\cite{Realizability} 的主要定理直接适用:公理 R, E, T 连同非退化性意味着 $\mathrm{Sig}(G)=(1,1)$, 等价于 $\det G<0$。条件 $K=x^{\top}Gx=1$ 不是~\cite{Realizability} 的结论, 而是本文引入的附加自洽条件。
 
@@ -679,6 +680,7 @@ Jacobson 论证~\cite{Jacobson} 从三个输入重构爱因斯坦方程: Lorentz
 \item 途径 A 需要 $S\propto A$。\textit{(外部输入)}
 \item 途径 B 仅在球对称下被证明; 一般扩展需要零曲面 Gauss--Codazzi。\textit{(范围)}
 \item 在各向同性线性化之外, $d_c$ 不再是纯粹的号差不变量;对非各向同性 $H_*$ 的 $d_c$ 的完整刻画是公开的。
+\item \textit{分层构造}: 本文采用分层构造——信息时间层使用标量代价 $H$, 稳定性层使用矩阵代价权重 $H_*$。两者都是"代价"概念在不同层级的局部二阶表达, 但在当前构造中没有显式的数学连接。从单一更深的公理\emph{同时}派生 $H$ 和 $H_*$ 超出本文范围, 留作未来工作。
 \end{enumerate}
 
 \subsection*{未解问题}
