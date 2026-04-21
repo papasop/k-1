@@ -83,7 +83,7 @@
 
 \smallskip\noindent\textbf{缺口.\ } 就本文所述的意义而言, 似乎没有现成的基于代价的方法能推出 Lorentz 号差本身。\footnote{探讨相关但不同问题的方法包括: Born--Infeld 号差问题、量子宇宙学中的号差变化, 以及时间问题~\cite{Gibbons1995,Kiefer2012,Isham1993}。熵引力方法~\cite{Verlinde,Padmanabhan} 以 Lorentz 时空为前提并推导引力动力学; 本文处理的是位于此前一层的、基于代价的号差问题。}
 
-\smallskip\noindent\textbf{解决方案.\ } 此处时间既非坐标, 也非度规原语: 它是变化的代价; 在本文的 $2\times 2$ 局部可实现性框架中, 度规——包括其 Lorentz 号差——成为推出的结果。\emph{本文采用结构性框架(而非具体物理模型): $\Phi$ 与 $H$ 不被指定为特定物理量; 只要它们诱导出的代价结构满足公理 R, E, T 与非退化性, 后续结论即约束所得主二次型的代数类型. 因而物理内容在于这些公理的代数后果, 而非 $\Phi, H$ 本身的具体实例化. 通过选择 $H$ 的单位, $dt_{\mathrm{info}}$ 按定义具有时间量纲.} 这个问题在单一局部 Rindler 视界所决定的 $2\times 2$ 情形中得到一个局部回答。信息时间 $dt_{\mathrm{info}}:=d\Phi/H$ 给出与 $dt_{\mathrm{info}}^{2}$ 相关的符号化主二次型 $G$(启发式地记为 $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$, 等同于~\cite{Realizability} 的主二次型); 三个可实现性公理 R, E, T 连同非退化性强制 $\det G<0$(\S\ref{sec:lawI})。Lorentz 号差、实辛特征值以及 $d_{c}>0$, 随后都是单一符号的代数推论。二次型 $K(x)=x^{\top}Gx$ 量度局部时间代价; 偏离 $K=1$ 在合适基点附近产生局部恢复漂移(律 III), 从而 $K=1$ 成为局部自洽的轨迹。
+\smallskip\noindent\textbf{解决方案.\ } 此处时间既非坐标, 也非度规原语: 它是变化的代价; 在本文的 $2\times 2$ 局部可实现性框架中, 度规——包括其 Lorentz 号差——成为推出的结果。\emph{本文采用结构性框架而非具体物理模型: $\Phi$ 与 $H$ 不被指定为特定物理量; 只要它们诱导出的代价结构满足公理 R, E, T 与非退化性, 后续结论即约束所得主二次型的代数类型. 因而物理内容在于这些公理的代数后果, 而非 $\Phi, H$ 的具体实例化. 通过选择 $H$ 的单位, $dt_{\mathrm{info}}$ 按定义具有时间量纲.} 这个问题在单一局部 Rindler 视界所决定的 $2\times 2$ 情形中得到一个局部回答。信息时间 $dt_{\mathrm{info}}:=d\Phi/H$ 给出与 $dt_{\mathrm{info}}^{2}$ 相关的符号化主二次型 $G$(启发式地记为 $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$, 等同于~\cite{Realizability} 的主二次型); 三个可实现性公理 R, E, T 连同非退化性强制 $\det G<0$(\S\ref{sec:lawI})。Lorentz 号差、实辛特征值以及 $d_{c}>0$, 随后都是单一符号的代数推论。二次型 $K(x)=x^{\top}Gx$ 量度局部时间代价; 偏离 $K=1$ 在合适基点附近产生局部恢复漂移(律 III), 从而 $K=1$ 成为局部自洽的轨迹。
 
 \smallskip\noindent\textbf{通向爱因斯坦方程的两条路径.}
 \begin{itemize}[leftmargin=2em, itemsep=0.4ex, parsep=0pt, topsep=0.3ex]
@@ -219,7 +219,7 @@ d_{c}=\alpha\sqrt{-1/\det G}.\label{eq:dc}
 \end{theorem}
 
 \begin{proof}
-$\mathrm{tr}(G^{-1}J)=0$, $\det(G^{-1}J)=1/\det G$; 特征多项式 $\lambda^{2}+1/\det G=0$ 给出 $\mathrm{spec}(J_{G})=\{\pm d_{c}\}$。在各向同性情形 $H_{*}=I$(即 $H$ 在基点处的线性化; 见 \S\ref{sec:stability}), $\max\mathrm{Re}\,\mathrm{spec}(J_{G}-dI)=d_{c}-d$, 于 $d=d_{c}$ 处消失。\qed
+$\mathrm{tr}(G^{-1}J)=0$, $\det(G^{-1}J)=1/\det G$; 特征多项式 $\lambda^{2}+1/\det G=0$ 给出 $\mathrm{spec}(J_{G})=\{\pm d_{c}\}$。在各向同性情形 $H_{*}=I$(即基点处的代价函数二阶权重取单位矩阵; 见 \S\ref{sec:stability}), $\max\mathrm{Re}\,\mathrm{spec}(J_{G}-dI)=d_{c}-d$, 于 $d=d_{c}$ 处消失。\qed
 \end{proof}
 
 \begin{theorem}[Lorentz 号差的必要性]\label{thm:necessity}
