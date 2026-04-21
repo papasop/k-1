@@ -175,6 +175,8 @@
 \node[objbox, below=1.1cm of G2] (G3) {$G$};
 \node[objbox, right=of G3] (JG) {$J_G=\alpha G^{-1}J$};
 \node[lawbox, right=of JG] (law2) {律 II\\[-1pt]\scriptsize $\dot x=(J_G{-}D)\nabla V$};
+% Sidebox showing the structural constraint that Law II requires
+\node[rectangle, draw=gray!55, fill=gray!8, rounded corners=2pt, font=\scriptsize, align=center, above=0.05cm of law2, inner sep=2pt] {结构性约束:\\ $GA=\alpha J-GD$, $D\ge 0$};
 \draw[arr] (G3) -- (JG);
 \draw[arr] (JG) -- (law2);
 \node[objbox, below=0.4cm of G3] (K1b) {$K=1$};
@@ -268,14 +270,14 @@ $d_{c}>0 \Leftrightarrow -1/\det G>0$ (式~\eqref{eq:dc}) $\Leftrightarrow \det 
 % not a separate theorem. The central radiating structure suffices.
 % Prominent isotropic linearization condition badge (near top, right of core)
 \node[rectangle, draw=black!60, fill=yellow!15, rounded corners=2pt, font=\footnotesize\bfseries, right=0.8cm of core, inner sep=3pt] (isoflag) {$H_{*}=I$};
-\node[font=\scriptsize\itshape, text=black!60, below=0.02cm of isoflag, align=center] {各向同性\\ 线性化};
+\node[font=\scriptsize\itshape, text=black!60, below=0.02cm of isoflag, align=center] {稳定性解释所需\\ (各向同性线性化)};
 % Annotation below
 \node[font=\footnotesize, text=black!60, below=2.6cm of core, text width=10cm, align=center] {
    一个符号 $\det G<0$, 三种等价表述.\\
    (一般 $H_{*}$ 偏离此等价, 见注~\ref{rem:Hstar_dep})
 };
 \end{tikzpicture}
-\caption{号差-辛谱-稳定性三重对应\emph{(各向同性线性化 $H_{*}=I$ 下)}. 核心代数符号 $\det G<0$ 通过三个定理等价于: Lorentz 号差 $\mathrm{Sig}(G)=(1,1)$(几何表述), 辛生成子 $J_{G}$ 具有实特征值 $\lambda_{\pm}=\pm\alpha\sqrt{-1/\det G}$(谱表述), 以及存在正稳定阈值 $d_{c}>0$(动力学表述). 定理~\ref{thm:spectral}--\ref{thm:equivalence} 连同式~\eqref{eq:dc} 建立这些等价关系. 一般 $H_{*}$ 可偏离此等价(见注~\ref{rem:Hstar_dep}).}
+\caption{号差-辛谱-稳定性三重对应. 核心代数符号 $\det G<0$ 通过三个定理等价于: Lorentz 号差 $\mathrm{Sig}(G)=(1,1)$(几何表述, 由 Sylvester 惯性律), 辛生成子 $J_{G}$ 具有实特征值 $\lambda_{\pm}=\pm\alpha\sqrt{-1/\det G}$(谱表述, 由直接谱计算), 以及存在正稳定阈值 $d_{c}>0$(动力学表述, \emph{其稳定性解释需各向同性线性化 $H_{*}=I$}). 定理~\ref{thm:spectral}--\ref{thm:equivalence} 连同式~\eqref{eq:dc} 建立这些等价关系. 一般 $H_{*}$ 可偏离 $d_{c}$ 的稳定性等价(见注~\ref{rem:Hstar_dep}).}
 \label{fig:triangle}
 \end{figure}
 
@@ -619,7 +621,7 @@ f+2rf'+\tfrac{r^{2}}{2}f''=1,
 \node[extinp, left=0.4cm of OU] (Teff) {$T_{\mathrm{eff}}=T_{\mathrm{tol}}$};
 \draw[extarr] (Teff) -- (Clau);
 % The three Jacobson inputs: Sig(G) comes from left; S propto A external
-\node[extinp, left=0.4cm of jac, yshift=4pt] (sigin) {$\mathrm{Sig}(G){=}(1,1)$};
+\node[extinp, left=0.4cm of jac, yshift=4pt] (sigin) {律 I: $\mathrm{Sig}(G){=}(1,1)$};
 \node[extinp, left=0.4cm of jac, yshift=-14pt] (SAin) {$S\propto A$};
 \draw[extarr] (sigin) -- (jac.west);
 \draw[extarr] (SAin) -- (jac.west);
