@@ -1,3 +1,4 @@
+\documentclass[11pt]{article}
 \usepackage[T1]{fontenc}
 \usepackage[margin=1in]{geometry}
 \setlength{\emergencystretch}{1.5em}
@@ -22,7 +23,7 @@
 \begin{abstract}
 \textit{Background.} Time has invariably entered physics as a primitive --- an underived input.
 
-\textit{Framework.} Redefining time as the cost of change, the Hessian $G:=\nabla^{2}(dt_{\mathrm{info}}^{2})$ is forced to be indefinite by the three realizability conditions of~\cite{Realizability} (Axioms~R, E, T) together with the non-degeneracy of~$G$ assumed in Law~I: $\det G<0$. The sign $\det G<0$ has three equivalent expressions: Lorentzian signature, real symplectic eigenvalues, and $d_{c}>0$ (Theorem~4); $K(x)=x^{\top}Gx=1$ is the unit-cost locus. The evolution law, subject to the $G$-induced symplectic structure and $D\ge 0$, is unique (Theorem~\ref{thm:lawII}); at critical damping, the restoring rate is $\kappa_{K}=4d_{c}$ (Theorem~\ref{thm:restoring}).
+\textit{Framework.} Redefining time as the cost of change, and identifying the Hessian form $G:=\nabla^{2}(dt_{\mathrm{info}}^{2})$ with the signed leading quadratic form of~\cite{Realizability}, the three realizability conditions (Axioms~R, E, T) together with nondegeneracy force $\mathrm{Sig}(G)=(1,1)$, equivalently $\det G<0$. The sign $\det G<0$ has three equivalent expressions: Lorentzian signature, real symplectic eigenvalues, and $d_{c}>0$ (Theorem~4); $K(x)=x^{\top}Gx=1$ is the unit-cost locus introduced as the additional self-consistency condition of the present paper. The evolution law, subject to the $G$-induced symplectic structure and $D\ge 0$, is unique (Theorem~\ref{thm:lawII}); at critical damping, the restoring rate is $\kappa_{K}=4d_{c}$ (Theorem~\ref{thm:restoring}).
 
 \textit{Thermodynamic content.} In the stationary regime near $K=1$, the Clausius relation uniquely fixes the noise amplitude as a function of the Tolman temperature (Proposition~\ref{prop:clausius}, eq.~\eqref{eq:noise}). Geometrically, the $K=1$ manifold carries two classes of fluctuation: thermodynamic (Class~A, normal to $K=1$) and kinematic (Class~B, tangential, along Lorentz boost orbits). The sole external identification is $T_{\mathrm{eff}}=T_{\mathrm{tol}}$; Route~B (\S~\ref{sec:field}) requires none.
 
@@ -35,7 +36,7 @@
 
 \textit{The gap.} No existing approach derives Lorentzian signature itself.\footnote{Approaches that address related but distinct questions include: Gibbons and Rasheed~\cite{Gibbons1995} on Born--Infeld electrodynamics and signature; Kiefer~\cite{Kiefer2012} on signature change in quantum cosmology; and Isham~\cite{Isham1993} on the problem of time, which takes the causal structure as given. This paper distinguishes \emph{kinematic} approaches (which take free-fall, light propagation, or causal structure as primitive) from \emph{cost-based} approaches (which derive both the metric and its signature from a scalar cost function). The claim is that no existing cost-based derivation yields Lorentzian signature. Entropic gravity approaches~\cite{Verlinde,Padmanabhan} presuppose Lorentzian spacetime and derive gravitational dynamics; the present work operates at the prior level of deriving the Lorentzian signature itself.} The present work fills this gap.
 
-\textit{The solution.} Here time is neither coordinate nor metric primitive: it is the cost of change, so the metric --- including its Lorentzian signature --- is a consequence. This resolves the question in the $2\times 2$ setting dictated by a single local Rindler horizon. Information time, defined as $dt_{\mathrm{info}}:=d\Phi/H$, yields the metric $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$; Persistence of configurations forces $\det G<0$ (\S\ref{sec:lawI}; see~\cite{Realizability}). Lorentzian signature, real symplectic eigenvalues, and $d_{c}>0$ are then algebraic consequences of a single sign. The quadratic form $K(x)=x^{\top}Gx$ quantifies local temporal cost; departures from $K{=}1$ generate a restoring drift (Law~III), making $K=1$ a dynamical attractor.
+\textit{The solution.} Here time is neither coordinate nor metric primitive: it is the cost of change, so the metric --- including its Lorentzian signature --- is a consequence. This resolves the question in the $2\times 2$ setting dictated by a single local Rindler horizon. Information time, defined as $dt_{\mathrm{info}}:=d\Phi/H$, yields the metric $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$; identifying $G$ with the signed leading quadratic form of~\cite{Realizability}, the three realizability axioms~R, E, T together with nondegeneracy force $\det G<0$ (\S\ref{sec:lawI}). Lorentzian signature, real symplectic eigenvalues, and $d_{c}>0$ are then algebraic consequences of a single sign. The quadratic form $K(x)=x^{\top}Gx$ quantifies local temporal cost; departures from $K{=}1$ generate a restoring drift (Law~III), making $K=1$ a dynamical attractor.
 
 \textit{Two routes to Einstein.}
 \begin{itemize}
@@ -55,9 +56,13 @@ Route~A is general but requires $S\propto A$; Route~B is thermodynamically indep
 
 The information time $dt_{\mathrm{info}}:=d\Phi/H$, where $\Phi$ parametrises structural variation and $H>0$ is the local cost per unit variation of $\Phi$ (an entropic resistance), provides the metric through the Hessian of $dt_{\mathrm{info}}^{2}$: the local quadratic approximation $dt_{\mathrm{info}}^{2}\approx \delta x^{\top}G\,\delta x$, with $G:=\nabla^{2}(dt_{\mathrm{info}}^{2})$. The quadratic form $K(x):=x^{\top}Gx$ quantifies local temporal cost, and $K=1$ identifies the self-consistent locus. This redefinition of time enters the theorems through $G$ alone: $dt_{\mathrm{info}}$ serves as the motivating construction for~$G$ (the leading-order form $Q$ of~\cite{Realizability}). The Hessian $G$ has the structure of an information metric --- it measures the local cost of displacement, as the Fisher metric measures the local cost of statistical distinguishability~\cite{Amari} --- but with Lorentzian rather than Riemannian signature.
 
+\medskip\noindent\textit{Bridge to the Realizability framework.} To apply~\cite{Realizability}, we identify the Hessian form $G$ with the signed leading quadratic form $Q$ extracted from $dt_{\mathrm{info}}^{2}$. The nonnegative information-time cost itself is represented to leading order by the positive part $(x^{\top}Gx)_{+}$, as in~\cite{Realizability}; $G$ denotes the underlying signed quadratic coefficient form. Hence the main theorem of~\cite{Realizability} applies directly: Axioms~R, E, T together with nondegeneracy imply $\mathrm{Sig}(G)=(1,1)$, equivalently $\det G<0$. The condition $K=x^{\top}Gx=1$ is not a conclusion of~\cite{Realizability}, but the additional self-consistency condition introduced in the present paper.
+
+\medskip
+
 The specific form of~$\Phi$ does not affect the theorems: what matters is that the cost structure satisfies the three axioms, which forces $\mathrm{Sig}(G)=(1,1)$ regardless of~$\Phi$. This is an \emph{argument by type} --- the theorems constrain the algebraic type of~$G$ (its signature), not its specific values.
 
-The cost structure of $dt_{\mathrm{info}}$ satisfies the three realizability conditions of~\cite{Realizability}. Axiom~E (quadratic expansion in $\delta x$) holds because $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$ exists by the smoothness of~$\Phi$ and~$H$. Axiom~T (positive temporal cost) holds by construction: the temporal direction is defined as the direction along which $dt_{\mathrm{info}}>0$, so $G(e_{t},e_{t})>0$. This convention identifies time with the direction of positive structural cost. Axiom~R requires that some directions carry vanishing cost; positive definiteness is excluded because it would force all configurations to $x=0$ (no persistent structure). A complete derivation is in~\cite{Realizability}.
+The cost structure of $dt_{\mathrm{info}}$ satisfies Axioms~R, E, T as follows. Axiom~E (quadratic expansion in $\delta x$) follows from the smoothness of $\Phi$ and $H$, which guarantees the existence of the leading quadratic form $G$. Axiom~T (positive temporal cost) is imposed as the requirement that the displacement cost (denoted $d$, in the sense of~\cite{Realizability}) has a positive linear lower bound along the distinguished temporal direction: $d(x;(\Delta t,0))\ge c_{t}\,\Delta t$ for some $c_{t}>0$. Axiom~R requires forward displacement sequences with nonzero spatial component whose cost-to-magnitude ratio tends to zero. A complete derivation of $\mathrm{Sig}(G)=(1,1)$ from Axioms~R, E, T together with nondegeneracy is given in~\cite{Realizability}.
 
 Lorentzian signature therefore emerges from the cost structure: $G$ is indefinite, with light cones (the null set $\{x:x^{\top}Gx=0\}$) and a causal structure determined by the sign of~$K$.
 
@@ -449,13 +454,17 @@ The Jacobson argument~\cite{Jacobson} reconstructs the Einstein equations from t
 
 The two routes meet in the vacuum sector: Route~B establishes $R_{\mu\nu}=0$ directly, while Route~A recovers the same conclusion via $G_{\mu\nu}=8\pi T_{\mu\nu}$ with $T_{\mu\nu}=0$.
 
+\subsection*{Physical content of Axiom~R}
+
+Physically, Axiom~R expresses the persistence of configurations through arbitrarily low-cost spatially nontrivial displacements: configurations can drift in spatial directions at vanishing cost-to-magnitude ratio, while the temporal direction (Axiom~T) remains expensive. This asymmetry --- cheap spatial drift, costly temporal drift --- is the cost-theoretic content of Lorentzian causal structure. The technical derivation that Axioms~R, E, T together with nondegeneracy force $\mathrm{Sig}(G)=(1,1)$ is carried out in~\cite{Realizability}.
+
 \subsection*{The $K{=}1$ self-referential structure}
 
 The condition $K{=}1$ has a self-referential character: the metric~$G$ defines the quadratic form~$K$, and $K{=}1$ requires that this form reproduce~$G$'s own normalisation. The residual $K{-}1$ is the metric's own measure of departure from self-consistency; the leading-order restoring potential $V=\frac{1}{2}(K{-}1)^2$ is therefore fixed by smoothness and the requirements $V\geq 0$, $V=0$ at $K{=}1$ alone. At the field level, this self-referential loop extends: the eigenvalue principle $\sigma_2^2\Box\ln\sigma_i=1$ requires each symplectic eigenvalue to propagate at the rate determined by the metric it inhabits.
 
 \subsection*{Stages}
 
-\noindent\textit{Stage~0 (origin):} The three axioms together with the non-degeneracy of Law~I $\to$ $\mathrm{Sig}(G)=(1,1)$ (Theorem~4; see~\cite{Realizability}). Conversely, for definite~$G$ no critical damping threshold $d_{c}>0$ exists (Theorem~3): the framework is self-limiting, producing physical content only when the cost structure is Lorentzian.
+\noindent\textit{Stage~0 (origin):} Axioms~R, E, T together with the nondegeneracy of the signed leading form $G$ imply $\mathrm{Sig}(G)=(1,1)$ (Theorem~4; see~\cite{Realizability}). Conversely, for definite~$G$ no critical damping threshold $d_{c}>0$ exists (Theorem~3): the framework is self-limiting, producing physical content only when the cost structure is Lorentzian.
 
 \medskip
 \noindent\textit{Stage~1 (geometry):} $G$ defines light cones and causal structure. Whether a Lorentzian information geometry --- as opposed to the Riemannian Fisher geometry --- can be made precise remains open.
@@ -594,7 +603,6 @@ S.~Amari,
 Information Geometry and Its Applications.
 Springer (2016).
 \url{https://doi.org/10.1007/978-4-431-55978-8}
-
 
 \bibitem{Gibbons1995}
 G.\,W.~Gibbons, D.\,A.~Rasheed,
