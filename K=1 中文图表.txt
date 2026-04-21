@@ -275,10 +275,10 @@ $d_{c}>0 \Leftrightarrow -1/\det G>0$ (式~\eqref{eq:dc}) $\Leftrightarrow \det 
 % Annotation below
 \node[font=\footnotesize, text=black!60, below=2.6cm of core, text width=10cm, align=center] {
    一个符号 $\det G<0$, 三种对应表述.\\
-   (一般 $H_{*}$ 可偏移稳定性阈值的解读, 见注~\ref{rem:Hstar_dep})
+   (一般 $H_{*}$ 会改变稳定阈值, 见注~\ref{rem:Hstar_dep})
 };
 \end{tikzpicture}
-\caption{号差-辛谱-稳定性三重对应. 核心代数符号 $\det G<0$ 在二维非退化情形下对应三种表述: Lorentz 号差 $\mathrm{Sig}(G)=(1,1)$(几何表述, 由 Sylvester 惯性律), 辛生成子 $J_{G}$ 具有实特征值 $\lambda_{\pm}=\pm\alpha\sqrt{-1/\det G}$(谱表述, 由直接谱计算), 以及存在正稳定阈值 $d_{c}>0$(动力学表述, \emph{其稳定性解释需各向同性线性化 $H_{*}=I$}). 定理~\ref{thm:spectral}--\ref{thm:equivalence} 连同式~\eqref{eq:dc} 建立这些对应关系. 一般 $H_{*}$ 可偏离 $d_{c}$ 的稳定性等价(见注~\ref{rem:Hstar_dep}).}
+\caption{号差-辛谱-稳定性三重对应. 核心代数符号 $\det G<0$ 在二维非退化情形下对应三种表述: Lorentz 号差 $\mathrm{Sig}(G)=(1,1)$(几何表述, 由 Sylvester 惯性律), 辛生成子 $J_{G}$ 具有实特征值 $\lambda_{\pm}=\pm\alpha\sqrt{-1/\det G}$(谱表述, 由直接谱计算), 以及存在正稳定阈值 $d_{c}>0$(动力学表述, \emph{其稳定性解释需各向同性线性化 $H_{*}=I$}). 定理~\ref{thm:spectral}--\ref{thm:equivalence} 连同式~\eqref{eq:dc} 建立这些对应关系. 一般 $H_{*}$ 可使实际稳定阈值偏离各向同性值 $d_{c}$(见注~\ref{rem:Hstar_dep}).}
 \label{fig:triangle}
 \end{figure}
 
@@ -538,19 +538,21 @@ f+2rf'+\tfrac{r^{2}}{2}f''=1,
 \begin{center}
 \begin{tabular}{|l|c|c|}
 \hline
-& 点级 & 场级 \\
+& 点级 (2D) & 场级 (4D) \\
 \hline
-条件 & $K=x^{\top}Gx=1$ & $K_{i}=\sigma_{2}^{2}\Box\ln\sigma_{i}=1$ \\
+原理 & $K=x^{\top}Gx=1$ & $\sigma_{2}^{2}\Box\ln\sigma_{i}=1\;\;\forall\,i$ \\
 \hline
-自洽数 & 1 & 2(每个 $\sigma_{i}$ 一个) \\
+平衡 & 单位时间代价 ($K{=}1$) & $\Box\ln\sigma_{i}=1/\sigma_{2}^{2}$ \\
 \hline
-物质 & 势 $V$ & $\rho=(1-K_{2})/(8\pi r^{2})$ \\
+真空 & $K{=}1$ & $K_{1}{=}K_{2}{=}1\Leftrightarrow R_{\mu\nu}{=}0$ \\
 \hline
-结论 & 局部恢复至 $K=1$ & 真空方程 $R_{\mu\nu}=0$ \\
+物质 & $K\neq 1\Rightarrow V>0$ & $K_{2}\neq 1\Rightarrow \rho=(1{-}K_{2})/(8\pi r^{2})$ \\
+\hline
+条件数 & 1 (2D 楔) & 2 (4D: 每个特征值一个) \\
 \hline
 \end{tabular}
 \end{center}
-\caption{点级 $K{=}1$ 与场级特征值自洽性。在每级, 条件数与独立特征值数相等。物质行为示意:点级使用内部惩罚 $V$, 而场级密度 $\rho$ 是 GR 的重写, 因子 $8\pi$ 自 GR 继承。}
+\caption{点级 $K{=}1$ 与场级特征值自洽性的结构对应。在每级, 条件数与独立特征值数相等。物质行展示偏离结构: 点级偏离 $K{=}1$ 产生内部惩罚 $V$, 场级偏离 $K_{2}{=}1$ 产生密度 $\rho$(GR 重写, 因子 $8\pi$ 自 GR 继承)。}
 \label{tab:corr}
 \end{table}
 
