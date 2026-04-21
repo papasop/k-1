@@ -98,7 +98,7 @@ d_{c}(\alpha)=\alpha\sqrt{-1/\det G}>0.\label{eq:dc}
 \end{theorem}
 
 \begin{proof}
-$\mathrm{tr}(G^{-1}J)=0$ and $\det(G^{-1}J)=1/\det G$; the characteristic polynomial $\lambda^{2}+1/\det G=0$ then gives $\mathrm{spec}(J_{G})=\{\pm d_{c}\}$. For the isotropic case $H_{*}=I$ (the linearisation of $H$ at the base point; see \S\ref{sec:stability}), $\max\mathrm{Re}\,\mathrm{spec}(J_{G}-dI)=d_{c}-d$, which vanishes at $d=d_{c}$.\qed
+$\mathrm{tr}(G^{-1}J)=0$ and $\det(G^{-1}J)=1/\det G$; the characteristic polynomial $\lambda^{2}+1/\det G=0$ then gives $\mathrm{spec}(J_{G})=\{\pm d_{c}\}$. For the isotropic case $H_{*}=I$ (i.e.\ the cost-function second-order weight at the base point taken as the identity matrix; see \S\ref{sec:stability}), $\max\mathrm{Re}\,\mathrm{spec}(J_{G}-dI)=d_{c}-d$, which vanishes at $d=d_{c}$.\qed
 \end{proof}
 
 \begin{theorem}[Necessity of Lorentzian Signature]\label{thm:necessity}
