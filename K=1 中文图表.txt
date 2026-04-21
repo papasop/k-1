@@ -70,9 +70,9 @@
 \begin{abstract}
 \noindent\textbf{背景.\ } 时间在物理学中一贯作为原始概念出现——一种未被推导的输入。
 
-\smallskip\noindent\textbf{框架.\ } 将时间重新定义为变化的代价, 并将与 $dt_{\mathrm{info}}^{2}$ 相关的符号化主二次型 $G$ 与~\cite{Realizability} 中的二次型相等同, 则三个可实现性条件(公理 R, E, T)连同非退化性强制 $\mathrm{Sig}(G)=(1,1)$, 等价于 $\det G<0$。在各向同性线性化之下, 符号 $\det G<0$ 有三种等价表述: Lorentz 号差、实辛特征值以及 $d_{c}>0$(定理~\ref{thm:equivalence}); $K(x)=x^{\top}Gx=1$ 是本文引入的单位代价轨迹, 作为附加的自洽条件。演化律在 $G$ 诱导的辛结构与 $D\ge 0$ 的约束下唯一(定理~\ref{thm:lawII}); 在临界阻尼处, 恢复速率为 $\kappa_{K}=4d_{c}$(定理~\ref{thm:restoring})。
+\smallskip\noindent\textbf{框架.\ } 将时间重新定义为变化的代价, 并将与 $dt_{\mathrm{info}}^{2}$ 相关的符号化主二次型 $G$ 与~\cite{Realizability} 中的二次型相等同, 则三个可实现性条件(公理 R, E, T)连同非退化性强制 $\mathrm{Sig}(G)=(1,1)$, 等价于 $\det G<0$。在各向同性线性化之下, 符号 $\det G<0$ 有三种等价表述: Lorentz 号差、实辛特征值以及 $d_{c}>0$(定理~\ref{thm:equivalence}); $K(x)=x^{\top}Gx=1$ 是本文引入的单位代价轨迹, 作为附加的自洽条件。演化律在 $G$ 诱导的辛结构与 $D\ge 0$ 的约束下唯一(定理~\ref{thm:lawII}); 在临界阻尼处且归一化特征向量基点上, 恢复速率为 $\kappa_{K}=4d_{c}$(定理~\ref{thm:restoring})。
 
-\smallskip\noindent\textbf{热力学内容.\ } 在 $K=1$ 附近的稳态区, Clausius 关系按 Tolman 温度与稳定性边界 $d_{c}$ 唯一地确定噪声幅度(命题~\ref{prop:clausius}, 式~\eqref{eq:noise})。从几何上看, $K=1$ 流形承载两类涨落: 热力学的(A 类, 垂直于 $K=1$)与运动学的(B 类, 沿 Lorentz boost 轨道切向)。在从随机动力学到 Clausius 的这一步内, 唯一的外部等同是 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$; 途径 B(\S~\ref{sec:field})无需任何外部等同。
+\smallskip\noindent\textbf{热力学内容.\ } 在 $K=1$ 附近的稳态区, Clausius 关系按 Tolman 温度与稳定性边界 $d_{c}$ 唯一地确定噪声幅度(命题~\ref{prop:clausius}, 式~\eqref{eq:noise})。从几何上看, $K=1$ 流形承载两类涨落: 热力学的(A 类, 垂直于 $K=1$)与运动学的(B 类, 沿 Lorentz boost 轨道切向)。在从随机动力学到 Clausius 的这一步内, 唯一的外部等同是 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$; 途径 B(\S~\ref{sec:field})无需任何热力学外部等同。
 
 \smallskip\noindent\textbf{引力内容.\ } 对于静态、球对称度规, 具有辛特征值 $\sigma_1:=r\sqrt{f}$ 与 $\sigma_2:=r$, 所猜想的场级类似物 $\sigma_2^2\,\Box\ln\sigma_i=1$($i=1,2$)在代数上等价于 $R_{\mu\nu}=0$(定理~\ref{thm:field})。公理 T(正时间代价)强制 $\sigma_1>0$(命题~\ref{prop:sigma1}), 从而将曲率奇点($\sigma_1$ 退化之处)排除在理论定义域之外; Ornstein--Uhlenbeck 方差界 $\mathrm{Var}(K)<1$ 导出固有分辨率尺度 $\sigma_1\gtrsim\ell_P$(命题~\ref{prop:domain})。
 \end{abstract}
@@ -145,15 +145,18 @@
 \node[inpbox] (phi) {$\Phi,\ H$};
 \node[inpbox, right=of phi] (ti) {$dt_{\mathrm{info}}$};
 \node[objbox, right=of ti] (G1) {$G\equiv Q$};
-% R,E,T below dt/ti, parallel input to Sig
+% R,E,T below dt/ti
 \node[inpbox, below=0.5cm of ti, minimum width=3.2cm] (RET) {R, E, T + 非退化};
-% Sig is to the right, receiving TWO parallel arrows
-\node[outbox, right=0.7cm of G1, xshift=0.4cm] (sig) {$\mathrm{Sig}(G){=}(1,1)$};
+% Conjunction node: small merge indicating G AND axioms TOGETHER
+\node[circle, draw=black!60, fill=yellow!15, inner sep=1.5pt, font=\scriptsize, right=0.4cm of G1] (conj) {$\wedge$};
+% Sig receives a SINGLE arrow from the conjunction node (not two parallel arrows)
+\node[outbox, right=0.35cm of conj] (sig) {$\mathrm{Sig}(G){=}(1,1)$};
 \draw[arr] (phi) -- (ti);
 \draw[arr] (ti) -- (G1);
-% BOTH G1 and RET arrow into Sig (parallel inputs)
-\draw[arr] (G1) -- (sig);
-\draw[arr] (RET.east) -- ++(0.3cm,0) |- (sig.south west);
+% Both G1 and RET feed into conjunction, then a SINGLE arrow to Sig
+\draw[arr, shorten >=1pt] (G1) -- (conj);
+\draw[arr, shorten >=1pt] (RET.east) -- ++(0.25cm,0) |- (conj);
+\draw[arr] (conj) -- (sig);
 \node[layerlab, above=0.05cm of phi.north west, anchor=south west] {第 1 层: 信息时间与可实现性条件};
 
 % =========================================================
@@ -176,13 +179,13 @@
 \draw[arr] (JG) -- (law2);
 \node[objbox, below=0.4cm of G3] (K1b) {$K=1$};
 \node[objbox, right=of K1b] (V) {$V=\tfrac{1}{2}(K-1)^2$};
-\node[lawbox, right=of V] (law3) {律 III\\[-1pt]\scriptsize 特征向量基点局部恢复};
+\node[lawbox, right=of V] (law3) {律 III\\[-1pt]\scriptsize $D{=}d_{c}I$, 特征向量基点局部恢复};
 \draw[arr] (K1b) -- (V);
 \draw[arr] (V) -- (law3);
 \node[layerlab, above=0.05cm of G3.north west, anchor=south west] {第 3 层: 动力学};
 
 \end{tikzpicture}
-\caption{$K{=}1$ 框架的逻辑依赖关系. \emph{第 1 层}(信息时间与可实现性条件): 信息时间 $dt_{\mathrm{info}}$ 产生符号化主二次型 $G\equiv Q$; 公理 R, E, T 连同非退化性作用于 $G$ 的\emph{条件}, 强制 $\mathrm{Sig}(G)=(1,1)$(即 $\det G<0$), 而非生成 $G$ 本身. \emph{第 2 层}(点级对象): $G$ 定义 $K(x)=x^{\top}Gx$; 条件 $K=1$ 是本文\emph{额外引入}的自洽条件, 非公理的推论. \emph{第 3 层}(动力学): $G$ 导出辛生成子 $J_G$, 由此给出律 II; $K=1$ 与恢复势 $V=\tfrac12(K{-}1)^2$ 一起给出律 III 在特征向量基点附近的局部恢复. 实箭头表示定义或代数推论; 场级类似物 $\sigma_2^2\Box\ln\sigma_i=1$(作为猜想)见图~\ref{fig:routes}.}
+\caption{$K{=}1$ 框架的逻辑依赖关系. \emph{第 1 层}(信息时间与可实现性条件): 信息时间 $dt_{\mathrm{info}}$ 产生符号化主二次型 $G\equiv Q$; 公理 R, E, T 连同非退化性作用于 $G$ 的\emph{条件}, 强制 $\mathrm{Sig}(G)=(1,1)$(即 $\det G<0$), 而非生成 $G$ 本身. \emph{第 2 层}(点级对象): $G$ 定义 $K(x)=x^{\top}Gx$; 条件 $K=1$ 是本文\emph{额外引入}的自洽条件, 非公理的推论. \emph{第 3 层}(动力学): $G$ 导出辛生成子 $J_G$; 律 II 在此基础上还需\emph{结构性约束} $GA=\alpha J-GD$ ($D\ge 0$), 由此给出 $\dot x=(J_G-D)\nabla V$. $K=1$ 与恢复势 $V=\tfrac12(K{-}1)^2$ 一起给出律 III, 其恢复结论进一步依赖临界阻尼 $D=d_{c}I$、$G$ 的特征向量基点与局部线性化. 实箭头表示定义、已引用定理或本文中的代数推论; 场级类似物 $\sigma_2^2\Box\ln\sigma_i=1$(作为猜想)见图~\ref{fig:routes}.}
 \label{fig:framework}
 \end{figure}
 
@@ -220,6 +223,10 @@ $\mathrm{tr}(G^{-1}J)=0$, $\det(G^{-1}J)=1/\det G$; 特征多项式 $\lambda^{2}
 若 $G$ 正定或负定 $(\mathrm{Sig}(G)=(2,0)$ 或 $(0,2))$, 则 $-1/\det G<0$, 故 $J_{G}$ 的特征值纯虚;不存在实的 $d_{c}>0$。
 \end{theorem}
 
+\begin{proof}
+若 $G$ 正定或负定, 则 $\det G>0$。由特征方程 $\lambda^{2}+1/\det G=0$ 得 $\lambda^{2}=-1/\det G<0$, 故特征值纯虚, 不存在实的正特征值 $d_{c}>0$。\qed
+\end{proof}
+
 \section{稳定性边界}\label{sec:stability}
 
 \begin{theorem}[号差-稳定性等价]\label{thm:equivalence}
@@ -252,13 +259,13 @@ $d_{c}>0 \Leftrightarrow -1/\det G>0$ (式~\eqref{eq:dc}) $\Leftrightarrow \det 
 \node[eqbox, below left=1.3cm and 0.8cm of core] (spec) {$\lambda_{\pm}{=}\pm\alpha\sqrt{-1/\det G}\in\mathbb{R}$\\[1pt]\scriptsize (实辛谱)};
 \node[eqbox, below right=1.3cm and 0.8cm of core] (dc) {$d_{c}>0$\\[1pt]\scriptsize (正稳定阈值)};
 % Double-headed arrows (equivalences)
-\draw[equiv] (core) -- node[label, right] {号差-稳定性} (sig);
+\draw[equiv] (core) -- node[label, right] {二维惯性分类} (sig);
 \draw[equiv] (core) -- node[label, above left=-2pt, sloped] {谱计算} (spec);
 \draw[equiv] (core) -- node[label, above right=-2pt, sloped] {$d_{c}$ 定义} (dc);
-% Peripheral equivalences forming triangle
-\draw[equiv, draw=black!40] (sig) to[bend right=20] node[label, above=1pt] {号差必要性} (spec);
-\draw[equiv, draw=black!40] (spec) -- node[label, below] {临界阻尼} (dc);
-\draw[equiv, draw=black!40] (dc) to[bend right=20] node[label, above=1pt] {号差-稳定性} (sig);
+% Peripheral triangle arrows REMOVED for conservative mathematical expression:
+% the three outer edges would suggest independent pairwise equivalences, but
+% spec <-> d_c is essentially a definition (d_c is the positive real eigenvalue),
+% not a separate theorem. The central radiating structure suffices.
 % Prominent isotropic linearization condition badge (near top, right of core)
 \node[rectangle, draw=black!60, fill=yellow!15, rounded corners=2pt, font=\footnotesize\bfseries, right=0.8cm of core, inner sep=3pt] (isoflag) {$H_{*}=I$};
 \node[font=\scriptsize\itshape, text=black!60, below=0.02cm of isoflag, align=center] {各向同性\\ 线性化};
@@ -268,7 +275,7 @@ $d_{c}>0 \Leftrightarrow -1/\det G>0$ (式~\eqref{eq:dc}) $\Leftrightarrow \det 
    (一般 $H_{*}$ 偏离此等价, 见注~\ref{rem:Hstar_dep})
 };
 \end{tikzpicture}
-\caption{号差-辛谱-稳定性等价三角\emph{(各向同性线性化 $H_{*}=I$ 下)}. 核心代数符号 $\det G<0$ 通过三个定理等价于: Lorentz 号差 $\mathrm{Sig}(G)=(1,1)$(几何表述), 辛生成子 $J_{G}$ 具有实特征值 $\lambda_{\pm}=\pm\alpha\sqrt{-1/\det G}$(谱表述), 以及存在正稳定阈值 $d_{c}>0$(动力学表述). 定理~\ref{thm:spectral}--\ref{thm:equivalence} 连同式~\eqref{eq:dc} 建立这些等价关系. 一般 $H_{*}$ 可偏离此等价(见注~\ref{rem:Hstar_dep}).}
+\caption{号差-辛谱-稳定性三重对应\emph{(各向同性线性化 $H_{*}=I$ 下)}. 核心代数符号 $\det G<0$ 通过三个定理等价于: Lorentz 号差 $\mathrm{Sig}(G)=(1,1)$(几何表述), 辛生成子 $J_{G}$ 具有实特征值 $\lambda_{\pm}=\pm\alpha\sqrt{-1/\det G}$(谱表述), 以及存在正稳定阈值 $d_{c}>0$(动力学表述). 定理~\ref{thm:spectral}--\ref{thm:equivalence} 连同式~\eqref{eq:dc} 建立这些等价关系. 一般 $H_{*}$ 可偏离此等价(见注~\ref{rem:Hstar_dep}).}
 \label{fig:triangle}
 \end{figure}
 
@@ -376,13 +383,14 @@ $\dot{K}=2x^{\top}G\dot{x}=4(K-1)\,x^{\top}G(J_{G}-d_{c}I)Gx$。由 $GJ_{G}=\alp
 \draw[normal] (0, 1) -- (0, 0.3);
 \node[label, red!70!black, right] at (0.05, 1.9) {A 类 (热力学)};
 \node[label, red!70!black, right] at (0.05, 0.2) {$K \neq 1$ 涨落};
-% Class B: tangential (along hyperbola)
-\draw[tangent] (0, 1) -- (0.9, 1.4);
-\draw[tangent] (0, 1) -- (-0.9, 1.4);
-\node[label, green!50!black, right] at (0.9, 1.45) {B 类 (运动学)};
-\node[label, green!50!black, left] at (-0.9, 1.45) {boost};
+% Class B: tangential (along hyperbola) - at x_*=(0,1), the tangent is HORIZONTAL
+% since dx_2/dx_1 = x_1/sqrt(1+x_1^2) = 0 at x_1=0
+\draw[tangent] (0, 1) -- (1.0, 1);
+\draw[tangent] (0, 1) -- (-1.0, 1);
+\node[label, green!50!black, right] at (1.05, 1.0) {B 类 (运动学)};
+\node[label, green!50!black, left] at (-1.05, 1.0) {boost};
 \end{tikzpicture}
-\caption{Rindler 度规 $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$ 下的 $\{K=1\}$ 流形. 双曲线的渐近线为光锥. 在基点 $x_{*}$ 处, A 类(红): 垂直于 $\{K=1\}$ 的热力学涨落; B 类(绿): 沿曲线的切向扩散, 生成 Lorentz boost, 热力学上惰性. 图中取 $\kappa\ell=1$ 且 $x_{*}=(0,1)$, 满足归一化 $x_{*}^{\top}G^{2}x_{*}=1$, 此时恢复率简化为 $\kappa_{K}=4d_{c}$; 对一般基点, $\kappa_{K}(x_{*})=4d_{c}\,x_{*}^{\top}G^{2}x_{*}$.}
+\caption{Rindler 度规 $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$ 下的 $\{K=1\}$ 流形. 双曲线的渐近线为光锥. 在基点 $x_{*}$ 处, A 类(红): 垂直于 $\{K=1\}$ 的热力学涨落; B 类(绿, 在 $x_{*}=(0,1)$ 处\emph{水平方向}): 沿曲线的切向扩散——$dx_{2}/dx_{1}|_{x_{*}}=0$ 使切向恰为水平 boost 方向, 热力学上惰性. 图中取 $\kappa\ell=1$ 且 $x_{*}=(0,1)$, 满足归一化 $x_{*}^{\top}G^{2}x_{*}=1$, 此时恢复率简化为 $\kappa_{K}=4d_{c}$; 对一般基点, $\kappa_{K}(x_{*})=4d_{c}\,x_{*}^{\top}G^{2}x_{*}$.}
 \label{fig:K1geometry}
 \end{figure}
 
@@ -535,7 +543,7 @@ f+2rf'+\tfrac{r^{2}}{2}f''=1,
 \hline
 物质 & 势 $V$ & $\rho=(1-K_{2})/(8\pi r^{2})$ \\
 \hline
-动力学 & 局部恢复至 $K=1$ & 真空方程 $R_{\mu\nu}=0$ \\
+结论 & 局部恢复至 $K=1$ & 真空方程 $R_{\mu\nu}=0$ \\
 \hline
 \end{tabular}
 \end{center}
