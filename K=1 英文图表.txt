@@ -222,10 +222,10 @@ For the Rindler metric with diagonal $H_{*}>0$, the zero-eigenvalue threshold of
 \node[font=\scriptsize\itshape, text=black!60, below=0.02cm of isoflag, align=center] {required for\\ stability reading};
 \node[font=\footnotesize, text=black!60, below=2.6cm of core, text width=10cm, align=center] {
    One sign $\det G<0$, three corresponding expressions.\\
-   (General $H_{*}$ may shift the stability threshold; see Remark~\ref{rem:Hstar_dep})
+   (General $H_{*}$ may shift the threshold formula; see Remark~\ref{rem:Hstar_dep})
 };
 \end{tikzpicture}
-\caption{Signature-spectrum-stability triple correspondence. The core algebraic sign $\det G<0$ corresponds, under 2D nondegeneracy, to three expressions: Lorentzian signature $\mathrm{Sig}(G)=(1,1)$ (geometric, by Sylvester's inertia law); the symplectic generator $J_{G}$ having real eigenvalues $\lambda_{\pm}=\pm\alpha\sqrt{-1/\det G}$ (spectral, by direct computation); and a positive stability threshold $d_{c}>0$ (dynamical, \emph{whose stability interpretation requires isotropic linearisation $H_{*}=I$}). Theorems~\ref{thm:spectral}--\ref{thm:equivalence} together with Eq.~\eqref{eq:dc} establish these correspondences. General $H_{*}$ may shift the actual stability threshold away from the isotropic value $d_{c}$ (see Remark~\ref{rem:Hstar_dep}).}
+\caption{Signature-spectrum-stability triple correspondence. The core algebraic sign $\det G<0$ corresponds, under 2D nondegeneracy, to three expressions: Lorentzian signature $\mathrm{Sig}(G)=(1,1)$ (geometric, by Sylvester's inertia law); the symplectic generator $J_{G}$ having real eigenvalues $\lambda_{\pm}=\pm\alpha\sqrt{-1/\det G}$ (spectral, by direct computation); and a positive stability threshold $d_{c}>0$ (dynamical, \emph{whose stability interpretation requires isotropic linearisation $H_{*}=I$}). Theorems~\ref{thm:spectral}--\ref{thm:equivalence} together with Eq.~\eqref{eq:dc} establish these correspondences. General $H_{*}$ may shift the actual stability threshold away from the isotropic formula $\alpha\sqrt{-1/\det G}$ (see Remark~\ref{rem:Hstar_dep}).}
 \label{fig:triangle}
 \end{figure}
 
@@ -315,7 +315,7 @@ Adding isotropic additive white noise (It\^{o} convention) to Law~II gives $dx=(
 \node[label, green!50!black, right] at (1.05, 1.0) {Class B (kinematic)};
 \node[label, green!50!black, left] at (-1.05, 1.0) {boost};
 \end{tikzpicture}
-\caption{The $\{K=1\}$ manifold for the Rindler metric $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$. The hyperbola's asymptotes are the light cone. At the base point $x_{*}$: Class A (red, two-way arrows) — thermodynamic fluctuations \emph{along the normal} to $\{K=1\}$; Class B (green) — tangential boost along the curve, thermodynamically inert — at $x_{*}=(0,1)$, $dx_{2}/dx_{1}|_{x_{*}}=0$, so the tangent is exactly horizontal. The figure is drawn with $\kappa\ell=1$ and $x_{*}=(0,1)$, satisfying the normalisation $x_{*}^{\top}G^{2}x_{*}=1$; the restoring rate then reduces to $\kappa_{K}=4d_{c}$ (the general-base-point formula appears in \S\ref{sec:lawIII}).}
+\caption{The $\{K=1\}$ manifold for the Rindler metric $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$. The hyperbola's asymptotes are the light cone. At the base point $x_{*}$: Class A (red, two-way arrows) — thermodynamic fluctuations \emph{along the $\nabla K$ normal} to $\{K=1\}$; Class B (green) — tangential boost along the curve, thermodynamically inert — at $x_{*}=(0,1)$, $dx_{2}/dx_{1}|_{x_{*}}=0$, so the tangent is exactly horizontal. The figure is drawn with $\kappa\ell=1$ and $x_{*}=(0,1)$, satisfying the normalisation $x_{*}^{\top}G^{2}x_{*}=1$; the restoring rate then reduces to $\kappa_{K}=4d_{c}$ (the general-base-point formula appears in \S\ref{sec:lawIII}).}
 \label{fig:K1geometry}
 \end{figure}
 
@@ -607,7 +607,7 @@ The two routes meet in the vacuum sector: Route~B establishes $R_{\mu\nu}=0$ dir
 % External inputs
 \node[extinp, left=0.4cm of OU] (Teff) {$T_{\mathrm{eff}}=T_{\mathrm{tol}}$};
 \draw[extarr] (Teff) -- (Clau);
-\node[extinp, left=0.4cm of jac, yshift=4pt] (sigin) {Law I: $\mathrm{Sig}(G){=}(1,1)$};
+\node[extinp, left=0.4cm of jac, yshift=4pt] (sigin) {local Lorentzian signature\\ $\mathrm{Sig}(G){=}(1,1)$};
 \node[extinp, left=0.4cm of jac, yshift=-14pt] (SAin) {$S\propto A$};
 \draw[extarr] (sigin) -- (jac.west);
 \draw[extarr] (SAin) -- (jac.west);
