@@ -68,13 +68,13 @@
 \maketitle
 
 \begin{abstract}
-\noindent\textbf{背景.\ } 时间在物理学中一贯作为原始概念出现——一种未被推导的输入。
+\noindent\textbf{背景.\ } 时间通常作为物理学中的原始概念出现——一种未被推导的输入。
 
-\smallskip\noindent\textbf{框架.\ } 将时间重新定义为变化的代价, 并将与 $dt_{\mathrm{info}}^{2}$ 相关的符号化主二次型 $G$ 与~\cite{Realizability} 中的二次型相等同, 则三个可实现性条件(公理 R, E, T)连同非退化性强制 $\mathrm{Sig}(G)=(1,1)$, 等价于 $\det G<0$。在各向同性线性化之下, 符号 $\det G<0$ 有三种等价表述: Lorentz 号差、实辛特征值以及 $d_{c}>0$(定理~\ref{thm:equivalence}); $K(x)=x^{\top}Gx=1$ 是本文引入的单位代价轨迹, 作为附加的自洽条件。演化律在 $G$ 诱导的辛结构与 $D\ge 0$ 的约束下唯一(定理~\ref{thm:lawII}); 在临界阻尼处且归一化特征向量基点上, 恢复速率为 $\kappa_{K}=4d_{c}$(定理~\ref{thm:restoring})。
+\smallskip\noindent\textbf{框架.\ } 把时间在本框架中解释为变化的代价, 并将与 $dt_{\mathrm{info}}^{2}$ 相关的符号化主二次型 $G$ 与~\cite{Realizability} 中的二次型相等同, 则三个可实现性条件(公理 R, E, T)连同非退化性强制 $\mathrm{Sig}(G)=(1,1)$, 等价于 $\det G<0$。在各向同性线性化之下, 符号 $\det G<0$ 有三种等价表述: Lorentz 号差、实辛特征值以及 $d_{c}>0$(定理~\ref{thm:equivalence}); $K(x)=x^{\top}Gx=1$ 是本文引入的单位代价轨迹, 作为附加的自洽条件。在律 II 的辛-耗散生成子类内, 演化律由 $G$ 诱导的辛结构与 $D\ge 0$ 唯一确定(定理~\ref{thm:lawII}); 在临界阻尼处且归一化特征向量基点上, 恢复速率为 $\kappa_{K}=4d_{c}$(定理~\ref{thm:restoring})。
 
 \smallskip\noindent\textbf{热力学内容.\ } 在 $K=1$ 附近的稳态区, Clausius 关系按 Tolman 温度与稳定性边界 $d_{c}$ 唯一地确定噪声幅度(命题~\ref{prop:clausius}, 式~\eqref{eq:noise})。从几何上看, $K=1$ 流形承载两类涨落: 热力学的(A 类, 垂直于 $K=1$)与运动学的(B 类, 沿 Lorentz boost 轨道切向)。在从随机动力学到 Clausius 的这一步内, 唯一的外部等同是 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$; 途径 B(\S~\ref{sec:field})无需任何热力学外部等同。
 
-\smallskip\noindent\textbf{引力内容.\ } 对于静态、球对称度规, 具有辛特征值 $\sigma_1:=r\sqrt{f}$ 与 $\sigma_2:=r$, 所猜想的场级类似物 $\sigma_2^2\,\Box\ln\sigma_i=1$($i=1,2$)在代数上等价于 $R_{\mu\nu}=0$(定理~\ref{thm:field})。公理 T(正时间代价)强制 $\sigma_1>0$(命题~\ref{prop:sigma1}), 从而将曲率奇点($\sigma_1$ 退化之处)排除在理论定义域之外; Ornstein--Uhlenbeck 方差界 $\mathrm{Var}(K)<1$ 导出固有分辨率尺度 $\sigma_1\gtrsim\ell_P$(命题~\ref{prop:domain})。
+\smallskip\noindent\textbf{引力内容.\ } 对于静态、球对称度规, 具有辛特征值 $\sigma_1:=r\sqrt{f}$ 与 $\sigma_2:=r$, 所猜想的场级类似物 $\sigma_2^2\,\Box\ln\sigma_i=1$($i=1,2$)在代数上等价于 $R_{\mu\nu}=0$(定理~\ref{thm:field})。公理 T(正时间代价)强制 $\sigma_1>0$(命题~\ref{prop:sigma1}), 从而把曲率奇点($\sigma_1$ 退化之处)置于理论定义域之外; Ornstein--Uhlenbeck 方差界 $\mathrm{Var}(K)<1$ 导出固有分辨率尺度 $\sigma_1\gtrsim\ell_P$(命题~\ref{prop:domain})。
 \end{abstract}
 
 \section{引言: 时间作为推论}
@@ -83,7 +83,7 @@
 
 \smallskip\noindent\textbf{缺口.\ } 就本文所述的意义而言, 似乎没有现成的基于代价的方法能推出 Lorentz 号差本身。\footnote{探讨相关但不同问题的方法包括: Born--Infeld 号差问题、量子宇宙学中的号差变化, 以及时间问题~\cite{Gibbons1995,Kiefer2012,Isham1993}。熵引力方法~\cite{Verlinde,Padmanabhan} 以 Lorentz 时空为前提并推导引力动力学; 本文处理的是位于此前一层的、基于代价的号差问题。}
 
-\smallskip\noindent\textbf{解决方案.\ } 此处时间既非坐标, 也非度规原语: 它是变化的代价; 在本文的 $2\times 2$ 局部可实现性框架中, 度规——包括其 Lorentz 号差——成为推出的结果。\emph{本文采用结构性框架(而非具体物理模型): $\Phi$ 与 $H$ 不被指定为特定物理量, 框架对任何满足公理 R, E, T 的配对均成立; 物理内容在于公理的代数后果, 而非 $\Phi, H$ 本身的具体实例化. 通过选择 $H$ 的单位, $dt_{\mathrm{info}}$ 按定义具有时间量纲.} 这个问题在单一局部 Rindler 视界所决定的 $2\times 2$ 情形中被解决。信息时间 $dt_{\mathrm{info}}:=d\Phi/H$ 给出与 $dt_{\mathrm{info}}^{2}$ 相关的符号化主二次型 $G$(启发式地记为 $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$, 等同于~\cite{Realizability} 的主二次型); 三个可实现性公理 R, E, T 连同非退化性强制 $\det G<0$(\S\ref{sec:lawI})。Lorentz 号差、实辛特征值以及 $d_{c}>0$, 随后都是单一符号的代数推论。二次型 $K(x)=x^{\top}Gx$ 量度局部时间代价; 偏离 $K=1$ 在合适基点附近产生局部恢复漂移(律 III), 从而 $K=1$ 成为局部自洽的轨迹。
+\smallskip\noindent\textbf{解决方案.\ } 此处时间既非坐标, 也非度规原语: 它是变化的代价; 在本文的 $2\times 2$ 局部可实现性框架中, 度规——包括其 Lorentz 号差——成为推出的结果。\emph{本文采用结构性框架(而非具体物理模型): $\Phi$ 与 $H$ 不被指定为特定物理量; 只要它们诱导出的代价结构满足公理 R, E, T 与非退化性, 后续结论即约束所得主二次型的代数类型. 因而物理内容在于这些公理的代数后果, 而非 $\Phi, H$ 本身的具体实例化. 通过选择 $H$ 的单位, $dt_{\mathrm{info}}$ 按定义具有时间量纲.} 这个问题在单一局部 Rindler 视界所决定的 $2\times 2$ 情形中得到一个局部回答。信息时间 $dt_{\mathrm{info}}:=d\Phi/H$ 给出与 $dt_{\mathrm{info}}^{2}$ 相关的符号化主二次型 $G$(启发式地记为 $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$, 等同于~\cite{Realizability} 的主二次型); 三个可实现性公理 R, E, T 连同非退化性强制 $\det G<0$(\S\ref{sec:lawI})。Lorentz 号差、实辛特征值以及 $d_{c}>0$, 随后都是单一符号的代数推论。二次型 $K(x)=x^{\top}Gx$ 量度局部时间代价; 偏离 $K=1$ 在合适基点附近产生局部恢复漂移(律 III), 从而 $K=1$ 成为局部自洽的轨迹。
 
 \smallskip\noindent\textbf{通向爱因斯坦方程的两条路径.}
 \begin{itemize}[leftmargin=2em, itemsep=0.4ex, parsep=0pt, topsep=0.3ex]
@@ -680,7 +680,7 @@ Jacobson 论证~\cite{Jacobson} 从三个输入重构爱因斯坦方程: Lorentz
 \item 途径 A 需要 $S\propto A$。\textit{(外部输入)}
 \item 途径 B 仅在球对称下被证明; 一般扩展需要零曲面 Gauss--Codazzi。\textit{(范围)}
 \item 在各向同性线性化之外, $d_c$ 不再是纯粹的号差不变量;对非各向同性 $H_*$ 的 $d_c$ 的完整刻画是公开的。
-\item \textit{分层构造}: 本文采用分层构造——信息时间层使用标量代价 $H$, 稳定性层使用矩阵代价权重 $H_*$。两者都是"代价"概念在不同层级的局部二阶表达, 但在当前构造中没有显式的数学连接。从单一更深的公理\emph{同时}派生 $H$ 和 $H_*$ 超出本文范围, 留作未来工作。
+\item \textit{符号与分层}: 本文以"时间 = 变化的代价"作为统一原理, 其直接实例化为标量 $H$ (出现于 $dt_{\mathrm{info}}=d\Phi/H$)。稳定性层的权重矩阵 $H_{*}$ 是\emph{派生}对象——它是惩罚势 $V=\tfrac{1}{2}(K-1)^{2}$ 的 Hessian, 沿派生链 $H\to G\to K\to V\to H_{*}$ 获得, 并非代价原理在二维层级的平行实例。两者\emph{名称}相近只是历史惯例, 可能让读者误以为它们处于同一层级。未来工作可在单一更深公理框架中显式建立 $H$ 与 $H_{*}$ 的关系; 当前论文不追求此统一。
 \end{enumerate}
 
 \subsection*{未解问题}
