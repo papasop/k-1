@@ -110,11 +110,11 @@
 
 \medskip
 
-信息时间 $dt_{\mathrm{info}}:=d\Phi/H$, 其中 $\Phi$ 参数化结构变化, $H>0$ 是 $\Phi$ 单位变化的局部\emph{标量}代价(熵阻抗; 注意 $H$ 与 \S\ref{sec:stability} 中的权重矩阵 $H_{*}$ 无关), 给出与 $dt_{\mathrm{info}}^{2}$ 相关的符号化主二次型 $G$ (启发式地记为 $G:=\nabla^{2}(dt_{\mathrm{info}}^{2})$): 局部二次近似 $dt_{\mathrm{info}}^{2}\approx \delta x^{\top}G\,\delta x$。二次型 $K(x):=x^{\top}Gx$ 量度局部时间代价, $K=1$ 标识自洽轨迹。时间的这种重新定义仅通过 $G$ 进入诸定理:$dt_{\mathrm{info}}$ 作为对 $G$(即~\cite{Realizability} 的主二次型 $Q$)的启发式构造。
+信息时间 $dt_{\mathrm{info}}:=d\Phi/H$, 其中 $\Phi$ 参数化结构变化, $H>0$ 是 $\Phi$ 单位变化的局部\emph{标量}代价(熵阻抗; 注意 $H$ 与 \S\ref{sec:stability} 中的权重矩阵 $H_{*}$ 无关), 给出与 $dt_{\mathrm{info}}^{2}$ 相关的符号化主二次型 $G$ (启发式地记为 $G:=\nabla^{2}(dt_{\mathrm{info}}^{2})$): 在符号层面, 局部二次型代表为 $\delta x^{\top}G\,\delta x$, 非负代价通过~\cite{Realizability} 的正部构造 $(\delta x^{\top}G\,\delta x)_{+}$ 在主阶得到恢复。二次型 $K(x):=x^{\top}Gx$ 量度局部时间代价, $K=1$ 标识自洽轨迹。时间的这种重新定义仅通过 $G$ 进入诸定理:$dt_{\mathrm{info}}$ 作为对 $G$(即~\cite{Realizability} 的主二次型 $Q$)的启发式构造。
 
 \medskip\noindent\textit{通向可实现性框架的桥接.} 记号 $G:=\nabla^{2}(dt_{\mathrm{info}}^{2})$ 是一种简写: 严格地说, $G$ 表示与 $dt_{\mathrm{info}}^{2}$ 相关的\emph{符号化主二次系数形式}, 等同于~\cite{Realizability} 的主二次型 $Q$。非负的信息时间代价本身由其正部 $(x^{\top}Gx)_{+}$ 做主导阶近似, 正如~\cite{Realizability} 中所做; $G$ 则是其下面的符号化系数形式, 即便 $dt_{\mathrm{info}}^{2}\ge 0$, $G$ 仍可取正负两种符号。因此~\cite{Realizability} 的主要定理直接适用:公理 R, E, T 连同非退化性意味着 $\mathrm{Sig}(G)=(1,1)$, 等价于 $\det G<0$。条件 $K=x^{\top}Gx=1$ 不是~\cite{Realizability} 的结论, 而是本文引入的附加自洽条件。
 
-\medskip\noindent\textit{从~\cite{Realizability} 借用的最小内容.} 为使本文尽量自足, 此处所用机制如下。公理 E 将位移代价的主导阶化约为非退化二次型 $Q$。公理 T 给出一个具有严格正代价的特异时间方向, 由此排除纯负定的主二次型。公理 R 给出空间上非平凡的前向位移序列, 其代价与大小之比趋于零, 由此排除正定的主二次型。在二维情形下, 一旦正定与负定两种号差都被排除且非退化性被施加, 所剩的唯一惯性指数即为 $(1,1)$。将本文的 $G$ 等同于此符号化主二次型 $Q$, 即得 $\mathrm{Sig}(G)=(1,1)$, 等价于 $\det G<0$。完整的陈述, 包括精确的代价泛函、正部构造 $(x^{\top}Qx)_{+}$, 以及公理 R 中的极限论证, 均在~\cite{Realizability} 中证明。
+\medskip\noindent\textit{从~\cite{Realizability} 借用的最小内容.} 为使本文尽量自足, 此处所用机制如下。公理 E 将位移代价的主导阶化约为非退化二次型 $Q$。公理 T 给出一个具有严格正代价的特异时间方向, 由此排除纯负定的主二次型。公理 R 通过~\cite{Realizability} 的极限论证, 要求在该文所用的精确代价泛函下, 存在空间上非平凡的前向位移序列使代价与大小之比趋于零, 由此排除正定的主二次型。在二维情形下, 一旦正定与负定两种号差都被排除且非退化性被施加, 所剩的唯一惯性指数即为 $(1,1)$。将本文的 $G$ 等同于此符号化主二次型 $Q$, 即得 $\mathrm{Sig}(G)=(1,1)$, 等价于 $\det G<0$。完整的陈述, 包括精确的代价泛函、正部构造 $(x^{\top}Qx)_{+}$, 以及公理 R 中的极限论证, 均在~\cite{Realizability} 中证明。
 
 \medskip
 
