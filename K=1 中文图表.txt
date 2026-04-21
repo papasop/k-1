@@ -275,10 +275,10 @@ $d_{c}>0 \Leftrightarrow -1/\det G>0$ (式~\eqref{eq:dc}) $\Leftrightarrow \det 
 % Annotation below
 \node[font=\footnotesize, text=black!60, below=2.6cm of core, text width=10cm, align=center] {
    一个符号 $\det G<0$, 三种对应表述.\\
-   (一般 $H_{*}$ 会改变稳定阈值, 见注~\ref{rem:Hstar_dep})
+   (一般 $H_{*}$ 会改变稳定阈值公式, 见注~\ref{rem:Hstar_dep})
 };
 \end{tikzpicture}
-\caption{号差-辛谱-稳定性三重对应. 核心代数符号 $\det G<0$ 在二维非退化情形下对应三种表述: Lorentz 号差 $\mathrm{Sig}(G)=(1,1)$(几何表述, 由 Sylvester 惯性律), 辛生成子 $J_{G}$ 具有实特征值 $\lambda_{\pm}=\pm\alpha\sqrt{-1/\det G}$(谱表述, 由直接谱计算), 以及存在正稳定阈值 $d_{c}>0$(动力学表述, \emph{其稳定性解释需各向同性线性化 $H_{*}=I$}). 定理~\ref{thm:spectral}--\ref{thm:equivalence} 连同式~\eqref{eq:dc} 建立这些对应关系. 一般 $H_{*}$ 可使实际稳定阈值偏离各向同性值 $d_{c}$(见注~\ref{rem:Hstar_dep}).}
+\caption{号差-辛谱-稳定性三重对应. 核心代数符号 $\det G<0$ 在二维非退化情形下对应三种表述: Lorentz 号差 $\mathrm{Sig}(G)=(1,1)$(几何表述, 由 Sylvester 惯性律), 辛生成子 $J_{G}$ 具有实特征值 $\lambda_{\pm}=\pm\alpha\sqrt{-1/\det G}$(谱表述, 由直接谱计算), 以及存在正稳定阈值 $d_{c}>0$(动力学表述, \emph{其稳定性解释需各向同性线性化 $H_{*}=I$}). 定理~\ref{thm:spectral}--\ref{thm:equivalence} 连同式~\eqref{eq:dc} 建立这些对应关系. 一般 $H_{*}$ 可使实际稳定阈值偏离各向同性公式 $\alpha\sqrt{-1/\det G}$(见注~\ref{rem:Hstar_dep}).}
 \label{fig:triangle}
 \end{figure}
 
@@ -393,7 +393,7 @@ $\dot{K}=2x^{\top}G\dot{x}=4(K-1)\,x^{\top}G(J_{G}-d_{c}I)Gx$。由 $GJ_{G}=\alp
 \node[label, green!50!black, right] at (1.05, 1.0) {B 类 (运动学)};
 \node[label, green!50!black, left] at (-1.05, 1.0) {boost};
 \end{tikzpicture}
-\caption{Rindler 度规 $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$ 下的 $\{K=1\}$ 流形. 双曲线的渐近线为光锥. 在基点 $x_{*}$ 处, A 类(红, 双向箭头): 沿法向偏离 $\{K=1\}$ 的热力学涨落; B 类(绿): 沿曲线的切向 boost, 热力学上惰性——在 $x_{*}=(0,1)$ 处 $dx_{2}/dx_{1}|_{x_{*}}=0$, 切向恰为水平方向. 图中取 $\kappa\ell=1$ 且 $x_{*}=(0,1)$, 满足归一化 $x_{*}^{\top}G^{2}x_{*}=1$, 此时恢复率简化为 $\kappa_{K}=4d_{c}$(一般基点的公式见 \S\ref{sec:lawIII}).}
+\caption{Rindler 度规 $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$ 下的 $\{K=1\}$ 流形. 双曲线的渐近线为光锥. 在基点 $x_{*}$ 处, A 类(红, 双向箭头): 沿 $\nabla K$ 法向偏离 $\{K=1\}$ 的热力学涨落; B 类(绿): 沿曲线的切向 boost, 热力学上惰性——在 $x_{*}=(0,1)$ 处 $dx_{2}/dx_{1}|_{x_{*}}=0$, 切向恰为水平方向. 图中取 $\kappa\ell=1$ 且 $x_{*}=(0,1)$, 满足归一化 $x_{*}^{\top}G^{2}x_{*}=1$, 此时恢复率简化为 $\kappa_{K}=4d_{c}$(一般基点的公式见 \S\ref{sec:lawIII}).}
 \label{fig:K1geometry}
 \end{figure}
 
@@ -624,7 +624,7 @@ f+2rf'+\tfrac{r^{2}}{2}f''=1,
 \node[extinp, left=0.4cm of OU] (Teff) {$T_{\mathrm{eff}}=T_{\mathrm{tol}}$};
 \draw[extarr] (Teff) -- (Clau);
 % The three Jacobson inputs: Sig(G) comes from left; S propto A external
-\node[extinp, left=0.4cm of jac, yshift=4pt] (sigin) {律 I: $\mathrm{Sig}(G){=}(1,1)$};
+\node[extinp, left=0.4cm of jac, yshift=4pt] (sigin) {局部 Lorentz 号差\\ $\mathrm{Sig}(G){=}(1,1)$};
 \node[extinp, left=0.4cm of jac, yshift=-14pt] (SAin) {$S\propto A$};
 \draw[extarr] (sigin) -- (jac.west);
 \draw[extarr] (SAin) -- (jac.west);
