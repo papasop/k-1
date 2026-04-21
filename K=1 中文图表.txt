@@ -1,0 +1,818 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\setlength{\emergencystretch}{1.5em}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning, decorations.pathmorphing, shapes.geometric}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue}
+
+% CJK support: fontspec + XeTeX native CJK linebreak
+\usepackage{fontspec}
+\setmainfont{Noto Serif CJK SC}
+\setsansfont{Noto Sans CJK SC}
+% Enable breaking between CJK characters (native XeTeX feature)
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+
+% 行距与段落
+\linespread{1.35}               % 中文文档常用 1.3--1.4 行距
+\setlength{\parindent}{2em}     % 中文段落首行缩进 2 汉字宽度
+\setlength{\parskip}{0.3ex plus 0.1ex minus 0.05ex}  % 适度段落间距
+
+% 列表环境紧凑化(中文下默认列表过松)
+\setlist{itemsep=0.3ex, parsep=0.3ex, topsep=0.5ex}
+
+% 表格行距
+\renewcommand{\arraystretch}{1.25}
+
+% 定理环境:中文下斜体不美观,改用正体(plain style 的形状)
+\makeatletter
+\def\th@plain{%
+  \thm@notefont{}%
+  \itshape % number and name
+}
+\def\th@definition{%
+  \thm@notefont{}%
+  \normalfont % 定义/定理内容用正体
+}
+\makeatother
+\theoremstyle{definition}  % 用 definition 风格,body 为正体
+\newtheorem{theorem}{定理}
+\newtheorem{proposition}[theorem]{命题}
+\newtheorem{lemma}[theorem]{引理}
+\newtheorem{corollary}[theorem]{推论}
+\newtheorem{definition}[theorem]{定义}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{注}
+
+% Section font adjustment(中文 section 稍加间距)
+\usepackage{titlesec}
+\titleformat*{\section}{\large\bfseries}
+\titleformat*{\subsection}{\normalsize\bfseries}
+\titlespacing*{\section}{0pt}{1.8ex plus 0.5ex minus 0.3ex}{1ex plus 0.3ex}
+\titlespacing*{\subsection}{0pt}{1.4ex plus 0.4ex minus 0.2ex}{0.8ex plus 0.2ex}
+
+\renewcommand{\proofname}{\bfseries 证明}
+\renewcommand{\abstractname}{摘要}
+\renewcommand{\figurename}{图}
+\renewcommand{\tablename}{表}
+
+\title{\textbf{$K=1$ 时空几何动力学}\\[4pt]\large 源自信息时间的 Lorentz 几何}
+\author{Y.\,Y.\,N.\ Li}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\noindent\textbf{背景.\ } 时间在物理学中一贯作为原始概念出现——一种未被推导的输入。
+
+\smallskip\noindent\textbf{框架.\ } 将时间重新定义为变化的代价, 并将与 $dt_{\mathrm{info}}^{2}$ 相关的符号化主二次型 $G$ 与~\cite{Realizability} 中的二次型相等同, 则三个可实现性条件(公理 R, E, T)连同非退化性强制 $\mathrm{Sig}(G)=(1,1)$, 等价于 $\det G<0$。在各向同性线性化之下, 符号 $\det G<0$ 有三种等价表述: Lorentz 号差、实辛特征值以及 $d_{c}>0$(定理~\ref{thm:equivalence}); $K(x)=x^{\top}Gx=1$ 是本文引入的单位代价轨迹, 作为附加的自洽条件。演化律在 $G$ 诱导的辛结构与 $D\ge 0$ 的约束下唯一(定理~\ref{thm:lawII}); 在临界阻尼处, 恢复速率为 $\kappa_{K}=4d_{c}$(定理~\ref{thm:restoring})。
+
+\smallskip\noindent\textbf{热力学内容.\ } 在 $K=1$ 附近的稳态区, Clausius 关系按 Tolman 温度与稳定性边界 $d_{c}$ 唯一地确定噪声幅度(命题~\ref{prop:clausius}, 式~\eqref{eq:noise})。从几何上看, $K=1$ 流形承载两类涨落: 热力学的(A 类, 垂直于 $K=1$)与运动学的(B 类, 沿 Lorentz boost 轨道切向)。在从随机动力学到 Clausius 的这一步内, 唯一的外部等同是 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$; 途径 B(\S~\ref{sec:field})无需任何外部等同。
+
+\smallskip\noindent\textbf{引力内容.\ } 对于静态、球对称度规, 具有辛特征值 $\sigma_1:=r\sqrt{f}$ 与 $\sigma_2:=r$, 所猜想的场级类似物 $\sigma_2^2\,\Box\ln\sigma_i=1$($i=1,2$)在代数上等价于 $R_{\mu\nu}=0$(定理~\ref{thm:field})。公理 T(正时间代价)强制 $\sigma_1>0$(命题~\ref{prop:sigma1}), 从而将曲率奇点($\sigma_1$ 退化之处)排除在理论定义域之外; Ornstein--Uhlenbeck 方差界 $\mathrm{Var}(K)<1$ 导出固有分辨率尺度 $\sigma_1\gtrsim\ell_P$(命题~\ref{prop:domain})。
+\end{abstract}
+
+\section{引言: 时间作为推论}
+
+\noindent\textbf{问题.\ } 时空物理的每种标准表述都把度规或因果结构作为输入假设。Jacobson 论证~\cite{Jacobson} 从局部 Rindler 视界上的热力学推得爱因斯坦方程, 但 Lorentz 号差被普遍地预设——正如 Padmanabhan~\cite{Padmanabhan} 与 Verlinde~\cite{Verlinde} 的方法中那样。EPS 公理化~\cite{EPS} 从自由下落与光传播推导因果结构, 但使用了运动学原语。在对 Riemann 遗留问题——是什么决定度规——的每条路径中, 要么号差被预先规定, 要么推导以运动学原语为前提。
+
+\smallskip\noindent\textbf{缺口.\ } 就本文所述的意义而言, 似乎没有现成的基于代价的方法能推出 Lorentz 号差本身。\footnote{探讨相关但不同问题的方法包括: Born--Infeld 号差问题、量子宇宙学中的号差变化, 以及时间问题~\cite{Gibbons1995,Kiefer2012,Isham1993}。熵引力方法~\cite{Verlinde,Padmanabhan} 以 Lorentz 时空为前提并推导引力动力学; 本文处理的是位于此前一层的、基于代价的号差问题。}
+
+\smallskip\noindent\textbf{解决方案.\ } 此处时间既非坐标, 也非度规原语: 它是变化的代价, 因此度规——包括其 Lorentz 号差——是推出的结果。这个问题在单一局部 Rindler 视界所决定的 $2\times 2$ 情形中被解决。信息时间 $dt_{\mathrm{info}}:=d\Phi/H$ 给出与 $dt_{\mathrm{info}}^{2}$ 相关的符号化主二次型 $G$(启发式地记为 $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$, 等同于~\cite{Realizability} 的主二次型); 三个可实现性公理 R, E, T 连同非退化性强制 $\det G<0$(\S\ref{sec:lawI})。Lorentz 号差、实辛特征值以及 $d_{c}>0$, 随后都是单一符号的代数推论。二次型 $K(x)=x^{\top}Gx$ 量度局部时间代价; 偏离 $K=1$ 在合适基点附近产生局部恢复漂移(律 III), 从而 $K=1$ 成为局部自洽的轨迹。
+
+\smallskip\noindent\textbf{通向爱因斯坦方程的两条路径.}
+\begin{itemize}[leftmargin=2em, itemsep=0.4ex, parsep=0pt, topsep=0.3ex]
+\item[\textbf{A.}] \textbf{热力学桥} (\S\S2--7):\ $K{=}1\xrightarrow{\mathrm{lin.}}\mathrm{OU}\to\mathrm{Clausius}$; 结合 $S\propto A$ 与 Jacobson 论证~\cite{Jacobson}, 对一般度规给出 $G_{\mu\nu}=8\pi T_{\mu\nu}$。
+\item[\textbf{B.}] \textbf{等价定理} (\S~\ref{sec:field}):\ 在球对称部分, 特征值自洽条件 $\sigma_2^2\Box\ln\sigma_i=1$——$K{=}1$ 在场级上带有动机的类似物, 作为一个猜想提出——在代数上等价于 $R_{\mu\nu}=0$, \emph{不引入任何热力学输入}。这不是从框架公理推导出爱因斯坦方程, 而是用 $K{=}1$ 的语言重新表述真空方程的等价形式。
+\end{itemize}
+途径 A 普适但需要 $S\propto A$; 途径 B 在热力学上独立但目前仅限球对称。
+
+\smallskip\noindent\textbf{主要结果.\ } 在各向同性线性化之下, $d_{c}>0\Leftrightarrow\mathrm{Sig}(G)=(1,1)$(定理~\ref{thm:equivalence})以及 $\sigma_2^2\,\Box\ln\sigma_i=1\Leftrightarrow R_{\mu\nu}=0$(定理~\ref{thm:field}); 完整表述见 \S\S\ref{sec:lawII}--\ref{sec:singularity}。
+
+\smallskip\noindent\textbf{记号.\ }
+\begin{itemize}[leftmargin=1.5em, itemsep=0.15ex, parsep=0pt, topsep=0.2ex, label={$\triangleright$}]
+\item $\mathrm{spec}(A)$: $A$ 的谱; $\mathrm{Sig}(G)=(p,q)$: 惯性指数($p$ 个正、$q$ 个负特征值); $J=\bigl(\begin{smallmatrix}0&1\\-1&0\end{smallmatrix}\bigr)$: 标准辛矩阵。
+\item $\|\cdot\|$: $\mathbb{R}^{2}$ 上的欧氏范数; $\nabla$: $\mathbb{R}^{2}$ 上的欧氏梯度。
+\item $\alpha>0$: 归一化常数(与热力学量比较时取 $\alpha=1$); $\kappa$: 视界的表面引力(与恢复速率 $\kappa_{K}$ 区别); $\ell$: 距视界的固有距离。
+\item $\sigma>0$: 随机动力学中的噪声幅度; $\sigma_{1}:=r\sqrt{f}$, $\sigma_{2}:=r$: 度规的辛特征值; $D\ge 0$: $2\times 2$ 半正定耗散矩阵。
+\item $\Box\phi := r^{-2}\partial_{r}(r^{2}f\,\partial_{r}\phi)$: \emph{径向}达朗贝尔算子, 对仅依赖 $r$ 的 $\phi$ 精确(非完整四维波算子)。
+\end{itemize}
+
+\section{信息时间导出度规(律 I)}\label{sec:lawI}
+
+\noindent\textbf{律 I.} \textit{度规——连同其 Lorentz 号差——是时间的推论, 而非基本输入;它是信息时间的主二次型。}
+
+\medskip
+
+信息时间 $dt_{\mathrm{info}}:=d\Phi/H$, 其中 $\Phi$ 参数化结构变化, $H>0$ 是 $\Phi$ 单位变化的局部代价(熵阻抗), 给出与 $dt_{\mathrm{info}}^{2}$ 相关的符号化主二次型 $G$ (启发式地记为 $G:=\nabla^{2}(dt_{\mathrm{info}}^{2})$): 局部二次近似 $dt_{\mathrm{info}}^{2}\approx \delta x^{\top}G\,\delta x$。二次型 $K(x):=x^{\top}Gx$ 量度局部时间代价, $K=1$ 标识自洽轨迹。时间的这种重新定义仅通过 $G$ 进入诸定理:$dt_{\mathrm{info}}$ 作为对 $G$(即~\cite{Realizability} 的主二次型 $Q$)的启发式构造。
+
+\medskip\noindent\textit{通向可实现性框架的桥接.} 记号 $G:=\nabla^{2}(dt_{\mathrm{info}}^{2})$ 是一种简写: 严格地说, $G$ 表示与 $dt_{\mathrm{info}}^{2}$ 相关的\emph{符号化主二次系数形式}, 等同于~\cite{Realizability} 的主二次型 $Q$。非负的信息时间代价本身由其正部 $(x^{\top}Gx)_{+}$ 做主导阶近似, 正如~\cite{Realizability} 中所做; $G$ 则是其下面的符号化系数形式, 即便 $dt_{\mathrm{info}}^{2}\ge 0$, $G$ 仍可取正负两种符号。因此~\cite{Realizability} 的主要定理直接适用:公理 R, E, T 连同非退化性意味着 $\mathrm{Sig}(G)=(1,1)$, 等价于 $\det G<0$。条件 $K=x^{\top}Gx=1$ 不是~\cite{Realizability} 的结论, 而是本文引入的附加自洽条件。
+
+\medskip\noindent\textit{从~\cite{Realizability} 借用的最小内容.} 为使本文尽量自足, 此处所用机制如下。公理 E 将位移代价的主导阶化约为非退化二次型 $Q$。公理 T 给出一个具有严格正代价的特异时间方向, 由此排除纯负定的主二次型。公理 R 给出空间上非平凡的前向位移序列, 其代价与大小之比趋于零, 由此排除正定的主二次型。在二维情形下, 一旦正定与负定两种号差都被排除且非退化性被施加, 所剩的唯一惯性指数即为 $(1,1)$。将本文的 $G$ 等同于此符号化主二次型 $Q$, 即得 $\mathrm{Sig}(G)=(1,1)$, 等价于 $\det G<0$。完整的陈述, 包括精确的代价泛函、正部构造 $(x^{\top}Qx)_{+}$, 以及公理 R 中的极限论证, 均在~\cite{Realizability} 中证明。
+
+\medskip
+
+这里的 $\Phi$ 是 $\mathbb{R}^{2}$ 上一个光滑标量, 我们不指定它。一旦 $\Phi$ 使得 $dt_{\mathrm{info}}$ 满足可实现性公理 R, E, T 连同非退化性, $G$ 的 Lorentz 号差随之确定。不同的 $\Phi$ 选择可导致不同的 $G$, 但都满足相同的号差结论。
+
+\medskip
+
+与 $dt_{\mathrm{info}}$ 相关的代价结构须满足公理 R, E, T, 具体如下。公理 E($\delta x$ 中的二次展开)是要求信息时间代价接纳~\cite{Realizability} 的二次主导阶展开而被施加; $\Phi$ 与 $H$ 的光滑性提供了这样一个主二次系数形式存在的动机。公理 T(正时间代价)被施加为这样的要求:位移代价(记为 $d$, 按~\cite{Realizability} 的意义)沿特异的时间方向有正线性下界: $d(x;(\Delta t,0))\ge c_{t}\,\Delta t$, 其中 $c_{t}>0$。公理 R 要求存在带有非零空间分量的前向位移序列, 其代价与大小之比趋于零。从公理 R, E, T 与非退化性出发对 $\mathrm{Sig}(G)=(1,1)$ 的完整推导见~\cite{Realizability}。
+
+在广义相对论中, Lorentz 度规是在预先存在的可微流形上给出的; 此处 $G$ 及其因果结构都是推出的。
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[
+    node distance=0.85cm and 0.9cm,
+    box/.style={rectangle, draw=black!70, rounded corners=3pt, minimum height=0.8cm, align=center, font=\small},
+    inpbox/.style={box, fill=gray!10, minimum width=2.3cm},
+    objbox/.style={box, fill=blue!8, minimum width=2.3cm},
+    outbox/.style={box, fill=green!10, minimum width=2.5cm},
+    lawbox/.style={box, fill=orange!10, minimum width=2.9cm},
+    condbox/.style={box, fill=green!14, draw=black!80, thick, minimum width=2.5cm},
+    arr/.style={-{Stealth[length=2mm]}, thick, draw=black!60},
+    layerlab/.style={font=\footnotesize\bfseries, text=black!70}
+]
+% =========================================================
+% Layer 1: inputs  ->  G  +  R,E,T  => Sig(G)
+% Parallel structure: G and R,E,T are SEPARATE inputs to Sig
+% =========================================================
+\node[inpbox] (phi) {$\Phi,\ H$};
+\node[inpbox, right=of phi] (ti) {$dt_{\mathrm{info}}$};
+\node[objbox, right=of ti] (G1) {$G\equiv Q$};
+% R,E,T below dt/ti, parallel input to Sig
+\node[inpbox, below=0.5cm of ti, minimum width=3.2cm] (RET) {R, E, T + 非退化};
+% Sig is to the right, receiving TWO parallel arrows
+\node[outbox, right=0.7cm of G1, xshift=0.4cm] (sig) {$\mathrm{Sig}(G){=}(1,1)$};
+\draw[arr] (phi) -- (ti);
+\draw[arr] (ti) -- (G1);
+% BOTH G1 and RET arrow into Sig (parallel inputs)
+\draw[arr] (G1) -- (sig);
+\draw[arr] (RET.east) -- ++(0.3cm,0) |- (sig.south west);
+\node[layerlab, above=0.05cm of phi.north west, anchor=south west] {第 1 层: 信息时间与可实现性条件};
+
+% =========================================================
+% Layer 2: point-level object
+% =========================================================
+\node[objbox, below=1.7cm of phi] (G2) {$G$};
+\node[objbox, right=of G2] (K) {$K(x)=x^{\top}Gx$};
+\node[condbox, right=of K] (K1) {$K=1$\\[-1pt]\scriptsize 本文额外引入};
+\draw[arr] (G2) -- (K);
+\draw[arr] (K) -- node[font=\tiny\itshape, text=black!55, above=-1pt] {定义} (K1);
+\node[layerlab, above=0.05cm of G2.north west, anchor=south west] {第 2 层: 点级对象};
+
+% =========================================================
+% Layer 3: dynamics (Laws II and III)
+% =========================================================
+\node[objbox, below=1.1cm of G2] (G3) {$G$};
+\node[objbox, right=of G3] (JG) {$J_G=\alpha G^{-1}J$};
+\node[lawbox, right=of JG] (law2) {律 II\\[-1pt]\scriptsize $\dot x=(J_G{-}D)\nabla V$};
+\draw[arr] (G3) -- (JG);
+\draw[arr] (JG) -- (law2);
+\node[objbox, below=0.4cm of G3] (K1b) {$K=1$};
+\node[objbox, right=of K1b] (V) {$V=\tfrac{1}{2}(K-1)^2$};
+\node[lawbox, right=of V] (law3) {律 III\\[-1pt]\scriptsize 特征向量基点局部恢复};
+\draw[arr] (K1b) -- (V);
+\draw[arr] (V) -- (law3);
+\node[layerlab, above=0.05cm of G3.north west, anchor=south west] {第 3 层: 动力学};
+
+\end{tikzpicture}
+\caption{$K{=}1$ 框架的逻辑依赖关系. \emph{第 1 层}(信息时间与可实现性条件): 信息时间 $dt_{\mathrm{info}}$ 产生符号化主二次型 $G\equiv Q$; 公理 R, E, T 连同非退化性作用于 $G$ 的\emph{条件}, 强制 $\mathrm{Sig}(G)=(1,1)$(即 $\det G<0$), 而非生成 $G$ 本身. \emph{第 2 层}(点级对象): $G$ 定义 $K(x)=x^{\top}Gx$; 条件 $K=1$ 是本文\emph{额外引入}的自洽条件, 非公理的推论. \emph{第 3 层}(动力学): $G$ 导出辛生成子 $J_G$, 由此给出律 II; $K=1$ 与恢复势 $V=\tfrac12(K{-}1)^2$ 一起给出律 III 在特征向量基点附近的局部恢复. 实箭头表示定义或代数推论; 场级类似物 $\sigma_2^2\Box\ln\sigma_i=1$(作为猜想)见图~\ref{fig:routes}.}
+\label{fig:framework}
+\end{figure}
+
+\section{由 \texorpdfstring{$G$}{G} 导出的辛结构}\label{sec:symplectic}
+
+要求哈密顿流保持代价结构, 连同一个规范化条件, 单出唯一的辛生成子。
+
+\begin{theorem}[结构唯一性]\label{thm:unique}
+设 $G$ 是 $2\times 2$ 非退化对称实矩阵, 且 $\alpha>0$ 是常数。则满足\\
+(i) $GM$ 斜对称 (即 $GM + M^{\top}G = 0$); \\
+(ii) 当 $G=I$ 时 $M=\alpha J$ \\
+的唯一矩阵 $M$ 为 $J_{G}=\alpha\,G^{-1}J$。
+\end{theorem}
+
+\begin{proof}
+由(i): $GM$ 斜对称, 故在二维中 $GM=\beta J$ 对某个 $\beta\in\mathbb{R}$。因此 $M=\beta G^{-1}J$。由(ii): 当 $G=I$ 时 $M=\beta J = \alpha J$, 故 $\beta = \alpha$。\qed
+\end{proof}
+
+\begin{remark}[非退化性与号差]
+定理~\ref{thm:unique} 仅需要 $\det G\neq 0$; 对任何号差都成立。定理~\ref{thm:spectral} 给出谱的计算; 在各向同性线性化之下, Lorentz 条件在定理~\ref{thm:equivalence} 中成为稳定性判据。由于 $GJ_{G}=\alpha J$ 斜对称, 按构造 $J_{G}$ 是 $G$-反对称; Lorentz 条件强制 $J_{G}$ 为双曲元(具有实特征值), 其实特征值给出 $d_{c}>0$。
+\end{remark}
+
+\begin{theorem}[谱实性]\label{thm:spectral}
+若 $G$ 是 Lorentz 的 $(\mathrm{Sig}(G)=(1,1))$, 则 $J_{G}$ 的辛特征值 $\pm d_{c}$ 实且满足
+\begin{equation}
+d_{c}=\alpha\sqrt{-1/\det G}.\label{eq:dc}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+$\mathrm{tr}(G^{-1}J)=0$, $\det(G^{-1}J)=1/\det G$; 特征多项式 $\lambda^{2}+1/\det G=0$ 给出 $\mathrm{spec}(J_{G})=\{\pm d_{c}\}$。在各向同性情形 $H_{*}=I$(即 $H$ 在基点处的线性化; 见 \S\ref{sec:stability}), $\max\mathrm{Re}\,\mathrm{spec}(J_{G}-dI)=d_{c}-d$, 于 $d=d_{c}$ 处消失。\qed
+\end{proof}
+
+\begin{theorem}[Lorentz 号差的必要性]\label{thm:necessity}
+若 $G$ 正定或负定 $(\mathrm{Sig}(G)=(2,0)$ 或 $(0,2))$, 则 $-1/\det G<0$, 故 $J_{G}$ 的特征值纯虚;不存在实的 $d_{c}>0$。
+\end{theorem}
+
+\section{稳定性边界}\label{sec:stability}
+
+\begin{theorem}[号差-稳定性等价]\label{thm:equivalence}
+对于非退化对称 $2\times 2$ 实 $G$, 在各向同性线性化 $H_{*}=I$ 之下, 下列等价:
+\begin{enumerate}[label=(\alph*)]
+\item $d_{c}>0$: 存在 $d>0$ 使 $J_{G}-dI$ 的所有特征值的实部 $\le 0$, 且该实部在 $d=d_{c}$ 处恰为零;
+\item $\mathrm{Sig}(G)=(1,1)$: $G$ 是 Lorentz 的;
+\item $\det G<0$。
+\end{enumerate}
+对一般的 $H_{*}$, 该等价失效(注~\ref{rem:Hstar_dep}): 仅在各向同性类之内, $d_{c}$ 才是号差不变量。
+\end{theorem}
+
+\begin{proof}
+$d_{c}>0 \Leftrightarrow -1/\det G>0$ (式~\eqref{eq:dc}) $\Leftrightarrow \det G<0 \Leftrightarrow \mathrm{Sig}(G)=(1,1)$, 由定理~\ref{thm:spectral} 与~\ref{thm:necessity} 得证。\qed
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[
+    node distance=2.2cm,
+    corebox/.style={rectangle, draw=black!80, thick, rounded corners=4pt, fill=red!12, minimum height=0.9cm, minimum width=2.2cm, align=center, font=\small\bfseries},
+    eqbox/.style={rectangle, draw=black!70, rounded corners=3pt, fill=blue!8, minimum height=0.95cm, minimum width=3.3cm, align=center, font=\small},
+    equiv/.style={{Stealth[length=2mm]}-{Stealth[length=2mm]}, thick, draw=black!65},
+    label/.style={font=\scriptsize\itshape, text=black!55}
+]
+% Central core: det G < 0
+\node[corebox] (core) {$\det G<0$\\[1pt]\scriptsize (单一代数符号)};
+% Three equivalent expressions arranged around the core
+\node[eqbox, above=1.6cm of core] (sig) {$\mathrm{Sig}(G)=(1,1)$\\[1pt]\scriptsize (Lorentz 号差)};
+\node[eqbox, below left=1.3cm and 0.8cm of core] (spec) {$\lambda_{\pm}{=}\pm\alpha\sqrt{-1/\det G}\in\mathbb{R}$\\[1pt]\scriptsize (实辛谱)};
+\node[eqbox, below right=1.3cm and 0.8cm of core] (dc) {$d_{c}>0$\\[1pt]\scriptsize (正稳定阈值)};
+% Double-headed arrows (equivalences)
+\draw[equiv] (core) -- node[label, right] {号差-稳定性} (sig);
+\draw[equiv] (core) -- node[label, above left=-2pt, sloped] {谱计算} (spec);
+\draw[equiv] (core) -- node[label, above right=-2pt, sloped] {$d_{c}$ 定义} (dc);
+% Peripheral equivalences forming triangle
+\draw[equiv, draw=black!40] (sig) to[bend right=20] node[label, above=1pt] {号差必要性} (spec);
+\draw[equiv, draw=black!40] (spec) -- node[label, below] {临界阻尼} (dc);
+\draw[equiv, draw=black!40] (dc) to[bend right=20] node[label, above=1pt] {号差-稳定性} (sig);
+% Prominent isotropic linearization condition badge (near top, right of core)
+\node[rectangle, draw=black!60, fill=yellow!15, rounded corners=2pt, font=\footnotesize\bfseries, right=0.8cm of core, inner sep=3pt] (isoflag) {$H_{*}=I$};
+\node[font=\scriptsize\itshape, text=black!60, below=0.02cm of isoflag, align=center] {各向同性\\ 线性化};
+% Annotation below
+\node[font=\footnotesize, text=black!60, below=2.6cm of core, text width=10cm, align=center] {
+   一个符号 $\det G<0$, 三种等价表述.\\
+   (一般 $H_{*}$ 偏离此等价, 见注~\ref{rem:Hstar_dep})
+};
+\end{tikzpicture}
+\caption{号差-辛谱-稳定性等价三角\emph{(各向同性线性化 $H_{*}=I$ 下)}. 核心代数符号 $\det G<0$ 通过三个定理等价于: Lorentz 号差 $\mathrm{Sig}(G)=(1,1)$(几何表述), 辛生成子 $J_{G}$ 具有实特征值 $\lambda_{\pm}=\pm\alpha\sqrt{-1/\det G}$(谱表述), 以及存在正稳定阈值 $d_{c}>0$(动力学表述). 定理~\ref{thm:spectral}--\ref{thm:equivalence} 连同式~\eqref{eq:dc} 建立这些等价关系. 一般 $H_{*}$ 可偏离此等价(见注~\ref{rem:Hstar_dep}).}
+\label{fig:triangle}
+\end{figure}
+
+\medskip\noindent\textit{范围.} 本节关注 $2\times 2$ 情形, 由单一局部 Rindler 视界所决定。向 $(1+3)$ 维的扩展需要额外的结构选择(见 \S\ref{sec:discussion} 中 $(1+3)$-维扩展一节)。
+
+\medskip
+
+$H_{*}$ 表示代价函数的权重矩阵, 出现于 $d(\delta x)/dt=(J_{G}-dI)H_{*}\,\delta x$ 中(见 \S\ref{sec:lawII}); $H_{*}=I$ 为默认。对 $H_{*}=cI$($c>0$), $d_{c}$ 不变;对一般 $H_{*}>0$, 阈值可能偏移。
+
+\begin{remark}[对 $H_{*}$ 的依赖性]\label{rem:Hstar_dep}
+$d_{c}$ 的数值与号差等价性仅在 $H_{*}$ 的各向同性类内成立。对于一般的 $H_{*}>0$, $d_{c}$ 可偏离 $\alpha\sqrt{-1/\det G}$。举例: 取 $G=\mathrm{diag}(0.1,-10)$ 与 $H_{*}=\bigl(\begin{smallmatrix}1&0.9\\0.9&1\end{smallmatrix}\bigr)$, 则 $d_{c}^{\mathrm{iso}}=1$ 而 $d_{c}(H_{*})=4.55$, 证实在非各向同性类下 $d_{c}$ 依赖于 $H_{*}$。非各向同性类的号差-稳定性等价留作未解问题。
+\end{remark}
+
+\begin{proposition}[对角 $H_{*}$ 下的不变性]\label{prop:diag_inv}
+若 $G$ 与 $H_{*}$ 皆对角且 $H_{*}>0$, 则 $\mathrm{tr}(J_{G}H_{*})=0$, 故 $(J_{G}-dI)H_{*}$ 谱的实部之和等于 $-d\cdot\mathrm{tr}(H_{*})$, 于 $d=0$ 处为零。
+\end{proposition}
+
+\begin{remark}
+对于 Rindler 度规且 $H_{*}>0$ 对角, $(J_{G}-dI)H_{*}$ 的零特征值阈值保持为 $d_{c}=\alpha/(\kappa\ell)$。\S~\ref{sec:thermo} 的热力学应用直接使用该阈值, 无需定理~\ref{thm:equivalence} 的完整各向同性等价。
+\end{remark}
+
+\section{唯一动力学(律 II)}\label{sec:lawII}
+
+\noindent\textbf{律 II.} \textit{动力学生成子作如下分解: $GA = \alpha J - GD$, 其中 $D\ge 0$(半正定耗散)。这种辛-耗散分解是律 II 的内容;它是一条结构性公理, 并非从律 I 或律 III 推出, 其动机来自物理演化按可逆(辛)与不可逆(耗散)两部分的普适 Helmholtz 型分裂~\cite{GENERIC}。在此公理之下, 任何光滑势 $V$ 下的唯一演化律为 $\dot{x}=(J_{G}-D)\nabla V$。$\{K=1\}$ 的局部恢复角色由律 III 另行规定。}
+
+分解 $GA=\alpha J-GD$ 是律 II 的公理性内容; 定理~\ref{thm:lawII} 从中推出显式的演化律。
+
+\begin{theorem}[律 II 的正则形式]\label{thm:lawII}
+设 $G$ 非退化, $J_{G}=\alpha G^{-1}J$ \textup{(定理~\ref{thm:unique})}。在满足律 II 约束 $GA = \alpha J - GD$(其中 $D \ge 0$)的生成子类内, 对任意光滑势 $V$, 演化律唯一地为 $\dot{x} = (J_{G}-D)\,\nabla V$。此类定义了本框架中物理上可接纳的演化律, 符合 Helmholtz/GENERIC 分裂的精神~\cite{GENERIC}。
+\end{theorem}
+
+\begin{proof}
+$A=G^{-1}(\alpha J-GD)=J_{G}-D$。\qed
+\end{proof}
+
+对于 Lorentz 的 $G$, $J_G$ 有非零对称部分 $S=(J_{G}+J_{G}^{\top})/2\neq 0$, 偏离了 GENERIC 对欧氏反对称性的要求; 见 \S~\ref{sec:discussion}(\textit{与 GENERIC 的偏离})。
+
+\section{临界阻尼与涨落结构(律 III)}\label{sec:lawIII}
+
+\noindent\textbf{律 III.} \textit{在 $\{K=1\}$ 上任何 $G$ 特征向量附近, 随机动力学产生朝向 $K=1$ 的恢复漂移(定理~\ref{thm:restoring}): $K=1$ 是一个\emph{局部}自洽轨迹。全局吸引性是否成立仍是悬而未决的问题(\S\ref{sec:discussion} 中未解问题 5)。}
+
+\medskip
+
+辅助线性系统 $\dot{x}=(J_{G}-d_{c}I)x$ 在临界阻尼处有特征值 $0$ 与 $-2d_{c}$(由 $\mathrm{spec}(J_{G})=\{\pm d_{c}\}$ 在 $d=d_{c}$ 处得出)。定理~\ref{thm:restoring} 关注非线性系统 $\dot{x}=(J_{G}-d_{c}I)\nabla V$, $V=\tfrac{1}{2}(K{-}1)^2$, 其中对 $K=1$ 的偏离产生惩罚 $V$。$D=d_{c}I$ 的选择是唯一的临界稳定各向同性阻尼: 使 $K=1$ 稳定的最小各向同性耗散, 并给出最显式的恢复速率公式(式~\eqref{eq:kappa})。
+
+\begin{theorem}[局部有效恢复速率]\label{thm:restoring}
+设 $G$ 为 $2\times 2$ Lorentz 度规, $D=d_{c}I$, $J_{G}=\alpha G^{-1}J$(定理~\ref{thm:unique})。定义 $K(x)=x^{\top}Gx$, $V=\tfrac{1}{2}(K-1)^{2}$, 漂移项为 $\dot{x}=(J_{G}-d_{c}I)\nabla V$。则对任意 $x\in\mathbb{R}^{2}$:
+\begin{equation}
+\dot{K} = 4(K-1)\bigl[\alpha\,x^{\top}(JG)\,x - d_{c}\,x^{\top}G^{2}x\bigr].\label{eq:Kdot}
+\end{equation}
+在任一 $x_{*}\in\{K=1\}$ 且 $Gx_{*}=\lambda x_{*}$ 处, $x_{*}^{\top}JGx_{*}=0$, 故
+\begin{equation}
+\dot{K}\big|_{x=x_{*}} = -4\,d_{c}\,x_{*}^{\top}G^{2}x_{*}\cdot(K-1).\label{eq:Kdot_eigen}
+\end{equation}
+若此外基点按 $x_{*}^{\top}G^{2}x_{*}=1$ 归一化(即 $x_*$ 是单位特征值的 $G$-特征向量), 则
+\begin{equation}
+\dot{K} = -\kappa_{K}(K-1)+o(K-1),\qquad \kappa_{K}=4\,d_{c}.\label{eq:kappa}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+$\dot{K}=2x^{\top}G\dot{x}=4(K-1)\,x^{\top}G(J_{G}-d_{c}I)Gx$。由 $GJ_{G}=\alpha J$, 右乘 $G$ 得 $GJ_{G}G=\alpha(JG)$, 从而~\eqref{eq:Kdot}。在 $G$ 特征向量处, $x_{*}^{\top}JGx_{*}=\lambda\,x_{*}^{\top}Jx_{*}=0$(由斜对称性)。\qed
+\end{proof}
+
+\begin{remark}[对基点的依赖]
+局部有效恢复速率为 $\kappa_{K}(x_{*})=4d_{c}\cdot x_{*}^{\top}G^{2}x_{*}$, 依赖于基点。对于 Rindler 度规, $x_{*}=(0,1)$ 是 $\{K{=}1\}$ 上唯一的 $G$-特征向量且 $x_{*}^{\top}G^{2}x_{*}=1$。因子 $4=2\times 2$ 反映了两个来源: 二次型 $K$ 与二次惩罚 $V$;各自在求导时贡献因子 $2$。
+\end{remark}
+
+\subsection*{$\{K=1\}$ 上的两类涨落}
+
+将各向同性可加白噪声(伊藤约定)加入律 II 得 $dx=(J_{G}-D)\nabla V\,dt+\sigma\,dW_{t}$, 其中 $W_{t}$ 是标准 $\mathbb{R}^{2}$ 值 Wiener 过程, $\sigma>0$ 常数。在 $D=d_{c}I$(临界阻尼)处, 产生两类几何上不同的涨落:
+
+\medskip\noindent
+\textit{A 类}(热力学型): $K$ 垂直于 $\{K=1\}$ 的涨落——偏离度规自洽性——由恢复速率 $\kappa_{K}(x_{*})=4d_{c}\,x_{*}^{\top}G^{2}x_{*}$ 控制;在固定基点处, 条件分布 $P(K|x)$ 为高斯分布, 方差 $\sigma^{2}/(2d_{c})$, 由一维 OU 过程的标准稳态分布得出~\cite{Gardiner1985}。虽然恢复速率与 $K$ 空间噪声幅度都依赖 $x_{*}^{\top}G^{2}x_{*}$, 此因子在 OU 方差中相消。
+
+\medskip\noindent
+\textit{B 类}(运动学型; 此处热力学上惰性): 沿 $\{K=1\}$ 在 boost 方向上的自由切向扩散。对于 Rindler 度规 $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, $\{K=1\}$ 是双曲线 $-(\kappa\ell)^{2}x_{1}^{2}+x_{2}^{2}=1$;沿其运动生成 Lorentz boost, 改变惯性观察者, 但不改变热力学状态。$V$ 限制在 $\{K=1\}$ 上的 Hessian 为秩一, 零空间含此切向, 确认 B 类不携带恢复力和热。
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[scale=1.15,
+    axis/.style={-{Stealth[length=2mm]}, thick, draw=black!70},
+    hyp/.style={thick, draw=blue!70!black},
+    lightcone/.style={dashed, draw=gray!60},
+    normal/.style={-{Stealth[length=2.2mm]}, very thick, draw=red!70!black},
+    tangent/.style={-{Stealth[length=2.2mm]}, very thick, draw=green!50!black},
+    label/.style={font=\footnotesize}
+]
+% axes
+\draw[axis] (-3, 0) -- (3, 0) node[right, label] {$x_{1}$ (时间)};
+\draw[axis] (0, -2.2) -- (0, 2.5) node[above, label] {$x_{2}$ (空间)};
+% light cone (asymptotes): for kappa*ell=1, {K=1} is x_2^2 - x_1^2 = 1
+% asymptotes x_2 = ±x_1
+\draw[lightcone] (-2.5, -2.5) -- (2.5, 2.5);
+\draw[lightcone] (-2.5, 2.5) -- (2.5, -2.5);
+\node[label, gray, rotate=45] at (2.2, 2.0) {光锥};
+% upper hyperbola: x_2 = sqrt(1 + x_1^2)
+\draw[hyp, domain=-2.3:2.3, smooth, variable=\x] plot ({\x}, {sqrt(1 + \x*\x)});
+\draw[hyp, domain=-2.3:2.3, smooth, variable=\x] plot ({\x}, {-sqrt(1 + \x*\x)});
+\node[label, blue!70!black] at (2.0, 2.7) {$\{K=1\}$};
+% base point x_*
+\fill[black] (0, 1) circle (1.8pt) node[left=2pt, label] {$x_{*}$};
+% Class A: perpendicular (radial) arrow from x_* outward (normal)
+\draw[normal] (0, 1) -- (0, 1.8);
+\draw[normal] (0, 1) -- (0, 0.3);
+\node[label, red!70!black, right] at (0.05, 1.9) {A 类 (热力学)};
+\node[label, red!70!black, right] at (0.05, 0.2) {$K \neq 1$ 涨落};
+% Class B: tangential (along hyperbola)
+\draw[tangent] (0, 1) -- (0.9, 1.4);
+\draw[tangent] (0, 1) -- (-0.9, 1.4);
+\node[label, green!50!black, right] at (0.9, 1.45) {B 类 (运动学)};
+\node[label, green!50!black, left] at (-0.9, 1.45) {boost};
+\end{tikzpicture}
+\caption{Rindler 度规 $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$ 下的 $\{K=1\}$ 流形. 双曲线的渐近线为光锥. 在基点 $x_{*}$ 处, A 类(红): 垂直于 $\{K=1\}$ 的热力学涨落; B 类(绿): 沿曲线的切向扩散, 生成 Lorentz boost, 热力学上惰性. 图中取 $\kappa\ell=1$ 且 $x_{*}=(0,1)$, 满足归一化 $x_{*}^{\top}G^{2}x_{*}=1$, 此时恢复率简化为 $\kappa_{K}=4d_{c}$; 对一般基点, $\kappa_{K}(x_{*})=4d_{c}\,x_{*}^{\top}G^{2}x_{*}$.}
+\label{fig:K1geometry}
+\end{figure}
+
+\section{时空热力学(途径 A)}\label{sec:thermo}
+
+本节推导 Rindler 视界上的 Clausius 关系。每一个外部等同都被显式标出。
+
+\medskip\noindent\textit{符号约定.} 途径 A 中我们使用时空符号约定 $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, 以便与 Rindler 几何直接比较。仅依赖 $\det G$、$d_{c}$ 或双曲谱的命题, 在整体变号下不变。以公理 T(正时间代价)为基础的命题应在代价符号约定 $G_{\mathrm{cost}}=-G=\mathrm{diag}((\kappa\ell)^{2},-1)$ 下理解(于 \S~\ref{sec:singularity} 中显式使用)。两种约定都满足 $\det G=-(\kappa\ell)^{2}$, 给出相同的 $d_{c}$。
+
+作为具体实现, 我们把框架应用于 Rindler 度规
+\begin{equation}
+ds^{2}=-(\kappa\ell)^{2}d\tau^{2}+d\ell^{2},\label{eq:metric}
+\end{equation}
+其中 $\kappa$ 为表面引力, $\ell$ 为距视界的固有距离。式~\eqref{eq:dc} 给出 $d_{c}=\alpha/(\kappa\ell)$(即 $\alpha/\sqrt{|g_{00}|}$, 其中 $g_{00}=-(\kappa\ell)^{2}$ 为 Rindler 度规的时间分量)。$d_{c}$ 的表达式使用 \S~\ref{sec:stability} 中描述的对角/各向同性阈值; 对一般的 $H_{*}$, 阈值可能偏移。以 $T_{H}=\hbar\kappa/(2\pi)$~\cite{Hawking} 为外部输入, 有
+\begin{equation}
+d_{c}\cdot T_{H} = \frac{\alpha}{\kappa\ell}\cdot\frac{\hbar\kappa}{2\pi} = \frac{\alpha\hbar}{2\pi\ell},\label{eq:nearhorizon}
+\end{equation}
+显示 $\kappa$ 的精确相消。故结果 $d_{c}\cdot T_{H}=\alpha\hbar/(2\pi\ell)$ 复现 Tolman 温度~\cite{Tolman} $T_{\mathrm{tol}}=\alpha\hbar/(2\pi\ell)$, 仅依赖于距视界的固有距离 $\ell$, 而与表面引力 $\kappa$ 无关。
+
+\subsection*{A 类内(由 OU 动力学推导的) Clausius 关系}
+
+本小节中我们在 Sekimoto--Seifert 随机热力学框架~\cite{Sekimoto} 内工作; 在该外部框架中, 唯一附加的外部等同是 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$。
+
+在 A 类中(固定惯性观察者), $K=1$ 附近的 $K$ 动力学为一维 Ornstein--Uhlenbeck 过程, 稳态方差
+\begin{equation}
+\mathrm{Var}(K)\approx\frac{\sigma^{2}}{2d_{c}}.\label{eq:var}
+\end{equation}
+该稳态方差下, FDT 形式 $\sigma_{K}^{2}=2\kappa_{K}T_{\mathrm{eff}}$ 定义有效温度 $T_{\mathrm{eff}}=\sigma^{2}/(2d_{c})$, 与律 II 及定理~\ref{thm:restoring} 一致。Fokker--Planck 方程给出 Boltzmann 稳态分布 $\rho\propto\exp(-V/T_{\mathrm{eff}})$; 由 OU 过程的细致平衡, 随即得到 Clausius 关系 $\delta Q=T_{\mathrm{eff}}\,dS$, 其中
+\[
+\delta Q := dV + \tfrac{1}{2}\sigma_{K}^{2}\,dt,\qquad \sigma_{K}=2\sigma\|Gx_{*}\|.
+\]
+(热的定义遵循 Sekimoto--Seifert 随机热力学约定~\cite{Sekimoto}。) 
+关于等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 的推导, 可能从 KMS 条件~\cite{Haag,Connes1994} 出发, 仍是未解问题。
+
+\begin{proposition}[局部 Clausius 等价]\label{prop:clausius}
+在局部热平衡(前注中 KMS 意义下)与等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 之下, Clausius 关系 $\delta Q=T_{\mathrm{tol}}\,dS$ 等价于
+\begin{equation}
+\sigma^{2} = 2\,d_{c}\cdot T_{\mathrm{tol}} = 2\,d_{c}^{2}\cdot T_{H}.\label{eq:noise}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+$(\Rightarrow)$: 令 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 得 $\sigma^{2}/(2d_{c})=d_{c}\cdot T_{H}$, 故 $\sigma^{2}=2d_{c}^{2}\cdot T_{H}$。
+$(\Leftarrow)$: $\sigma^{2}=2d_{c}\cdot T_{\mathrm{tol}}$ 给 $T_{\mathrm{eff}}=\sigma^{2}/(2d_{c})=T_{\mathrm{tol}}$, 故 Clausius 成立。\qed
+\end{proof}
+
+\begin{remark}[命题~\ref{prop:clausius} 的假设]
+进入命题~\ref{prop:clausius} 的假设为:
+(i) $K=1$ 附近的 OU 近似($|K-1|\ll 1$, 等价于 $T_{\mathrm{eff}}\ll 1$);
+(ii) Sekimoto--Seifert 的热约定 $\delta Q := dV + \tfrac{1}{2}\sigma_{K}^{2}\,dt$;
+(iii) OU 过程的局部细致平衡;
+(iv) 外部等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$;
+连同代数的 Tolman 恒等式 $T_{\mathrm{tol}}=d_{c}T_{H}$($\kappa$ 因子在式~\eqref{eq:nearhorizon} 中相消)。
+\end{remark}
+
+\subsection*{位置依赖温度与伊藤修正}
+
+方程~\eqref{eq:noise} 在局部成立: $\sigma$ 与 $T_{\mathrm{tol}}$ 都是 $\ell$ 的函数。沿世界线, 基点 $x_{*}(t)$ 可以移动; $K$ 空间噪声幅度 $\sigma_K(x)=2\sigma\|Gx\|$ 沿 $\{K=1\}$ 变化, 给出位置依赖温度(式~\eqref{eq:Tloc}):
+\begin{equation}
+T_{\mathrm{loc}}(x) := \frac{\sigma_{K}(x)^{2}}{2\kappa_{K}(x_{*})} = \frac{\sigma^{2}\,x^{\top}G^{2}x}{2d_{c}\,x_{*}^{\top}G^{2}x_{*}}.\label{eq:Tloc}
+\end{equation}
+反映了 $K$ 空间噪声按 $x^{\top}G^{2}x$ 因子重标, 并通过基点归一化 $x_{*}^{\top}G^{2}x_{*}$ 消去基点依赖。
+
+该位置依赖不应读作 B 类的热涨落: 沿 boost 轨道的变化改变观察者/位置指派, 而 B 类仍热力学惰性, 不携带热。
+
+伊藤修正: 对沿 $x_{*}(t)$ 移动的基点, 演化中的附加伊藤项 $\tfrac{1}{2}(\partial\sigma^{2}/\partial x_{*})$ 影响轨道上的漂移, 但不影响固定基点处 OU 过程的稳态统计(决定 Clausius 的就是后者)。
+
+\section{特征值自洽(途径 B:直接代数)}\label{sec:field}
+
+特征值自洽条件 $\sigma_2^2\,\Box\ln\sigma_i=1$ 是 $K=1$ 在场级带动机的类似物, 作为猜想提出, 并非从框架公理推出; 定理~\ref{thm:field} 建立它在球对称部分与 $R_{\mu\nu}=0$ 的代数等价性, 不引入任何热力学输入。
+
+考虑静态球对称度规
+\begin{equation}
+ds^2=-f(r)\,dt^2+f(r)^{-1}dr^2+r^2\,d\Omega^2,
+\end{equation}
+其中 $d\Omega^{2}=d\theta^{2}+\sin^{2}\theta\,d\varphi^{2}$。定义辛特征值 $\sigma_{1}:=r\sqrt{f}$, $\sigma_{2}:=r$。
+
+\begin{definition}[特征值自洽]\label{def:esc}
+对 $i=1,2$, 定义
+\begin{align}
+K_{1} &:= \sigma_{2}^{2}\cdot\Box\ln\sigma_{1},\label{eq:K1def}\\
+K_{2} &:= \sigma_{2}^{2}\cdot\Box\ln\sigma_{2}.\label{eq:K2def}
+\end{align}
+\end{definition}
+
+显式地,
+\begin{align}
+K_{1} &= f+2rf'+\tfrac{r^{2}}{2}f'',\label{eq:K1exp}\\
+K_{2} &= f+rf'.\label{eq:K2exp}
+\end{align}
+
+\begin{lemma}[标量曲率公式]\label{lem:R}
+对上述度规, 有
+\[
+R_{tt}=\tfrac{f}{r^{2}}(K_{1}-K_{2}),\qquad R_{\theta\theta}=1-K_{2}.
+\]
+\end{lemma}
+
+\begin{theorem}[场级等价性]\label{thm:field}
+对于球对称真空, 下列等价:
+\begin{equation}
+K_{1}=K_{2}=1 \Leftrightarrow R_{\mu\nu}=0.\label{eq:equiv}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+$(\Rightarrow)$\;
+$K_2{=}1$ 给 $R_{\theta\theta}{=}0$。
+$K_1{-}K_2=rf'+\frac{r^2}{2}f''=0$(由式~\eqref{eq:K1exp}--\eqref{eq:K2exp})给 $f''=-2f'/r$; 故 $R_{tt}{=}0$(由上述观察 $R_{tt}=\tfrac{f}{r^2}(K_1-K_2)$)。(对此度规 $R_{tt}=-f^{2}R_{rr}$~\cite{Wald1984}, 故 $R_{tt}=0\Leftrightarrow R_{rr}=0$。)
+
+$(\Leftarrow)$\;
+$R_{\theta\theta}{=}0$ 给 $K_2{=}1$。
+$R_{tt}{=}0$ 给 $f''=-2f'/r$;代入得:
+$K_1=f+2rf'-rf'=f+rf'=K_2=1$。\qed
+\end{proof}
+
+\begin{corollary}
+条件 $K_{1}{=}1$ 是二阶线性 ODE
+\[
+f+2rf'+\tfrac{r^{2}}{2}f''=1,
+\]
+等价于 $R{=}0$, 其通解为 $f=1-C_{1}/r-C_{2}/r^{2}$; 进一步施加 $K_{2}{=}1$ 强制 $C_{2}{=}0$, 从而唯一地复现 Schwarzschild 解, 与 Birkhoff 定理一致。在弱场($f=1+\varepsilon\varphi$)下, $K_{2}{=}1$ 一步给出 $\varphi=C/r$(牛顿); $K_{1}{=}1$ 在线性阶自动满足, 故其独立内容纯为非线性(强场)。任何区分特征值原理与标准广义相对论的观测检验均须基于强引力数据。
+\end{corollary}
+
+对于 Schwarzschild--de Sitter 解, $K_2=1{-}\Lambda r^2$ 且 $K_{1}-K_{2}=-\Lambda r^{2}$, 按 $\rho=\Lambda/(8\pi)$ 给出非零 $R_{\mu\nu}$, 符合 $G_{\mu\nu}+\Lambda g_{\mu\nu}=0$。
+
+\begin{remark}[非真空情形]
+对非真空球对称度规, 假设 $\rho$ 静态, 则 $K_{2}=1-8\pi r^{2}\rho$: 物质是角向特征值自洽性的缺损, 每单位面积上为 $\rho=(1-K_{2})/(8\pi r^{2})$。此\emph{重写}爱因斯坦 $G_{tt}$ 分量;因子 $8\pi$ 继承自 GR, 非推出。
+\end{remark}
+
+\begin{remark}[更一般度规]
+\emph{极化恒等式} 保证若对所有 $\sigma_{i}$ 组合 $\sigma_{i}\sigma_{j}$, $\sigma_{2}^{2}\,\Box\ln(\sigma_{i}\sigma_{j})=1+1$(即每一对特征值皆为自洽的), 则对角项的 $R_{\mu\nu}$ 消失。向非对角 $G$ 或非球对称情形的扩展需要零曲面上的 Gauss--Codazzi 匹配, 留作未解问题。
+\end{remark}
+
+\medskip
+
+途径 A 的完成: 结合~\cite{Jacobson} 的 Jacobson 论证, 提供爱因斯坦方程所需的局部 Clausius 输入。调用 Jacobson 论证所需的剩余热力学输入是 $S\propto A$。
+
+表~\ref{tab:corr} 汇总本节所确立的点-场对应。
+
+\begin{table}[ht]
+\begin{center}
+\begin{tabular}{|l|c|c|}
+\hline
+& 点级 & 场级 \\
+\hline
+条件 & $K=x^{\top}Gx=1$ & $K_{i}=\sigma_{2}^{2}\Box\ln\sigma_{i}=1$ \\
+\hline
+自洽数 & 1 & 2(每个 $\sigma_{i}$ 一个) \\
+\hline
+物质 & 势 $V$ & $\rho=(1-K_{2})/(8\pi r^{2})$ \\
+\hline
+动力学 & 局部恢复至 $K=1$ & 真空方程 $R_{\mu\nu}=0$ \\
+\hline
+\end{tabular}
+\end{center}
+\caption{点级 $K{=}1$ 与场级特征值自洽性。在每级, 条件数与独立特征值数相等。物质行为示意:点级使用内部惩罚 $V$, 而场级密度 $\rho$ 是 GR 的重写, 因子 $8\pi$ 自 GR 继承。}
+\label{tab:corr}
+\end{table}
+
+\section{奇点排除与分辨率尺度}\label{sec:singularity}
+
+本节使用代价符号约定 $G_{\mathrm{cost}}=\mathrm{diag}((\kappa\ell)^{2},-1)$, 以与公理 T 的正时间代价表述保持一致。
+
+\begin{proposition}[由公理 T 得 $\sigma_{1}>0$]\label{prop:sigma1}
+公理 T 的正时间代价要求 $G_{\mathrm{cost}}(e_{t},e_{t})>0$, 即 $\sigma_{1}^{2}>0$, 故 $\sigma_{1}>0$。Schwarzschild 奇点($r\to 0$ 时 $\sigma_{1}=r\sqrt{f}\to 0$)因此位于理论定义域之外——框架在那里是\emph{未定义}, 而非错误。
+\end{proposition}
+
+\begin{proposition}[固有分辨率尺度]\label{prop:domain}
+对于 A 类, OU 方差界 $\mathrm{Var}(K)<1$ 连同 $\sigma^{2}=2d_{c}^{2}T_{H}=d_{c}/\ell$(按 $\hbar=1$ 的普朗克单位)给出
+\begin{equation}
+\sigma_1>\sigma_{1,c}:=\hbar/(4\pi)=\ell_P/(4\pi).\label{eq:domain}
+\end{equation}
+\end{proposition}
+
+\noindent
+于 $\sigma_{1,c}$ 之下, $K$ 的热涨落超过其平均值, 半经典度规失去其经典意义。此为\emph{软}界——类比于经典力学在作用量 $\sim\hbar$ 的情形: OU 近似要求 $\mathrm{Var}(K)<1$, 这强制 $\sigma_1>\sigma_{1,c}$;而在此区域 $\mathrm{Var}(K)<1$ 自然满足。故该界是 OU/半经典区域的自洽性条件, 而非独立推导出的硬截断。
+
+在 Planck 单位($\hbar=\ell_P=1$)下, 该界为 $\sigma_{1}>1/(4\pi)$, 即量级上为 $O(\ell_P)$ 的软分辨率尺度。
+
+\section{讨论}\label{sec:discussion}
+
+\subsection*{两条途径:一次推导与一个等价定理}
+
+途径 A 通过随机动力学与 Jacobson 论证达到 $G_{\mu\nu}=8\pi T_{\mu\nu}$(\S\ref{sec:thermo}); 途径 B 在球对称部分用代数方法建立 $R_{\mu\nu}=0$, 不引入任何热力学输入(\S\ref{sec:field})。
+
+两条途径在真空部分相会: 途径 B 直接建立 $R_{\mu\nu}=0$, 而途径 A 通过 $G_{\mu\nu}=8\pi T_{\mu\nu}$ 在 $T_{\mu\nu}=0$ 时得到同样结论。
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[
+    node distance=0.55cm and 0.9cm,
+    box/.style={rectangle, draw=black!70, rounded corners=3pt, minimum height=0.7cm, minimum width=2.3cm, align=center, font=\footnotesize},
+    startbox/.style={box, fill=blue!12},
+    thermo/.style={box, fill=orange!15},
+    algebra/.style={box, fill=green!12},
+    endbox/.style={box, fill=red!10},
+    jacbox/.style={box, fill=yellow!15, draw=black!75, thick, minimum width=2.4cm},
+    extinp/.style={rectangle, draw=gray!60, dashed, rounded corners=2pt, minimum height=0.5cm, minimum width=1.7cm, align=center, font=\scriptsize\itshape, fill=gray!5},
+    arr/.style={-{Stealth[length=2mm]}, thick, draw=black!60},
+    biarr/.style={{Stealth[length=2mm]}-{Stealth[length=2mm]}, thick, draw=black!70},
+    conjarr/.style={-{Stealth[length=2mm]}, thick, dashed, draw=black!60},
+    extarr/.style={-{Stealth[length=1.5mm]}, draw=gray!50, dashed},
+    title/.style={font=\small\bfseries}
+]
+% =========================================================
+% Shared top: K=1
+% =========================================================
+\node[startbox] (K1) {$\{K=1\}$\\[-1pt]\scriptsize 本文额外引入};
+
+% =========================================================
+% Route A (LEFT): K=1 -> OU -> Clausius -> [Jacobson] -> Einstein
+% Jacobson takes THREE inputs: Sig(G), local Clausius, S propto A
+% =========================================================
+\node[thermo, below left=0.9cm and 1.6cm of K1] (OU) {OU 动力学\\[-1pt]\scriptsize (近 $K{=}1$, A 类)};
+\node[thermo, below=of OU] (Clau) {局部 Clausius};
+% Jacobson junction box
+\node[jacbox, below=0.9cm of Clau] (jac) {Jacobson 论证\\[-1pt]\scriptsize \cite{Jacobson}};
+\node[endbox, below=of jac] (Ein) {$G_{\mu\nu}=8\pi T_{\mu\nu}$};
+% Route A arrows
+\draw[arr] (K1) to[bend right=10] node[left=1pt, font=\tiny\itshape, text=black!60, align=right] {近 $K{=}1$\\ A 类/OU 近似} (OU);
+\draw[arr] (OU) -- (Clau);
+\draw[arr] (Clau) -- (jac);
+\draw[arr] (jac) -- (Ein);
+% Jacobson's THREE inputs
+\node[extinp, left=0.4cm of OU] (Teff) {$T_{\mathrm{eff}}=T_{\mathrm{tol}}$};
+\draw[extarr] (Teff) -- (Clau);
+% The three Jacobson inputs: Sig(G) comes from left; S propto A external
+\node[extinp, left=0.4cm of jac, yshift=4pt] (sigin) {$\mathrm{Sig}(G){=}(1,1)$};
+\node[extinp, left=0.4cm of jac, yshift=-14pt] (SAin) {$S\propto A$};
+\draw[extarr] (sigin) -- (jac.west);
+\draw[extarr] (SAin) -- (jac.west);
+
+% =========================================================
+% Route B (RIGHT): K=1 --dashed--> sigma^2 box ln sigma = 1 <=> R=0
+% =========================================================
+\node[algebra, below right=0.9cm and 1.6cm of K1] (sigma) {$\sigma_2^2\,\Box\ln\sigma_i = 1$};
+\node[endbox, below=1.5cm of sigma] (vac) {$R_{\mu\nu}=0$\\[-1pt]\scriptsize (球对称真空)};
+% Route B dashed (conjectural lift)
+\draw[conjarr] (K1) to[bend left=10] node[right=1pt, font=\tiny\itshape, text=black!60] {场级类似物/猜想} (sigma);
+% Bidirectional strict equivalence
+\draw[biarr] (sigma) -- node[right, font=\tiny\itshape, text=black!60, align=left] {严格代数等价\\(球对称真空)} (vac);
+
+% =========================================================
+% Vacuum meeting point annotation
+% =========================================================
+\node[font=\scriptsize, text=black!55, below=0.3cm of Ein, text width=3.2cm, align=center] {$T_{\mu\nu}{=}0$ 时与右侧相会};
+
+% Route titles
+\node[title, above=0.1cm of OU] {途径 A: 热力学桥};
+\node[title, above=0.1cm of sigma] {途径 B: 等价定理};
+
+\end{tikzpicture}
+\caption{通向爱因斯坦方程的两条途径. \emph{途径 A}(左, 热力学桥): $\{K=1\}$ 附近 A 类涨落 → OU 动力学 → 局部 Clausius → Jacobson 论证 → 爱因斯坦方程. Jacobson 需要三个输入(灰色虚线): Lorentz 号差 $\mathrm{Sig}(G)=(1,1)$(由可实现性公理 R, E, T 与 $G\equiv Q$ 给出; 其与 $d_{c}>0$ 的等价见定理~\ref{thm:equivalence})、局部 Clausius(本文给出)、熵-面积律 $S\propto A$(外部输入). \emph{途径 B}(右, 等价定理): $K{=}1\!\to\!\sigma_2^2\Box\ln\sigma_i=1$ 为虚线(场级类似物/猜想, 非严格推导); $\sigma_2^2\Box\ln\sigma_i=1\Leftrightarrow R_{\mu\nu}=0$ 在球对称真空下为\emph{严格代数等价}(定理~\ref{thm:field}, 双向箭头).}
+\label{fig:routes}
+\end{figure}
+
+Jacobson 论证~\cite{Jacobson} 从三个输入重构爱因斯坦方程: Lorentz 号差、每个局部 Rindler 视界上的 Clausius 关系, 以及 $S=A/4$。途径 A 提供前两个: 号差经可实现性强制, 在把 $G$ 等同于符号化主二次型之后; 它与 $d_{c}>0$ 的等价性在各向同性线性化下由定理~\ref{thm:equivalence} 给出;Clausius 在每个视界上成立(命题~\ref{prop:clausius}, 给定 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$)。唯一剩余的外部输入是 $S\propto A$。跨越各视界方向的拼接不需要额外假设(见下方的 $(1{+}3)$-维扩展)。
+
+\subsection*{公理 R 的物理内容}
+
+公理 R 要求:存在带有非零空间分量的位移序列, 其代价与大小之比趋于零。这是光锥的代价内容:光所沿的方向(零方向), 是运动代价变得无穷小相对于路径长度的方向。若无公理 R, 则框架无法区分时间方向与空间方向之间"代价降到零"的渐近行为, 从而无法强制 Lorentz 号差。
+
+\subsection*{$K{=}1$ 自指结构}
+
+条件 $K{=}1$ 是自指的: $G$ 定义 $K$, 而 $K{=}1$ 固定了用以度量偏离的归一化。恢复势 $V=\frac{1}{2}(K-1)^2$ 是对此轨迹偏离的主导光滑惩罚。在场级, 猜想的类似物是 $\sigma_2^2\Box\ln\sigma_i=1$。
+
+\subsection*{阶段}
+
+本框架按四步展开:可实现性公理固定 $G$ 的 Lorentz 类型; $K{=}1$ 提供局部自洽条件; 途径 A 在 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 之下把所得 OU 动力学与 Clausius 相连;途径 B 给出到 $R_{\mu\nu}=0$ 的代数球对称等价性。量子与全局吸引子问题仍悬而未决。
+
+\subsection*{$(1{+}3)$-维扩展}
+
+在 $(1{+}3)$ 维中, $\{K{=}1\}\cong H^3$ 承载面积为 $4\pi\sigma_1^2$ 的 $S^2$ 截面(当 $\alpha=1$, $\sigma_1=\kappa\ell$ 时)。这把同一辛不变量与 Bekenstein--Hawking 面积变量~\cite{Bekenstein} 相联系, 但系数 $1/4$ 仍依赖于通常的 Hawking 温度~\cite{Hawking}/第一定律输入。两项结构性变化留存:$d_{c}>0\Leftrightarrow\mathrm{Sig}(G)=(1,1)$ 在 $2\times 2$ 之外减弱(Lorentz 号差成为必要但非充分); $J_G$ 在 $\dim(\mathrm{Skew}_4)=6$ 时需要辛配对的选择。
+
+\subsection*{与 GENERIC 的偏离}
+
+对于 Lorentz 的 $G$, $J_G$ 是 $G$-反对称但并非欧氏反对称, 故该框架偏离了标准 GENERIC 的设定~\cite{GENERIC}。
+
+\subsection*{局限}
+
+\begin{enumerate}
+\item 框架限于 $2\times 2$(一个时间 $+$ 一个空间方向)。向 $(1{+}3)$ 的扩展需要额外的辛结构选择。
+\item 途径 A 需要 $S\propto A$。\textit{(外部输入)}
+\item 途径 B 仅在球对称下被证明; 一般扩展需要零曲面 Gauss--Codazzi。\textit{(范围)}
+\item 在各向同性线性化之外, $d_c$ 不再是纯粹的号差不变量;对非各向同性 $H_*$ 的 $d_c$ 的完整刻画是公开的。
+\end{enumerate}
+
+\subsection*{未解问题}
+
+\begin{enumerate}
+\item $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 是否可从 KMS 条件或类似原理推出?
+\item 量子化是否给出 $\sigma_{1}$ 的硬下界, 或连接到 Bekenstein 界~\cite{Bekenstein}?
+\item 途径 B 是否能扩展到非球对称甚至一般四维情形?
+\item 在 $(1{+}3)$ 维中是否存在典范的辛配对选择规则?
+\item $\{K=1\}$ 是否为全局吸引子, 而不仅是局部吸引子?
+\end{enumerate}
+
+\subsection*{结论}
+
+广义相对论预先规定 Lorentz 号差;本文把它从代价非对称性中导出, 并表明所得度规局部地强制其自身的归一化。在点级, 在随机热力学框架内, 一旦把局部有效温度与 Tolman 温度等同, Clausius 关系随之成立。在球对称部分, 特征值自洽原理在代数上等价于真空爱因斯坦方程, 把 $K{=}1$ 的语言与场级相联。公理 T 把曲率奇点($\sigma_1$ 退化之处)留在理论定义域之外——在那里框架未定义而非错误;OU 方差设置了一个软的 Planck 尺度分辨率限制。仍被预先规定的, 是代价非对称性本身: 为何一个方向承载正代价而其他方向不然。这是 Riemann 式问题的经济形式。
+
+\bigskip
+\noindent\textbf{声明与声明}
+
+\medskip
+\noindent\textit{资助.} 本研究未获任何资助。
+
+\medskip
+\noindent\textit{利益冲突.} 作者声明无利益冲突。
+
+\medskip
+\noindent\textit{数据可用性.} 本研究不使用任何数据。
+
+\begin{thebibliography}{99}
+
+\bibitem{Realizability}
+Y.\,Y.\,N.~Li,
+Realizability and the Origin of Causality.
+Submitted to Found.\ Phys.\ (2026).
+Preprint: Zenodo, \url{https://doi.org/10.5281/zenodo.19062187}
+
+\bibitem{EPS}
+J.~Ehlers, F.\,A.\,E.~Pirani, A.~Schild,
+The geometry of free fall and light propagation.
+Gen.\ Relativ.\ Gravit.\ \textbf{44}, 1587 (2012).
+\url{https://doi.org/10.1007/s10714-012-1353-4}
+
+\bibitem{GENERIC}
+M.~Grmela, H.\,C.~\"Ottinger,
+Dynamics and thermodynamics of complex fluids.~I.
+Phys.\ Rev.\ E \textbf{56}, 6620 (1997).
+\url{https://doi.org/10.1103/PhysRevE.56.6620}
+
+\bibitem{Einstein1915}
+A.~Einstein,
+Die Feldgleichungen der Gravitation.
+Sitzungsber.\ Preuss.\ Akad.\ Wiss.\ Berlin, 844 (1915).
+
+\bibitem{Hilbert1915}
+D.~Hilbert,
+Die Grundlagen der Physik.
+Nachr.\ Ges.\ Wiss.\ G\"ottingen, 395 (1915).
+
+\bibitem{Jacobson}
+T.~Jacobson,
+Thermodynamics of spacetime: The Einstein equation of state.
+Phys.\ Rev.\ Lett.\ \textbf{75}, 1260 (1995).
+\url{https://doi.org/10.1103/PhysRevLett.75.1260}
+
+\bibitem{Padmanabhan}
+T.~Padmanabhan,
+Thermodynamical aspects of gravity: New insights.
+Rep.\ Prog.\ Phys.\ \textbf{73}, 046901 (2010).
+\url{https://doi.org/10.1088/0034-4885/73/4/046901}
+
+\bibitem{Verlinde}
+E.~Verlinde,
+On the origin of gravity and the laws of Newton.
+J.\ High Energy Phys.\ \textbf{2011}(04), 029 (2011).
+\url{https://doi.org/10.1007/JHEP04(2011)029}
+
+\bibitem{Hawking}
+S.\,W.~Hawking,
+Particle creation by black holes.
+Commun.\ Math.\ Phys.\ \textbf{43}, 199 (1975).
+\url{https://doi.org/10.1007/BF02345020}
+
+\bibitem{Tolman}
+R.\,C.~Tolman,
+On the weight of heat and thermal equilibrium in general relativity.
+Phys.\ Rev.\ \textbf{35}, 904 (1930).
+\url{https://doi.org/10.1103/PhysRev.35.904}
+
+\bibitem{Bekenstein}
+J.\,D.~Bekenstein,
+Black holes and entropy.
+Phys.\ Rev.\ D \textbf{7}, 2333 (1973).
+\url{https://doi.org/10.1103/PhysRevD.7.2333}
+
+\bibitem{Sekimoto}
+K.~Sekimoto,
+Stochastic Energetics.
+Lecture Notes in Physics \textbf{799}, Springer (2010).
+\url{https://doi.org/10.1007/978-3-642-05411-2}
+
+\bibitem{Gibbons1995}
+G.\,W.~Gibbons, D.\,A.~Rasheed,
+Electric-magnetic duality rotations in non-linear electrodynamics.
+Nucl.\ Phys.\ B \textbf{454}, 185 (1995).
+\url{https://doi.org/10.1016/0550-3213(95)00409-L}
+
+\bibitem{Kiefer2012}
+C.~Kiefer,
+Quantum Gravity, 3rd ed.
+Oxford University Press (2012).
+
+\bibitem{Isham1993}
+C.\,J.~Isham,
+Canonical quantum gravity and the problem of time.
+In: \textit{Integrable Systems, Quantum Groups, and Quantum Field Theories},
+NATO ASI Series, Springer (1993).
+\url{https://doi.org/10.1007/978-94-011-1980-1_6}
+
+\bibitem{Wald1984}
+R.\,M.~Wald,
+General Relativity.
+University of Chicago Press (1984).
+(For the Ricci tensor components of static spherically symmetric metrics,
+see Appendix~E.)
+
+\bibitem{Gardiner1985}
+C.\,W.~Gardiner,
+Handbook of Stochastic Methods, 2nd ed.
+Springer, Berlin (1985).
+(Sec.~3.8: Ornstein--Uhlenbeck process and its stationary distribution.)
+
+\bibitem{Haag}
+R.~Haag,
+Local Quantum Physics: Fields, Particles, Algebras, 2nd ed.
+Springer, Berlin (1996).
+(Sec.~V.1: KMS condition and thermal equilibrium states.)
+
+\bibitem{Connes1994}
+A.~Connes, C.~Rovelli,
+Von Neumann algebra automorphisms and time-thermodynamics relation
+in general covariant quantum theories.
+Class.\ Quantum Grav.\ \textbf{11}, 2899--2917 (1994).
+\url{https://doi.org/10.1088/0264-9381/11/12/007}
+
+\end{thebibliography}
+
+\end{document}
