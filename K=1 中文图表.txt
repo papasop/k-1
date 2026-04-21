@@ -70,7 +70,7 @@
 \begin{abstract}
 \noindent\textbf{背景.\ } 时间通常作为物理学中的原始概念出现——一种未被推导的输入。
 
-\smallskip\noindent\textbf{框架.\ } 把时间在本框架中解释为变化的代价, 并将与 $dt_{\mathrm{info}}^{2}$ 相关的符号化主二次型 $G$ 与~\cite{Realizability} 中的二次型相等同, 则三个可实现性条件(公理 R, E, T)连同非退化性强制 $\mathrm{Sig}(G)=(1,1)$, 等价于 $\det G<0$。在各向同性线性化之下, 符号 $\det G<0$ 有三种等价表述: Lorentz 号差、实辛特征值以及 $d_{c}>0$(定理~\ref{thm:equivalence}); $K(x)=x^{\top}Gx=1$ 是本文引入的单位代价轨迹, 作为附加的自洽条件。在律 II 的辛-耗散生成子类内, 演化律由 $G$ 诱导的辛结构与 $D\ge 0$ 唯一确定(定理~\ref{thm:lawII}); 在临界阻尼处且归一化特征向量基点上, 恢复速率为 $\kappa_{K}=4d_{c}$(定理~\ref{thm:restoring})。
+\smallskip\noindent\textbf{框架.\ } 把时间在本框架中解释为变化的代价, 并将与 $dt_{\mathrm{info}}^{2}$ 相关的符号化主二次型 $G$ 与~\cite{Realizability} 中的二次型相等同, 则三个可实现性条件(公理 R, E, T)连同非退化性强制 $\mathrm{Sig}(G)=(1,1)$, 等价于 $\det G<0$。在各向同性线性化之下, 符号 $\det G<0$ 有三种等价表述: Lorentz 号差、实辛特征值以及 $d_{c}>0$(定理~\ref{thm:equivalence}); $K(x)=x^{\top}Gx=1$ 是本文引入的单位代价轨迹, 作为附加的自洽条件。在律 II 的辛-耗散生成子类内, $G$ 诱导的辛结构与 $D\ge 0$ 约束唯一确定演化律(定理~\ref{thm:lawII}); 在临界阻尼处且归一化特征向量基点上, 恢复速率为 $\kappa_{K}=4d_{c}$(定理~\ref{thm:restoring})。
 
 \smallskip\noindent\textbf{热力学内容.\ } 在 $K=1$ 附近的稳态区, Clausius 关系按 Tolman 温度与稳定性边界 $d_{c}$ 唯一地确定噪声幅度(命题~\ref{prop:clausius}, 式~\eqref{eq:noise})。从几何上看, $K=1$ 流形承载两类涨落: 热力学的(A 类, 垂直于 $K=1$)与运动学的(B 类, 沿 Lorentz boost 轨道切向)。在从随机动力学到 Clausius 的这一步内, 唯一的外部等同是 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$; 途径 B(\S~\ref{sec:field})无需任何热力学外部等同。
 
@@ -100,7 +100,7 @@
 \item $\|\cdot\|$: $\mathbb{R}^{2}$ 上的欧氏范数; $\nabla$: $\mathbb{R}^{2}$ 上的欧氏梯度。
 \item $\alpha>0$: 归一化常数(与热力学量比较时取 $\alpha=1$); $\kappa$: 视界的表面引力(与恢复速率 $\kappa_{K}$ 区别); $\ell$: 距视界的固有距离。
 \item $\sigma>0$: 随机动力学中的噪声幅度; $\sigma_{1}:=r\sqrt{f}$, $\sigma_{2}:=r$: 度规的辛特征值; $D\ge 0$: $2\times 2$ 半正定耗散矩阵。
-\item \emph{$H$ 与 $H_{*}$ 是不同数学对象}: $H$(标量, 定义于 \S\ref{sec:lawI}) 是 $\Phi$ 单位变化的局部代价(熵阻抗), 出现于 $dt_{\mathrm{info}}=d\Phi/H$; $H_{*}$(矩阵, 出现于 \S\ref{sec:stability}) 是代价函数在基点处的二阶权重矩阵, 出现于 $d(\delta x)/dt=(J_{G}-dI)H_{*}\delta x$. 字母相似只是沿用惯例, 两者无直接关系。
+\item \emph{$H$ 与 $H_{*}$ 是不同数学对象}: $H$(标量, 定义于 \S\ref{sec:lawI}) 是 $\Phi$ 单位变化的局部代价(熵阻抗), 出现于 $dt_{\mathrm{info}}=d\Phi/H$; $H_{*}$(矩阵, 出现于 \S\ref{sec:stability}) 是代价函数在基点处的二阶权重矩阵, 出现于 $d(\delta x)/dt=(J_{G}-dI)H_{*}\delta x$. 二者不被本文等同; 若存在从同一深层代价原理同时导出二者的关系, 留待未来工作。
 \item $\Box\phi := r^{-2}\partial_{r}(r^{2}f\,\partial_{r}\phi)$: \emph{径向}达朗贝尔算子, 对仅依赖 $r$ 的 $\phi$ 精确(非完整四维波算子)。
 \end{itemize}
 
@@ -680,7 +680,7 @@ Jacobson 论证~\cite{Jacobson} 从三个输入重构爱因斯坦方程: Lorentz
 \item 途径 A 需要 $S\propto A$。\textit{(外部输入)}
 \item 途径 B 仅在球对称下被证明; 一般扩展需要零曲面 Gauss--Codazzi。\textit{(范围)}
 \item 在各向同性线性化之外, $d_c$ 不再是纯粹的号差不变量;对非各向同性 $H_*$ 的 $d_c$ 的完整刻画是公开的。
-\item \textit{符号与分层}: 本文以"时间 = 变化的代价"作为统一原理, 其直接实例化为标量 $H$ (出现于 $dt_{\mathrm{info}}=d\Phi/H$)。稳定性层的权重矩阵 $H_{*}$ 是\emph{派生}对象——它是惩罚势 $V=\tfrac{1}{2}(K-1)^{2}$ 的 Hessian, 沿派生链 $H\to G\to K\to V\to H_{*}$ 获得, 并非代价原理在二维层级的平行实例。两者\emph{名称}相近只是历史惯例, 可能让读者误以为它们处于同一层级。未来工作可在单一更深公理框架中显式建立 $H$ 与 $H_{*}$ 的关系; 当前论文不追求此统一。
+\item \textit{符号与分层}: 本文使用两个不同层级的代价相关对象: 信息时间层的标量 $H$, 以及稳定性层的矩阵权重 $H_{*}$. 二者不被本文等同, 也不假设存在显式数学映射. 若二者可从同一深层代价原理同时导出, 留待未来工作。
 \end{enumerate}
 
 \subsection*{未解问题}
