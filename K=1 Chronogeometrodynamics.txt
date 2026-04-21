@@ -62,7 +62,7 @@ The information time $dt_{\mathrm{info}}:=d\Phi/H$, where $\Phi$ parametrises st
 
 The specific form of~$\Phi$ does not affect the algebraic theorems once the induced cost structure satisfies Axioms~R, E, T and nondegeneracy: what matters is that the cost structure satisfies the three axioms, which forces $\mathrm{Sig}(G)=(1,1)$ regardless of~$\Phi$. This is an \emph{argument by type} --- the theorems constrain the algebraic type of~$G$ (its signature), not its specific values.
 
-The cost structure of $dt_{\mathrm{info}}$ satisfies Axioms~R, E, T as follows. Axiom~E (quadratic expansion in $\delta x$) is imposed by requiring that the information-time cost admit the quadratic leading-order expansion of~\cite{Realizability}; smoothness of $\Phi$ and $H$ motivates the existence of such a leading quadratic coefficient form. Axiom~T (positive temporal cost) is imposed as the requirement that the displacement cost (denoted $d$, in the sense of~\cite{Realizability}) has a positive linear lower bound along the distinguished temporal direction: $d(x;(\Delta t,0))\ge c_{t}\,\Delta t$ for some $c_{t}>0$. Axiom~R requires forward displacement sequences with nonzero spatial component whose cost-to-magnitude ratio tends to zero. A complete derivation of $\mathrm{Sig}(G)=(1,1)$ from Axioms~R, E, T together with nondegeneracy is given in~\cite{Realizability}.
+The cost structure associated with $dt_{\mathrm{info}}$ is required to satisfy Axioms~R, E, T as follows. Axiom~E (quadratic expansion in $\delta x$) is imposed by requiring that the information-time cost admit the quadratic leading-order expansion of~\cite{Realizability}; smoothness of $\Phi$ and $H$ motivates the existence of such a leading quadratic coefficient form. Axiom~T (positive temporal cost) is imposed as the requirement that the displacement cost (denoted $d$, in the sense of~\cite{Realizability}) has a positive linear lower bound along the distinguished temporal direction: $d(x;(\Delta t,0))\ge c_{t}\,\Delta t$ for some $c_{t}>0$. Axiom~R requires forward displacement sequences with nonzero spatial component whose cost-to-magnitude ratio tends to zero. A complete derivation of $\mathrm{Sig}(G)=(1,1)$ from Axioms~R, E, T together with nondegeneracy is given in~\cite{Realizability}.
 
 Lorentzian signature therefore emerges from the cost structure: $G$ is indefinite, with light cones (the null set $\{x:x^{\top}Gx=0\}$) and a causal structure determined by the sign of~$K$.
 
@@ -165,10 +165,6 @@ For Lorentzian $G$, $J_G$ has symmetric part $S=(J_{G}+J_{G}^{\top})/2\neq 0$, d
 
 \section{Critical damping and fluctuation structure (Law~III)}\label{sec:lawIII}
 
-\noindent\textit{Sign convention.} In Route~A we use the spacetime-sign convention $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$ (here and in \S~\ref{sec:thermo}) for direct comparison with Rindler geometry. Statements depending only on $\det G$, $d_{c}$, or the hyperbolic spectrum are invariant under the overall sign change. Statements using Axiom~T as positive temporal cost should be read in the cost-sign convention $G_{\mathrm{cost}}=-G=\mathrm{diag}((\kappa\ell)^{2},-1)$ (used in \S~\ref{sec:singularity}); both have $\det G=-(\kappa\ell)^{2}$ and hence give the same $d_{c}$.
-
-\medskip
-
 \noindent\textbf{Law~III.} \textit{Near any $G$-eigenvector on $\{K=1\}$, the stochastic dynamics generates a restoring drift towards $K=1$ (Theorem~\ref{thm:restoring}): $K=1$ is a \emph{locally} self-consistent locus. Whether global attractivity holds remains open (Open Problem~5 in \S\ref{sec:discussion}).}
 
 \medskip
@@ -203,7 +199,7 @@ The local effective restoring rate is $\kappa_{K}(x_{*})=4d_{c}\cdot x_{*}^{\top
 Adding isotropic additive white noise (It\^{o} convention) to Law~II gives $dx=(J_{G}-D)\nabla V\,dt+\sigma\,dW_{t}$, where $W_{t}$ is a standard $\mathbb{R}^{2}$-valued Wiener process and $\sigma>0$ is constant. At $D=d_{c}I$ (critical damping), two geometrically distinct classes arise:
 
 \medskip\noindent
-\textit{Class~A} (thermodynamic): fluctuations of $K$ perpendicular to $\{K=1\}$ --- departures from metric self-consistency --- governed by restoring rate $\kappa_{K}(x_{*})=4d_{c}\,x_{*}^{\top}G^{2}x_{*}$; the conditional distribution $P(K|x)$ at a fixed base point is Gaussian with variance $\sigma^{2}/(2d_{c})$, as follows from the standard stationary distribution of the one-dimensional OU process~\cite{Gardiner1985}.
+\textit{Class~A} (thermodynamic): fluctuations of $K$ perpendicular to $\{K=1\}$ --- departures from metric self-consistency --- governed by restoring rate $\kappa_{K}(x_{*})=4d_{c}\,x_{*}^{\top}G^{2}x_{*}$; the conditional distribution $P(K|x)$ at a fixed base point is Gaussian with variance $\sigma^{2}/(2d_{c})$, as follows from the standard stationary distribution of the one-dimensional OU process~\cite{Gardiner1985}. Although both the restoring rate and the $K$-space noise amplitude depend on $x_{*}^{\top}G^{2}x_{*}$, this factor cancels in the OU variance.
 
 \medskip\noindent
 \textit{Class~B} (kinematic; thermodynamically inert here): free tangential diffusion along $\{K=1\}$ in the boost direction. For the Rindler metric $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, $\{K=1\}$ is the hyperbola $-(\kappa\ell)^{2}x_{1}^{2}+x_{2}^{2}=1$; motion along it generates Lorentz boosts, changing the inertial observer but not the thermodynamic state. The Hessian of $V$ restricted to $\{K=1\}$ is rank-one with null space containing this tangent, confirming that Class~B carries no restoring force and no heat.
@@ -213,11 +209,13 @@ Adding isotropic additive white noise (It\^{o} convention) to Law~II gives $dx=(
 
 Every external identification is marked explicitly.
 
+\medskip\noindent\textit{Sign convention.} In Route~A we use the spacetime-sign convention $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$ for direct comparison with Rindler geometry. Statements depending only on $\det G$, $d_{c}$, or the hyperbolic spectrum are invariant under the overall sign change. Statements invoking Axiom~T as positive temporal cost are to be read in the cost-sign convention $G_{\mathrm{cost}}=-G=\mathrm{diag}((\kappa\ell)^{2},-1)$, used explicitly in \S~\ref{sec:singularity}. Both conventions have $\det G=-(\kappa\ell)^{2}$ and give the same $d_{c}$.
+
 As a concrete realisation, we apply the framework to the Rindler metric
 $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$
 \textup{[external: $G$ is the standard Rindler metric from GR, not derived from Law~I]},
 where $\kappa$ is the surface gravity and $\ell$ the proper distance
-from the horizon. Equation~\eqref{eq:dc} gives $d_{c}=\alpha/(\kappa\ell)$ (i.e., $\alpha/\sqrt{|g_{00}|}$ with $g_{00}=-(\kappa\ell)^{2}$ the temporal component of the Rindler metric). With $T_{H}=\hbar\kappa/(2\pi)$~\cite{Hawking},
+from the horizon. Equation~\eqref{eq:dc} gives $d_{c}=\alpha/(\kappa\ell)$ (i.e., $\alpha/\sqrt{|g_{00}|}$ with $g_{00}=-(\kappa\ell)^{2}$ the temporal component of the Rindler metric). The expression for $d_{c}$ uses the diagonal/isotropic threshold described in \S~\ref{sec:stability}; for general $H_{*}$, the threshold may shift. With $T_{H}=\hbar\kappa/(2\pi)$~\cite{Hawking},
 \begin{equation}
 d_{c}\cdot T_{H} = \frac{\alpha}{\kappa\ell}\cdot\frac{\hbar\kappa}{2\pi} = \frac{\alpha\hbar}{2\pi\ell},\label{eq:nearhorizon}
 \end{equation}
