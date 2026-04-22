@@ -177,7 +177,7 @@ For non-degenerate symmetric $2\times 2$ real $G$, under the isotropic linearisa
 \item[\textup{(a)}] The metric admits a stability boundary $d_{c}>0$.
 \item[\textup{(b)}] $\mathrm{Sig}(G)=(1,1)$ \textup{(Lorentzian)}, equivalently $\det G<0$.
 \end{itemize}
-The equivalence fails for general $H_{*}$ \textup{(Remark~\ref{rem:Hstar_dep})}: $d_{c}$ is a signature invariant only within the isotropic class.
+For general $H_{*}$, the zero-eigenvalue locus in $d$ is invariant under invertible right multiplication by $H_{*}$ (Proposition~\ref{prop:diag_inv}), but the full real-part stability interpretation may fail (Remark~\ref{rem:Hstar_dep}); thus $d_c$ is a signature invariant only within the isotropic stability interpretation.
 \end{theorem}
 
 \begin{proof}
