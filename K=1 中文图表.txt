@@ -569,7 +569,7 @@ f+2rf'+\tfrac{r^{2}}{2}f''=1,
 \end{proposition}
 
 \begin{proposition}[自洽分辨率尺度]\label{prop:domain}
-在 Planck 单位($\hbar=\ell_P=1$)下, $K{=}1$ 框架自洽, 仅当
+在 Planck 单位($\hbar=\ell_P=1$)下, 在 Tolman 温度等同、OU 近似与 Schwarzschild 近视界归一化下, $K{=}1$ 框架的热涨落自洽性要求
 $\sigma_1>\sigma_{1,c}:=\hbar/(4\pi)=\ell_P/(4\pi)$.
 \end{proposition}
 
