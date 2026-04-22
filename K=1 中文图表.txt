@@ -561,7 +561,7 @@ f+2rf'+\tfrac{r^{2}}{2}f''=1,
 本节使用代价符号约定 $G_{\mathrm{cost}}=\mathrm{diag}((\kappa\ell)^{2},-1)$, 以与公理 T 的正时间代价表述保持一致。
 
 \begin{proposition}[由公理 T 得 $\sigma_{1}>0$]\label{prop:sigma1}
-公理 T 的正时间代价要求 $G_{\mathrm{cost}}(e_{t},e_{t})>0$, 即 $\sigma_{1}^{2}>0$, 故 $\sigma_{1}>0$。Schwarzschild 奇点($r\to 0$ 时 $\sigma_{1}=r\sqrt{f}\to 0$)因此位于理论定义域之外——框架在那里是\emph{未定义}, 而非错误。
+公理 T 的正时间代价要求 $G_{\mathrm{cost}}(e_{t},e_{t})>0$, 即 $\sigma_{1}^{2}>0$; 若将 $\sigma_{1}$ 取作正尺度因子(例如, 途径 B 中 $\sigma_{1}=r\sqrt{f}$ 于实分支), 则得 $\sigma_{1}>0$。Schwarzschild 奇点($r\to 0$ 时 $\sigma_{1}=r\sqrt{f}\to 0$)因此位于理论定义域之外——框架在那里是\emph{未定义}, 而非错误。
 \end{proposition}
 
 \begin{proposition}[自洽分辨率尺度]\label{prop:domain}
@@ -649,7 +649,7 @@ f+2rf'+\tfrac{r^{2}}{2}f''=1,
 \node[title, above=0.1cm of sigma] {途径 B: 等价定理};
 
 \end{tikzpicture}
-\caption{与爱因斯坦方程相连的两条途径. \emph{途径 A}(左, 热力学桥): $\{K=1\}$ 附近 A 类涨落 → OU 动力学 → 局部 Clausius → Jacobson 论证 → 爱因斯坦方程. Jacobson 需要三个输入(灰色虚线): Lorentz 号差 $\mathrm{Sig}(G)=(1,1)$(由可实现性公理 R, E, T 与 $G\equiv Q$ 给出; 其与 $d_{c}>0$ 的等价见定理~\ref{thm:equivalence})、局部 Clausius(本文给出; 其本身依赖外部温度等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$)、熵-面积律 $S\propto A$(外部输入). 故途径 A 总体需要\emph{两个}外部输入: $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 与 $S\propto A$. \emph{途径 B}(右, 等价定理): $K{=}1\!\to\!\sigma_2^2\Box\ln\sigma_i=1$ 为虚线(场级类似物/猜想, 非严格推导); $\sigma_2^2\Box\ln\sigma_i=1\Leftrightarrow R_{\mu\nu}=0$ 在球对称真空下为\emph{严格代数等价}(定理~\ref{thm:field}, 双向箭头).}
+\caption{与爱因斯坦方程相连的两条途径. \emph{途径 A}(左, 热力学桥): $\{K=1\}$ 附近 A 类涨落 → OU 动力学 → 局部 Clausius → Jacobson 论证 → 爱因斯坦方程. Jacobson 需要三个输入(灰色虚线): Lorentz 号差 $\mathrm{Sig}(G)=(1,1)$(由可实现性公理 R, E, T 与 $G\equiv Q$ 给出; 其与 $d_{c}>0$ 的等价见定理~\ref{thm:equivalence})、局部 Clausius(在本文 OU/Sekimoto--Seifert 框架下获得; 其本身依赖外部温度等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$)、熵-面积律 $S\propto A$(外部输入). 故途径 A 总体需要\emph{两个}外部输入: $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 与 $S\propto A$. \emph{途径 B}(右, 等价定理): $K{=}1\!\to\!\sigma_2^2\Box\ln\sigma_i=1$ 为虚线(场级类似物/猜想, 非严格推导); $\sigma_2^2\Box\ln\sigma_i=1\Leftrightarrow R_{\mu\nu}=0$ 在球对称真空下为\emph{严格代数等价}(定理~\ref{thm:field}, 双向箭头).}
 \label{fig:routes}
 \end{figure}
 
