@@ -69,14 +69,16 @@
 \maketitle
 
 \begin{abstract}
-\noindent\textbf{背景.\ } 时间通常作为物理学中的原始概念出现——一种未被推导的输入。
+\noindent\textbf{背景.\ } 时间通常作为物理学中的原始概念出现。
 
-\smallskip\noindent\textbf{框架.\ } 本文将时间建模为变化的代价。若与 $dt_{\mathrm{info}}^{2}$ 相关的符号化主二次型 $G$ 被识别为~\cite{Realizability} 中满足公理 R, E, T 的主二次型, 则在非退化性下必有 $\mathrm{Sig}(G)=(1,1)$, 等价于 $\det G<0$。在各向同性线性化之下, 符号 $\det G<0$ 有三种等价表述: Lorentz 号差、$G$ 诱导的辛生成子 $J_{G}$ 的实谱以及 $d_{c}>0$(定理~\ref{thm:equivalence}); $K(x)=x^{\top}Gx=1$ 是本文引入的单位代价轨迹, 作为附加的自洽条件。在律 II 所指定的辛-耗散生成子类 $GA=\alpha J-GD$ 内, $G$ 诱导的辛结构使演化律唯一化为 $\dot x=(J_G-D)\nabla V$(定理~\ref{thm:lawII}); 在临界阻尼处且归一化特征向量基点上, 恢复速率为 $\kappa_{K}=4d_{c}$(定理~\ref{thm:restoring})。
+\smallskip\noindent\textbf{框架.\ } 本文将时间建模为变化的代价。若与 $dt_{\mathrm{info}}^{2}$ 相关的符号化主二次型 $G$ 被识别为~\cite{Realizability} 中满足公理 R, E, T 的主二次型, 则在非退化性下必有 $\mathrm{Sig}(G)=(1,1)$, 等价于 $\det G<0$。在各向同性线性化之下, 符号 $\det G<0$ 有三种等价表述: Lorentz 号差、$G$ 诱导的辛生成子 $J_{G}$ 的实谱以及 $d_{c}>0$(定理~\ref{thm:equivalence}); $K(x)=x^{\top}Gx=1$ 是单位代价轨迹, 作为附加的自洽条件。在律 II 所指定的辛-耗散生成子类 $GA=\alpha J-GD$ 内, $G$ 诱导的辛结构使演化律唯一化为 $\dot x=(J_G-D)\nabla V$(定理~\ref{thm:lawII}); 在临界阻尼处且归一化特征向量基点上, 恢复速率为 $\kappa_{K}=4d_{c}$(定理~\ref{thm:restoring})。
 
-\smallskip\noindent\textbf{热力学内容.\ } 在 $K=1$ 附近的稳态区, Clausius 关系在 OU 近似与 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 外部等同下, 按 Tolman 温度与稳定性边界 $d_{c}$ 唯一地确定噪声幅度(命题~\ref{prop:clausius}, 式~\eqref{eq:noise})。在该热力学桥内, 唯一的外部温度等同是 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$; 途径 B(\S~\ref{sec:field})不使用热力学输入, 但目前仅给出球对称真空情形的代数等价。
+\smallskip\noindent\textbf{热力学内容.\ } 在 $K=1$ 附近的稳态区, Clausius 关系在 OU 近似与 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 外部等同下, 按 Tolman 温度与稳定性边界 $d_{c}$ 唯一地确定噪声幅度(命题~\ref{prop:clausius}, 式~\eqref{eq:noise})。在该热力学桥内, 唯一的外部温度等同是 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$; 途径 B(\S~\ref{sec:field})不使用热力学输入, 但仅给出球对称真空情形的代数等价。
 
 \smallskip\noindent\textbf{引力内容.\ } 对于 $f>0$ 的区间上的静态、球对称度规, 具有辛特征值 $\sigma_1:=r\sqrt{f}$ 与 $\sigma_2:=r$, 所猜想的场级类似物 $\sigma_2^2\,\Box\ln\sigma_i=1$($i=1,2$)在代数上等价于 $R_{\mu\nu}=0$(定理~\ref{thm:field})。公理 T(正时间代价)强制 $\sigma_1>0$(命题~\ref{prop:sigma1}), 从而把曲率奇点($\sigma_1$ 退化之处)置于理论定义域之外; Ornstein--Uhlenbeck 方差界 $\mathrm{Var}(K)<1$ 导出量级为 Planck 尺度的软自洽界(命题~\ref{prop:domain})。
 \end{abstract}
+
+\noindent\textbf{关键词:} Lorentz 号差; 信息时间; 辛-耗散动力学; Jacobson 论证; Rindler 视界
 
 \section{引言: 时间作为推论}
 
