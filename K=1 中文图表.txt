@@ -329,9 +329,9 @@ $A=G^{-1}(\alpha J-GD)=J_{G}-D$。\qed
 \begin{equation}
 \dot{K} = 4(K-1)\bigl[\alpha\,x^{\top}(JG)\,x - d_{c}\,x^{\top}G^{2}x\bigr].\label{eq:Kdot}
 \end{equation}
-在任一 $x_{*}\in\{K=1\}$ 且 $Gx_{*}=\lambda x_{*}$ 处, $x_{*}^{\top}JGx_{*}=0$, 故
+在任一 $x_{*}\in\{K=1\}$ 且 $Gx_{*}=\lambda x_{*}$ 处, $x_{*}^{\top}JGx_{*}=0$, 故在 $x_{*}$ 处冻结~\eqref{eq:Kdot} 的系数做线性化得
 \begin{equation}
-\dot{K}\big|_{x=x_{*}} = -4\,d_{c}\,x_{*}^{\top}G^{2}x_{*}\cdot(K-1).\label{eq:Kdot_eigen}
+\dot{K} = -4\,d_{c}\,x_{*}^{\top}G^{2}x_{*}\cdot(K-1)+o(K-1).\label{eq:Kdot_eigen}
 \end{equation}
 若此外基点按 $x_{*}^{\top}G^{2}x_{*}=1$ 归一化(即 $x_*$ 是单位特征值的 $G$-特征向量), 则
 \begin{equation}
@@ -352,10 +352,10 @@ $\dot{K}=2x^{\top}G\dot{x}=4(K-1)\,x^{\top}G(J_{G}-d_{c}I)Gx$。由 $GJ_{G}=\alp
 将各向同性可加白噪声(伊藤约定)加入律 II 得 $dx=(J_{G}-D)\nabla V\,dt+\sigma\,dW_{t}$, 其中 $W_{t}$ 是标准 $\mathbb{R}^{2}$ 值 Wiener 过程, $\sigma>0$ 常数。在 $D=d_{c}I$(临界阻尼)处, 产生两类几何上不同的涨落:
 
 \medskip\noindent
-\textit{A 类}(热力学型): $K$ 垂直于 $\{K=1\}$ 的涨落——偏离度规自洽性——由恢复速率 $\kappa_{K}(x_{*})=4d_{c}\,x_{*}^{\top}G^{2}x_{*}$ 控制;在固定基点处, 条件分布 $P(K|x)$ 为高斯分布, 方差 $\sigma^{2}/(2d_{c})$, 由一维 OU 过程的标准稳态分布得出~\cite{Gardiner1985}。虽然恢复速率与 $K$ 空间噪声幅度都依赖 $x_{*}^{\top}G^{2}x_{*}$, 此因子在 OU 方差中相消。
+\textit{A 类}(热力学型): $K$ 垂直于 $\{K=1\}$ 的涨落——偏离度规自洽性——由恢复速率 $\kappa_{K}(x_{*})=4d_{c}\,x_{*}^{\top}G^{2}x_{*}$ 控制;在固定基点处, $K$-涨落的线性化稳态分布为高斯分布, 方差 $\sigma^{2}/(2d_{c})$, 由一维 OU 过程的标准稳态分布得出~\cite{Gardiner1985}。虽然恢复速率与 $K$ 空间噪声幅度都依赖 $x_{*}^{\top}G^{2}x_{*}$, 此因子在 OU 方差中相消。
 
 \medskip\noindent
-\textit{B 类}(运动学型; 此处热力学上惰性): 沿 $\{K=1\}$ 在 boost 方向上的自由切向扩散。对于 Rindler 度规 $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, $\{K=1\}$ 是双曲线 $-(\kappa\ell)^{2}x_{1}^{2}+x_{2}^{2}=1$;沿其运动生成 Lorentz boost, 改变惯性观察者, 但不改变热力学状态。$V$ 限制在 $\{K=1\}$ 上的 Hessian 为秩一, 零空间含此切向, 确认 B 类不携带恢复力和热。
+\textit{B 类}(运动学型; 此处热力学上惰性): 涨落沿 $\{K=1\}$ 在 boost 方向上的切向分量。对于 Rindler 度规 $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, $\{K=1\}$ 是双曲线 $-(\kappa\ell)^{2}x_{1}^{2}+x_{2}^{2}=1$;沿其运动生成 Lorentz boost, 改变惯性观察者, 但不改变热力学状态。$V$ 限制在 $\{K=1\}$ 上的 Hessian 为秩一, 零空间含此切向, 确认 B 类不携带恢复力和热。
 
 \begin{figure}[ht]
 \centering
