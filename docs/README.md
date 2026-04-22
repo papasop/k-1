@@ -6,7 +6,11 @@
 
 - 项目总览：`/README.md`
 - 关键实验脚本：`/experiments`
-- 理论材料：仓库根目录中的 `K=1*` 与 `Realizability*` 文档
+- 理论材料：
+  - `/K=1 Chronogeometrodynamics.txt`
+  - `/K=1 quantum.txt`
+  - `/Realizability 1 .txt`
+  - `/Realizability 2.txt`
 
 ## 快速开始
 
