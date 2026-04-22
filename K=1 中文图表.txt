@@ -182,7 +182,7 @@
 \node[objbox, right=of G3] (JG) {$J_G=\alpha G^{-1}J$};
 \node[lawbox, right=of JG] (law2) {律 II\\[-1pt]\scriptsize $\dot x=(J_G{-}D)\nabla V$};
 % Sidebox showing the structural constraint that Law II requires
-\node[rectangle, draw=gray!55, fill=gray!8, rounded corners=2pt, font=\scriptsize, align=center, above=0.05cm of law2, inner sep=2pt] {结构性约束:\\ $GA=\alpha J-GD$, $D\ge 0$};
+\node[rectangle, draw=gray!55, fill=gray!8, rounded corners=2pt, font=\scriptsize, align=center, above=0.05cm of law2, inner sep=2pt] {结构性约束 (律 II 所需):\\ $GA=\alpha J-GD$, $D\ge 0$};
 \draw[arr] (G3) -- (JG);
 \draw[arr] (JG) -- (law2);
 \node[objbox, below=0.4cm of G3] (K1b) {$K=1$};
