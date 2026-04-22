@@ -3,6 +3,7 @@
 \setlength{\emergencystretch}{1.5em}
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{mathtools}
+\usepackage{booktabs}
 \usepackage{enumitem}
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta, positioning, decorations.pathmorphing, shapes.geometric}
@@ -411,7 +412,7 @@ $\dot{K}=2x^{\top}G\dot{x}=4(K-1)\,x^{\top}G(J_{G}-d_{c}I)Gx$。由 $GJ_{G}=\alp
 
 作为具体实现, 我们把框架应用于 Rindler 度规
 \begin{equation}
-ds^{2}=-(\kappa\ell)^{2}d\tau^{2}+d\ell^{2},\label{eq:metric}
+ds^{2}=-(\kappa\ell)^{2}d\tau^{2}+d\ell^{2},\label{eq:rindler_metric}
 \end{equation}
 其中 $\kappa$ 为表面引力, $\ell$ 为距视界的固有距离。式~\eqref{eq:dc} 给出 $d_{c}=\alpha/(\kappa\ell)$(即 $\alpha/\sqrt{|g_{00}|}$, 其中 $g_{00}=-(\kappa\ell)^{2}$ 为 Rindler 度规的时间分量)。$d_{c}$ 的表达式使用 \S~\ref{sec:stability} 中描述的对角/各向同性阈值; 对一般的 $H_{*}$, 阈值可能偏移。以 $T_{H}=\hbar\kappa/(2\pi)$~\cite{Hawking} 为外部输入, 有
 \begin{equation}
@@ -472,7 +473,7 @@ T_{\mathrm{loc}}(x) := \frac{\sigma_{K}(x)^{2}}{2\kappa_{K}(x_{*})} = \frac{\sig
 特征值自洽条件 $\sigma_2^2\,\Box\ln\sigma_i=1$ 是 $K=1$ 在场级带动机的类似物, 作为猜想提出, 并非从框架公理推出; 定理~\ref{thm:field} 建立它在球对称部分与 $R_{\mu\nu}=0$ 的代数等价性, 不引入任何热力学输入。
 
 本节以下陈述均是局部的, 限于 $f>0$ 的区间, 使得 $\sigma_1=r\sqrt{f}$ 与 $\ln\sigma_1$ 为实数。考虑静态球对称度规
-\begin{equation}
+\begin{equation}\label{eq:metric}
 ds^2=-f(r)\,dt^2+f(r)^{-1}dr^2+r^2\,d\Omega^2,
 \end{equation}
 其中 $d\Omega^{2}=d\theta^{2}+\sin^{2}\theta\,d\varphi^{2}$。定义辛特征值 $\sigma_{1}:=r\sqrt{f}$, $\sigma_{2}:=r$。
@@ -541,23 +542,18 @@ f+2rf'+\tfrac{r^{2}}{2}f''=1,
 表~\ref{tab:corr} 汇总本节所确立的点-场对应。
 
 \begin{table}[ht]
-\begin{center}
-\begin{tabular}{|l|c|c|}
-\hline
-& 点级 (2D) & 场级 (球对称 4D) \\
-\hline
-原理 & $K=x^{\top}Gx=1$ & $\sigma_{2}^{2}\Box\ln\sigma_{i}=1\;\;\forall\,i$ \\
-\hline
-平衡 & 单位时间代价 ($K{=}1$) & $\Box\ln\sigma_{i}=1/\sigma_{2}^{2}$ \\
-\hline
-真空 & $K{=}1$ & $K_{1}{=}K_{2}{=}1\Leftrightarrow R_{\mu\nu}{=}0$ \\
-\hline
-物质 & $K\neq 1\Rightarrow V>0$ & $K_{2}\neq 1\Rightarrow \rho=(1{-}K_{2})/(8\pi r^{2})$ \\
-\hline
+\centering
+\begin{tabular}{@{}lll@{}}
+\toprule
+& \textbf{点级 (2D)} & \textbf{场级 (球对称 4D)} \\
+\midrule
+原理 & $K=x^{\top}Gx=1$ & $\sigma_{2}^{2}\Box\ln\sigma_{i}=1\;\;\forall\,i$ \\[3pt]
+平衡 & 单位时间代价 ($K{=}1$) & $\Box\ln\sigma_{i}=1/\sigma_{2}^{2}$ \\[3pt]
+真空 & $K{=}1$ & $K_{1}{=}K_{2}{=}1\;\Leftrightarrow\;R_{\mu\nu}{=}0$ \\[3pt]
+物质 & $K\neq 1\to V>0$ & $K_{2}\neq 1\to \rho=(1{-}K_{2})/(8\pi r^{2})$ \\[3pt]
 条件数 & 1 (2D 楔) & 2 (4D: 每个特征值一个) \\
-\hline
+\bottomrule
 \end{tabular}
-\end{center}
 \caption{点级 $K{=}1$ 与场级特征值自洽性的结构对应。在每级, 条件数与独立特征值数相等。物质行展示偏离结构: 点级偏离 $K{=}1$ 产生内部惩罚 $V$, 场级偏离 $K_{2}{=}1$ 产生密度 $\rho$(GR 重写, 因子 $8\pi$ 自 GR 继承)。}
 \label{tab:corr}
 \end{table}
@@ -706,7 +702,7 @@ Jacobson 论证~\cite{Jacobson} 从三个输入重构爱因斯坦方程: Lorentz
 广义相对论预先规定 Lorentz 号差; 本文在一个二维局部代价框架中从公理 R, E, T 所编码的可实现性代价非对称性中得到号差, 并表明所得度规局部地强制其自身的归一化。在点级, 在随机热力学框架内, 一旦把局部有效温度与 Tolman 温度等同, Clausius 关系随之成立。在球对称部分, 特征值自洽原理在代数上等价于真空爱因斯坦方程, 把 $K{=}1$ 的语言与场级相联。公理 T 把曲率奇点($\sigma_1$ 退化之处)留在理论定义域之外——在那里框架未定义而非错误;在 Tolman 温度等同下, OU 方差给出 Planck 尺度的软自洽界。仍被预先规定的, 是代价非对称性本身: 为何一个方向承载正代价而其他方向不然。这是 Riemann 式问题的经济形式。
 
 \bigskip
-\noindent\textbf{声明与声明}
+\noindent\textbf{声明}
 
 \medskip
 \noindent\textit{资助.} 本研究未获任何资助。
