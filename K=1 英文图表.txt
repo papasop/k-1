@@ -189,23 +189,21 @@ $d_{c}>0 \Leftrightarrow -1/\det G>0$ (eq.~\eqref{eq:dc}) $\Leftrightarrow \det 
 \medskip\noindent\textbf{Scope.} The closed-form $d_{c}=\alpha\sqrt{-1/\det G}$ relies on $\dim(\mathrm{Skew}_{2})=1$; higher-dimensional extensions require additional structure and are not fully developed in the present paper.
 
 \begin{remark}[Isotropic scaling]
-$H_{*}$ denotes the cost-function weight matrix in $d(\delta x)/dt=(J_{G}-dI)H_{*}\,\delta x$ (see \S\ref{sec:lawII}); $H_{*}=I$ is the default. For $H_{*}=cI$ ($c>0$), $d_{c}$ is invariant. For general $H_{*}>0$, the threshold may shift.
+$H_{*}$ denotes the cost-function weight matrix in $d(\delta x)/dt=(J_{G}-dI)H_{*}\,\delta x$ (see \S\ref{sec:lawII}); $H_{*}=I$ is the default. For $H_{*}=cI$ ($c>0$), the zero-real-part threshold in $d$ remains $d_{c}$, although rates are rescaled by $c$. For general $H_{*}>0$, the full stability threshold may shift.
 \end{remark}
 
 \begin{remark}[Dependence on $H_{*}$]\label{rem:Hstar_dep}
 With $G=\mathrm{diag}(0.1,-10)$ and $H_{*}=\bigl(\begin{smallmatrix}1&0.9\\0.9&1\end{smallmatrix}\bigr)$, $d_{c}^{\mathrm{iso}}=1$ while $d_{c}(H_{*})=4.55$, confirming that $d_{c}$ may depend on $H_{*}$ outside the isotropic class.
 \end{remark}
 
-\begin{proposition}[Diagonal $H_{*}$ invariance]\label{prop:diag_inv}
-For any non-degenerate diagonal $G$ and any diagonal $H_{*}$,
-$\mathrm{tr}(J_{G}H_{*})=0$.
+\begin{proposition}[$H_{*}$-invariance of the zero-eigenvalue locus]\label{prop:diag_inv}
+For any invertible $H_{*}$, the zero-eigenvalue values of $(J_{G}-dI)H_{*}$ coincide with those of $J_{G}-dI$.
 \end{proposition}
 \begin{proof}
-$(G^{-1}J)_{ii}=(G^{-1})_{ii}J_{ii}=0$, so
-$\mathrm{tr}(J_{G}H_{*})=\alpha\sum_{i}(G^{-1}J)_{ii}(H_{*})_{ii}=0$.\qed
+$\det((J_{G}-dI)H_{*})=\det(J_{G}-dI)\det H_{*}$; since $\det H_{*}\neq 0$, the determinant vanishes exactly when $\det(J_{G}-dI)=0$.\qed
 \end{proof}
 \begin{remark}
-For the Rindler metric with diagonal $H_{*}>0$, the zero-eigenvalue threshold of $(J_{G}-dI)H_{*}$ remains $d_{c}=\alpha/(\kappa\ell)$. The thermodynamic applications of \S~\ref{sec:thermo} use this threshold directly, without requiring the full isotropic equivalence of Theorem~\ref{thm:equivalence}.
+For the Rindler metric with diagonal $H_{*}>0$, the zero-eigenvalue threshold in $d$ remains $d_{c}=\alpha/(\kappa\ell)$. The thermodynamic applications of \S~\ref{sec:thermo} use this threshold directly, without requiring the full isotropic equivalence of Theorem~\ref{thm:equivalence}.
 \end{remark}
 
 \begin{figure}[ht]
