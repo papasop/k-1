@@ -248,7 +248,7 @@ For Lorentzian $G$, $J_G$ has symmetric part $S=(J_{G}+J_{G}^{\top})/2\neq 0$, d
 
 \section{Critical damping and fluctuation structure (Law~III)}\label{sec:lawIII}
 
-\noindent\textbf{Law~III.} \textit{Near any $G$-eigenvector on $\{K=1\}$, the stochastic dynamics generates a restoring drift towards $K=1$ (Theorem~\ref{thm:restoring}): $K=1$ is a \emph{locally} self-consistent locus. Whether global attractivity holds remains open (Open Problem~5 in \S\ref{sec:discussion}).}
+\noindent\textbf{Law~III.} \textit{Near any $G$-eigenvector on $\{K=1\}$, the drift term generates a restoring component towards $K=1$ (Theorem~\ref{thm:restoring}): $K=1$ is a \emph{locally} self-consistent locus. Whether global attractivity holds remains open (Open Problem~5 in \S\ref{sec:discussion}).}
 
 \medskip
 
@@ -352,7 +352,7 @@ With this stationary variance, the FDT form $\sigma_{K}^{2}=2\kappa_{K}T_{\mathr
 A derivation of the identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, possibly from a KMS condition~\cite{Haag,Connes1994}, remains open.
 
 \begin{proposition}[Local Clausius Equivalence]\label{prop:clausius}
-Under local thermal equilibrium (in the KMS sense of the preceding remark) and the identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, the Clausius relation $\delta Q=T_{\mathrm{tol}}\,dS$ is equivalent to
+Under the OU/Sekimoto--Seifert setting described above, and under the external identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, the Clausius relation $\delta Q=T_{\mathrm{tol}}\,dS$ is equivalent to
 \begin{equation}
 \sigma^{2} = 2\,d_{c}\cdot T_{\mathrm{tol}} = 2\,d_{c}^{2}\cdot T_{H}.\label{eq:noise}
 \end{equation}
