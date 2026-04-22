@@ -429,14 +429,14 @@ d_{c}\cdot T_{H} = \frac{\alpha}{\kappa\ell}\cdot\frac{\hbar\kappa}{2\pi} = \fra
 关于等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 的推导, 可能从 KMS 条件~\cite{Haag,Connes1994} 出发, 仍是未解问题。
 
 \begin{proposition}[局部 Clausius 等价]\label{prop:clausius}
-在上述 OU/Sekimoto--Seifert 框架下, 以及外部等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 之下, Clausius 关系 $\delta Q=T_{\mathrm{tol}}\,dS$ 等价于
+在上述 OU/Sekimoto--Seifert 框架内, 外部等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 之下, Clausius 关系 $\delta Q=T_{\mathrm{tol}}\,dS$ 等价于
 \begin{equation}
 \sigma^{2} = 2\,d_{c}\cdot T_{\mathrm{tol}} = 2\,d_{c}^{2}\cdot T_{H}.\label{eq:noise}
 \end{equation}
 \end{proposition}
 
 \begin{proof}
-$(\Rightarrow)$: 令 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 得 $\sigma^{2}/(2d_{c})=d_{c}\cdot T_{H}$, 故 $\sigma^{2}=2d_{c}^{2}\cdot T_{H}$。
+$(\Rightarrow)$: 令 $T_{\mathrm{eff}}=T_{\mathrm{tol}}=d_{c}T_{H}$ 得 $\sigma^{2}/(2d_{c})=d_{c}\cdot T_{H}$, 故 $\sigma^{2}=2d_{c}^{2}\cdot T_{H}$。
 $(\Leftarrow)$: $\sigma^{2}=2d_{c}\cdot T_{\mathrm{tol}}$ 给 $T_{\mathrm{eff}}=\sigma^{2}/(2d_{c})=T_{\mathrm{tol}}$, 故 Clausius 成立。\qed
 \end{proof}
 
@@ -493,7 +493,7 @@ R_{tt}=\tfrac{f}{r^{2}}(K_{1}-K_{2}),\qquad R_{\theta\theta}=1-K_{2}.
 \end{lemma}
 
 \begin{theorem}[场级等价性]\label{thm:field}
-对于球对称真空, 下列等价:
+对于度规~\eqref{eq:metric}, 设 $f\in C^{2}(I)$ 且 $f>0$ 于某区间 $I\subset(0,\infty)$(使得 $\sigma_{1}=r\sqrt{f}$ 与 $\ln\sigma_{1}$ 为实数), 则下列等价:
 \begin{equation}
 K_{1}=K_{2}=1 \Leftrightarrow R_{\mu\nu}=0.\label{eq:equiv}
 \end{equation}
@@ -538,7 +538,7 @@ f+2rf'+\tfrac{r^{2}}{2}f''=1,
 \begin{center}
 \begin{tabular}{|l|c|c|}
 \hline
-& 点级 (2D) & 场级 (4D) \\
+& 点级 (2D) & 场级 (球对称 4D) \\
 \hline
 原理 & $K=x^{\top}Gx=1$ & $\sigma_{2}^{2}\Box\ln\sigma_{i}=1\;\;\forall\,i$ \\
 \hline
