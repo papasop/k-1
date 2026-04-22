@@ -92,7 +92,7 @@
 \end{itemize}
 途径 A 是以局部 Rindler 视界为背景的热力学桥, 但需要 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 与 $S\propto A$ 两个外部输入; 途径 B 在热力学上独立但目前仅限球对称。
 
-\smallskip\noindent\textbf{主要结果.\ } \emph{点级结果}: 在各向同性线性化之下, Lorentz 号差、$G$ 诱导生成子 $J_{G}$ 的实谱与正稳定阈值 $d_{c}>0$ 等价(定理~\ref{thm:equivalence})。\emph{场级结果}: 在 $f>0$ 区间上的静态球对称真空度规中, 所猜想的特征值自洽条件 $\sigma_2^2\,\Box\ln\sigma_i=1$ 在代数上等价于 $R_{\mu\nu}=0$(定理~\ref{thm:field})。完整表述见 \S\S\ref{sec:symplectic}--\ref{sec:singularity}。
+\smallskip\noindent\textbf{主要结果.\ } \emph{点级结果}: 在各向同性线性化之下, Lorentz 号差、$G$ 诱导生成子 $J_{G}$ 的实谱与正稳定阈值 $d_{c}>0$ 等价(定理~\ref{thm:equivalence})。\emph{场级结果}: 在 $f>0$ 区间上的静态球对称真空度规中, 所猜想的特征值自洽条件 $\sigma_2^2\,\Box\ln\sigma_i=1$ 在代数上等价于 $R_{\mu\nu}=0$(定理~\ref{thm:field})。两条途径的对比见图~\ref{fig:routes}。完整表述见 \S\S\ref{sec:symplectic}--\ref{sec:singularity}。
 
 \smallskip\noindent\textbf{记号.\ }
 \begin{itemize}[leftmargin=1.5em, itemsep=0.15ex, parsep=0pt, topsep=0.2ex, label={$\triangleright$}]
@@ -107,6 +107,10 @@
 \section{信息时间导出度规(律 I)}\label{sec:lawI}
 
 \noindent\textbf{律 I.} \textit{度规——连同其 Lorentz 号差——是时间的推论, 而非基本输入;它是信息时间的主二次型。}
+
+\medskip
+
+\noindent 图~\ref{fig:framework} 概括了三层框架的整体逻辑依赖关系(信息时间与可实现性、点级 $K=1$、动力学)。
 
 \medskip
 
@@ -246,6 +250,8 @@ $\mathrm{tr}(G^{-1}J)=0$, $\det(G^{-1}J)=1/\det G$; 特征多项式 $\lambda^{2}
 $d_{c}>0 \Leftrightarrow -1/\det G>0$ (式~\eqref{eq:dc}) $\Leftrightarrow \det G<0 \Leftrightarrow \mathrm{Sig}(G)=(1,1)$, 由定理~\ref{thm:spectral} 与~\ref{thm:necessity} 得证。\qed
 \end{proof}
 
+\noindent 定理~\ref{thm:spectral}--\ref{thm:equivalence} 所建立的号差-辛谱-稳定性三重对应由图~\ref{fig:triangle} 概括。
+
 \begin{figure}[ht]
 \centering
 \begin{tikzpicture}[
@@ -355,7 +361,7 @@ $\dot{K}=2x^{\top}G\dot{x}=4(K-1)\,x^{\top}G(J_{G}-d_{c}I)Gx$。由 $GJ_{G}=\alp
 \textit{A 类}(热力学型): $K$ 垂直于 $\{K=1\}$ 的涨落——偏离度规自洽性——由恢复速率 $\kappa_{K}(x_{*})=4d_{c}\,x_{*}^{\top}G^{2}x_{*}$ 控制;在固定基点处, $K$-涨落的线性化稳态分布为高斯分布, 方差 $\sigma^{2}/(2d_{c})$, 由一维 OU 过程的标准稳态分布得出~\cite{Gardiner1985}。虽然恢复速率与 $K$ 空间噪声幅度都依赖 $x_{*}^{\top}G^{2}x_{*}$, 此因子在 OU 方差中相消。
 
 \medskip\noindent
-\textit{B 类}(运动学型; 此处热力学上惰性): 涨落沿 $\{K=1\}$ 在 boost 方向上的切向分量。对于 Rindler 度规 $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, $\{K=1\}$ 是双曲线 $-(\kappa\ell)^{2}x_{1}^{2}+x_{2}^{2}=1$;沿其运动生成 Lorentz boost, 改变惯性观察者, 但不改变热力学状态。$V$ 限制在 $\{K=1\}$ 上的 Hessian 为秩一, 零空间含此切向, 确认 B 类不携带恢复力和热。
+\textit{B 类}(运动学型; 此处热力学上惰性): 涨落沿 $\{K=1\}$ 在 boost 方向上的切向分量。对于 Rindler 度规 $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, $\{K=1\}$ 是双曲线 $-(\kappa\ell)^{2}x_{1}^{2}+x_{2}^{2}=1$;沿其运动生成 Lorentz boost, 改变惯性观察者, 但不改变热力学状态。$V$ 限制在 $\{K=1\}$ 上的 Hessian 为秩一, 零空间含此切向, 确认 B 类不携带恢复力和热。双曲线 $\{K=1\}$ 上两类涨落的几何图像见图~\ref{fig:K1geometry}。
 
 \begin{figure}[ht]
 \centering
