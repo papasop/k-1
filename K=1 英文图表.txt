@@ -352,14 +352,14 @@ With this stationary variance, the FDT form $\sigma_{K}^{2}=2\kappa_{K}T_{\mathr
 A derivation of the identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, possibly from a KMS condition~\cite{Haag,Connes1994}, remains open.
 
 \begin{proposition}[Local Clausius Equivalence]\label{prop:clausius}
-Under the OU/Sekimoto--Seifert setting described above, and under the external identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, the Clausius relation $\delta Q=T_{\mathrm{tol}}\,dS$ is equivalent to
+Within the OU/Sekimoto--Seifert setting described above, and under the external identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, the Clausius relation $\delta Q=T_{\mathrm{tol}}\,dS$ is equivalent to
 \begin{equation}
 \sigma^{2} = 2\,d_{c}\cdot T_{\mathrm{tol}} = 2\,d_{c}^{2}\cdot T_{H}.\label{eq:noise}
 \end{equation}
 \end{proposition}
 
 \begin{proof}
-$(\Rightarrow)$: Setting $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ gives $\sigma^{2}/(2d_{c})=d_{c}\cdot T_{H}$, hence $\sigma^{2}=2d_{c}^{2}\cdot T_{H}$.
+$(\Rightarrow)$: Setting $T_{\mathrm{eff}}=T_{\mathrm{tol}}=d_{c}T_{H}$ gives $\sigma^{2}/(2d_{c})=d_{c}\cdot T_{H}$, hence $\sigma^{2}=2d_{c}^{2}\cdot T_{H}$.
 $(\Leftarrow)$: $\sigma^{2}=2d_{c}\cdot T_{\mathrm{tol}}$ gives $T_{\mathrm{eff}}=\sigma^{2}/(2d_{c})=T_{\mathrm{tol}}$, hence Clausius holds.\qed
 \end{proof}
 
@@ -399,7 +399,7 @@ Consider the static spherically symmetric metric
   ds^2=-f(r)\,dt^2+f(r)^{-1}dr^2+r^2\,d\Omega^2,
 \end{equation}
 with symplectic eigenvalues $\sigma_1:=r\sqrt{f}$, $\sigma_2:=r$
-(on each local Rindler wedge, $d_{c}\sigma_1=\alpha$, connecting $\sigma_1$ to the $2\times 2$ symplectic eigenvalue of~\S3),
+(on each local Rindler wedge, $d_{c}\sigma_1=\alpha$, connecting $\sigma_1$ to the $2\times 2$ symplectic eigenvalue of~\S\ref{sec:symplectic}),
 and d'Alembertian
 $\Box\phi=r^{-2}\partial_r(r^2f\,\partial_r\phi)$ (the radial d'Alembertian, exact for $r$-dependent $\phi$; primes denote $d/dr$).
 
@@ -440,7 +440,7 @@ Equivalently, $K_2{=}1$ states that the Misner--Sharp mass
 $m=\frac{r}{2}(1{-}f)$ is constant: $dm/dr=(1{-}K_2)/2=0$.
 
 \begin{theorem}[Field-Level Equivalence]\label{thm:field}
-For~\eqref{eq:metric} with $f\in C^2(0,\infty)$ and $K_1,K_2$ as in Definition~\ref{def:esc}:
+For~\eqref{eq:metric} with $f\in C^{2}(I)$ and $f>0$ on an interval $I\subset(0,\infty)$ (so that $\sigma_{1}=r\sqrt{f}$ and $\ln\sigma_{1}$ are real), and $K_1,K_2$ as in Definition~\ref{def:esc}:
 \begin{equation}\label{eq:equiv}
   \sigma_2^2\,\Box\ln\sigma_i=1\;\;\text{for }i=1,2
   \quad\Longleftrightarrow\quad R_{\mu\nu}=0,
@@ -486,8 +486,7 @@ The cosmological constant shifts both eigenvalue conditions away from unity; its
 
 \begin{remark}[General metrics and polarization]
 The extension to general metrics is not yet complete: the step connecting the eigenvalue condition to $R_{\mu\nu}v^\mu v^\nu=0$ on each null plane requires the Gauss--Codazzi relations for null hypersurfaces, and remains open.
-For a general metric, one applies $\sigma_2^2\Box\ln\sigma_i=1$ on
-each null direction.
+A possible generalisation would apply an analogue of $\sigma_2^2\Box\ln\sigma_i=1$ on each null direction.
 The \emph{polarization identity} guarantees that if
 $R_{\mu\nu}v^\mu v^\nu=0$ for every null~$v^\mu$ and $R=0$,
 then $R_{\mu\nu}=0$.
@@ -505,7 +504,7 @@ Table~\ref{tab:corr} summarises the point-field correspondence established in th
 \centering
 \begin{tabular}{@{}lll@{}}
 \toprule
-& \textbf{Point level (2D)} & \textbf{Field level (4D)} \\
+& \textbf{Point level (2D)} & \textbf{Field level (spherical 4D)} \\
 \midrule
 Principle & $K = x^{\top}G\,x = 1$
   & $\sigma_2^2\,\Box\ln\sigma_i = 1\;\;\forall\,i$ \\[3pt]
