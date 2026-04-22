@@ -114,7 +114,7 @@ In general relativity, the Lorentzian metric is prescribed on a pre-existing dif
 \node[objbox, below=1.1cm of G2] (G3) {$G$};
 \node[objbox, right=of G3] (JG) {$J_G=\alpha G^{-1}J$};
 \node[lawbox, right=of JG] (law2) {Law II\\[-1pt]\scriptsize $\dot x=(J_G{-}D)\nabla V$};
-\node[rectangle, draw=gray!55, fill=gray!8, rounded corners=2pt, font=\scriptsize, align=center, above=0.05cm of law2, inner sep=2pt] {Structural constraint:\\ $GA=\alpha J-GD$, $D\ge 0$};
+\node[rectangle, draw=gray!55, fill=gray!8, rounded corners=2pt, font=\scriptsize, align=center, above=0.05cm of law2, inner sep=2pt] {Structural constraint (required by Law~II):\\ $GA=\alpha J-GD$, $D\ge 0$};
 \draw[arr] (G3) -- (JG);
 \draw[arr] (JG) -- (law2);
 \node[objbox, below=0.4cm of G3] (K1b) {$K=1$};
