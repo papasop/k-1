@@ -29,7 +29,7 @@
 
 \textit{Thermodynamic content.} In the stationary regime near $K=1$, under the OU approximation and the sole external identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, the Clausius relation fixes the noise amplitude in terms of the Tolman temperature and the stability boundary $d_{c}$ (Proposition~\ref{prop:clausius}, eq.~\eqref{eq:noise}). Route~B (\S~\ref{sec:field}) uses no thermodynamic input, but provides only the algebraic equivalence for spherically symmetric vacuum.
 
-\textit{Gravitational content.} For static, spherically symmetric metrics on intervals where $f>0$, with symplectic eigenvalues $\sigma_1:=r\sqrt{f}$ and $\sigma_2:=r$, the conjectured field-level analogue $\sigma_2^2\,\Box\ln\sigma_i=1$ ($i=1,2$) is algebraically equivalent to $R_{\mu\nu}=0$ (Theorem~\ref{thm:field}). Axiom~T (positive temporal cost) forces $\sigma_1>0$ (Proposition~\ref{prop:sigma1}), placing curvature singularities (where $\sigma_1$ degenerates) outside the theory's domain; the Ornstein-Uhlenbeck variance bound $\mathrm{Var}(K)<1$ yields a soft self-consistency bound of Planck order (Proposition~\ref{prop:domain}).
+\textit{Gravitational content.} For static, spherically symmetric metrics on intervals where $f>0$, with symplectic eigenvalues $\sigma_1:=r\sqrt{f}$ and $\sigma_2:=r$, the conjectured field-level analogue $\sigma_2^2\,\Box\ln\sigma_i=1$ ($i=1,2$) is algebraically equivalent to $R_{\mu\nu}=0$ (Theorem~\ref{thm:field}). Axiom~T (positive temporal cost) forces $\sigma_1>0$ (Proposition~\ref{prop:sigma1}), placing those curvature singularities at which $\sigma_1$ degenerates outside the theory's domain; the Ornstein-Uhlenbeck variance bound $\mathrm{Var}(K)<1$ yields a soft self-consistency bound of Planck order (Proposition~\ref{prop:domain}).
 \end{abstract}
 
 \noindent\textbf{Keywords:} Lorentzian signature; Information time; Symplectic-dissipative dynamics; Jacobson argument; Rindler horizon
@@ -544,7 +544,7 @@ For the $(t,r)$ wedge (and by the same argument for any $2\times 2$ Lorentzian $
 \end{proof}
 
 \noindent
-A direct consequence: when $\sigma_1=0$, $K=-x_2^2\le 0$ and $K{=}1$ has no solutions. The Schwarzschild singularity ($\sigma_1\to 0$ as $r\to 0$) therefore lies outside the domain of the theory --- the framework is undefined there, not incorrect.
+A direct consequence: when $\sigma_1=0$, $K=-x_2^2\le 0$ and $K{=}1$ has no solutions. The Schwarzschild singularity therefore lies outside the domain of the theory: $\sigma_1=r\sqrt{f}$ is defined on the real branch $f>0$, so the interior $r<2M$ (where $f<0$) and the limit $r\to 0$ fall outside this domain --- the framework is undefined there, not incorrect.
 
 \begin{proposition}[Self-consistency resolution scale]\label{prop:domain}
 In Planck units ($\hbar=\ell_P=1$), the $K{=}1$ framework is self-consistent only for
@@ -676,7 +676,7 @@ satisfies $K(x(t))\to 1$ as $t\to\infty$.
 
 \subsection*{Conclusion}
 
-General relativity prescribes Lorentzian signature; within a two-dimensional local cost framework, the present work obtains it from the realizability cost asymmetry encoded in Axioms~R, E, T and shows that the resulting metric locally enforces its own normalisation. At the point level, within the stochastic thermodynamics framework, the Clausius relation follows once the local effective temperature is identified with the Tolman temperature. In the spherically symmetric sector, the eigenvalue self-consistency principle is algebraically equivalent to the vacuum Einstein equations, connecting the $K{=}1$ language to the field level. Axiom~T leaves curvature singularities (where $\sigma_1$ degenerates) outside the theory's domain, where the framework is undefined rather than incorrect, and, under the Tolman-temperature identification, the OU variance gives a soft Planck-scale self-consistency bound. What remains prescribed is the cost asymmetry itself: why one direction carries positive cost while others do not. This is Riemann's question in economic form.
+General relativity prescribes Lorentzian signature; within a two-dimensional local cost framework, the present work obtains it from the realizability cost asymmetry encoded in Axioms~R, E, T and shows that the resulting metric locally enforces its own normalisation. At the point level, within the stochastic thermodynamics framework, the Clausius relation follows once the local effective temperature is identified with the Tolman temperature. In the spherically symmetric sector, the eigenvalue self-consistency principle is algebraically equivalent to the vacuum Einstein equations, connecting the $K{=}1$ language to the field level. Axiom~T leaves those curvature singularities at which $\sigma_1$ degenerates outside the theory's domain, where the framework is undefined rather than incorrect, and, under the Tolman-temperature identification, the OU variance gives a soft Planck-scale self-consistency bound. What remains prescribed is the cost asymmetry itself: why one direction carries positive cost while others do not. This is Riemann's question in economic form.
 
 \bigskip
 \noindent\textbf{Statements and Declarations}
