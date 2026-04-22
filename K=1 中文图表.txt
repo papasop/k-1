@@ -318,7 +318,7 @@ $A=G^{-1}(\alpha J-GD)=J_{G}-D$。\qed
 
 \section{临界阻尼与涨落结构(律 III)}\label{sec:lawIII}
 
-\noindent\textbf{律 III.} \textit{在 $\{K=1\}$ 上任何 $G$ 特征向量附近, 随机动力学产生朝向 $K=1$ 的恢复漂移(定理~\ref{thm:restoring}): $K=1$ 是一个\emph{局部}自洽轨迹。全局吸引性是否成立仍是悬而未决的问题(\S\ref{sec:discussion} 中未解问题 5)。}
+\noindent\textbf{律 III.} \textit{在 $\{K=1\}$ 上任何 $G$ 特征向量附近, 漂移项产生朝向 $K=1$ 的恢复分量(定理~\ref{thm:restoring}): $K=1$ 是一个\emph{局部}自洽轨迹。全局吸引性是否成立仍是悬而未决的问题(\S\ref{sec:discussion} 中未解问题 5)。}
 
 \medskip
 
@@ -429,7 +429,7 @@ d_{c}\cdot T_{H} = \frac{\alpha}{\kappa\ell}\cdot\frac{\hbar\kappa}{2\pi} = \fra
 关于等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 的推导, 可能从 KMS 条件~\cite{Haag,Connes1994} 出发, 仍是未解问题。
 
 \begin{proposition}[局部 Clausius 等价]\label{prop:clausius}
-在局部热平衡(前注中 KMS 意义下)与等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 之下, Clausius 关系 $\delta Q=T_{\mathrm{tol}}\,dS$ 等价于
+在上述 OU/Sekimoto--Seifert 框架下, 以及外部等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 之下, Clausius 关系 $\delta Q=T_{\mathrm{tol}}\,dS$ 等价于
 \begin{equation}
 \sigma^{2} = 2\,d_{c}\cdot T_{\mathrm{tol}} = 2\,d_{c}^{2}\cdot T_{H}.\label{eq:noise}
 \end{equation}
