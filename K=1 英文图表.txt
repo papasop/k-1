@@ -189,11 +189,11 @@ $d_{c}>0 \Leftrightarrow -1/\det G>0$ (eq.~\eqref{eq:dc}) $\Leftrightarrow \det 
 \medskip\noindent\textbf{Scope.} The closed-form $d_{c}=\alpha\sqrt{-1/\det G}$ relies on $\dim(\mathrm{Skew}_{2})=1$; higher-dimensional extensions require additional structure and are not fully developed in the present paper.
 
 \begin{remark}[Isotropic scaling]
-$H_{*}$ denotes the cost-function weight matrix in $d(\delta x)/dt=(J_{G}-dI)H_{*}\,\delta x$ (see \S\ref{sec:lawII}); $H_{*}=I$ is the default. For $H_{*}=cI$ ($c>0$), the zero-real-part threshold in $d$ remains $d_{c}$, although rates are rescaled by $c$. For general $H_{*}>0$, the full stability threshold may shift.
+$H_{*}$ denotes the cost-function weight matrix in $d(\delta x)/dt=(J_{G}-dI)H_{*}\,\delta x$ (see \S\ref{sec:lawII}); $H_{*}=I$ is the default. For $H_{*}=cI$ ($c>0$), the zero-real-part threshold in $d$ remains $d_{c}$, although rates are rescaled by $c$. For general positive-definite $H_{*}$, the full stability threshold may shift.
 \end{remark}
 
 \begin{remark}[Dependence on $H_{*}$]\label{rem:Hstar_dep}
-With $G=\mathrm{diag}(0.1,-10)$ and $H_{*}=\bigl(\begin{smallmatrix}1&0.9\\0.9&1\end{smallmatrix}\bigr)$, $d_{c}^{\mathrm{iso}}=1$ while $d_{c}(H_{*})=4.55$, confirming that $d_{c}$ may depend on $H_{*}$ outside the isotropic class.
+With $G=\mathrm{diag}(0.1,-10)$ and $H_{*}=\bigl(\begin{smallmatrix}1&0.9\\0.9&1\end{smallmatrix}\bigr)$, $d_{c}^{\mathrm{iso}}=1$ while $d_{c}(H_{*})=4.55$, confirming that $d_{c}$ may depend on $H_{*}$ outside the isotropic class. Here $d_{c}(H_{*})$ refers to the full real-part stability threshold, not the zero-eigenvalue locus (which remains at $d_{c}=1$ by Proposition~\ref{prop:diag_inv}).
 \end{remark}
 
 \begin{proposition}[$H_{*}$-invariance of the zero-eigenvalue locus]\label{prop:diag_inv}
@@ -335,7 +335,7 @@ As a concrete realisation, we apply the framework to the Rindler metric
 $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$
 \textup{[external: $G$ is the standard Rindler metric from GR, not derived from Law~I]},
 where $\kappa$ is the surface gravity and $\ell$ the proper distance
-from the horizon. Equation~\eqref{eq:dc} gives $d_{c}=\alpha/(\kappa\ell)$ (i.e., $\alpha/\sqrt{|g_{00}|}$ with $g_{00}=-(\kappa\ell)^{2}$ the temporal component of the Rindler metric). The expression for $d_{c}$ uses the diagonal/isotropic threshold described in \S~\ref{sec:stability}; for general $H_{*}$, the threshold may shift. With $T_{H}=\hbar\kappa/(2\pi)$~\cite{Hawking},
+from the horizon. The Rindler expressions are understood for a non-extremal local horizon, $\kappa>0$, and for $\ell>0$. Equation~\eqref{eq:dc} gives $d_{c}=\alpha/(\kappa\ell)$ (i.e., $\alpha/\sqrt{|g_{00}|}$ with $g_{00}=-(\kappa\ell)^{2}$ the temporal component of the Rindler metric). The expression for $d_{c}$ uses the diagonal/isotropic threshold described in \S~\ref{sec:stability}; for general $H_{*}$, the threshold may shift. With $T_{H}=\hbar\kappa/(2\pi)$~\cite{Hawking},
 \begin{equation}
 d_{c}\cdot T_{H} = \frac{\alpha}{\kappa\ell}\cdot\frac{\hbar\kappa}{2\pi} = \frac{\alpha\hbar}{2\pi\ell},\label{eq:nearhorizon}
 \end{equation}
