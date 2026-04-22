@@ -569,11 +569,19 @@ f+2rf'+\tfrac{r^{2}}{2}f''=1,
 \end{proposition}
 
 \begin{proposition}[自洽分辨率尺度]\label{prop:domain}
-对于 A 类, OU 方差界 $\mathrm{Var}(K)<1$ 连同 $\sigma^{2}=2d_{c}^{2}T_{H}=d_{c}/\ell$(按 $\hbar=1$ 的普朗克单位)给出
-\begin{equation}
-\sigma_1>\sigma_{1,c}:=\hbar/(4\pi)=\ell_P/(4\pi).\label{eq:domain}
-\end{equation}
+在 Planck 单位($\hbar=\ell_P=1$)下, $K{=}1$ 框架自洽, 仅当
+$\sigma_1>\sigma_{1,c}:=\hbar/(4\pi)=\ell_P/(4\pi)$.
 \end{proposition}
+
+\begin{proof}
+\textup{[外部等同: $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, 如 \S~\ref{sec:thermo}; 其余步骤均为内部推理。]}
+近视界处, $T_{\mathrm{eff}}=T_{\mathrm{tol}}=\hbar\kappa/(2\pi\sqrt{f})$(Tolman 红移因子; 参见~\eqref{eq:nearhorizon}, 取 $\alpha=1$)。以 $\sigma_1=r\sqrt{f}$, 近 Schwarzschild 视界处 $r\approx 2M$, $\kappa=1/(4M)$:
+\begin{equation}
+T_{\mathrm{eff}}\approx\frac{\hbar\cdot(1/(4M))}{2\pi\cdot\sigma_1/(2M)}=\frac{\hbar}{4\pi\sigma_1}.\label{eq:domain}
+\end{equation}
+等价地, 由于近 Schwarzschild 视界 $\ell\approx 2\sigma_1$, 这与式~\eqref{eq:nearhorizon} (取 $\alpha=1$) 给出的 $T_{\mathrm{tol}}=\hbar/(2\pi\ell)$ 一致。
+$\mathrm{Var}(K)\approx T_{\mathrm{eff}}$(由式~\eqref{eq:var} 与 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, 在 OU 近似下); 为使 $K{=}1$ 成为良定义的平衡, 要求 $\mathrm{Var}(K)<1$, 故 $\sigma_1>\hbar/(4\pi)$。此为自洽性界: OU 近似须有效, 即 $\mathrm{Var}(K)<1$。\qed
+\end{proof}
 
 \noindent
 于 $\sigma_{1,c}$ 之下, $K$ 的热涨落超过其平均值, 半经典度规失去其经典意义。此为\emph{软}界——类比于经典力学在作用量 $\sim\hbar$ 的情形: OU 近似要求 $\mathrm{Var}(K)<1$, 这强制 $\sigma_1>\sigma_{1,c}$;而在此区域 $\mathrm{Var}(K)<1$ 自然满足。故该界是 OU/半经典区域的自洽性条件, 而非独立推导出的硬截断。
