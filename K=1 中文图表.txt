@@ -302,6 +302,10 @@ $d_{c}$ 的数值与号差等价性仅在 $H_{*}$ 的各向同性类内成立。
 \begin{proposition}[对角 $H_{*}$ 下的不变性]\label{prop:diag_inv}
 若 $G$ 与 $H_{*}$ 皆对角且 $H_{*}>0$, 则 $\mathrm{tr}(J_{G}H_{*})=0$。
 \end{proposition}
+\begin{proof}
+$(G^{-1}J)_{ii}=(G^{-1})_{ii}J_{ii}=0$, 故
+$\mathrm{tr}(J_{G}H_{*})=\alpha\sum_{i}(G^{-1}J)_{ii}(H_{*})_{ii}=0$。\qed
+\end{proof}
 
 \begin{remark}
 对于 Rindler 度规且 $H_{*}>0$ 对角, $(J_{G}-dI)H_{*}$ 的零特征值阈值保持为 $d_{c}=\alpha/(\kappa\ell)$。\S~\ref{sec:thermo} 的热力学应用直接使用该阈值, 无需定理~\ref{thm:equivalence} 的完整各向同性等价。
@@ -534,10 +538,6 @@ f+2rf'+\tfrac{r^{2}}{2}f''=1,
 \begin{remark}[更一般度规]
 向一般度规的扩展尚未完成: 将特征值条件连接到每个零平面上的 $R_{\mu\nu}v^\mu v^\nu=0$ 需要零超曲面的 Gauss--Codazzi 关系, 留作未解问题。一种可能的推广是在每个零方向上应用 $\sigma_2^2\Box\ln\sigma_i=1$ 的类似物。\emph{极化恒等式}保证若 $R_{\mu\nu}v^\mu v^\nu=0$ 对每个零向量 $v^\mu$ 都成立且 $R=0$, 则 $R_{\mu\nu}=0$。
 \end{remark}
-
-\medskip
-
-途径 A 的完成: 结合~\cite{Jacobson} 的 Jacobson 论证, 提供爱因斯坦方程所需的局部 Clausius 输入。调用 Jacobson 论证所需的剩余热力学输入是 $S\propto A$。
 
 表~\ref{tab:corr} 汇总本节所确立的点-场对应。
 
