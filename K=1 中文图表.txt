@@ -70,7 +70,7 @@
 \begin{abstract}
 \noindent\textbf{背景.\ } 时间通常作为物理学中的原始概念出现——一种未被推导的输入。
 
-\smallskip\noindent\textbf{框架.\ } 本文将时间建模为变化的代价。若与 $dt_{\mathrm{info}}^{2}$ 相关的符号化主二次型 $G$ 被识别为~\cite{Realizability} 中满足公理 R, E, T 的主二次型, 则在非退化性下必有 $\mathrm{Sig}(G)=(1,1)$, 等价于 $\det G<0$。在各向同性线性化之下, 符号 $\det G<0$ 有三种等价表述: Lorentz 号差、实辛特征值以及 $d_{c}>0$(定理~\ref{thm:equivalence}); $K(x)=x^{\top}Gx=1$ 是本文引入的单位代价轨迹, 作为附加的自洽条件。在律 II 所指定的辛-耗散生成子类 $GA=\alpha J-GD$ 内, $G$ 诱导的辛结构使演化律唯一化为 $\dot x=(J_G-D)\nabla V$(定理~\ref{thm:lawII}); 在临界阻尼处且归一化特征向量基点上, 恢复速率为 $\kappa_{K}=4d_{c}$(定理~\ref{thm:restoring})。
+\smallskip\noindent\textbf{框架.\ } 本文将时间建模为变化的代价。若与 $dt_{\mathrm{info}}^{2}$ 相关的符号化主二次型 $G$ 被识别为~\cite{Realizability} 中满足公理 R, E, T 的主二次型, 则在非退化性下必有 $\mathrm{Sig}(G)=(1,1)$, 等价于 $\det G<0$。在各向同性线性化之下, 符号 $\det G<0$ 有三种等价表述: Lorentz 号差、实辛特征值(即 $G$ 诱导的辛生成子 $J_{G}$ 的实特征值)以及 $d_{c}>0$(定理~\ref{thm:equivalence}); $K(x)=x^{\top}Gx=1$ 是本文引入的单位代价轨迹, 作为附加的自洽条件。在律 II 所指定的辛-耗散生成子类 $GA=\alpha J-GD$ 内, $G$ 诱导的辛结构使演化律唯一化为 $\dot x=(J_G-D)\nabla V$(定理~\ref{thm:lawII}); 在临界阻尼处且归一化特征向量基点上, 恢复速率为 $\kappa_{K}=4d_{c}$(定理~\ref{thm:restoring})。
 
 \smallskip\noindent\textbf{热力学内容.\ } 在 $K=1$ 附近的稳态区, Clausius 关系在 OU 近似与 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 外部等同下, 按 Tolman 温度与稳定性边界 $d_{c}$ 唯一地确定噪声幅度(命题~\ref{prop:clausius}, 式~\eqref{eq:noise})。在该热力学桥内, 唯一的外部温度等同是 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$; 途径 B(\S~\ref{sec:field})不使用热力学输入, 但目前仅给出球对称真空情形的代数等价。
 
