@@ -295,10 +295,10 @@ $d_{c}>0 \Leftrightarrow -1/\det G>0$ (式~\eqref{eq:dc}) $\Leftrightarrow \det 
 
 \medskip
 
-$H_{*}$ 表示代价函数的权重矩阵, 出现于 $d(\delta x)/dt=(J_{G}-dI)H_{*}\,\delta x$ 中(见 \S\ref{sec:lawII}); $H_{*}=I$ 为默认。对 $H_{*}=cI$($c>0$), 在 $d$ 中的零实部阈值仍为 $d_{c}$, 但速率按 $c$ 整体缩放; 对一般 $H_{*}>0$, 完整稳定性阈值可能偏移。
+$H_{*}$ 表示代价函数的权重矩阵, 出现于 $d(\delta x)/dt=(J_{G}-dI)H_{*}\,\delta x$ 中(见 \S\ref{sec:lawII}); $H_{*}=I$ 为默认。对 $H_{*}=cI$($c>0$), 在 $d$ 中的零实部阈值仍为 $d_{c}$, 但速率按 $c$ 整体缩放; 对一般正定的 $H_{*}$, 完整稳定性阈值可能偏移。
 
 \begin{remark}[对 $H_{*}$ 的依赖性]\label{rem:Hstar_dep}
-$d_{c}$ 的数值与号差等价性仅在 $H_{*}$ 的各向同性类内成立。对于一般的 $H_{*}>0$, $d_{c}$ 可偏离 $\alpha\sqrt{-1/\det G}$。举例: 取 $G=\mathrm{diag}(0.1,-10)$ 与 $H_{*}=\bigl(\begin{smallmatrix}1&0.9\\0.9&1\end{smallmatrix}\bigr)$, 则 $d_{c}^{\mathrm{iso}}=1$ 而 $d_{c}(H_{*})=4.55$, 证实在非各向同性类下 $d_{c}$ 依赖于 $H_{*}$。非各向同性类的号差-稳定性等价留作未解问题。
+$d_{c}$ 的数值与号差等价性仅在 $H_{*}$ 的各向同性类内成立。对于一般的 $H_{*}>0$, $d_{c}$ 可偏离 $\alpha\sqrt{-1/\det G}$。举例: 取 $G=\mathrm{diag}(0.1,-10)$ 与 $H_{*}=\bigl(\begin{smallmatrix}1&0.9\\0.9&1\end{smallmatrix}\bigr)$, 则 $d_{c}^{\mathrm{iso}}=1$ 而 $d_{c}(H_{*})=4.55$, 证实在非各向同性类下 $d_{c}$ 依赖于 $H_{*}$. 此处 $d_{c}(H_{*})$ 指完整实部稳定阈值, 而非零特征值位置(后者由命题~\ref{prop:diag_inv} 保持为 $d_{c}=1$). 非各向同性类的号差-稳定性等价留作未解问题。
 \end{remark}
 
 \begin{proposition}[$H_{*}$ 下零特征值位置的不变性]\label{prop:diag_inv}
@@ -419,7 +419,7 @@ $\dot{K}=2x^{\top}G\dot{x}=4(K-1)\,x^{\top}G(J_{G}-d_{c}I)Gx$。由 $GJ_{G}=\alp
 \begin{equation}
 ds^{2}=-(\kappa\ell)^{2}d\tau^{2}+d\ell^{2},\label{eq:rindler_metric}
 \end{equation}
-其中 $\kappa$ 为表面引力, $\ell$ 为距视界的固有距离。式~\eqref{eq:dc} 给出 $d_{c}=\alpha/(\kappa\ell)$(即 $\alpha/\sqrt{|g_{00}|}$, 其中 $g_{00}=-(\kappa\ell)^{2}$ 为 Rindler 度规的时间分量)。$d_{c}$ 的表达式使用 \S~\ref{sec:stability} 中描述的对角/各向同性阈值; 对一般的 $H_{*}$, 阈值可能偏移。以 $T_{H}=\hbar\kappa/(2\pi)$~\cite{Hawking} 为外部输入, 有
+其中 $\kappa$ 为表面引力, $\ell$ 为距视界的固有距离。Rindler 表达式适用于非极端局部视界($\kappa>0$)与视界外区($\ell>0$)。式~\eqref{eq:dc} 给出 $d_{c}=\alpha/(\kappa\ell)$(即 $\alpha/\sqrt{|g_{00}|}$, 其中 $g_{00}=-(\kappa\ell)^{2}$ 为 Rindler 度规的时间分量)。$d_{c}$ 的表达式使用 \S~\ref{sec:stability} 中描述的对角/各向同性阈值; 对一般的 $H_{*}$, 阈值可能偏移。以 $T_{H}=\hbar\kappa/(2\pi)$~\cite{Hawking} 为外部输入, 有
 \begin{equation}
 d_{c}\cdot T_{H} = \frac{\alpha}{\kappa\ell}\cdot\frac{\hbar\kappa}{2\pi} = \frac{\alpha\hbar}{2\pi\ell},\label{eq:nearhorizon}
 \end{equation}
