@@ -547,8 +547,7 @@ For the $(t,r)$ wedge (and by the same argument for any $2\times 2$ Lorentzian $
 A direct consequence: when $\sigma_1=0$, $K=-x_2^2\le 0$ and $K{=}1$ has no solutions. The Schwarzschild singularity therefore lies outside the domain of the theory: $\sigma_1=r\sqrt{f}$ is defined on the real branch $f>0$, so the interior $r<2M$ (where $f<0$) and the limit $r\to 0$ fall outside this domain --- the framework is undefined there, not incorrect.
 
 \begin{proposition}[Self-consistency resolution scale]\label{prop:domain}
-In Planck units ($\hbar=\ell_P=1$), the $K{=}1$ framework is self-consistent only for
-$\sigma_1>\sigma_{1,c}:=\hbar/(4\pi)=\ell_P/(4\pi)$.
+In Planck units ($\hbar=\ell_P=1$), under the Tolman-temperature identification, the OU approximation, and Schwarzschild near-horizon normalisation, thermal self-consistency of the $K{=}1$ framework requires $\sigma_1>\sigma_{1,c}:=\hbar/(4\pi)=\ell_P/(4\pi)$.
 \end{proposition}
 
 \begin{proof}
