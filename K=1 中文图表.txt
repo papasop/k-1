@@ -107,7 +107,7 @@
 
 \section{信息时间导出度规(律 I)}\label{sec:lawI}
 
-\noindent\textbf{律 I.} \textit{度规——连同其 Lorentz 号差——是时间的推论, 而非基本输入;它是信息时间的主二次型。}
+\noindent\textbf{律 I.} \textit{度规 $G$ 是量度局部位移代价的非退化对称双线性型\textup{(在~\cite{Realizability} 的意义下)}, 时间方向为正代价方向\textup{(\cite{Realizability} 的公理 T)}。}
 
 \medskip
 
@@ -300,7 +300,7 @@ $d_{c}$ 的数值与号差等价性仅在 $H_{*}$ 的各向同性类内成立。
 \end{remark}
 
 \begin{proposition}[对角 $H_{*}$ 下的不变性]\label{prop:diag_inv}
-若 $G$ 与 $H_{*}$ 皆对角且 $H_{*}>0$, 则 $\mathrm{tr}(J_{G}H_{*})=0$, 故 $(J_{G}-dI)H_{*}$ 谱的实部之和等于 $-d\cdot\mathrm{tr}(H_{*})$, 于 $d=0$ 处为零。
+若 $G$ 与 $H_{*}$ 皆对角且 $H_{*}>0$, 则 $\mathrm{tr}(J_{G}H_{*})=0$。
 \end{proposition}
 
 \begin{remark}
@@ -466,7 +466,7 @@ T_{\mathrm{loc}}(x) := \frac{\sigma_{K}(x)^{2}}{2\kappa_{K}(x_{*})} = \frac{\sig
 
 该位置依赖不应读作 B 类的热涨落: 沿 boost 轨道的变化改变观察者/位置指派, 而 B 类仍热力学惰性, 不携带热。
 
-伊藤修正: 对沿 $x_{*}(t)$ 移动的基点, 演化中的附加伊藤项 $\tfrac{1}{2}(\partial\sigma^{2}/\partial x_{*})$ 影响轨道上的漂移, 但不影响固定基点处 OU 过程的稳态统计(决定 Clausius 的就是后者)。
+伊藤修正: 对 $K=x^{\top}Gx$ 应用伊藤公式, 产生附加漂移项 $\sigma^{2}\,\mathrm{tr}(G)\,dt$; 这一项改变 $K$ 的平均值但不改变其方差。在任何 $G$-特征向量基点处, FDT 比 $\sigma_{K}^{2}/(2\kappa_{K})$ 归结为 $\sigma^{2}/(2d_{c})$, 独立于 $x_{*}^{\top}G^{2}x_{*}$。因此式~\eqref{eq:var} 与 $T_{\mathrm{eff}}=\sigma^{2}/(2d_{c})$ 对任意 Lorentz $G$ 成立。
 
 \section{特征值自洽(途径 B:直接代数)}\label{sec:field}
 
@@ -492,7 +492,7 @@ K_{1} &= f+2rf'+\tfrac{r^{2}}{2}f'',\label{eq:K1exp}\\
 K_{2} &= f+rf'.\label{eq:K2exp}
 \end{align}
 
-\begin{lemma}[标量曲率公式]\label{lem:R}
+\begin{lemma}[Ricci 分量公式]\label{lem:R}
 对上述度规, 有
 \[
 R_{tt}=\tfrac{f}{r^{2}}(K_{1}-K_{2}),\qquad R_{\theta\theta}=1-K_{2}.
@@ -532,7 +532,7 @@ f+2rf'+\tfrac{r^{2}}{2}f''=1,
 \end{remark}
 
 \begin{remark}[更一般度规]
-\emph{极化恒等式} 保证若对所有 $\sigma_{i}$ 组合 $\sigma_{i}\sigma_{j}$, $\sigma_{2}^{2}\,\Box\ln(\sigma_{i}\sigma_{j})=1+1$(即每一对特征值皆为自洽的), 则对角项的 $R_{\mu\nu}$ 消失。向非对角 $G$ 或非球对称情形的扩展需要零曲面上的 Gauss--Codazzi 匹配, 留作未解问题。
+向一般度规的扩展尚未完成: 将特征值条件连接到每个零平面上的 $R_{\mu\nu}v^\mu v^\nu=0$ 需要零超曲面的 Gauss--Codazzi 关系, 留作未解问题。一种可能的推广是在每个零方向上应用 $\sigma_2^2\Box\ln\sigma_i=1$ 的类似物。\emph{极化恒等式}保证若 $R_{\mu\nu}v^\mu v^\nu=0$ 对每个零向量 $v^\mu$ 都成立且 $R=0$, 则 $R_{\mu\nu}=0$。
 \end{remark}
 
 \medskip
