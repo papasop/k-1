@@ -75,7 +75,7 @@
 
 \smallskip\noindent\textbf{热力学内容.\ } 在 $K=1$ 附近的稳态区, Clausius 关系在 OU 近似与唯一的外部等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 之下, 按 Tolman 温度与稳定性边界 $d_{c}$ 确定噪声幅度(命题~\ref{prop:clausius}, 式~\eqref{eq:noise})。途径 B(\S~\ref{sec:field})不使用热力学输入, 但仅给出球对称真空情形的代数等价。
 
-\smallskip\noindent\textbf{引力内容.\ } 对于 $f>0$ 的区间上的静态、球对称度规, 具有辛特征值 $\sigma_1:=r\sqrt{f}$ 与 $\sigma_2:=r$, 所猜想的场级类似物 $\sigma_2^2\,\Box\ln\sigma_i=1$($i=1,2$)在代数上等价于 $R_{\mu\nu}=0$(定理~\ref{thm:field})。公理 T(正时间代价)强制 $\sigma_1>0$(命题~\ref{prop:sigma1}), 从而把曲率奇点($\sigma_1$ 退化之处)置于理论定义域之外; Ornstein--Uhlenbeck 方差界 $\mathrm{Var}(K)<1$ 导出量级为 Planck 尺度的软自洽界(命题~\ref{prop:domain})。
+\smallskip\noindent\textbf{引力内容.\ } 对于 $f>0$ 的区间上的静态、球对称度规, 具有辛特征值 $\sigma_1:=r\sqrt{f}$ 与 $\sigma_2:=r$, 所猜想的场级类似物 $\sigma_2^2\,\Box\ln\sigma_i=1$($i=1,2$)在代数上等价于 $R_{\mu\nu}=0$(定理~\ref{thm:field})。公理 T(正时间代价)强制 $\sigma_1>0$(命题~\ref{prop:sigma1}), 从而把那些 $\sigma_1$ 在其上退化的曲率奇点置于理论定义域之外; Ornstein--Uhlenbeck 方差界 $\mathrm{Var}(K)<1$ 导出量级为 Planck 尺度的软自洽界(命题~\ref{prop:domain})。
 \end{abstract}
 
 \noindent\textbf{关键词:} Lorentz 号差; 信息时间; 辛-耗散动力学; Jacobson 论证; Rindler 视界
@@ -565,7 +565,7 @@ f+2rf'+\tfrac{r^{2}}{2}f''=1,
 本节使用代价符号约定 $G_{\mathrm{cost}}=\mathrm{diag}((\kappa\ell)^{2},-1)$, 以与公理 T 的正时间代价表述保持一致。
 
 \begin{proposition}[由公理 T 得 $\sigma_{1}>0$]\label{prop:sigma1}
-公理 T 的正时间代价要求 $G_{\mathrm{cost}}(e_{t},e_{t})>0$, 即 $\sigma_{1}^{2}>0$; 若将 $\sigma_{1}$ 取作正尺度因子(例如, 途径 B 中 $\sigma_{1}=r\sqrt{f}$ 于实分支), 则得 $\sigma_{1}>0$。Schwarzschild 奇点($r\to 0$ 时 $\sigma_{1}=r\sqrt{f}\to 0$)因此位于理论定义域之外——框架在那里是\emph{未定义}, 而非错误。
+公理 T 的正时间代价要求 $G_{\mathrm{cost}}(e_{t},e_{t})>0$, 即 $\sigma_{1}^{2}>0$; 若将 $\sigma_{1}$ 取作正尺度因子(例如, 途径 B 中 $\sigma_{1}=r\sqrt{f}$ 于实分支), 则得 $\sigma_{1}>0$。Schwarzschild 奇点因此位于理论定义域之外: $\sigma_1=r\sqrt{f}$ 仅在实分支 $f>0$ 上定义, 故内区 $r<2M$(其中 $f<0$) 与极限 $r\to 0$ 都落在该定义域之外——框架在那里是\emph{未定义}, 而非错误。
 \end{proposition}
 
 \begin{proposition}[自洽分辨率尺度]\label{prop:domain}
@@ -701,7 +701,7 @@ Jacobson 论证~\cite{Jacobson} 从三个输入重构爱因斯坦方程: Lorentz
 
 \subsection*{结论}
 
-广义相对论预先规定 Lorentz 号差; 本文在一个二维局部代价框架中从公理 R, E, T 所编码的可实现性代价非对称性中得到号差, 并表明所得度规局部地强制其自身的归一化。在点级, 在随机热力学框架内, 一旦把局部有效温度与 Tolman 温度等同, Clausius 关系随之成立。在球对称部分, 特征值自洽原理在代数上等价于真空爱因斯坦方程, 把 $K{=}1$ 的语言与场级相联。公理 T 把曲率奇点($\sigma_1$ 退化之处)留在理论定义域之外——在那里框架未定义而非错误;在 Tolman 温度等同下, OU 方差给出 Planck 尺度的软自洽界。仍被预先规定的, 是代价非对称性本身: 为何一个方向承载正代价而其他方向不然。这是 Riemann 式问题的经济形式。
+广义相对论预先规定 Lorentz 号差; 本文在一个二维局部代价框架中从公理 R, E, T 所编码的可实现性代价非对称性中得到号差, 并表明所得度规局部地强制其自身的归一化。在点级, 在随机热力学框架内, 一旦把局部有效温度与 Tolman 温度等同, Clausius 关系随之成立。在球对称部分, 特征值自洽原理在代数上等价于真空爱因斯坦方程, 把 $K{=}1$ 的语言与场级相联。公理 T 把那些 $\sigma_1$ 在其上退化的曲率奇点留在理论定义域之外——在那里框架未定义而非错误;在 Tolman 温度等同下, OU 方差给出 Planck 尺度的软自洽界。仍被预先规定的, 是代价非对称性本身: 为何一个方向承载正代价而其他方向不然。这是 Riemann 式问题的经济形式。
 
 \bigskip
 \noindent\textbf{声明}
