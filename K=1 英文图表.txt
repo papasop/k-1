@@ -259,9 +259,9 @@ Let $G$ be a $2\times 2$ Lorentzian metric, $D=d_{c}I$, and $J_{G}=\alpha G^{-1}
 \begin{equation}
 \dot{K} = 4(K-1)\bigl[\alpha\,x^{\top}(JG)\,x - d_{c}\,x^{\top}G^{2}x\bigr].\label{eq:Kdot}
 \end{equation}
-At any $x_{*}\in\{K=1\}$ with $Gx_{*}=\lambda x_{*}$, the term $x_{*}^{\top}JGx_{*}=0$, so
+At any $x_{*}\in\{K=1\}$ with $Gx_{*}=\lambda x_{*}$, the term $x_{*}^{\top}JGx_{*}=0$, so linearising the coefficient in~\eqref{eq:Kdot} at such an $x_{*}$ gives
 \begin{equation}
-\dot{K}\big|_{x=x_{*}} = -4\,d_{c}\,x_{*}^{\top}G^{2}x_{*}\cdot(K-1).\label{eq:Kdot_eigen}
+\dot{K} = -4\,d_{c}\,x_{*}^{\top}G^{2}x_{*}\cdot(K-1)+o(K-1).\label{eq:Kdot_eigen}
 \end{equation}
 If, in addition, the base point is normalised by $x_{*}^{\top}G^{2}x_{*}=1$ (i.e., $x_*$ is a unit-eigenvalue $G$-eigenvector), then
 \begin{equation}
@@ -282,10 +282,10 @@ The local effective restoring rate is $\kappa_{K}(x_{*})=4d_{c}\cdot x_{*}^{\top
 Adding isotropic additive white noise (It\^{o} convention) to Law~II gives $dx=(J_{G}-D)\nabla V\,dt+\sigma\,dW_{t}$, where $W_{t}$ is a standard $\mathbb{R}^{2}$-valued Wiener process and $\sigma>0$ is constant. At $D=d_{c}I$ (critical damping), two geometrically distinct classes arise:
 
 \medskip\noindent
-\textit{Class~A} (thermodynamic): fluctuations of $K$ perpendicular to $\{K=1\}$ --- departures from metric self-consistency --- governed by restoring rate $\kappa_{K}(x_{*})=4d_{c}\,x_{*}^{\top}G^{2}x_{*}$; the conditional distribution $P(K|x)$ at a fixed base point is Gaussian with variance $\sigma^{2}/(2d_{c})$, as follows from the standard stationary distribution of the one-dimensional OU process~\cite{Gardiner1985}. Although both the restoring rate and the $K$-space noise amplitude depend on $x_{*}^{\top}G^{2}x_{*}$, this factor cancels in the OU variance.
+\textit{Class~A} (thermodynamic): fluctuations of $K$ perpendicular to $\{K=1\}$ --- departures from metric self-consistency --- governed by restoring rate $\kappa_{K}(x_{*})=4d_{c}\,x_{*}^{\top}G^{2}x_{*}$; the linearised stationary distribution of the $K$-fluctuation at a fixed base point is Gaussian with variance $\sigma^{2}/(2d_{c})$, as follows from the standard stationary distribution of the one-dimensional OU process~\cite{Gardiner1985}. Although both the restoring rate and the $K$-space noise amplitude depend on $x_{*}^{\top}G^{2}x_{*}$, this factor cancels in the OU variance.
 
 \medskip\noindent
-\textit{Class~B} (kinematic; thermodynamically inert here): free tangential diffusion along $\{K=1\}$ in the boost direction. For the Rindler metric $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, $\{K=1\}$ is the hyperbola $-(\kappa\ell)^{2}x_{1}^{2}+x_{2}^{2}=1$; motion along it generates Lorentz boosts, changing the inertial observer but not the thermodynamic state. The Hessian of $V$ restricted to $\{K=1\}$ is rank-one with null space containing this tangent, confirming that Class~B carries no restoring force and no heat.
+\textit{Class~B} (kinematic; thermodynamically inert here): the tangential component of the fluctuation along $\{K=1\}$ in the boost direction. For the Rindler metric $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, $\{K=1\}$ is the hyperbola $-(\kappa\ell)^{2}x_{1}^{2}+x_{2}^{2}=1$; motion along it generates Lorentz boosts, changing the inertial observer but not the thermodynamic state. The Hessian of $V$ restricted to $\{K=1\}$ is rank-one with null space containing this tangent, confirming that Class~B carries no restoring force and no heat.
 
 \begin{figure}[ht]
 \centering
