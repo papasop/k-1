@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LLCM Interactive Paper</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #ffffff;
+      --fg: #111111;
+      --muted: #555;
+      --accent: #1f6feb;
+      --card: #f6f8fa;
+      --border: #d0d7de;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0d1117;
+        --fg: #e6edf3;
+        --muted: #9da7b3;
+        --accent: #58a6ff;
+        --card: #161b22;
+        --border: #30363d;
+      }
+    }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.6;
+    }
+    .wrap {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 2rem 1rem 4rem;
+    }
+    h1, h2, h3 { line-height: 1.25; }
+    .lead {
+      font-size: 1.1rem;
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem;
+      margin: 1rem 0;
+    }
+    details {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.75rem 1rem;
+      margin: 0.75rem 0;
+      background: var(--card);
+    }
+    summary {
+      cursor: pointer;
+      font-weight: 700;
+    }
+    code, pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 0.95em;
+    }
+    pre {
+      overflow: auto;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.8rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0.8rem 0;
+      font-size: 0.95rem;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 0.45rem 0.6rem;
+      text-align: left;
+      vertical-align: top;
+    }
+    a { color: var(--accent); }
+    footer {
+      margin-top: 2rem;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <h1>Lorentz Light-Cone Model (LLCM)</h1>
+    <p class="lead">
+      Interactive paper page for GitHub Pages deployment. Expand sections below to explore the core claims,
+      formulas, evidence, and reproducibility commands.
+    </p>
+
+    <section class="card">
+      <h2>Core formula</h2>
+      <pre><code># Standard attention (Euclidean)
+score = Q @ K.T / sqrt(d)
+
+# LLCM attention (Lorentzian, formula F3)
+score = (-σ * Qt @ Kt.T + Qs @ Ks.T) / sqrt(d)</code></pre>
+      <p>
+        The minus sign is treated as a geometric consequence (Lorentzian signature), not a tuning convention.
+      </p>
+    </section>
+
+    <details open>
+      <summary>What changes in one line</summary>
+      <table>
+        <thead>
+          <tr><th>Item</th><th>Standard Transformer</th><th>LLCM</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Attention score</td><td>Q·K (isotropic)</td><td>−σ·Qt·Kt + Qs·Ks (anisotropic)</td></tr>
+          <tr><td>Geometry</td><td>Euclidean</td><td>Lorentzian</td></tr>
+          <tr><td>Conservation</td><td>Soft loss constraint</td><td>Hard geometric constraint</td></tr>
+          <tr><td>Stability boundary</td><td>d_c = 0</td><td>d_c &gt; 0</td></tr>
+        </tbody>
+      </table>
+    </details>
+
+    <details>
+      <summary>Why the minus sign is necessary</summary>
+      <p>
+        Under conditions R, E, and T on displacement cost structure, the leading quadratic form is indefinite;
+        in (1+1)D this yields Lorentzian signature as the algebraic outcome.
+      </p>
+    </details>
+
+    <details>
+      <summary>Quick start (Python)</summary>
+      <pre><code>from dataclasses import dataclass
+import torch
+from lorentz_transformer import LorentzMultiHeadAttention, MinkowskiLayerNorm
+
+@dataclass
+class Config:
+    d_model: int = 256
+    n_heads: int = 8
+    formula: str = 'f3'
+    time_ratio: float = 0.25
+    dropout: float = 0.1
+
+config = Config()
+attn = LorentzMultiHeadAttention(config)
+norm = MinkowskiLayerNorm(config.d_model)
+
+x = torch.randn(2, 16, config.d_model)
+out, weights = attn(x)
+out = norm(out)
+print(f"σ = {attn.sigma:.3f}")</code></pre>
+    </details>
+
+    <details>
+      <summary>Experimental highlights</summary>
+      <ul>
+        <li>Geometry separation before language signal (8/8 seeds).</li>
+        <li>Language alignment gain with full Riemannian variant.</li>
+        <li>Conservation improvements without conservation loss term.</li>
+        <li>Euclidean baseline shows anti-correlation trend in reported setting.</li>
+      </ul>
+    </details>
+
+    <details>
+      <summary>Reproducing experiments</summary>
+      <pre><code>python experiments/layer1_minimal_test.py
+python experiments/layer3_zero_loss_B.py
+python experiments/lorentz_riemannian_transformer.py</code></pre>
+    </details>
+
+    <details>
+      <summary>Project files</summary>
+      <pre><code>experiments/
+README.md
+pyproject.toml
+setup.py</code></pre>
+    </details>
+
+    <footer>
+      Source repository: <a href="https://github.com/papasop/k-1">papasop/k-1</a>
+    </footer>
+  </main>
+</body>
+</html>
