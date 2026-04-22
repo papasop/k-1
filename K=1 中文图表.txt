@@ -246,7 +246,7 @@ $\mathrm{tr}(G^{-1}J)=0$, $\det(G^{-1}J)=1/\det G$; 特征多项式 $\lambda^{2}
 \item $\mathrm{Sig}(G)=(1,1)$: $G$ 是 Lorentz 的;
 \item $\det G<0$。
 \end{enumerate}
-对一般的 $H_{*}$, 该等价失效(注~\ref{rem:Hstar_dep}): 仅在各向同性类之内, $d_{c}$ 才是号差不变量。
+对一般的 $H_{*}$, 在 $d$ 中的零特征值位置在 $H_{*}$ 可逆的右乘下保持不变(命题~\ref{prop:diag_inv}), 但完整实部稳定性解释可能失效(注~\ref{rem:Hstar_dep}); 故 $d_{c}$ 仅在各向同性稳定性解释之内才是号差不变量。
 \end{theorem}
 
 \begin{proof}
