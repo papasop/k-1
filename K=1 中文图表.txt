@@ -295,22 +295,21 @@ $d_{c}>0 \Leftrightarrow -1/\det G>0$ (式~\eqref{eq:dc}) $\Leftrightarrow \det 
 
 \medskip
 
-$H_{*}$ 表示代价函数的权重矩阵, 出现于 $d(\delta x)/dt=(J_{G}-dI)H_{*}\,\delta x$ 中(见 \S\ref{sec:lawII}); $H_{*}=I$ 为默认。对 $H_{*}=cI$($c>0$), $d_{c}$ 不变;对一般 $H_{*}>0$, 阈值可能偏移。
+$H_{*}$ 表示代价函数的权重矩阵, 出现于 $d(\delta x)/dt=(J_{G}-dI)H_{*}\,\delta x$ 中(见 \S\ref{sec:lawII}); $H_{*}=I$ 为默认。对 $H_{*}=cI$($c>0$), 在 $d$ 中的零实部阈值仍为 $d_{c}$, 但速率按 $c$ 整体缩放; 对一般 $H_{*}>0$, 完整稳定性阈值可能偏移。
 
 \begin{remark}[对 $H_{*}$ 的依赖性]\label{rem:Hstar_dep}
 $d_{c}$ 的数值与号差等价性仅在 $H_{*}$ 的各向同性类内成立。对于一般的 $H_{*}>0$, $d_{c}$ 可偏离 $\alpha\sqrt{-1/\det G}$。举例: 取 $G=\mathrm{diag}(0.1,-10)$ 与 $H_{*}=\bigl(\begin{smallmatrix}1&0.9\\0.9&1\end{smallmatrix}\bigr)$, 则 $d_{c}^{\mathrm{iso}}=1$ 而 $d_{c}(H_{*})=4.55$, 证实在非各向同性类下 $d_{c}$ 依赖于 $H_{*}$。非各向同性类的号差-稳定性等价留作未解问题。
 \end{remark}
 
-\begin{proposition}[对角 $H_{*}$ 下的不变性]\label{prop:diag_inv}
-若 $G$ 与 $H_{*}$ 皆对角且 $H_{*}>0$, 则 $\mathrm{tr}(J_{G}H_{*})=0$。
+\begin{proposition}[$H_{*}$ 下零特征值位置的不变性]\label{prop:diag_inv}
+对任何可逆的 $H_{*}$, $(J_{G}-dI)H_{*}$ 的零特征值取值与 $J_{G}-dI$ 的零特征值取值相同。
 \end{proposition}
 \begin{proof}
-$(G^{-1}J)_{ii}=(G^{-1})_{ii}J_{ii}=0$, 故
-$\mathrm{tr}(J_{G}H_{*})=\alpha\sum_{i}(G^{-1}J)_{ii}(H_{*})_{ii}=0$。\qed
+$\det((J_{G}-dI)H_{*})=\det(J_{G}-dI)\det H_{*}$; 由于 $\det H_{*}\neq 0$, 故行列式为零当且仅当 $\det(J_{G}-dI)=0$。\qed
 \end{proof}
 
 \begin{remark}
-对于 Rindler 度规且 $H_{*}>0$ 对角, $(J_{G}-dI)H_{*}$ 的零特征值阈值保持为 $d_{c}=\alpha/(\kappa\ell)$。\S~\ref{sec:thermo} 的热力学应用直接使用该阈值, 无需定理~\ref{thm:equivalence} 的完整各向同性等价。
+对于 Rindler 度规且 $H_{*}>0$ 对角, 在 $d$ 中的零特征值阈值仍为 $d_{c}=\alpha/(\kappa\ell)$。\S~\ref{sec:thermo} 的热力学应用直接使用该阈值, 无需定理~\ref{thm:equivalence} 的完整各向同性等价。
 \end{remark}
 
 \section{唯一动力学(律 II)}\label{sec:lawII}
