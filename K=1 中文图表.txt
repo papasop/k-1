@@ -326,7 +326,7 @@ $\det((J_{G}-dI)H_{*})=\det(J_{G}-dI)\det H_{*}$; 由于 $\det H_{*}\neq 0$, 故
 $A=G^{-1}(\alpha J-GD)=J_{G}-D$。\qed
 \end{proof}
 
-对于 Lorentz 的 $G$, $J_G$ 有非零对称部分 $S=(J_{G}+J_{G}^{\top})/2\neq 0$, 偏离了 GENERIC 对欧氏反对称性的要求; 见 \S~\ref{sec:discussion}(\textit{与 GENERIC 的偏离})。
+对于 Lorentz 的 $G$, $J_G$ 有非零对称部分 $S=(J_{G}+J_{G}^{\top})/2\neq 0$, 偏离了 GENERIC 对欧氏反对称性的要求。
 
 \section{临界阻尼与涨落结构(律 III)}\label{sec:lawIII}
 
@@ -666,25 +666,9 @@ $\mathrm{Var}(K)\approx T_{\mathrm{eff}}$(由式~\eqref{eq:var} 与 $T_{\mathrm{
 
 Jacobson 论证~\cite{Jacobson} 从三个输入重构爱因斯坦方程: Lorentz 号差、每个局部 Rindler 视界上的 Clausius 关系, 以及 $S=A/4$。途径 A 提供前两个: 号差经可实现性强制, 在将 $G$ 视为符号化主二次型之后; 它与 $d_{c}>0$ 的等价性在各向同性线性化下由定理~\ref{thm:equivalence} 给出;Clausius 在每个视界上成立(命题~\ref{prop:clausius}, 给定 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$)。在给定 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 从而得到局部 Clausius 后, 调用 Jacobson 论证所需的剩余外部输入是 $S\propto A$。在调用 Jacobson 论证的标准局部视界框架内, 跨越各视界方向的拼接不作为本文的额外假设引入(见下方的 $(1{+}3)$-维扩展)。
 
-\subsection*{公理 R 的物理内容}
-
-公理 R 要求:存在带有非零空间分量的位移序列, 其代价与大小之比趋于零。这是光锥的代价内容:光所沿的方向(零方向), 是运动代价变得无穷小相对于路径长度的方向。若无公理 R, 则框架无法区分时间方向与空间方向之间``代价降到零''的渐近行为, 从而无法强制 Lorentz 号差。
-
-\subsection*{$K{=}1$ 自指结构}
-
-条件 $K{=}1$ 是自指的: $G$ 定义 $K$, 而 $K{=}1$ 固定了用以度量偏离的归一化。恢复势 $V=\frac{1}{2}(K-1)^2$ 是对此轨迹偏离的主导光滑惩罚。在场级, 猜想的类似物是 $\sigma_2^2\Box\ln\sigma_i=1$。
-
-\subsection*{阶段}
-
-本框架按四步展开:可实现性公理固定 $G$ 的 Lorentz 类型; $K{=}1$ 提供局部自洽条件; 途径 A 在 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 之下把所得 OU 动力学与 Clausius 相连;途径 B 给出到 $R_{\mu\nu}=0$ 的代数球对称等价性。量子与全局吸引子问题仍悬而未决。
-
 \subsection*{$(1{+}3)$-维扩展}
 
 在 $(1{+}3)$ 维中, $\{K{=}1\}\cong H^3$ 承载面积为 $4\pi\sigma_1^2$ 的 $S^2$ 截面(当 $\alpha=1$, $\sigma_1=\kappa\ell$ 时)。这把同一辛不变量与 Bekenstein--Hawking 面积变量~\cite{Bekenstein} 相联系, 但系数 $1/4$ 仍依赖于通常的 Hawking 温度~\cite{Hawking}/第一定律输入。两项结构性变化留存:$d_{c}>0\Leftrightarrow\mathrm{Sig}(G)=(1,1)$ 在 $2\times 2$ 之外减弱(Lorentz 号差成为必要但非充分); $J_G$ 在 $\dim(\mathrm{Skew}_4)=6$ 时需要辛配对的选择。
-
-\subsection*{与 GENERIC 的偏离}
-
-对于 Lorentz 的 $G$, $J_G$ 是 $G$-反对称但并非欧氏反对称, 故该框架偏离了标准 GENERIC 的设定~\cite{GENERIC}。
 
 \subsection*{局限}
 
@@ -705,10 +689,6 @@ Jacobson 论证~\cite{Jacobson} 从三个输入重构爱因斯坦方程: Lorentz
 \item 在 $(1{+}3)$ 维中是否存在典范的辛配对选择规则?
 \item $\{K=1\}$ 是否为全局吸引子, 而不仅是局部吸引子?
 \end{enumerate}
-
-\subsection*{结论}
-
-广义相对论预先规定 Lorentz 号差; 本文在一个二维局部代价框架中从公理 R, E, T 所编码的可实现性代价非对称性中得到号差, 并表明所得度规局部地强制其自身的归一化。在点级, 在随机热力学框架内, 一旦把局部有效温度与 Tolman 温度等同, Clausius 关系随之成立。在球对称部分, 特征值自洽原理在代数上等价于真空爱因斯坦方程, 把 $K{=}1$ 的语言与场级相联。公理 T 把那些 $\sigma_1$ 在其上退化的曲率奇点留在理论定义域之外——在那里框架未定义而非错误;在 Tolman 温度等同下, OU 方差给出 Planck 尺度的软自洽界。仍被预先规定的, 是代价非对称性本身: 为何一个方向承载正代价而其他方向不然。这是 Riemann 式问题的经济形式。
 
 \bigskip
 \noindent\textbf{声明}
