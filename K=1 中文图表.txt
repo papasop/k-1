@@ -82,7 +82,7 @@
 
 \section{引言: 时间作为推论}
 
-\noindent\textbf{问题.\ } 黎曼 1854 年就职演讲指出, 对于连续流形, 度规关系的基础必须在该实际事物之外寻求, 存在于``作用于其上的聚合力''(colligating forces that operate upon it)之中~\cite{Riemann1854}。然而时空物理的多数标准表述都把度规或因果结构作为输入假设。Jacobson 论证~\cite{Jacobson} 从局部 Rindler 视界上的热力学推得爱因斯坦方程, 但 Lorentz 号差被普遍地预设——正如 Padmanabhan~\cite{Padmanabhan} 与 Verlinde~\cite{Verlinde} 的方法中那样。EPS 公理化~\cite{EPS} 从自由下落与光传播推导因果结构, 但使用了运动学原语。在对 Riemann 遗留问题的这几条路径中, 要么号差被预先规定, 要么推导以运动学原语为前提。
+\noindent\textbf{问题.\ } 黎曼 1854 年就职演讲指出, 对于连续流形, 度规关系的基础必须在流形本身之外、在作用于其上的力中寻求~\cite{Riemann1854}\footnote{黎曼原文表述为:``the basis of metric relations must be sought outside that actuality, in colligating forces that operate upon it.''}。然而时空物理的多数标准表述都把度规或因果结构作为输入假设。Jacobson 论证~\cite{Jacobson} 从局部 Rindler 视界上的热力学推得爱因斯坦方程, 但 Lorentz 号差被普遍地预设——正如 Padmanabhan~\cite{Padmanabhan} 与 Verlinde~\cite{Verlinde} 的方法中那样。EPS 公理化~\cite{EPS} 从自由下落与光传播推导因果结构, 但使用了运动学原语。在对 Riemann 遗留问题的这几条路径中, 要么号差被预先规定, 要么推导以运动学原语为前提。
 
 \smallskip\noindent\textbf{缺口.\ } 在本文采用的``局部代价主二次型''意义下, 现有方法通常把 Lorentz 号差或等价的因果结构作为输入; 本文关注的是位于此前一层的问题: 代价结构本身何时强制 Lorentz 型主符号。\footnote{探讨相关但不同问题的方法包括: Born--Infeld 号差问题、量子宇宙学中的号差变化, 以及时间问题~\cite{Gibbons1995,Kiefer2012,Isham1993}。熵引力方法~\cite{Verlinde,Padmanabhan} 以 Lorentz 时空为前提并推导引力动力学; 本文处理的是位于此前一层的、基于代价的号差问题。}
 
