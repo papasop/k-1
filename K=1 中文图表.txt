@@ -71,9 +71,9 @@
 \begin{abstract}
 \noindent\textbf{背景.\ } 时间一贯地作为物理学中的原始概念出现——一种未被推导的输入。
 
-\smallskip\noindent\textbf{框架.\ } 本文将时间建模为变化的代价。若将与 $dt_{\mathrm{info}}^{2}$ 相关的符号化主二次型 $G$ 建模为~\cite{Realizability} 中满足公理 R, E, T 的主二次型, 则在非退化性下得到 $\mathrm{Sig}(G)=(1,1)$, 等价于 $\det G<0$。在各向同性线性化之下, 符号 $\det G<0$ 有三种等价表述: Lorentz 号差、$G$ 诱导的辛生成子 $J_{G}$ 的实谱以及 $d_{c}>0$(定理~\ref{thm:equivalence}); $K(x)=x^{\top}Gx=1$ 是单位代价轨迹, 作为附加的自洽条件。在律 II 所指定的辛-耗散生成子类 $GA=\alpha J-GD$ 内, $G$ 诱导的辛结构使演化律唯一化为 $\dot x=(J_G-D)\nabla V$(定理~\ref{thm:lawII}); 在临界阻尼处且归一化特征向量基点上, 恢复速率为 $\kappa_{K}=4d_{c}$(定理~\ref{thm:restoring})。
+\smallskip\noindent\textbf{框架.\ } 本文将时间建模为变化的代价, 并定义信息时间 $dt_{\mathrm{info}}:=d\Phi/H$。若将与 $dt_{\mathrm{info}}^{2}$ 相关的符号化主二次型 $G$ 建模为~\cite{Realizability} 中满足公理 R, E, T 的主二次型, 则在非退化性下得到 $\mathrm{Sig}(G)=(1,1)$, 等价于 $\det G<0$。在各向同性线性化之下, 符号 $\det G<0$ 有三种等价表述: Lorentz 号差、$G$ 诱导的辛生成子 $J_{G}$ 的实谱以及 $d_{c}>0$(定理~\ref{thm:equivalence}); $K(x)=x^{\top}Gx=1$ 是单位代价轨迹, 一个附加的自洽条件。在律 II 所指定的辛-耗散生成子类 $GA=\alpha J-GD$ 内, $G$ 诱导的辛结构使演化律唯一化为 $\dot x=(J_G-D)\nabla V$(定理~\ref{thm:lawII}); 在临界阻尼处且归一化特征向量基点上, 恢复速率为 $\kappa_{K}=4d_{c}$(定理~\ref{thm:restoring})。
 
-\smallskip\noindent\textbf{热力学内容.\ } 在 $K=1$ 附近的稳态区, Clausius 关系在 OU 近似与唯一的外部等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 之下, 按 Tolman 温度与稳定性边界 $d_{c}$ 确定噪声幅度(命题~\ref{prop:clausius}, 式~\eqref{eq:noise})。途径 B(\S~\ref{sec:field})不使用热力学输入, 但仅给出球对称真空情形的代数等价。
+\smallskip\noindent\textbf{热力学内容.\ } 在 $K=1$ 附近的稳态区, Clausius 关系在 OU 近似与唯一的外部等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 之下, 按 Tolman 温度与稳定性边界 $d_{c}$ 确定噪声幅度(命题~\ref{prop:clausius})。途径 B(\S~\ref{sec:field})不使用热力学输入, 但仅给出球对称真空情形的代数等价。
 
 \smallskip\noindent\textbf{引力内容.\ } 对于 $f>0$ 的区间上的静态、球对称度规, 具有辛特征值 $\sigma_1:=r\sqrt{f}$ 与 $\sigma_2:=r$, 所猜想的场级类似物 $\sigma_2^2\,\Box\ln\sigma_i=1$($i=1,2$)在代数上等价于 $R_{\mu\nu}=0$(定理~\ref{thm:field})。公理 T(正时间代价)强制 $\sigma_1>0$(命题~\ref{prop:sigma1}), 从而把那些 $\sigma_1$ 在其上退化的曲率奇点置于理论定义域之外; Ornstein--Uhlenbeck 方差界 $\mathrm{Var}(K)<1$ 导出量级为 Planck 尺度的软自洽界(命题~\ref{prop:domain})。
 \end{abstract}
@@ -86,7 +86,7 @@
 
 \smallskip\noindent\textbf{缺口.\ } 在本文采用的``局部代价主二次型''意义下, 现有方法通常把 Lorentz 号差或等价的因果结构作为输入; 本文关注的是位于此前一层的问题: 代价结构本身何时强制 Lorentz 型主符号。\footnote{探讨相关但不同问题的方法包括: Born--Infeld 号差问题、量子宇宙学中的号差变化, 以及时间问题~\cite{Gibbons1995,Kiefer2012,Isham1993}。熵引力方法~\cite{Verlinde,Padmanabhan} 以 Lorentz 时空为前提并推导引力动力学; 本文处理的是位于此前一层的、基于代价的号差问题。}
 
-\smallskip\noindent\textbf{局部回答.\ } 在本文的建模中, 时间既非坐标, 也非度规原语, 而是变化的代价; 在本文采用的 $2\times 2$ 局部可实现性框架中, 一旦将符号化主二次型 $G$ 建模为满足公理 R, E, T 的主二次型, 其 Lorentz 号差即成为代数结果。\emph{本文采用结构性框架而非具体物理模型: $\Phi$ 与 $H$ 不被指定为特定物理量; 只要它们诱导出的代价结构满足公理 R, E, T 与非退化性, 后续结论即约束所得主二次型的代数类型。因而物理内容在于这些公理的代数后果, 而非 $\Phi, H$ 的具体实例化。通过选择 $H$ 的单位, $dt_{\mathrm{info}}$ 按定义具有时间量纲。} 这个问题在与单一局部 Rindler 视界相关的 $2\times 2$ 情形中得到一个局部回答。信息时间 $dt_{\mathrm{info}}:=d\Phi/H$ 给出与 $dt_{\mathrm{info}}^{2}$ 相关的符号化主二次型 $G$(启发式地记为 $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$, 建模为~\cite{Realizability} 的主二次型); 三个可实现性公理 R, E, T 连同非退化性强制 $\det G<0$(\S\ref{sec:lawI})。Lorentz 号差、$G$ 诱导生成子 $J_{G}$ 的实特征值以及 $d_{c}>0$, 随后都是单一符号的代数推论。二次型 $K(x)=x^{\top}Gx$ 量度局部时间代价; 偏离 $K=1$ 在合适基点附近产生局部恢复漂移(律 III), 从而 $K=1$ 成为局部自洽的轨迹。
+\smallskip\noindent\textbf{局部回答.\ } 在本文的建模中, 时间既非坐标, 也非度规原语, 而是变化的代价。具体地, 定义信息时间为 $dt_{\mathrm{info}}:=d\Phi/H$, 其中 $\Phi$ 表示结构变化, $H>0$ 为单位变化的局部代价。与 $dt_{\mathrm{info}}^{2}$ 相关的符号化主二次型 $G$(启发式地记为 $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$, 建模为~\cite{Realizability} 的主二次型)在本文采用的 $2\times 2$ 局部可实现性框架中, 一旦满足公理 R, E, T 且非退化, 其 Lorentz 号差即成为代数结果。\emph{本文采用结构性框架而非具体物理模型: $\Phi$ 与 $H$ 不被指定为特定物理量; 只要它们诱导出的代价结构满足公理 R, E, T 与非退化性, 后续结论即约束所得主二次型的代数类型。因而物理内容在于这些公理的代数后果, 而非 $\Phi, H$ 的具体实例化。通过选择 $H$ 的单位, $dt_{\mathrm{info}}$ 按定义具有时间量纲。} 这样, 该问题便在与单一局部 Rindler 视界相关的 $2\times 2$ 情形中得到一个局部回答。三个可实现性公理 R, E, T 连同非退化性强制 $\det G<0$(\S\ref{sec:lawI})。Lorentz 号差、$G$ 诱导生成子 $J_{G}$ 的实特征值以及 $d_{c}>0$, 随后都是单一符号的代数推论。二次型 $K(x)=x^{\top}Gx$ 量度局部时间代价; 偏离 $K=1$ 在合适基点附近产生局部恢复漂移(律 III), 从而 $K=1$ 成为局部自洽的轨迹。
 
 \smallskip\noindent\textbf{与爱因斯坦方程相连的两条路径.}
 \begin{itemize}[leftmargin=2em, itemsep=0.4ex, parsep=0pt, topsep=0.3ex]
