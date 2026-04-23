@@ -559,12 +559,12 @@ f+2rf'+\tfrac{r^{2}}{2}f''=1,
 \label{tab:corr}
 \end{table}
 
-\section{奇点排除与分辨率尺度}\label{sec:singularity}
+\section{理论适用域与分辨率尺度}\label{sec:singularity}
 
 本节使用代价符号约定 $G_{\mathrm{cost}}=\mathrm{diag}((\kappa\ell)^{2},-1)$, 以与公理 T 的正时间代价表述保持一致。
 
 \begin{proposition}[由公理 T 得 $\sigma_{1}>0$]\label{prop:sigma1}
-公理 T 的正时间代价要求 $G_{\mathrm{cost}}(e_{t},e_{t})>0$, 即 $\sigma_{1}^{2}>0$; 若将 $\sigma_{1}$ 取作正尺度因子(例如, 途径 B 中 $\sigma_{1}=r\sqrt{f}$ 于实分支), 则得 $\sigma_{1}>0$。Schwarzschild 奇点因此位于理论定义域之外: $\sigma_1=r\sqrt{f}$ 仅在实分支 $f>0$ 上定义, 故内区 $r<2M$(其中 $f<0$) 与极限 $r\to 0$ 都落在该定义域之外——框架在那里是\emph{未定义}, 而非错误。
+公理 T 的正时间代价要求 $G_{\mathrm{cost}}(e_{t},e_{t})>0$, 即 $\sigma_{1}^{2}>0$; 若将 $\sigma_{1}$ 取作正尺度因子(例如, 途径 B 中 $\sigma_{1}=r\sqrt{f}$ 于实分支), 则得 $\sigma_{1}>0$。Schwarzschild 内部, 包括奇点极限 $r\to 0$, 因此位于框架定义域之外: $\sigma_1=r\sqrt{f}$ 仅在实分支 $f>0$ 上定义, 故内区 $r<2M$(其中 $f<0$) 与极限 $r\to 0$ 都落在该定义域之外——框架在那里是\emph{未定义}, 而非错误。
 \end{proposition}
 
 \begin{proposition}[自洽分辨率尺度]\label{prop:domain}
