@@ -250,7 +250,7 @@ $\dot{x} = (J_{G}-D)\,\nabla V$. This class defines the physically admissible ev
 $A=G^{-1}(\alpha J-GD)=J_{G}-D$.\qed
 \end{proof}
 
-For Lorentzian $G$, $J_G$ has symmetric part $S=(J_{G}+J_{G}^{\top})/2\neq 0$, departing from the GENERIC requirement of Euclidean antisymmetry; see \S~\ref{sec:discussion} (\textit{Departure from GENERIC}).
+For Lorentzian $G$, $J_G$ has symmetric part $S=(J_{G}+J_{G}^{\top})/2\neq 0$, departing from the GENERIC requirement of Euclidean antisymmetry.
 
 \section{Critical damping and fluctuation structure (Law~III)}\label{sec:lawIII}
 
@@ -631,25 +631,9 @@ The two routes meet in the vacuum sector: Route~B establishes $R_{\mu\nu}=0$ dir
 \label{fig:routes}
 \end{figure}
 
-\subsection*{Physical content of Axiom~R}
-
-Physically, Axiom~R expresses the persistence of configurations through arbitrarily low-cost spatially nontrivial displacements: configurations can drift in spatial directions at vanishing cost-to-magnitude ratio, while the temporal direction (Axiom~T) remains expensive. This asymmetry --- cheap spatial drift, costly temporal drift --- is the cost-theoretic content of Lorentzian causal structure. The technical derivation that Axioms~R, E, T together with nondegeneracy force $\mathrm{Sig}(G)=(1,1)$ is carried out in~\cite{Realizability}.
-
-\subsection*{The $K{=}1$ self-referential structure}
-
-The condition $K{=}1$ is self-referential: $G$ defines $K$, while $K{=}1$ fixes the normalisation against which deviations are measured. The restoring potential $V=\frac{1}{2}(K-1)^2$ is the leading smooth penalty for departures from this locus. At the field level, the conjectural analogue is $\sigma_2^2\Box\ln\sigma_i=1$.
-
-\subsection*{Stages}
-
-The framework proceeds in four steps: the Realizability axioms fix the Lorentzian type of $G$; $K{=}1$ supplies a local self-consistency condition; Route~A connects the resulting OU dynamics to Clausius under $T_{\mathrm{eff}}=T_{\mathrm{tol}}$; and Route~B gives an algebraic spherical equivalence to $R_{\mu\nu}=0$. The quantum and global-attractor questions remain open.
-
 \subsection*{Extension to $(1{+}3)$ dimensions}
 
 In $(1{+}3)$ dimensions, $\{K{=}1\}\cong H^3$ carries $S^2$ cross-sections with area $4\pi\sigma_1^2$ when $\alpha=1$ and $\sigma_1=\kappa\ell$. This relates the same symplectic invariant to the Bekenstein--Hawking area variable~\cite{Bekenstein}, while the coefficient $1/4$ still relies on the usual Hawking temperature~\cite{Hawking}/first-law input. Two structural changes remain: $d_{c}>0\Leftrightarrow\mathrm{Sig}(G)=(1,1)$ weakens beyond $2\times 2$ (Lorentzian signature becomes necessary but not sufficient), and $J_G$ requires a symplectic pairing choice when $\dim(\mathrm{Skew}_4)=6$.
-
-\subsection*{Departure from GENERIC}
-
-For Lorentzian~$G$, $J_G$ is $G$-antisymmetric but not Euclidean antisymmetric, so the framework departs from the standard GENERIC setting~\cite{GENERIC}.
 
 \subsection*{Limitations}
 
@@ -672,10 +656,6 @@ For Lorentzian~$G$, $J_G$ is $G$-antisymmetric but not Euclidean antisymmetric, 
 the trajectory of $\dot{x}=(J_G-d_{c}I)\nabla V$ with $V=\tfrac{1}{2}(K-1)^2$
 satisfies $K(x(t))\to 1$ as $t\to\infty$.
 \end{enumerate}
-
-\subsection*{Conclusion}
-
-General relativity prescribes Lorentzian signature; within a two-dimensional local cost framework, the present work obtains it from the realizability cost asymmetry encoded in Axioms~R, E, T and shows that the resulting metric locally enforces its own normalisation. At the point level, within the stochastic thermodynamics framework, the Clausius relation follows once the local effective temperature is identified with the Tolman temperature. In the spherically symmetric sector, the eigenvalue self-consistency principle is algebraically equivalent to the vacuum Einstein equations, connecting the $K{=}1$ language to the field level. Axiom~T leaves those curvature singularities at which $\sigma_1$ degenerates outside the theory's domain, where the framework is undefined rather than incorrect, and, under the Tolman-temperature identification, the OU variance gives a soft Planck-scale self-consistency bound. What remains prescribed is the cost asymmetry itself: why one direction carries positive cost while others do not. This is Riemann's question in economic form.
 
 \bigskip
 \noindent\textbf{Statements and Declarations}
