@@ -73,7 +73,7 @@
 
 \smallskip\noindent\textbf{框架.\ } 本文将时间建模为变化的代价, 并定义信息时间 $dt_{\mathrm{info}}:=d\Phi/H$。若将与 $dt_{\mathrm{info}}^{2}$ 相关的符号化主二次型 $G$ 建模为~\cite{Realizability} 中满足公理 R, E, T 的主二次型, 则在非退化性下得到 $\mathrm{Sig}(G)=(1,1)$, 等价于 $\det G<0$。在各向同性线性化之下, 符号 $\det G<0$ 有三种等价表述: Lorentz 号差、$G$ 诱导的辛生成子 $J_{G}$ 的实谱以及 $d_{c}>0$(定理~\ref{thm:equivalence}); $K(x)=x^{\top}Gx=1$ 是单位代价轨迹, 一个附加的自洽条件。在律 II 所指定的辛-耗散生成子类 $GA=\alpha J-GD$ 内, $G$ 诱导的辛结构使演化律唯一化为 $\dot x=(J_G-D)\nabla V$(定理~\ref{thm:lawII}); 在临界阻尼处且归一化特征向量基点上, 恢复速率为 $\kappa_{K}=4d_{c}$(定理~\ref{thm:restoring})。
 
-\smallskip\noindent\textbf{热力学内容.\ } 在 $K=1$ 附近的稳态区, Clausius 关系在 OU 近似与唯一的外部等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 之下, 按 Tolman 温度与稳定性边界 $d_{c}$ 确定噪声幅度(命题~\ref{prop:clausius})。途径 B(\S~\ref{sec:field})不使用热力学输入, 但仅给出球对称真空情形的代数等价。
+\smallskip\noindent\textbf{热力学内容.\ } 在 $K=1$ 附近的稳态区, Clausius 关系在 OU 近似与外部等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 之下, 按 Tolman 温度与稳定性边界 $d_{c}$ 确定噪声幅度(命题~\ref{prop:clausius}); 并与 $S\propto A$ 一同, 给出途径 A 调用 Jacobson 论证的局部热力学桥梁。途径 B(\S~\ref{sec:field})不使用热力学输入, 但仅给出球对称真空情形的代数等价。
 
 \smallskip\noindent\textbf{引力内容.\ } 对于 $f>0$ 的区间上的静态、球对称度规, 具有辛特征值 $\sigma_1:=r\sqrt{f}$ 与 $\sigma_2:=r$, 所猜想的场级类似物 $\sigma_2^2\,\Box\ln\sigma_i=1$($i=1,2$)在代数上等价于 $R_{\mu\nu}=0$(定理~\ref{thm:field})。公理 T(正时间代价)强制 $\sigma_1>0$(命题~\ref{prop:sigma1}), 从而把 $\sigma_1$ 退化的区域, 包括曲率奇点极限, 置于理论定义域之外; Ornstein--Uhlenbeck 方差界 $\mathrm{Var}(K)<1$ 导出量级为 Planck 尺度的软自洽界(命题~\ref{prop:domain})。
 \end{abstract}
