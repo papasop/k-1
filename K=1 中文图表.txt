@@ -685,11 +685,11 @@ $\mathrm{Var}(K)\approx T_{\mathrm{eff}}$(由式~\eqref{eq:var} 与 $T_{\mathrm{
 \subsection*{局限}
 
 \begin{enumerate}
-\item 途径 B 仅在球对称下被证明; 一般扩展需要零曲面 Gauss--Codazzi。\textit{(范围)}
-\item 途径 A 需要 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 与 $S\propto A$ 两个外部输入。\textit{(外部输入)}
-\item 在球对称真空部分未建立 GR 偏差。\textit{(预测缺口)}
-\item $\sigma_1$ 界限是软下界, 非硬下界。\textit{(强度)}
-\item \textit{符号与分层}: 本文使用两个不同层级的代价相关对象: 信息时间层的标量 $H$, 以及稳定性层的矩阵权重 $H_{*}$. 二者不被本文等同, 也不假设存在显式数学映射. 若二者可从同一深层代价原理同时导出, 留待未来工作。
+\item 途径 B 目前仅限于球对称情形。\textit{(范围)}
+\item 途径 A 仍依赖 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 与 $S\propto A$ 两个外部输入。\textit{(外部输入)}
+\item 本文分析中未获得相对 GR 的可观测偏差。\textit{(预测缺口)}
+\item 本文得到的 $\sigma_1$ 阈值仅为软自洽下界。\textit{(强度)}
+\item 标量 $H$ (信息时间层) 与矩阵权重 $H_{*}$ (稳定性层) 在本框架中尚未被统一。\textit{(符号与分层)}
 \end{enumerate}
 
 \subsection*{未解问题}
@@ -697,7 +697,7 @@ $\mathrm{Var}(K)\approx T_{\mathrm{eff}}$(由式~\eqref{eq:var} 与 $T_{\mathrm{
 \begin{enumerate}
 \item 完成一般度规的途径 B (Gauss--Codazzi)。
 \item 将途径 B 扩展至非真空物质。特别地, 确定 $\rho=(1-K_2)/(8\pi r^2)$ 是否为代价框架的内在推论而非 GR 的重新表述, 物质能否由此被理解为角向特征值自洽性在单位面积上的失效, 以及此式能否推广至完整的能动张量~$T_{\mu\nu}$。
-\item 识别可检验的强场预言。由于在弱场区 $K_2=1$ 已给出牛顿势, 而 $K_1=1$ 在线性阶自动满足, 故特征值原理与标准 GR 的任何可观测差异必源于非线性强场部分, 即 $K_1$ 的独立内容。可能的窗口包括高精度黑洞阴影数据、强场引力波信号, 以及近视界量子效应。
+\item 识别可检验的强场预言。在本文球对称真空分析的范围内, 由于在弱场区 $K_2=1$ 已给出牛顿势, 而 $K_1=1$ 在线性阶自动满足, 故特征值原理与标准 GR 的任何可观测差异必源于非线性强场部分, 即 $K_1$ 的独立内容。可能的窗口包括高精度黑洞阴影数据、强场引力波信号, 以及近视界量子效应。
 \item 证明 $\sigma_{1,\min}\geq\hbar/(4\pi)$ (硬下界), 基于 $K$--$\varphi$ 典范共轭, 其中 $\varphi$ 为沿 $\{K{=}1\}$ 的 boost 角。
 \item 证明 $K=1$ 的全局吸引性: 证明对任意 $x_0\in\mathbb{R}^{2}$, $\dot{x}=(J_G-d_{c}I)\nabla V$ (其中 $V=\tfrac{1}{2}(K-1)^2$) 的轨迹满足 $K(x(t))\to 1$ 当 $t\to\infty$ 时。
 \end{enumerate}
