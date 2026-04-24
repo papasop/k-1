@@ -650,11 +650,11 @@ In $(1{+}3)$ dimensions, $\{K{=}1\}\cong H^3$ carries $S^2$ cross-sections with 
 \subsection*{Limitations}
 
 \begin{enumerate}
-\item Route~B is proved for spherical symmetry only; general extension requires null-surface Gauss--Codazzi. \textit{(scope)}
-\item Route~A requires two external inputs: $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ and $S\propto A$. \textit{(external input)}
-\item No deviation from GR is established in the spherically symmetric vacuum sector. \textit{(predictive gap)}
-\item The $\sigma_1$ bound is soft, not hard. \textit{(strength)}
-\item \textit{Notation and layering}: the paper uses two cost-related objects at distinct levels: the scalar $H$ at the information-time layer, and the matrix weight $H_{*}$ at the stability layer. The two are not identified in the present paper, nor is an explicit mathematical mapping between them assumed. Whether they can be jointly derived from a single deeper cost principle is left to future work.
+\item Route~B is currently confined to spherical symmetry. \textit{(scope)}
+\item Route~A still depends on the external inputs $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ and $S\propto A$. \textit{(external input)}
+\item No observational deviation from GR is obtained in the present analysis. \textit{(predictive gap)}
+\item The $\sigma_1$ threshold derived here is a soft consistency bound only. \textit{(strength)}
+\item The scalar $H$ (information-time layer) and the matrix weight $H_{*}$ (stability layer) are not unified in the present framework. \textit{(notation and layering)}
 \end{enumerate}
 
 \subsection*{Open problems}
@@ -662,7 +662,7 @@ In $(1{+}3)$ dimensions, $\{K{=}1\}\cong H^3$ carries $S^2$ cross-sections with 
 \begin{enumerate}
 \item Complete Route~B for general metrics (Gauss--Codazzi).
 \item Extend Route~B to non-vacuum matter. In particular, determine whether $\rho=(1-K_2)/(8\pi r^2)$ is an intrinsic consequence of the cost framework, rather than a GR rewriting, whether matter can thereby be understood as the failure of angular eigenvalue self-consistency per unit area, and whether this extends to the full stress-energy tensor~$T_{\mu\nu}$.
-\item Identify testable strong-field predictions. Since in the weak-field regime $K_2=1$ already reproduces the Newtonian potential while $K_1=1$ is automatic at linear order, any observational distinction between the eigenvalue principle and standard GR must arise from the nonlinear strong-field sector, i.e.\ from the independent content of $K_1$. Possible windows include high-precision black-hole shadow data, strong-field gravitational-wave signals, and near-horizon quantum effects.
+\item Identify testable strong-field predictions. Within the present spherical-vacuum analysis, since in the weak-field regime $K_2=1$ already reproduces the Newtonian potential while $K_1=1$ is automatic at linear order, any observational distinction between the eigenvalue principle and standard GR must arise from the nonlinear strong-field sector, i.e.\ from the independent content of $K_1$. Possible windows include high-precision black-hole shadow data, strong-field gravitational-wave signals, and near-horizon quantum effects.
 \item Prove $\sigma_{1,\min}\geq\hbar/(4\pi)$ (hard bound) from $K$--$\varphi$ canonical conjugacy, where $\varphi$ is the boost angle along $\{K{=}1\}$.
 \item Prove global attractivity of $K=1$: show that for any $x_0\in\mathbb{R}^{2}$,
 the trajectory of $\dot{x}=(J_G-d_{c}I)\nabla V$ with $V=\tfrac{1}{2}(K-1)^2$
