@@ -129,11 +129,12 @@ In general relativity, the Lorentzian metric is prescribed on a pre-existing dif
 \node[objbox, below=0.4cm of G3] (K1b) {$K=1$};
 \node[objbox, right=of K1b] (V) {$V=\tfrac{1}{2}(K-1)^2$};
 \node[lawbox, right=of V] (law3) {Law III\\[-1pt]\scriptsize $D{=}d_{c}I$, local restoring at eigenvector base};
-\draw[arr] (K1b) -- (V);
+\draw[arr, dashed] (K1b) -- node[font=\tiny\itshape, text=black!55, above=-1pt] {minimum at} (V);
+\draw[arr] (G3) to[bend right=20] node[font=\tiny\itshape, text=black!55, below=-1pt, sloped] {def.\ via $K{=}x^{\top}Gx$} (V);
 \draw[arr] (V) -- (law3);
 \node[layerlab, above=0.05cm of G3.north west, anchor=south west] {Layer 3: dynamics};
 \end{tikzpicture}
-\caption{Logical dependency of the $K{=}1$ framework. \emph{Layer 1} (information time \& realizability): the signed leading quadratic form $G\equiv Q$ is associated with $dt_{\mathrm{info}}$ (heuristic bridge; see main text). Axioms~R, E, T together with nondegeneracy act on the \emph{conditions} satisfied by $G$, forcing $\mathrm{Sig}(G)=(1,1)$ (i.e.\ $\det G<0$), rather than generating $G$ itself. \emph{Layer 2} (point-level objects): $G$ defines $K(x)=x^{\top}Gx$; the condition $K=1$ is an \emph{extra} self-consistency condition introduced in the present paper, not a consequence of the axioms. \emph{Layer 3} (dynamics): $G$ induces the symplectic generator $J_G$; Law~II further requires the \emph{structural constraint} $GA=\alpha J-GD$ ($D\ge 0$), yielding $\dot x=(J_G-D)\nabla V$. Together with the restoring potential $V=\tfrac12(K{-}1)^2$, $K=1$ gives Law~III, whose restoring conclusion additionally depends on critical damping $D=d_{c}I$, the eigenvector base point of $G$, and local linearisation. Dashed arrows indicate heuristic bridges; solid arrows indicate definitions, cited theorems, or algebraic consequences within the present paper. The field-level analogue $\sigma_2^2\Box\ln\sigma_i=1$ (a conjecture) is shown in Fig.~\ref{fig:routes}.}
+\caption{Logical dependency of the $K{=}1$ framework. \emph{Layer 1} (information time \& realizability): the signed leading quadratic form $G\equiv Q$ is associated with $dt_{\mathrm{info}}$ (heuristic bridge; see main text). Axioms~R, E, T together with nondegeneracy act on the \emph{conditions} satisfied by $G$, forcing $\mathrm{Sig}(G)=(1,1)$ (i.e.\ $\det G<0$), rather than generating $G$ itself. \emph{Layer 2} (point-level objects): $G$ defines $K(x)=x^{\top}Gx$; the condition $K=1$ is an \emph{extra} self-consistency condition introduced in the present paper, not a consequence of the axioms. \emph{Layer 3} (dynamics): $G$ induces the symplectic generator $J_G$; Law~II further requires the \emph{structural constraint} $GA=\alpha J-GD$ ($D\ge 0$), yielding $\dot x=(J_G-D)\nabla V$. Together with the restoring potential $V=\tfrac12(K{-}1)^2$, $K=1$ gives Law~III, whose restoring conclusion additionally depends on critical damping $D=d_{c}I$, the eigenvector base point of $G$, and local linearisation. Dashed arrows indicate heuristic bridges or qualitative geometric relations not intended as standalone derivations; solid arrows indicate definitions, cited theorems, or algebraic consequences within the present paper. The field-level analogue $\sigma_2^2\Box\ln\sigma_i=1$ (a conjecture) is shown in Fig.~\ref{fig:routes}.}
 \label{fig:framework}
 \end{figure}
 
@@ -372,7 +373,7 @@ With this stationary variance, the FDT form $\sigma_{K}^{2}=2\kappa_{K}T_{\mathr
 A derivation of the identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, possibly from a KMS condition~\cite{Haag,Connes1994}, remains open.
 
 \begin{proposition}[Local Clausius Equivalence]\label{prop:clausius}
-Within the OU/Sekimoto--Seifert setting described above, and under the external identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, the Clausius relation $\delta Q=T_{\mathrm{tol}}\,dS$ is equivalent to
+Assume (i) the OU approximation near $K=1$, (ii) the Sekimoto--Seifert heat convention, (iii) local detailed balance for the OU process, and (iv) the external identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, together with the Tolman identity $T_{\mathrm{tol}}=d_{c}T_{H}$ (precise forms in Remark below). Then the Clausius relation $\delta Q=T_{\mathrm{tol}}\,dS$ is equivalent to
 \begin{equation}
 \sigma^{2} = 2\,d_{c}\cdot T_{\mathrm{tol}} = 2\,d_{c}^{2}\cdot T_{H}.\label{eq:noise}
 \end{equation}
@@ -488,8 +489,11 @@ In the weak field ($f=1+\varepsilon\varphi$),
 $K_2{=}1$ gives $\varphi=C/r$ (Newton) in one step;
 $K_1{=}1$ is automatically satisfied at linear order,
 so its independent content is purely nonlinear (strong-field).
-Within the present spherical-vacuum analysis, any observational distinction between the eigenvalue principle and standard GR must therefore arise from strong-gravity data.
 \end{corollary}
+
+\begin{remark}[Observational implications]
+Within the present spherical-vacuum analysis, any observational distinction between the eigenvalue principle and standard GR must therefore arise from strong-gravity data.
+\end{remark}
 
 \begin{remark}[Non-vacuum and $\Lambda$]
 From the Einstein $G_{tt}$ component,
