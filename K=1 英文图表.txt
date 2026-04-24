@@ -488,13 +488,13 @@ In the weak field ($f=1+\varepsilon\varphi$),
 $K_2{=}1$ gives $\varphi=C/r$ (Newton) in one step;
 $K_1{=}1$ is automatically satisfied at linear order,
 so its independent content is purely nonlinear (strong-field).
-Any future observational test distinguishing the eigenvalue principle from standard GR would therefore require strong-gravity data.
+Within the present spherical-vacuum analysis, any observational distinction between the eigenvalue principle and standard GR must therefore arise from strong-gravity data.
 \end{corollary}
 
 \begin{remark}[Non-vacuum and $\Lambda$]
 From the Einstein $G_{tt}$ component,
 $\rho = (1{-}K_2)/(8\pi r^2) = (1-\sigma_2^2\,\Box\ln\sigma_2)/(8\pi\sigma_2^2)$:
-matter is the angular eigenvalue's failure to self-consistently
+matter may be read as the angular eigenvalue's failure to self-consistently
 propagate, measured per unit area.
 For Schwarzschild--de~Sitter, $K_2=1{-}\Lambda r^2$ and
 $K_1=1{-}2\Lambda r^2$.
@@ -661,9 +661,9 @@ In $(1{+}3)$ dimensions, $\{K{=}1\}\cong H^3$ carries $S^2$ cross-sections with 
 
 \begin{enumerate}
 \item Complete Route~B for general metrics (Gauss--Codazzi).
+\item Extend Route~B to non-vacuum matter. In particular, determine whether $\rho=(1-K_2)/(8\pi r^2)$ is an intrinsic consequence of the cost framework, rather than a GR rewriting, whether matter can thereby be understood as the failure of angular eigenvalue self-consistency per unit area, and whether this extends to the full stress-energy tensor~$T_{\mu\nu}$.
+\item Identify testable strong-field predictions. Since in the weak-field regime $K_2=1$ already reproduces the Newtonian potential while $K_1=1$ is automatic at linear order, any observational distinction between the eigenvalue principle and standard GR must arise from the nonlinear strong-field sector, i.e.\ from the independent content of $K_1$. Possible windows include high-precision black-hole shadow data, strong-field gravitational-wave signals, and near-horizon quantum effects.
 \item Prove $\sigma_{1,\min}\geq\hbar/(4\pi)$ (hard bound) from $K$--$\varphi$ canonical conjugacy, where $\varphi$ is the boost angle along $\{K{=}1\}$.
-\item Derive the $8\pi$ factor from the cost framework (non-vacuum Route~B).
-\item Identify testable strong-field predictions.
 \item Prove global attractivity of $K=1$: show that for any $x_0\in\mathbb{R}^{2}$,
 the trajectory of $\dot{x}=(J_G-d_{c}I)\nabla V$ with $V=\tfrac{1}{2}(K-1)^2$
 satisfies $K(x(t))\to 1$ as $t\to\infty$.
