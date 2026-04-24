@@ -645,7 +645,7 @@ The two routes meet in the vacuum sector: Route~B establishes $R_{\mu\nu}=0$ dir
 
 \subsection*{Extension to $(1{+}3)$ dimensions}
 
-In $(1{+}3)$ dimensions, $\{K{=}1\}\cong H^3$ carries $S^2$ cross-sections with area $4\pi\sigma_1^2$ when $\alpha=1$ and $\sigma_1=\kappa\ell$. This relates the same symplectic invariant to the Bekenstein--Hawking area variable~\cite{Bekenstein}, while the coefficient $1/4$ still relies on the usual Hawking temperature~\cite{Hawking}/first-law input. Two structural changes remain: $d_{c}>0\Leftrightarrow\mathrm{Sig}(G)=(1,1)$ weakens beyond $2\times 2$ (Lorentzian signature becomes necessary but not sufficient), and $J_G$ requires a symplectic pairing choice when $\dim(\mathrm{Skew}_4)=6$.
+In $(1{+}3)$ dimensions, $\{K{=}1\}\cong H^3$ carries $S^2$ cross-sections with area $4\pi\sigma_1^2$ when $\alpha=1$ and $\sigma_1=\kappa\ell$, linking the symplectic invariant to the Bekenstein--Hawking area~\cite{Bekenstein}; the $1/4$ coefficient still requires the usual Hawking/first-law input. Two structural changes remain: Lorentzian signature is no longer sufficient for $d_c>0$, and $J_G$ requires a symplectic pairing choice.
 
 \subsection*{Limitations}
 
