@@ -194,12 +194,13 @@
 \node[objbox, below=0.4cm of G3] (K1b) {$K=1$};
 \node[objbox, right=of K1b] (V) {$V=\tfrac{1}{2}(K-1)^2$};
 \node[lawbox, right=of V] (law3) {律 III\\[-1pt]\scriptsize $D{=}d_{c}I$, 特征向量基点局部恢复};
-\draw[arr] (K1b) -- (V);
+\draw[arr, dashed] (K1b) -- node[font=\tiny\itshape, text=black!55, above=-1pt] {最小处} (V);
+\draw[arr] (G3) to[bend right=20] node[font=\tiny\itshape, text=black!55, below=-1pt, sloped] {由 $K{=}x^{\top}Gx$ 定义} (V);
 \draw[arr] (V) -- (law3);
 \node[layerlab, above=0.05cm of G3.north west, anchor=south west] {第 3 层: 动力学};
 
 \end{tikzpicture}
-\caption{$K{=}1$ 框架的逻辑依赖关系. \emph{第 1 层}(信息时间与可实现性条件): 与信息时间 $dt_{\mathrm{info}}$ 相关的符号化主二次型 $G\equiv Q$(启发式桥梁, 见正文); 公理 R, E, T 连同非退化性作用于 $G$ 的\emph{条件}, 强制 $\mathrm{Sig}(G)=(1,1)$(即 $\det G<0$), 而非生成 $G$ 本身. \emph{第 2 层}(点级对象): $G$ 定义 $K(x)=x^{\top}Gx$; 条件 $K=1$ 是本文\emph{额外引入}的自洽条件, 非公理的推论. \emph{第 3 层}(动力学): $G$ 导出辛生成子 $J_G$; 律 II 在此基础上还需\emph{结构性约束} $GA=\alpha J-GD$ ($D\ge 0$), 由此给出 $\dot x=(J_G-D)\nabla V$. $K=1$ 与恢复势 $V=\tfrac12(K{-}1)^2$ 一起给出律 III, 其恢复结论进一步依赖临界阻尼 $D=d_{c}I$、$G$ 的特征向量基点与局部线性化. 虚线箭头表示启发式桥梁; 实箭头表示定义、已引用定理或本文中的代数推论; 场级类似物 $\sigma_2^2\Box\ln\sigma_i=1$(作为猜想)见图~\ref{fig:routes}.}
+\caption{$K{=}1$ 框架的逻辑依赖关系. \emph{第 1 层}(信息时间与可实现性条件): 与信息时间 $dt_{\mathrm{info}}$ 相关的符号化主二次型 $G\equiv Q$(启发式桥梁, 见正文); 公理 R, E, T 连同非退化性作用于 $G$ 的\emph{条件}, 强制 $\mathrm{Sig}(G)=(1,1)$(即 $\det G<0$), 而非生成 $G$ 本身. \emph{第 2 层}(点级对象): $G$ 定义 $K(x)=x^{\top}Gx$; 条件 $K=1$ 是本文\emph{额外引入}的自洽条件, 非公理的推论. \emph{第 3 层}(动力学): $G$ 导出辛生成子 $J_G$; 律 II 在此基础上还需\emph{结构性约束} $GA=\alpha J-GD$ ($D\ge 0$), 由此给出 $\dot x=(J_G-D)\nabla V$. $K=1$ 与恢复势 $V=\tfrac12(K{-}1)^2$ 一起给出律 III, 其恢复结论进一步依赖临界阻尼 $D=d_{c}I$、$G$ 的特征向量基点与局部线性化. 虚线箭头表示启发式桥梁或定性几何关系, 不构成独立的推导; 实箭头表示定义、已引用定理或本文中的代数推论; 场级类似物 $\sigma_2^2\Box\ln\sigma_i=1$(作为猜想)见图~\ref{fig:routes}.}
 \label{fig:framework}
 \end{figure}
 
@@ -453,7 +454,7 @@ d_{c}\cdot T_{H} = \frac{\alpha}{\kappa\ell}\cdot\frac{\hbar\kappa}{2\pi} = \fra
 关于等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 的推导, 可能从 KMS 条件~\cite{Haag,Connes1994} 出发, 仍是未解问题。
 
 \begin{proposition}[局部 Clausius 等价]\label{prop:clausius}
-在上述 OU/Sekimoto--Seifert 框架内, 外部等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 之下, Clausius 关系 $\delta Q=T_{\mathrm{tol}}\,dS$ 等价于
+设 (i) $K=1$ 附近的 OU 近似, (ii) Sekimoto--Seifert 热约定, (iii) OU 过程的局部细致平衡, (iv) 外部等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, 连同 Tolman 恒等式 $T_{\mathrm{tol}}=d_{c}T_{H}$ (精确形式见下方 Remark)。则 Clausius 关系 $\delta Q=T_{\mathrm{tol}}\,dS$ 等价于
 \begin{equation}
 \sigma^{2} = 2\,d_{c}\cdot T_{\mathrm{tol}} = 2\,d_{c}^{2}\cdot T_{H}.\label{eq:noise}
 \end{equation}
@@ -539,8 +540,12 @@ $K_1=f+2rf'-rf'=f+rf'=K_2=1$。\qed
 \[
 f+2rf'+\tfrac{r^{2}}{2}f''=1,
 \]
-等价于 $R{=}0$, 其通解为 $f=1-C_{1}/r-C_{2}/r^{2}$; 进一步施加 $K_{2}{=}1$ 强制 $C_{2}{=}0$, 从而唯一地复现 Schwarzschild 解, 与 Birkhoff 定理一致。在弱场($f=1+\varepsilon\varphi$)下, $K_{2}{=}1$ 一步给出 $\varphi=C/r$(牛顿); $K_{1}{=}1$ 在线性阶自动满足, 故其独立内容纯为非线性(强场)。在本文球对称真空分析的范围内, 特征值原理与标准广义相对论的观测差异必然来自强引力数据。
+等价于 $R{=}0$, 其通解为 $f=1-C_{1}/r-C_{2}/r^{2}$; 进一步施加 $K_{2}{=}1$ 强制 $C_{2}{=}0$, 从而唯一地复现 Schwarzschild 解, 与 Birkhoff 定理一致。在弱场($f=1+\varepsilon\varphi$)下, $K_{2}{=}1$ 一步给出 $\varphi=C/r$(牛顿); $K_{1}{=}1$ 在线性阶自动满足, 故其独立内容纯为非线性(强场)。
 \end{corollary}
+
+\begin{remark}[观测含义]
+在本文球对称真空分析的范围内, 特征值原理与标准广义相对论的观测差异必然来自强引力数据。
+\end{remark}
 
 对于 Schwarzschild--de Sitter 解, $K_2=1{-}\Lambda r^2$ 且 $K_{1}-K_{2}=-\Lambda r^{2}$, 按 $\rho=\Lambda/(8\pi)$ 给出非零 $R_{\mu\nu}$, 符合 $G_{\mu\nu}+\Lambda g_{\mu\nu}=0$。
 
