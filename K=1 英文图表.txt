@@ -139,6 +139,10 @@ In general relativity, the Lorentzian metric is prescribed on a pre-existing dif
 
 \section{Symplectic structure from \texorpdfstring{$G$}{G}}\label{sec:symplectic}
 
+\noindent\textit{From geometry to dynamics.} Law~I specifies the algebraic type of $G$, but not how the system evolves. The natural next step is to extract from $G$ alone a canonical generator $J_G$ that turns this static structure into dynamics usable for Laws~II--III and stability analysis. The construction below (Theorem~\ref{thm:unique}) requires only nondegeneracy; the Lorentzian reading --- spectral reality and the stability threshold $d_c>0$ --- enters subsequently, through Theorem~\ref{thm:spectral} and the isotropic interpretation of~\S\ref{sec:stability}.
+
+\medskip
+
 The requirement that the Hamiltonian flow preserve the cost structure, together with a Euclidean normalisation condition, singles out a unique symplectic generator.
 
 \begin{theorem}[Structural Uniqueness]\label{thm:unique}
@@ -176,7 +180,7 @@ If $\mathrm{Sig}(G)=(2,0)$ or $(0,2)$, then $\det G>0$, so $\lambda^{2}+1/\det G
 $\det G>0$ gives $1/\det G>0$, so $\lambda^{2}=-1/\det G<0$ and both roots are purely imaginary; no positive real eigenvalue $d_{c}>0$ exists.\qed
 \end{proof}
 
-\section{The stability boundary}\label{sec:stability}
+\section{The isotropic stability boundary}\label{sec:stability}
 
 \begin{theorem}[Signature-Stability Equivalence]\label{thm:equivalence}
 For non-degenerate symmetric $2\times 2$ real $G$, under the isotropic linearisation $H_{*}=I$, the following are equivalent:
