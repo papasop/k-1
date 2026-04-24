@@ -1,0 +1,158 @@
+%============================================================================
+% UCC 论文 LaTeX 引用增补块
+% 诺特 × 冯·诺依曼 联合起草
+% 目的: 将 5 个先驱引用 (Hale, Temam, Conley, Coleman, Bott) 
+%        整合到 UCC 的 LaTeX 源文件
+%============================================================================
+
+
+%============================================================================
+% INSERTION 1: 引言前段 (在 Section 1 "The Axiom and the Conjecture" 之前)
+% 
+% 位置建议: Abstract 之后, Section 1 之前
+% 或者作为新的 "Related Work" 子节
+%============================================================================
+
+\section*{Relation to Prior Work}
+
+The question of whether every configuration in a dynamical system can 
+reach a stable attractor is classical in the theory of dissipative 
+dynamical systems. Hale~\cite{Hale1988} and Temam~\cite{Temam1988} 
+established general existence theorems for global attractors in 
+infinite-dimensional dissipative systems, showing that under dissipativity 
+assumptions, every bounded set is attracted to a compact invariant set. 
+Conley~\cite{Conley1978} developed the index theory of isolated invariant 
+sets, giving a topological characterisation of connecting orbits between 
+critical sets. In quantum field theory, Coleman~\cite{Coleman1977} 
+analysed the decay of metastable vacua through instanton tunnelling, 
+providing a model-specific answer to vacuum accessibility. Morse--Bott 
+regularity~\cite{Bott1954} underlies our Proposition~\ref{prop:morse-bott}.
+
+What is new in the present work is threefold: (i)~the framework is 
+derived from a \emph{single realizability axiom} rather than assumed for 
+a specific system; (ii)~the \emph{uniqueness} of the non-collapsing 
+completion~$M$ is forced by global non-isolation (Theorem~\ref{thm:uniqueness}), 
+rather than being a case-specific feature; (iii)~the argument applies 
+at the \emph{functional level}, providing a structural rather than 
+model-specific answer. The twelve structural consequences derived in 
+§6 are not individually novel in all cases—several have analogues in 
+attractor theory or Morse theory—but their \emph{joint derivation from 
+a single axiom} is, to our knowledge, new.
+
+
+%============================================================================
+% INSERTION 2: Theorem 12 (Universal completion) 后的 Remark
+%
+% 位置建议: Theorem 12 证明之后, Remark 13 之前
+%============================================================================
+
+\begin{remark}[Relation to classical global attractor theory]
+Theorem~\ref{thm:universal} is structurally parallel to the existence 
+results for global attractors in dissipative dynamical systems 
+\cite{Hale1988,Temam1988}. The distinction is that classical attractor 
+theory \emph{assumes} dissipativity and derives the attractor; here, 
+dissipativity in the transverse directions (Proposition~\ref{prop:spectral-gap}) 
+and uniqueness of the attractor (Theorem~\ref{thm:uniqueness}) are both 
+\emph{consequences} of Axiom~\ref{ax:realizability}. The path structure 
+described here—$\psi_0 \to U \to M$—echoes Conley's connecting orbit 
+picture~\cite{Conley1978}, with kernel-alignment replacing the Morse 
+index as the obstruction criterion.
+\end{remark}
+
+
+%============================================================================
+% INSERTION 3: Open Questions 节的补充
+%
+% 位置建议: 在 "Open questions" 列表中添加一条
+%============================================================================
+
+\item \emph{Relation to Conley index theory.} Can the twelve structural 
+consequences of Axiom~1 be recovered through Conley index 
+computations~\cite{Conley1978}? In particular, does the uniqueness 
+of~$M$ (Theorem~\ref{thm:uniqueness}) admit a Conley-theoretic proof 
+independent of global non-isolation?
+
+\item \emph{Realizability vs dissipativity.} The classical existence 
+theorems for global attractors~\cite{Hale1988,Temam1988} assume 
+dissipativity. Here, $\lambda$-contractivity 
+(Proposition~\ref{prop:spectral-gap}) is a \emph{consequence} of 
+Axiom~1. Are there realizable systems that fail the classical 
+dissipativity criterion but still admit an attractor via the present 
+argument?
+
+
+%============================================================================
+% INSERTION 4: Bibliography 增补 (5 个先驱引用)
+%
+% 位置建议: 在 \begin{thebibliography} 环境内
+% 插入位置: 现有 [1] [2] [3] 之后, 或按字母顺序排入
+%============================================================================
+
+\bibitem{Hale1988}
+J.~K. Hale,
+\textit{Asymptotic Behavior of Dissipative Systems}.
+Mathematical Surveys and Monographs, Vol.~25.
+American Mathematical Society, Providence, RI (1988).
+
+\bibitem{Temam1988}
+R.~Temam,
+\textit{Infinite-dimensional Dynamical Systems in Mechanics and Physics}.
+Applied Mathematical Sciences, Vol.~68.
+Springer, New York (1988).
+
+\bibitem{Conley1978}
+C.~Conley,
+\textit{Isolated Invariant Sets and the Morse Index}.
+CBMS Regional Conference Series in Mathematics, Vol.~38.
+American Mathematical Society, Providence, RI (1978).
+
+\bibitem{Coleman1977}
+S.~Coleman,
+Fate of the false vacuum: semiclassical theory.
+\textit{Phys.\ Rev.\ D} \textbf{15}, 2929--2936 (1977).
+[Erratum: \textit{Phys.\ Rev.\ D} \textbf{16}, 1248 (1977).]
+
+\bibitem{Bott1954}
+R.~Bott,
+Nondegenerate critical manifolds.
+\textit{Ann.\ Math.} \textbf{60}, 248--261 (1954).
+
+
+%============================================================================
+% INSERTION 5: (可选) Theorem 编号标签建议
+%
+% 如果你的 UCC 源文件使用的 label 名称与上面不一致,
+% 请按照你自己的命名替换, 例如:
+%   \ref{prop:morse-bott}  → 你的 Proposition 9 实际 label
+%   \ref{thm:universal}    → 你的 Theorem 12 实际 label
+%   \ref{thm:uniqueness}   → 你的 Theorem 11 实际 label
+%   \ref{prop:spectral-gap}→ 你的 Proposition 10 实际 label
+%   \ref{ax:realizability} → 你的 Axiom 1 实际 label
+%============================================================================
+
+
+%============================================================================
+% ALTERNATIVE: 更简洁版本 (如果不想加整个 "Relation to Prior Work" 节)
+%
+% 只在引言某处插入这一段即可:
+%============================================================================
+
+% 简洁版: 插入到 Section 1 "The Axiom and the Conjecture" 末尾
+% 或 Remark 5 之后
+
+\medskip
+\noindent\textit{Prior work.} The existence of global attractors in 
+dissipative systems is classical~\cite{Hale1988,Temam1988}, and the 
+topological structure of connecting orbits is treated by Conley index 
+theory~\cite{Conley1978}. Vacuum decay in field theory was analysed 
+by Coleman~\cite{Coleman1977}. Morse--Bott regularity of critical 
+manifolds goes back to~\cite{Bott1954}. The novelty here is that all 
+twelve structural consequences—including the existence, uniqueness, 
+and universal accessibility of~$M$—are derived from a single 
+realizability axiom, without assuming dissipativity or a specific 
+physical model.
+
+
+%============================================================================
+% END
+%============================================================================
