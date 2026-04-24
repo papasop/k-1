@@ -45,10 +45,10 @@
 
 \textit{Two routes connecting to the Einstein equations.}
 \begin{itemize}
-\item[\textbf{A.}] \emph{Thermodynamic bridge} (\S\S\ref{sec:lawI}--\ref{sec:thermo}): $K{=}1\xrightarrow{\mathrm{lin.}}\mathrm{OU}\to\mathrm{Clausius}$; under the two external inputs $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ and $S\propto A$, and through the Jacobson argument~\cite{Jacobson}, this recovers $G_{\mu\nu}=8\pi T_{\mu\nu}$ for general metrics.
+\item[\textbf{A.}] \emph{Thermodynamic bridge} (\S\S\ref{sec:lawI}--\ref{sec:thermo}): on local Rindler horizons, $K{=}1\xrightarrow{\mathrm{lin.}}\mathrm{OU}\to\mathrm{Clausius}$; under the two external inputs $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ and $S\propto A$, and through the Jacobson argument~\cite{Jacobson}, this recovers $G_{\mu\nu}=8\pi T_{\mu\nu}$ for general metrics.
 \item[\textbf{B.}] \emph{Equivalence theorem} (\S~\ref{sec:field}): in the spherically symmetric sector, the eigenvalue self-consistency condition $\sigma_2^2\Box\ln\sigma_i=1$ --- a motivated field-level analogue of $K{=}1$, introduced as a conjecture --- is algebraically equivalent to $R_{\mu\nu}=0$, with \emph{no thermodynamic input}. This is not a derivation of the Einstein equations from the framework axioms, but a new equivalent formulation of the vacuum equations in the language of the $K{=}1$ framework.
 \end{itemize}
-Route~A is a thermodynamic bridge on local Rindler horizons, but requires two external inputs $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ and $S\propto A$; Route~B is thermodynamically independent but currently limited to spherical symmetry. The two routes are summarised in Fig.~\ref{fig:routes}.
+The two routes are complementary: Route~A applies locally on Rindler horizons but requires external thermodynamic input, whereas Route~B is thermodynamically independent but presently limited to spherical symmetry. They are summarised in Fig.~\ref{fig:routes}.
 
 \medskip\noindent\textit{Main results.} \emph{Point-level}: under isotropic linearisation, Lorentzian signature, real spectrum of the induced generator $J_G$, and the positive stability threshold $d_{c}>0$ are equivalent (Theorem~\ref{thm:equivalence}). \emph{Field-level}: in static, spherically symmetric vacuum metrics on intervals where $f>0$, the conjectured eigenvalue self-consistency condition $\sigma_2^2\,\Box\ln\sigma_i=1$ is algebraically equivalent to $R_{\mu\nu}=0$ (Theorem~\ref{thm:field}). Full statements follow in \S\S\ref{sec:symplectic}--\ref{sec:singularity}.
 
