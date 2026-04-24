@@ -115,9 +115,9 @@
 
 \noindent 图~\ref{fig:framework} 概括了三层框架的整体逻辑依赖关系(信息时间与可实现性、点级 $K=1$、动力学)。
 
-\medskip\noindent\textit{框架定义.} 本文围绕以下诸要素展开。\emph{输入}: 结构参数 $\Phi$ 与正标量代价 $H$, 给出信息时间 $dt_{\mathrm{info}}:=d\Phi/H$。\emph{公理层}: 与之相关的符号化主二次型 $G$ 被建模为满足~\cite{Realizability} 的公理 R, E, T, 并附加对 $G$ 的非退化性假设。\emph{附加条件}: 单位代价轨迹 $K(x):=x^{\top}Gx=1$ 在点级施加局部自洽性。\emph{动力学补全}: 律 II 在辛-耗散类 $GA=\alpha J-GD$ 中指定唯一演化 $\dot x=(J_G-D)\nabla V$(定理~\ref{thm:lawII}), 律 III 刻画其在临界阻尼处的恢复与涨落结构(定理~\ref{thm:restoring})。\emph{点级内部结论}: Lorentz 号差 $\mathrm{Sig}(G)=(1,1)$、三重等价(定理~\ref{thm:equivalence})与恢复速率 $\kappa_K=4d_c$。\emph{场级结论(依赖猜想的途径 B 提升)}: 与 Einstein 真空方程的代数等价(定理~\ref{thm:field})。\emph{外部输入}(仅途径 A): 热力学等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 与熵-面积律 $S\propto A$。
+\medskip\noindent\textit{框架定义.} 本文围绕以下诸要素展开。\emph{输入}: 结构参数 $\Phi$ 与正标量代价 $H$, 给出信息时间 $dt_{\mathrm{info}}:=d\Phi/H$。\emph{公理层}: 与之相关的符号化主二次型 $G$ 被建模为满足~\cite{Realizability} 的公理 R, E, T, 并附加对 $G$ 的非退化性假设。\emph{附加条件}: 单位代价轨迹 $K(x):=x^{\top}Gx=1$ 在点级施加局部自洽性。\emph{动力学补全}: 律 II 在辛-耗散类 $GA=\alpha J-GD$ 中指定唯一演化 $\dot x=(J_G-D)\nabla V$(定理~\ref{thm:lawII}), 律 III 刻画其在临界阻尼处的恢复与涨落结构(定理~\ref{thm:restoring})。\emph{内部结论}: 在点级, Lorentz 号差 $\mathrm{Sig}(G)=(1,1)$、三重等价(定理~\ref{thm:equivalence})与恢复速率 $\kappa_K=4d_c$; 在依赖于猜想的途径 B 提升下, 与 Einstein 真空方程的代数等价(定理~\ref{thm:field})。\emph{外部输入}(仅途径 A): 热力学等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 与熵-面积律 $S\propto A$。
 
-\medskip\noindent\textit{信息时间的角色.} 信息时间在本文中的角色是启发一个符号化主二次型 $G$; 一旦此二次型满足公理 R, E, T 与非退化性(本文作为假设, \cite{Realizability} 中作为定理确立), 其 Lorentz 类型即在代数上随之而得。受约束的是 $G$ 的\emph{代数类型}(其号差), 而非其具体值——与标题所读作的\emph{由信息时间确定度规类型}相吻合。
+\medskip\noindent\textit{信息时间的角色.} 信息时间在本文中的角色是启发一个符号化主二次型 $G$; 一旦此二次型满足公理 R, E, T 与非退化性(本文作为假设, \cite{Realizability} 中作为定理确立), 其 Lorentz 类型即在代数上随之而得。受约束的是 $G$ 的\emph{代数类型}(其号差), 而非其具体值。
 
 \medskip
 
