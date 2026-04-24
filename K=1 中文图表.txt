@@ -71,7 +71,7 @@
 \begin{abstract}
 \noindent\textbf{背景.\ } 时间一贯地作为物理学中的原始概念出现——一种未被推导的输入。
 
-\smallskip\noindent\textbf{框架.\ } 时间被建模为变化的代价, 信息时间为 $dt_{\mathrm{info}}:=d\Phi/H$。将与 $dt_{\mathrm{info}}^{2}$ 相关的符号化主二次型 $G$ 建模为~\cite{Realizability} 中满足公理 R, E, T 的主二次型, 在非退化性下给出 $\mathrm{Sig}(G)=(1,1)$, 等价于 $\det G<0$。在各向同性线性化之下, $\det G<0$ 有三种等价形式: Lorentz 号差、$G$ 诱导的辛生成子 $J_{G}$ 的实谱以及 $d_{c}>0$(定理~\ref{thm:equivalence}); $K(x)=x^{\top}Gx=1$ 是单位代价轨迹。在律 II 的辛-耗散类 $GA=\alpha J-GD$ 内, $G$ 诱导的辛结构给出唯一演化律 $\dot x=(J_G-D)\nabla V$(定理~\ref{thm:lawII}); 在临界阻尼处, $\kappa_{K}=4d_{c}$(定理~\ref{thm:restoring})。
+\smallskip\noindent\textbf{框架.\ } 时间被建模为变化的代价, 信息时间为 $dt_{\mathrm{info}}:=d\Phi/H$。将与 $dt_{\mathrm{info}}^{2}$ 相关的符号化主二次型 $G$ 建模为~\cite{Realizability} 中满足公理 R, E, T 的主二次型, 在非退化性下给出 $\mathrm{Sig}(G)=(1,1)$, 等价于 $\det G<0$。在各向同性线性化之下, $\det G<0$ 有三种等价形式: Lorentz 号差、$G$ 诱导的辛生成子 $J_{G}$ 的实谱以及 $d_{c}>0$(定理~\ref{thm:equivalence}); $K(x)=x^{\top}Gx=1$ 是单位代价轨迹。在律 II 的辛-耗散类 $GA=\alpha J-GD$ 内, 唯一演化律为 $\dot x=(J_G-D)\nabla V$(定理~\ref{thm:lawII}); 在临界阻尼处、归一化特征向量基点上, $\kappa_{K}=4d_{c}$(定理~\ref{thm:restoring})。
 
 \smallskip\noindent\textbf{热力学内容.\ } 在 $K=1$ 附近的稳态区, 在 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 下, Clausius 关系按 Tolman 温度与稳定性边界 $d_{c}$ 确定噪声幅度(命题~\ref{prop:clausius}); 并与 $S\propto A$ 一同, 给出途径 A 调用 Jacobson 论证的局部热力学桥梁, 恢复 $G_{\mu\nu}=8\pi T_{\mu\nu}$。途径 B(\S~\ref{sec:field})热力学上独立, 但仅限球对称。
 
@@ -86,7 +86,7 @@
 
 \smallskip\noindent\textbf{缺口.\ } 在本文采用的``局部代价主二次型''意义下, 现有方法通常把 Lorentz 号差或等价的因果结构作为输入; 本文关注的是位于此前一层的问题: 代价结构本身何时强制 Lorentz 型主符号。\footnote{探讨相关但不同问题的方法包括: Born--Infeld 号差问题、量子宇宙学中的号差变化, 以及时间问题~\cite{Gibbons1995,Kiefer2012,Isham1993}。熵引力方法~\cite{Verlinde,Padmanabhan} 以 Lorentz 时空为前提并推导引力动力学; 本文处理的是位于此前一层的、基于代价的号差问题。}
 
-\smallskip\noindent\textbf{局部回答.\ } 在本文的建模中, 时间既非坐标, 也非度规原语, 而是变化的代价。具体地, 定义信息时间为 $dt_{\mathrm{info}}:=d\Phi/H$, 其中 $\Phi$ 表示结构变化, $H>0$ 为单位变化的局部代价。与 $dt_{\mathrm{info}}^{2}$ 相关的符号化主二次型 $G$(启发式地记为 $G=\nabla^{2}(dt_{\mathrm{info}}^{2})$, 建模为~\cite{Realizability} 的主二次型)在本文采用的 $2\times 2$ 局部可实现性框架中, 一旦满足公理 R, E, T 且非退化, 其 Lorentz 号差即成为代数结果。这样, 该问题便在局部 $2\times 2$ 情形中得到一个局部回答, 此情形随后在途径 A 中被诠释为单一局部 Rindler 楔形/视界片。三个可实现性公理 R, E, T 连同非退化性强制 $\det G<0$(\S\ref{sec:lawI})。Lorentz 号差、$G$ 诱导生成子 $J_{G}$ 的实特征值以及 $d_{c}>0$, 随后都是单一符号的代数推论。二次型 $K(x)=x^{\top}Gx$ 量度局部时间代价; $K=1$ 仅是代数性的, 需要动力学补全(律 II--III)使其成为自洽吸引子: 偏离 $K=1$ 在合适基点附近产生局部恢复漂移(律 III), 从而 $K=1$ 成为局部自洽的轨迹。\emph{本文采用结构性框架: $\Phi$ 与 $H$ 不被指定为特定物理量; 只要它们诱导出的代价结构满足公理 R, E, T 与非退化性, 后续结论即约束所得主二次型的代数类型。}
+\smallskip\noindent\textbf{局部回答.\ } 在本文的建模中, 时间既非坐标, 也非度规原语, 而是变化的代价。信息时间为 $dt_{\mathrm{info}}:=d\Phi/H$, 其中 $\Phi$ 表示结构变化, $H>0$ 为单位变化的局部代价; 与 $dt_{\mathrm{info}}^{2}$ 相关的符号化主二次型 $G$ 建模为~\cite{Realizability} 的主二次型 $Q$。\textbf{本文的第一个结果是局部的、点级的: 在 $2\times 2$ 可实现性框架中, 代价结构强制 Lorentz 类型}---公理 R, E, T 连同非退化性给出 $\det G<0$, 等价于 $\mathrm{Sig}(G)=(1,1)$ (\S\ref{sec:lawI})。诱导生成子 $J_G$、阈值 $d_c>0$、单位代价轨迹 $K(x)=x^{\top}Gx=1$ 随后都是这单一符号的代数推论; 使 $K=1$ 成为局部自洽吸引子需要律 II--III 的动力学补全。\emph{本文采用结构性框架: $\Phi$ 与 $H$ 不被指定为特定物理量; 只要它们诱导出的代价结构满足公理 R, E, T 与非退化性, 后续结论即约束所得主二次型的代数类型。}
 
 \smallskip\noindent\textbf{与爱因斯坦方程相连的两条路径.}
 \begin{itemize}[leftmargin=2em, itemsep=0.4ex, parsep=0pt, topsep=0.3ex]
@@ -115,7 +115,7 @@
 
 \noindent 图~\ref{fig:framework} 概括了三层框架的整体逻辑依赖关系(信息时间与可实现性、点级 $K=1$、动力学)。
 
-\medskip\noindent\textit{框架定义.} 本文围绕以下诸要素展开。\emph{输入}: 结构参数 $\Phi$ 与正标量代价 $H$, 给出信息时间 $dt_{\mathrm{info}}:=d\Phi/H$。\emph{公理层}: 与之相关的符号化主二次型 $G$ 被建模为满足~\cite{Realizability} 的公理 R, E, T, 并附加对 $G$ 的非退化性假设。\emph{附加条件}: 单位代价轨迹 $K(x):=x^{\top}Gx=1$ 在点级施加局部自洽性。\emph{动力学补全}: 律 II 在辛-耗散类 $GA=\alpha J-GD$ 中指定唯一演化 $\dot x=(J_G-D)\nabla V$(定理~\ref{thm:lawII}), 律 III 刻画其在临界阻尼处的恢复与涨落结构(定理~\ref{thm:restoring})。\emph{内部结论}: 在点级, Lorentz 号差 $\mathrm{Sig}(G)=(1,1)$、三重等价(定理~\ref{thm:equivalence})与恢复速率 $\kappa_K=4d_c$; 在依赖于猜想的途径 B 提升下, 与 Einstein 真空方程的代数等价(定理~\ref{thm:field})。\emph{外部输入}(仅途径 A): 热力学等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 与熵-面积律 $S\propto A$。
+\medskip\noindent\textit{框架定义.} 本文围绕以下诸要素展开。\emph{输入}: 结构参数 $\Phi$ 与正标量代价 $H$, 给出信息时间 $dt_{\mathrm{info}}:=d\Phi/H$。\emph{公理层}: 与之相关的符号化主二次型 $G$ 被建模为满足~\cite{Realizability} 的公理 R, E, T, 并附加对 $G$ 的非退化性假设。\emph{附加条件}: 单位代价轨迹 $K(x):=x^{\top}Gx=1$ 在点级施加局部自洽性。\emph{动力学补全}: 律 II 在辛-耗散类 $GA=\alpha J-GD$ 中指定唯一演化 $\dot x=(J_G-D)\nabla V$(定理~\ref{thm:lawII}), 律 III 刻画其在临界阻尼处的恢复与涨落结构(定理~\ref{thm:restoring})。\emph{内部结论}: 在点级, Lorentz 号差 $\mathrm{Sig}(G)=(1,1)$、三重等价(定理~\ref{thm:equivalence})与局部恢复律, 在归一化特征向量基点上 $\kappa_K=4d_c$; 在依赖于猜想的途径 B 提升下, 在球对称真空部分中, 与 Einstein 真空方程的代数等价(定理~\ref{thm:field})。\emph{外部输入}(仅途径 A): 热力学等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 与熵-面积律 $S\propto A$。
 
 \medskip\noindent\textit{信息时间的角色.} 信息时间在本文中的角色是启发一个符号化主二次型 $G$; 一旦此二次型满足公理 R, E, T 与非退化性(本文作为假设, \cite{Realizability} 中作为定理确立), 其 Lorentz 类型即在代数上随之而得。受约束的是 $G$ 的\emph{代数类型}(其号差), 而非其具体值。
 
@@ -303,7 +303,7 @@ $d_{c}>0 \Leftrightarrow -1/\det G>0$ (式~\eqref{eq:dc}) $\Leftrightarrow \det 
 
 \medskip
 
-$H$(标量, \S\ref{sec:lawI})是 $\Phi$ 单位变化的局部代价(熵阻抗), 出现于 $dt_{\mathrm{info}}=d\Phi/H$; $H_{*}$(矩阵)表示代价函数的权重矩阵, 出现于 $d(\delta x)/dt=(J_{G}-dI)H_{*}\,\delta x$ 中(见 \S\ref{sec:lawII})。二者是不同的数学对象, 本文不予等同; 若存在从同一深层代价原理同时导出二者的关系, 留待未来工作。$H_{*}=I$ 为默认。对 $H_{*}=cI$($c>0$), 在 $d$ 中的零实部阈值仍为 $d_{c}$, 但速率按 $c$ 整体缩放; 对一般正定的 $H_{*}$, 完整稳定性阈值可能偏移。
+$H$(标量, \S\ref{sec:lawI})是 $\Phi$ 单位变化的局部代价(熵阻抗), 出现于 $dt_{\mathrm{info}}=d\Phi/H$; $H_{*}$(矩阵)表示代价函数的权重矩阵, 出现于 $d(\delta x)/dt=(J_{G}-dI)H_{*}\,\delta x$ 中(在本节的线性化稳定性分析中)。二者是不同的数学对象, 本文不予等同; 若存在从同一深层代价原理同时导出二者的关系, 留待未来工作。$H_{*}=I$ 为默认。对 $H_{*}=cI$($c>0$), 在 $d$ 中的零实部阈值仍为 $d_{c}$, 但速率按 $c$ 整体缩放; 对一般正定的 $H_{*}$, 完整稳定性阈值可能偏移。
 
 \begin{remark}[对 $H_{*}$ 的依赖性]\label{rem:Hstar_dep}
 $d_{c}$ 的数值与号差等价性仅在 $H_{*}$ 的各向同性类内成立。对于一般的 $H_{*}>0$, $d_{c}$ 可偏离 $\alpha\sqrt{-1/\det G}$。举例: 取 $G=\mathrm{diag}(0.1,-10)$ 与 $H_{*}=\bigl(\begin{smallmatrix}1&0.9\\0.9&1\end{smallmatrix}\bigr)$, 则 $d_{c}^{\mathrm{iso}}=1$ 而 $d_{c}(H_{*})=4.55$, 证实在非各向同性类下 $d_{c}$ 依赖于 $H_{*}$. 此处 $d_{c}(H_{*})$ 指完整实部稳定阈值, 而非零特征值位置(后者由命题~\ref{prop:diag_inv} 保持为 $d_{c}=1$). 非各向同性类的号差-稳定性等价留作未解问题。
@@ -324,7 +324,7 @@ $\det((J_{G}-dI)H_{*})=\det(J_{G}-dI)\det H_{*}$; 由于 $\det H_{*}\neq 0$, 故
 
 \noindent\textbf{律 II.} \textit{动力学生成子作如下分解: $GA = \alpha J - GD$, 其中 $D\ge 0$(半正定耗散)。这种辛-耗散分解是律 II 的内容;它是一条结构性公理, 并非从律 I 或律 III 推出, 其动机来自物理演化按可逆(辛)与不可逆(耗散)两部分的普适 Helmholtz 型分裂~\cite{GENERIC}。在此公理之下, 任何光滑势 $V$ 下的唯一演化律为 $\dot{x}=(J_{G}-D)\nabla V$。$\{K=1\}$ 的局部恢复角色由律 III 另行规定。}
 
-分解 $GA=\alpha J-GD$ 是律 II 的公理性内容; 定理~\ref{thm:lawII} 从中推出显式的演化律。
+分解 $GA=\alpha J-GD$ 是律 II 的公理性内容。结合定理~\ref{thm:unique}(它固定 $J_G$), 由此得到唯一的可接纳演化律(定理~\ref{thm:lawII})。
 
 \begin{theorem}[律 II 的正则形式]\label{thm:lawII}
 设 $G$ 非退化, $J_{G}=\alpha G^{-1}J$ \textup{(定理~\ref{thm:unique})}。在满足律 II 约束 $GA = \alpha J - GD$(其中 $D \ge 0$)的生成子类内, 对任意光滑势 $V$, 演化律唯一地为 $\dot{x} = (J_{G}-D)\,\nabla V$。此类定义了本框架中物理上可接纳的演化律, 符合 Helmholtz/GENERIC 分裂的精神~\cite{GENERIC}。
