@@ -65,6 +65,7 @@
     };
     const out = qs('bg-verdict');
     const sub = qs('bg-sub');
+    if (!tog.sph || !tog.stat || !tog.fpos || !tog.vac || !out || !sub) return;
 
     function refresh(){
       const s = tog.sph.checked, t = tog.stat.checked,
@@ -99,6 +100,7 @@
     const rttO = qs('bl-Rtt'), rθθO = qs('bl-Rθθ'), rrrO = qs('bl-Rrr'), rO = qs('bl-R');
     const verdict = qs('bl-verdict');
     const explain = qs('bl-explain');
+    if (!modeRadios.length || !rIn || !rOut || !qIn || !qOut || !k1o || !k2o || !rttO || !rθθO || !rrrO || !rO || !verdict || !explain) return;
 
     function getMode(){ for (const r of modeRadios) if (r.checked) return r.value; return 'k1'; }
 
@@ -108,12 +110,9 @@
       const mode = getMode();
       let p;
       if (mode === 'k1'){
-        // K1=1, K2≠1: RN-type f = 1 - 2M/r + q/r^2
         p = { C1:2.0, C2:q, C3:0, C4:0 };
       } else {
-        // K2=1, K1≠1: needs f+r f'=1 but f+2rf'+(r²/2)f''≠1
-        // Choose f = 1 + q/r. Then K2 = 1 exactly, and K1 = 1 too by rigidity.
-        p = { C1:-q, C2:0, C3:0, C4:0 };  // f = 1 + q/r
+        p = { C1:-q, C2:0, C3:0, C4:0 };
       }
       const { f, fp, fpp } = mk_f(p);
       const fv = f(r);
@@ -140,15 +139,13 @@
             'Live leg behaviour (RN with q = '+fmt(q)+' at r = '+fmt(r)+'):<br>' +
             '&nbsp;&nbsp;• R<sub>θθ</sub> = 1 − K₂ = '+fmt(Rθθ)+' &nbsp;(carries the charge content)<br>' +
             '&nbsp;&nbsp;• R<sub>tt</sub> = (f/r²)(K₁ − K₂) = '+fmt(Rtt)+' &nbsp;(also ≠ 0 because K₁ ≠ K₂)<br>' +
-            '<br><span class="bench-na-note"><b>Important:</b> K₁ = 1 alone does <i>not</i> make R_tt vanish. The correct ' +
-            'algebraic identity is <code>R_tt = (f/r²)(K₁ − K₂)</code>, not <code>(f/r²)(K₁ − 1)</code>. ' +
-            'RN is a live counter-example: K₁ = 1 yet R_tt ≠ 0. This is why Theorem 5.2 requires <i>both</i> legs.</span>';
+            '<br><span class="bench-na-note"><b>Important:</b> K₁ = 1 alone does <i>not</i> make R_tt vanish. The correct algebraic identity is <code>R_tt = (f/r²)(K₁ − K₂)</code>, not <code>(f/r²)(K₁ − 1)</code>. RN is a live counter-example: K₁ = 1 yet R_tt ≠ 0. This is why Theorem 5.2 requires <i>both</i> legs.</span>';
         } else {
           setVerdict(verdict, 'na', '… dial q away from 0 to force K₂ ≠ 1 while keeping K₁ = 1.');
           explain.textContent = 'Mode requires q ≠ 0 so the RN term breaks K₂.';
         }
       } else {
-        const diff = (r * fp) + 0.5 * r * r * fpp;  // = K₁ − K₂ analytically
+        const diff = (r * fp) + 0.5 * r * r * fpp;
         setVerdict(verdict, 'pass',
           '✓ rigidity lemma: in this family, K₂ ≡ 1  ⇒  K₁ ≡ 1 automatically (no single-leg reverse).');
         explain.innerHTML =
@@ -278,6 +275,7 @@
     const fwdRes = qs('bd-fwd-res'), fwdV = qs('bd-fwd-v');
     const revRes = qs('bd-rev-res'), revV = qs('bd-rev-v');
     const overall = qs('bd-overall');
+    if (!C1 || !C1v || !C2 || !C2v || !C3 || !C3v || !rIn || !rOut || !fwdRes || !fwdV || !revRes || !revV || !overall) return;
 
     function refresh(){
       const c1 = +C1.value; C1v.textContent = c1.toFixed(2);
@@ -300,7 +298,6 @@
       const Kok = dK1 < TOL && dK2 < TOL;
       const Rok = maxR < TOL;
 
-      // forward: K=1 ⇒ R=0
       fwdRes.innerHTML = '|K₁−1| = '+fmt(dK1)+' · |K₂−1| = '+fmt(dK2)+' · max|Rμν| = '+fmt(maxR);
       if (Kok && Rok)
         setVerdict(fwdV, 'pass', '✓ forward holds: K₁=K₂=1 ⇒ Rμν=0 (verified numerically)');
@@ -309,7 +306,6 @@
       else
         setVerdict(fwdV, 'na', '… forward untested: K₁=K₂=1 does not currently hold');
 
-      // reverse: R=0 ⇒ K=1
       revRes.innerHTML = 'max|Rμν| = '+fmt(maxR)+' · |K₁−1| = '+fmt(dK1)+' · |K₂−1| = '+fmt(dK2);
       if (Rok && Kok)
         setVerdict(revV, 'pass', '✓ reverse holds: Rμν=0 ⇒ K₁=K₂=1 (verified numerically)');
@@ -346,6 +342,7 @@
     };
     const closure = qs('bc-closure');
     const overall = qs('bc-overall');
+    if (!C1 || !C1v || !C2 || !C2v || !rIn || !rOut || !closure || !overall || Object.values(cells).some(v=>!v) || Object.values(tags).some(v=>!v)) return;
 
     function refresh(){
       const c1 = +C1.value; C1v.textContent = c1.toFixed(2);
@@ -371,7 +368,6 @@
         tags[k].className = 'bench-row-tag bench-' + (z ? 'pass' : 'fail');
       }
 
-      // Closure check: R_rr = -R_tt/f²  and  R = g^μν R_μν
       const Rrr_pred = -Rtt / (fv*fv);
       const R_pred = -fpp(r) - 4*fp(r)/r - 2*(fv-1)/(r*r);
       const closureErr = Math.max(Math.abs(Rrr - Rrr_pred), Math.abs(R - R_pred));
@@ -391,13 +387,18 @@
     refresh();
   }
 
-  // ---------- boot ----------
   function boot(){
-    initGating();
-    initSingleLeg();
-    initSuite();
-    initBidir();
-    initClosure();
+    const steps = [
+      ['gating', initGating],
+      ['single-leg', initSingleLeg],
+      ['suite', initSuite],
+      ['bidir', initBidir],
+      ['closure', initClosure],
+    ];
+    for (const [name, fn] of steps){
+      try { fn(); }
+      catch (err) { console.warn('bench.js init failed:', name, err); }
+    }
   }
   if (document.readyState === 'loading')
     document.addEventListener('DOMContentLoaded', boot);
