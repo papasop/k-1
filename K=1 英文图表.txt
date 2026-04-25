@@ -697,7 +697,7 @@ The two routes meet in the vacuum sector: Route~B establishes $R_{\mu\nu}=0$ dir
 
 \subsection*{Scope of claims}
 
-The present paper does not propose new physics. Where Route~A reaches it, the Einstein equations $G_{\mu\nu}=8\pi T_{\mu\nu}$ are recovered; where Route~B applies, $R_{\mu\nu}=0$ is reformulated. The contribution is conceptual: Lorentzian signature is supplied internally rather than assumed (Theorem~\ref{thm:equivalence}, under isotropic linearisation), and the spherically symmetric vacuum equations are reformulated in cost-structural language (Theorem~\ref{thm:field}). The matter content $\rho=(1{-}K_2)/(8\pi r^2)$, the cosmological constant $\Lambda$, and the entropy--area law $S\propto A$ are inputs from GR, not predictions of the present framework.
+Where Route~A applies, the Einstein equations $G_{\mu\nu}=8\pi T_{\mu\nu}$ are recovered; where Route~B applies, the vacuum equations $R_{\mu\nu}=0$ are reformulated in an equivalent cost-structural language. The contribution of the present paper is therefore conceptual and structural: Lorentzian signature is supplied internally rather than assumed (Theorem~\ref{thm:equivalence}, under isotropic linearisation), and the spherically symmetric vacuum equations admit an equivalent formulation in the $K{=}1$ framework (Theorem~\ref{thm:field}). The matter content $\rho=(1{-}K_2)/(8\pi r^2)$, the cosmological constant $\Lambda$, and the entropy--area law $S\propto A$ are taken from GR as external input or rewriting, not derived here as independent predictions of the framework.
 
 \subsection*{Extension to $(1{+}3)$ dimensions}
 
