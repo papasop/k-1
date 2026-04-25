@@ -71,7 +71,7 @@
 \begin{abstract}
 \noindent\textbf{背景.\ } 时间一贯地作为物理学中的原始概念出现——一种未被推导的输入。
 
-\smallskip\noindent\textbf{框架.\ } 时间被建模为变化的代价, 信息时间为 $dt_{\mathrm{info}}:=d\Phi/H$。将与 $dt_{\mathrm{info}}^{2}$ 相关的符号化主二次型 $G$ 建模为~\cite{Realizability} 中满足公理 R, E, T 的主二次型, 在非退化性下给出 $\mathrm{Sig}(G)=(1,1)$, 等价于 $\det G<0$。在各向同性线性化之下, $\det G<0$ 有三种等价形式: Lorentz 号差、$G$ 诱导的辛生成子 $J_{G}$ 的实谱以及 $d_{c}>0$(定理~\ref{thm:equivalence}); $K(x)=x^{\top}Gx=1$ 是单位代价轨迹。在律 II 的辛-耗散类 $GA=\alpha J-GD$ 内, 唯一演化律为 $\dot x=(J_G-D)\nabla V$(定理~\ref{thm:lawII}); 在临界阻尼处、归一化特征向量基点上, $\kappa_{K}=4d_{c}$(定理~\ref{thm:restoring})。
+\smallskip\noindent\textbf{框架.\ } 时间被建模为变化的代价, 信息时间为 $dt_{\mathrm{info}}:=d\Phi/H$。本框架所约束的对象不是 $dt_{\mathrm{info}}$ 本身, 而是与 $dt_{\mathrm{info}}^{2}$ 的局部二阶展开关联的符号化主二次型 $G$。将此二次型建模为~\cite{Realizability} 中满足公理 R, E, T 的形式, 在非退化性下给出 $\mathrm{Sig}(G)=(1,1)$, 等价于 $\det G<0$。在各向同性线性化之下, $\det G<0$ 有三种等价形式: Lorentz 号差、$G$ 诱导的辛生成子 $J_{G}$ 的实谱以及 $d_{c}>0$(定理~\ref{thm:equivalence}); $K(x)=x^{\top}Gx=1$ 是单位代价轨迹。在律 II 的辛-耗散类 $GA=\alpha J-GD$ 内, 唯一演化律为 $\dot x=(J_G-D)\nabla V$(定理~\ref{thm:lawII}); 在临界阻尼处、归一化特征向量基点上, $\kappa_{K}=4d_{c}$(定理~\ref{thm:restoring})。
 
 \smallskip\noindent\textbf{热力学内容.\ } 在 $K=1$ 附近的稳态区, 在 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 下, Clausius 关系按 Tolman 温度与稳定性边界 $d_{c}$ 确定噪声幅度(命题~\ref{prop:clausius}); 并与 $S\propto A$ 一同, 给出途径 A 调用 Jacobson 论证的局部热力学桥梁, 恢复 $G_{\mu\nu}=8\pi T_{\mu\nu}$。途径 B(\S~\ref{sec:field})热力学上独立, 但仅限球对称。
 
@@ -86,7 +86,11 @@
 
 \smallskip\noindent\textbf{缺口.\ } 在本文采用的``局部代价主二次型''意义下, 现有方法通常把 Lorentz 号差或等价的因果结构作为输入; 本文关注的是位于此前一层的问题: 代价结构本身何时强制 Lorentz 型主符号。\footnote{探讨相关但不同问题的方法包括: Born--Infeld 号差问题、量子宇宙学中的号差变化, 以及时间问题~\cite{Gibbons1995,Kiefer2012,Isham1993}。熵引力方法~\cite{Verlinde,Padmanabhan} 以 Lorentz 时空为前提并推导引力动力学; 本文处理的是位于此前一层的、基于代价的号差问题。}
 
-\smallskip\noindent\textbf{局部回答.\ } 在本文的建模中, 时间既非坐标, 也非度规原语, 而是变化的代价。信息时间为 $dt_{\mathrm{info}}:=d\Phi/H$, 其中 $\Phi$ 表示结构变化, $H>0$ 为单位变化的局部代价; 与 $dt_{\mathrm{info}}^{2}$ 相关的符号化主二次型 $G$ 建模为~\cite{Realizability} 的主二次型 $Q$。\textbf{本文的第一个结果是局部的、点级的: 在 $2\times 2$ 可实现性框架中, 代价结构强制 Lorentz 类型}---公理 R, E, T 连同非退化性给出 $\det G<0$, 等价于 $\mathrm{Sig}(G)=(1,1)$ (\S\ref{sec:lawI})。诱导生成子 $J_G$、阈值 $d_c>0$、单位代价轨迹 $K(x)=x^{\top}Gx=1$ 随后都是这单一符号的代数推论; 使 $K=1$ 成为局部自洽轨迹需要律 II--III 的动力学补全。\emph{本文采用结构性框架: $\Phi$ 与 $H$ 不被指定为特定物理量; 只要它们诱导出的代价结构满足公理 R, E, T 与非退化性, 后续结论即约束所得主二次型的代数类型。}
+\smallskip\noindent\textbf{局部回答.\ } 在本文的建模中, 时间既非坐标, 也非度规原语, 而是变化的代价。信息时间引入为
+\[
+dt_{\mathrm{info}}:=\frac{d\Phi}{H},
+\]
+其中 $\Phi$ 表示结构变化, $H>0$ 为单位变化的局部代价。本文所约束的对象不是 $dt_{\mathrm{info}}$ 本身, 而是与 $dt_{\mathrm{info}}^{2}$ 的局部二阶展开关联的符号化主二次型 $G$, 建模为~\cite{Realizability} 的主二次型 $Q$。\textbf{本文的第一个结果是局部的、点级的: 在 $2\times 2$ 可实现性框架中, 代价结构强制 Lorentz 类型}---公理 R, E, T 连同非退化性蕴含 $\det G<0$, 等价于 $\mathrm{Sig}(G)=(1,1)$ (\S\ref{sec:lawI})。此阶段所获得的是主导形式的代数类型, 而非对所有度规数据的完整重构。诱导生成子 $J_G$、阈值 $d_c>0$、单位代价轨迹 $K(x)=x^{\top}Gx=1$ 随后都是此符号结构的代数推论; 使 $K=1$ 成为局部自洽轨迹需要律 II--III 的动力学补全。\emph{故本文采用结构性而非完全重构的框架: $\Phi$ 与 $H$ 不被指定为特定物理量, 下面的结果约束主导二次型的代数类型, 而非从第一性原理推导出全部度规数据。}
 
 \smallskip\noindent\textbf{与爱因斯坦方程相连的两条路径.}
 \begin{itemize}[leftmargin=2em, itemsep=0.4ex, parsep=0pt, topsep=0.3ex]
@@ -121,7 +125,7 @@
 \[
 dt_{\mathrm{info}}:=\frac{d\Phi}{H},
 \]
-其中 $\Phi$ 参数化结构变化, $H>0$ 是 $\Phi$ 单位变化的局部\emph{标量}代价(熵阻抗, 与 \S\ref{sec:stability} 中的矩阵权重 $H_{*}$ 无关)。与 $dt_{\mathrm{info}}^{2}$ 相关的有一个符号化主二次型 $G$, 启发式地记为 $G:=\nabla^{2}(dt_{\mathrm{info}}^{2})$。严格地说, 此记号是简写: $G$ 表示与 $dt_{\mathrm{info}}^{2}$ 相关的\emph{符号化主二次系数形式}, 等同于~\cite{Realizability} 的主二次型 $Q$。非负的信息时间代价本身由正部构造 $(x^{\top}Gx)_{+}$ 做主导阶表示, 而 $G$ 是其下面的符号化系数形式。因此~\cite{Realizability} 的主要定理直接适用: 公理 R, E, T 连同非退化性意味着
+其中 $\Phi$ 参数化结构变化, $H>0$ 是 $\Phi$ 单位变化的局部\emph{标量}代价(熵阻抗, 与 \S\ref{sec:stability} 中的矩阵权重 $H_{*}$ 无关)。与 $dt_{\mathrm{info}}^{2}$ 相关的有一个符号化主二次型 $G$, 在其局部二阶部分的层面启发式地记为 $G:=\nabla^{2}(dt_{\mathrm{info}}^{2})$。严格地说, 此记号是简写: $G$ 表示与 $dt_{\mathrm{info}}^{2}$ 相关的\emph{符号化主二次系数形式}, 等同于~\cite{Realizability} 的主二次型 $Q$。非负的信息时间代价本身由正部构造 $(x^{\top}Gx)_{+}$ 做主导阶表示, 而 $G$ 是其下面的符号化系数形式。因此~\cite{Realizability} 的主要定理直接适用: 公理 R, E, T 连同非退化性意味着
 \[
 \mathrm{Sig}(G)=(1,1),
 \qquad\text{等价于}\qquad
@@ -206,7 +210,7 @@ K(x):=x^{\top}Gx
 \node[layerlab, above=0.05cm of G3.north west, anchor=south west] {第 3 层: 动力学};
 
 \end{tikzpicture}
-\caption{$K{=}1$ 框架的逻辑依赖关系. \emph{第 1 层}(信息时间与可实现性条件): 与信息时间 $dt_{\mathrm{info}}$ 相关的符号化主二次型 $G\equiv Q$(启发式桥梁, 见正文); 公理 R, E, T 连同非退化性作用于 $G$ 的\emph{条件}, 强制 $\mathrm{Sig}(G)=(1,1)$(即 $\det G<0$), 而非生成 $G$ 本身. \emph{第 2 层}(点级对象): $G$ 定义 $K(x)=x^{\top}Gx$; 条件 $K=1$ 是本文\emph{额外引入}的自洽条件, 非公理的推论. \emph{第 3 层}(动力学): $G$ 导出辛生成子 $J_G$; 律 II 在此基础上还需\emph{结构性约束} $GA=\alpha J-GD$ ($D\ge 0$), 由此给出 $\dot x=(J_G-D)\nabla V$. $K=1$ 与恢复势 $V=\tfrac12(K{-}1)^2$ 一起给出律 III, 其恢复结论进一步依赖临界阻尼 $D=d_{c}I$、$G$ 的特征向量基点与局部线性化. 虚线箭头表示启发式桥梁或定性几何关系, 不构成独立的推导; 实箭头表示定义、已引用定理或本文中的代数推论; 场级类似物 $\sigma_2^2\Box\ln\sigma_i=1$(作为猜想)见图~\ref{fig:routes}.}
+\caption{$K{=}1$ 框架的逻辑依赖关系. \emph{第 1 层}(信息时间与可实现性条件): 与 $dt_{\mathrm{info}}^{2}$ 的局部二阶展开关联的符号化主二次型 $G\equiv Q$(启发式桥梁, 见正文); 公理 R, E, T 连同非退化性作用于 $G$ 的\emph{条件}, 强制 $\mathrm{Sig}(G)=(1,1)$(即 $\det G<0$), 而非生成 $G$ 本身. \emph{第 2 层}(点级对象): $G$ 定义 $K(x)=x^{\top}Gx$; 条件 $K=1$ 是本文\emph{额外引入}的自洽条件, 非公理的推论. \emph{第 3 层}(动力学): $G$ 导出辛生成子 $J_G$; 律 II 在此基础上还需\emph{结构性约束} $GA=\alpha J-GD$ ($D\ge 0$), 由此给出 $\dot x=(J_G-D)\nabla V$. $K=1$ 与恢复势 $V=\tfrac12(K{-}1)^2$ 一起给出律 III, 其恢复结论进一步依赖临界阻尼 $D=d_{c}I$、$G$ 的特征向量基点与局部线性化. 虚线箭头表示启发式桥梁或定性几何关系, 不构成独立的推导; 实箭头表示定义、已引用定理或本文中的代数推论; 场级类似物 $\sigma_2^2\Box\ln\sigma_i=1$(作为猜想)见图~\ref{fig:routes}.}
 \label{fig:framework}
 \end{figure}
 
