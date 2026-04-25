@@ -731,7 +731,7 @@ $\mathrm{Var}(K)\approx T_{\mathrm{eff}}$(由式~\eqref{eq:var} 与 $T_{\mathrm{
 
 \subsection*{主张范围}
 
-在途径 A 所适用之处, Einstein 方程 $G_{\mu\nu}=8\pi T_{\mu\nu}$ 被恢复; 在途径 B 所适用之处, 真空方程 $R_{\mu\nu}=0$ 在等价的代价结构语言中得以重新表述。本文的贡献因此是概念性与结构性的: Lorentz 号差是内部供应而非假设的(定理~\ref{thm:equivalence}, 在各向同性线性化下), 且球对称真空方程在 $K{=}1$ 框架中接纳等价表述(定理~\ref{thm:field})。物质内容 $\rho=(1{-}K_2)/(8\pi r^2)$、宇宙学常数 $\Lambda$ 与熵-面积律 $S\propto A$ 均取自广义相对论, 作为外部输入或重写, 而非在此被独立推导为框架的预言。
+在途径 A 所适用之处, Einstein 方程 $G_{\mu\nu}=8\pi T_{\mu\nu}$ 被恢复; 在途径 B 所适用之处, 真空方程 $R_{\mu\nu}=0$ 在等价的代价结构语言中得以重新表述。本文的贡献因此是概念性与结构性的: Lorentz 号差是内部供应而非假设的(定理~\ref{thm:equivalence}, 在各向同性线性化下), 且球对称真空方程在 $K{=}1$ 框架中接纳等价表述(定理~\ref{thm:field})。物质内容 $\rho=(1{-}K_2)/(8\pi r^2)$、宇宙学常数 $\Lambda$ 与熵-面积律 $S\propto A$ 通过 GR 输入或重写在此进入, 而非作为本框架所固定的量。
 
 \subsection*{$(1{+}3)$-维扩展}
 
