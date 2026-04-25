@@ -1,23 +1,51 @@
 <!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Redirecting…</title>
+<title>Loading interactive paper…</title>
 <style>
   html,body{margin:0;padding:0;background:#f6f2e8;color:#111418;font-family:Georgia,serif}
-  .card{max-width:640px;margin:12vh auto 0;padding:22px 24px;border:1px solid #d9d5cb;border-radius:14px;background:#fbf9f2;box-shadow:0 8px 24px rgba(0,0,0,.04)}
+  .loading{min-height:100vh;display:grid;place-items:center;padding:24px}
+  .card{max-width:640px;border:1px solid #d9d5cb;border-radius:14px;background:#fbf9f2;padding:24px 28px;box-shadow:0 8px 24px rgba(0,0,0,.04)}
   .mono{font:12px ui-monospace,monospace;color:#6b7280}
   a{color:#394150}
 </style>
-<div class="card">
-  <h1 style="margin:0 0 8px;font-size:28px">Opening interactive paper…</h1>
-  <p style="margin:0 0 10px">This entry now jumps directly to the full paper page, which avoids the iframe focus issue that made controls feel sticky.</p>
-  <div class="mono">Redirect target: paper.base.v2.html</div>
-  <p><a id="direct-link" href="paper.base.v2.html">Open directly if not redirected</a></p>
-</div>
+<div class="loading"><div class="card"><h1 style="margin:0 0 8px;font-size:28px">Loading interactive paper…</h1><div class="mono">paper.base.v2.html + perf patch + fixes</div><p><a id="fallback" href="paper.base.v2.html">Open directly if not redirected</a></p></div></div>
 <script>
 (() => {
-  const target = 'paper.base.v2.html' + (location.hash || '');
-  document.getElementById('direct-link').href = target;
-  location.replace(target);
+  const base = 'paper.base.v2.html?v=20260425c';
+  const fixTag = '<script src="paper-fixes.v2.js?v=20260425c"></' + 'script>';
+  const perfTag = `<script>(function(){
+    window.addEventListener('load', function(){
+      try {
+        if (window.MathJax && typeof window.MathJax.typesetPromise === 'function' && !window.MathJax.__k1Patched) {
+          const orig = window.MathJax.typesetPromise.bind(window.MathJax);
+          window.MathJax.__k1OrigTypesetPromise = orig;
+          window.MathJax.__k1Patched = true;
+          window.MathJax.typesetPromise = function(nodes){
+            if (!nodes || !nodes.length) return Promise.resolve();
+            return Promise.resolve();
+          };
+        }
+      } catch (err) {
+        console.warn('mathjax perf patch failed', err);
+      }
+    }, { once:true });
+  })();<\/script>`;
+  const fallback = document.getElementById('fallback');
+  fallback.href = 'paper.base.v2.html' + (location.hash || '');
+  fetch(base).then(r => r.text()).then(html => {
+    html = html.includes('</body>') ? html.replace('</body>', perfTag + fixTag + '</body>') : html + perfTag + fixTag;
+    document.open();
+    document.write(html);
+    document.close();
+    if (location.hash) {
+      setTimeout(() => {
+        const el = document.querySelector(location.hash);
+        if (el) el.scrollIntoView();
+      }, 120);
+    }
+  }).catch(err => {
+    document.body.innerHTML = '<div class="loading"><div class="card"><h1 style="margin:0 0 8px;font-size:28px">Load failed</h1><div class="mono">' + String(err) + '</div><p><a href="paper.base.v2.html">Open the base page directly</a></p></div></div>';
+  });
 })();
 </script>
