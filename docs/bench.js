@@ -11,6 +11,7 @@
   'use strict';
   const TOL = 1e-3;
 
+  // ---------- generic Ricci kernel (same as audit-corr.js) ----------
   function K1_of(r, f, fp, fpp){ return f(r) + 2*r*fp(r) + 0.5*r*r*fpp(r); }
   function K2_of(r, f, fp)     { return f(r) + r*fp(r); }
   function Ricci(r, f, fp, fpp){
@@ -18,7 +19,7 @@
     const Rtt = 0.5*fv*fppv + fv*fpv/r;
     const Rrr = -Rtt / (fv*fv);
     const Rθθ = 1 - fv - r*fpv;
-    const R_scalar = -fppv - 4*fpv/r - 2*(fv-1)/(r*r);
+    const R_scalar = -fppv - 4*fpv/r - 2*(fv-1)/(r*r); // trace: g^tt R_tt + g^rr R_rr + 2 g^θθ R_θθ
     return { Rtt, Rrr, Rθθ, R: R_scalar };
   }
   function fmt(x, n=5){
@@ -30,6 +31,8 @@
     return x.toFixed(n);
   }
 
+  // ---------- candidate library ----------
+  // f(r) = 1 - C1/r + C2/r^2 + C3*r^2 + C4/r^3
   const CANDS = {
     schw:   { label:'Schwarzschild',         params:{C1:2.0, C2:0,   C3:0,     C4:0}, expect:'vacuum ✓' },
     rn:     { label:'Reissner–Nordström',    params:{C1:2.0, C2:0.5, C3:0,     C4:0}, expect:'non-vacuum (K₂ breaks)' },
@@ -47,30 +50,37 @@
   function qs(id){ return document.getElementById(id); }
 
   function setVerdict(el, kind, msg){
+    // kind: 'pass' | 'fail' | 'na'
     el.classList.remove('bench-pass','bench-fail','bench-na');
     el.classList.add('bench-'+kind);
     el.textContent = msg;
   }
 
+  // ================== BENCH A · Gating ==================
   function initGating(){
     const card = qs('bench-gating');
     if (!card) return;
-    const tog = { sph: qs('bg-sph'), stat: qs('bg-stat'), fpos: qs('bg-fpos'), vac: qs('bg-vac') };
+    const tog = {
+      sph: qs('bg-sph'), stat: qs('bg-stat'), fpos: qs('bg-fpos'), vac: qs('bg-vac')
+    };
     const out = qs('bg-verdict');
     const sub = qs('bg-sub');
 
     function refresh(){
-      const s = tog.sph.checked, t = tog.stat.checked, fp = tog.fpos.checked, v = tog.vac.checked;
+      const s = tog.sph.checked, t = tog.stat.checked,
+            fp = tog.fpos.checked, v = tog.vac.checked;
       const missing = [];
       if (!s)  missing.push('spherical');
       if (!t)  missing.push('static');
       if (!fp) missing.push('f > 0');
       if (!v)  missing.push('vacuum profile');
       if (missing.length === 0){
-        setVerdict(out, 'pass', '✓ all four premises on — Theorem 5.2 applies. (K₁=K₂=1) ⇔ Rμν=0.');
+        setVerdict(out, 'pass',
+          '✓ all four premises on — Theorem 5.2 applies. (K₁=K₂=1) ⇔ Rμν=0.');
         sub.textContent = 'The equivalence runs in both directions on the stated symmetry class.';
       } else {
-        setVerdict(out, 'na', '⊘ theorem NOT applicable — missing: ' + missing.join(', ') + '.');
+        setVerdict(out, 'na',
+          '⊘ theorem NOT applicable — missing: ' + missing.join(', ') + '.');
         sub.innerHTML = 'Outside Route B’s gated scope. This is <b>not a counter-example</b>; it is outside the theorem’s domain.';
       }
     }
@@ -78,6 +88,7 @@
     refresh();
   }
 
+  // ================== BENCH B · Single-leg ==================
   function initSingleLeg(){
     const card = qs('bench-leg');
     if (!card) return;
@@ -97,9 +108,12 @@
       const mode = getMode();
       let p;
       if (mode === 'k1'){
+        // K1=1, K2≠1: RN-type f = 1 - 2M/r + q/r^2
         p = { C1:2.0, C2:q, C3:0, C4:0 };
       } else {
-        p = { C1:-q, C2:0, C3:0, C4:0 };
+        // K2=1, K1≠1: needs f+r f'=1 but f+2rf'+(r²/2)f''≠1
+        // Choose f = 1 + q/r. Then K2 = 1 exactly, and K1 = 1 too by rigidity.
+        p = { C1:-q, C2:0, C3:0, C4:0 };  // f = 1 + q/r
       }
       const { f, fp, fpp } = mk_f(p);
       const fv = f(r);
@@ -120,19 +134,23 @@
       if (mode === 'k1'){
         const ok = dK1 < TOL && dK2 > TOL;
         if (ok){
-          setVerdict(verdict, 'pass', '✓ single-leg: K₁ = 1, K₂ ≠ 1 — Rθθ = 1−K₂ carries the break; Rtt = (f/r²)(K₁−K₂) ≠ 0 too.');
+          setVerdict(verdict, 'pass',
+            '✓ single-leg: K₁ = 1, K₂ ≠ 1 — Rθθ = 1−K₂ carries the break; Rtt = (f/r²)(K₁−K₂) ≠ 0 too.');
           explain.innerHTML =
             'Live leg behaviour (RN with q = '+fmt(q)+' at r = '+fmt(r)+'):<br>' +
             '&nbsp;&nbsp;• R<sub>θθ</sub> = 1 − K₂ = '+fmt(Rθθ)+' &nbsp;(carries the charge content)<br>' +
             '&nbsp;&nbsp;• R<sub>tt</sub> = (f/r²)(K₁ − K₂) = '+fmt(Rtt)+' &nbsp;(also ≠ 0 because K₁ ≠ K₂)<br>' +
-            '<br><span class="bench-na-note"><b>Important:</b> K₁ = 1 alone does <i>not</i> make R_tt vanish. The correct algebraic identity is <code>R_tt = (f/r²)(K₁ − K₂)</code>, not <code>(f/r²)(K₁ − 1)</code>. RN is a live counter-example: K₁ = 1 yet R_tt ≠ 0. This is why Theorem 5.2 requires <i>both</i> legs.</span>';
+            '<br><span class="bench-na-note"><b>Important:</b> K₁ = 1 alone does <i>not</i> make R_tt vanish. The correct ' +
+            'algebraic identity is <code>R_tt = (f/r²)(K₁ − K₂)</code>, not <code>(f/r²)(K₁ − 1)</code>. ' +
+            'RN is a live counter-example: K₁ = 1 yet R_tt ≠ 0. This is why Theorem 5.2 requires <i>both</i> legs.</span>';
         } else {
           setVerdict(verdict, 'na', '… dial q away from 0 to force K₂ ≠ 1 while keeping K₁ = 1.');
           explain.textContent = 'Mode requires q ≠ 0 so the RN term breaks K₂.';
         }
       } else {
-        const diff = (r * fp) + 0.5 * r * r * fpp;
-        setVerdict(verdict, 'pass', '✓ rigidity lemma: in this family, K₂ ≡ 1  ⇒  K₁ ≡ 1 automatically (no single-leg reverse).');
+        const diff = (r * fp) + 0.5 * r * r * fpp;  // = K₁ − K₂ analytically
+        setVerdict(verdict, 'pass',
+          '✓ rigidity lemma: in this family, K₂ ≡ 1  ⇒  K₁ ≡ 1 automatically (no single-leg reverse).');
         explain.innerHTML =
           '<b>Why the second leg is not independent.</b><br>'+
           'Imposing K₂(r) = 1 for all r means (r·f)′ = 1, so f = 1 + C/r. ' +
@@ -149,9 +167,37 @@
     refresh();
   }
 
+  // ================== BENCH C · Candidate suite ==================
+  function ensureSuiteHost(){
+    let card = qs('bench-suite');
+    if (card) return card;
+    const closure = qs('bench-closure');
+    if (!closure) return null;
+    const figure = document.createElement('figure');
+    figure.className = 'card';
+    figure.innerHTML = '<div class="fc-head"><div class="fc-title">Bench C — candidate-vacuum suite</div><div class="fc-tag">failure gallery</div></div>' +
+      '<div class="fc-body" id="bench-suite"></div>' +
+      '<figcaption>Common spherical profiles are not interchangeable. This bench checks which leg each candidate breaks, so Schwarzschild, RN, de Sitter, and SdS cannot be visually conflated.</figcaption>';
+    closure.parentNode.insertBefore(figure, closure);
+    return qs('bench-suite');
+  }
+
   function initSuite(){
-    const card = qs('bench-suite');
+    const card = ensureSuiteHost();
     if (!card) return;
+    card.innerHTML = `
+      <div class="ctrl" style="border-top:none">
+        <div class="seg" id="bs-presets">
+          <button class="bench-preset" data-cand="schw">Schw</button>
+          <button class="bench-preset" data-cand="rn">RN</button>
+          <button class="bench-preset" data-cand="ds">dS</button>
+          <button class="bench-preset" data-cand="sds">SdS</button>
+          <button class="bench-preset" data-cand="cubic">cubic toy</button>
+        </div>
+        <label><span>probe radius <b id="bs-rv">3.00</b></span><input id="bs-r" type="range" min="1.4" max="8.0" step="0.01" value="3.0"></label>
+      </div>
+      <div class="ac-mini" id="bs-rows"></div>
+      <div id="bs-summary" class="ac-verdict"></div>`;
     const btns = card.querySelectorAll('.bench-preset');
     const rIn = qs('bs-r'), rOut = qs('bs-rv');
     const rows = qs('bs-rows');
@@ -164,6 +210,8 @@
       const cand = CANDS[current];
       const { f, fp, fpp } = mk_f(cand.params);
       const fv = f(r);
+      let classification;
+
       if (fv <= 0){
         rows.innerHTML = '<div class="bench-row bench-row-na">' +
           '<div class="bench-row-lab">'+cand.label+'</div>' +
@@ -178,7 +226,7 @@
       const K2 = K2_of(r, f, fp);
       const { Rtt, Rrr, Rθθ, R } = Ricci(r, f, fp, fpp);
       const dK1 = Math.abs(K1-1), dK2 = Math.abs(K2-1);
-      let classification;
+
       if (dK1 < TOL && dK2 < TOL){
         classification = { kind:'pass', txt:'vacuum ✓ — both legs satisfied, Rμν = 0' };
       } else if (dK1 < TOL && dK2 >= TOL){
@@ -200,15 +248,28 @@
         '<div class="bench-row"><div class="bench-row-lab">'+lab+'</div><div>'+val+'</div><div class="bench-row-tag bench-'+kind+'">'+tag+'</div></div>'
       ).join('');
 
-      setVerdict(summary, classification.kind, cand.label + ' · ' + classification.txt + '  (expected: ' + cand.expect + ')');
+      setVerdict(summary, classification.kind,
+        cand.label + ' · ' + classification.txt + '  (expected: ' + cand.expect + ')');
     }
     btns.forEach(b => b.onclick = () => { current = b.dataset.cand; refresh(); });
     rIn.oninput = refresh;
     refresh();
   }
 
+  // ================== BENCH D · Bidirectional ==================
+  function ensureBidirHost(){
+    let card = qs('bench-bidir');
+    if (card) return card;
+    const fallback = qs('bench-directions');
+    if (fallback){
+      fallback.id = 'bench-bidir';
+      return fallback;
+    }
+    return null;
+  }
+
   function initBidir(){
-    const card = qs('bench-bidir');
+    const card = ensureBidirHost();
     if (!card) return;
     const C1 = qs('bd-C1'), C1v = qs('bd-C1v');
     const C2 = qs('bd-C2'), C2v = qs('bd-C2v');
@@ -239,6 +300,7 @@
       const Kok = dK1 < TOL && dK2 < TOL;
       const Rok = maxR < TOL;
 
+      // forward: K=1 ⇒ R=0
       fwdRes.innerHTML = '|K₁−1| = '+fmt(dK1)+' · |K₂−1| = '+fmt(dK2)+' · max|Rμν| = '+fmt(maxR);
       if (Kok && Rok)
         setVerdict(fwdV, 'pass', '✓ forward holds: K₁=K₂=1 ⇒ Rμν=0 (verified numerically)');
@@ -247,6 +309,7 @@
       else
         setVerdict(fwdV, 'na', '… forward untested: K₁=K₂=1 does not currently hold');
 
+      // reverse: R=0 ⇒ K=1
       revRes.innerHTML = 'max|Rμν| = '+fmt(maxR)+' · |K₁−1| = '+fmt(dK1)+' · |K₂−1| = '+fmt(dK2);
       if (Rok && Kok)
         setVerdict(revV, 'pass', '✓ reverse holds: Rμν=0 ⇒ K₁=K₂=1 (verified numerically)');
@@ -266,14 +329,21 @@
     refresh();
   }
 
+  // ================== BENCH E · Component closure ==================
   function initClosure(){
     const card = qs('bench-closure');
     if (!card) return;
     const C1 = qs('bc-C1'), C1v = qs('bc-C1v');
     const C2 = qs('bc-C2'), C2v = qs('bc-C2v');
     const rIn = qs('bc-r'), rOut = qs('bc-rv');
-    const cells = { Rtt: qs('bc-Rtt'), Rrr: qs('bc-Rrr'), Rθθ: qs('bc-Rθθ'), R: qs('bc-R') };
-    const tags = { Rtt: qs('bc-Rtt-tag'), Rrr: qs('bc-Rrr-tag'), Rθθ: qs('bc-Rθθ-tag'), R: qs('bc-R-tag') };
+    const cells = {
+      Rtt: qs('bc-Rtt'), Rrr: qs('bc-Rrr'),
+      Rθθ: qs('bc-Rθθ'), R: qs('bc-R'),
+    };
+    const tags = {
+      Rtt: qs('bc-Rtt-tag'), Rrr: qs('bc-Rrr-tag'),
+      Rθθ: qs('bc-Rθθ-tag'), R: qs('bc-R-tag'),
+    };
     const closure = qs('bc-closure');
     const overall = qs('bc-overall');
 
@@ -301,13 +371,16 @@
         tags[k].className = 'bench-row-tag bench-' + (z ? 'pass' : 'fail');
       }
 
+      // Closure check: R_rr = -R_tt/f²  and  R = g^μν R_μν
       const Rrr_pred = -Rtt / (fv*fv);
       const R_pred = -fpp(r) - 4*fp(r)/r - 2*(fv-1)/(r*r);
       const closureErr = Math.max(Math.abs(Rrr - Rrr_pred), Math.abs(R - R_pred));
       if (closureErr < 1e-9)
-        setVerdict(closure, 'pass', '✓ component closure: R_rr = −R_tt/f² and R = g^μν R_μν — relations verified to ' + closureErr.toExponential(1));
+        setVerdict(closure, 'pass',
+          '✓ component closure: R_rr = −R_tt/f² and R = g^μν R_μν — relations verified to ' + closureErr.toExponential(1));
       else
-        setVerdict(closure, 'fail', '✗ component closure broken (err '+closureErr.toExponential(2)+') — kernel bug');
+        setVerdict(closure, 'fail',
+          '✗ component closure broken (err '+closureErr.toExponential(2)+') — kernel bug');
 
       if (allZero)
         setVerdict(overall, 'pass', '✓ full vacuum closure: all four components vanish at this point.');
@@ -318,6 +391,7 @@
     refresh();
   }
 
+  // ---------- boot ----------
   function boot(){
     initGating();
     initSingleLeg();
