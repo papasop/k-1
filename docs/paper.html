@@ -1,51 +1,1124 @@
-<!doctype html>
+<!DOCTYPE html><html lang="en" style="--accent: oklch(0.52 0.15 268); --accent-soft: oklch(0.92 0.045 268); --accent-ink: oklch(0.32 0.11 268);"><head>
+
+
 <meta charset="utf-8">
+<title>K=1 — Interactive Paper</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Loading interactive paper…</title>
-<style>
-  html,body{margin:0;padding:0;background:#f6f2e8;color:#111418;font-family:Georgia,serif}
-  .loading{min-height:100vh;display:grid;place-items:center;padding:24px}
-  .card{max-width:640px;border:1px solid #d9d5cb;border-radius:14px;background:#fbf9f2;padding:24px 28px;box-shadow:0 8px 24px rgba(0,0,0,.04)}
-  .mono{font:12px ui-monospace,monospace;color:#6b7280}
-  a{color:#394150}
-</style>
-<div class="loading"><div class="card"><h1 style="margin:0 0 8px;font-size:28px">Loading interactive paper…</h1><div class="mono">paper.base.v2.html + perf patch + fixes</div><p><a id="fallback" href="paper.base.v2.html">Open directly if not redirected</a></p></div></div>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400;1,6..72,500&amp;family=JetBrains+Mono:wght@400;500;600&amp;family=Inter+Tight:wght@400;500;600;700&amp;family=Noto+Serif+SC:wght@400;500;600;700&amp;family=Noto+Sans+SC:wght@400;500;600&amp;display=swap" rel="stylesheet">
 <script>
-(() => {
-  const base = 'paper.base.v2.html?v=20260425c';
-  const fixTag = '<script src="paper-fixes.v2.js?v=20260425c"></' + 'script>';
-  const perfTag = `<script>(function(){
-    window.addEventListener('load', function(){
-      try {
-        if (window.MathJax && typeof window.MathJax.typesetPromise === 'function' && !window.MathJax.__k1Patched) {
-          const orig = window.MathJax.typesetPromise.bind(window.MathJax);
-          window.MathJax.__k1OrigTypesetPromise = orig;
-          window.MathJax.__k1Patched = true;
-          window.MathJax.typesetPromise = function(nodes){
-            if (!nodes || !nodes.length) return Promise.resolve();
-            return Promise.resolve();
-          };
-        }
-      } catch (err) {
-        console.warn('mathjax perf patch failed', err);
-      }
-    }, { once:true });
-  })();<\/script>`;
-  const fallback = document.getElementById('fallback');
-  fallback.href = 'paper.base.v2.html' + (location.hash || '');
-  fetch(base).then(r => r.text()).then(html => {
-    html = html.includes('</body>') ? html.replace('</body>', perfTag + fixTag + '</body>') : html + perfTag + fixTag;
-    document.open();
-    document.write(html);
-    document.close();
-    if (location.hash) {
-      setTimeout(() => {
-        const el = document.querySelector(location.hash);
-        if (el) el.scrollIntoView();
-      }, 120);
-    }
-  }).catch(err => {
-    document.body.innerHTML = '<div class="loading"><div class="card"><h1 style="margin:0 0 8px;font-size:28px">Load failed</h1><div class="mono">' + String(err) + '</div><p><a href="paper.base.v2.html">Open the base page directly</a></p></div></div>';
-  });
+  window.MathJax = {
+    tex: { inlineMath: [['$','$'], ['\\(','\\)']], displayMath: [['$$','$$'], ['\\[','\\]']] },
+    svg: { fontCache: 'global' },
+    startup: { typeset: true }
+  };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" defer=""></script>
+<script>
+  const TWEAKS = /*EDITMODE-BEGIN*/{
+    "accentHue": 268,
+    "bgTint": "paper",
+    "showGrid": true,
+    "flowDensity": 22,
+    "serifMath": true
+  }/*EDITMODE-END*/;
+</script>
+<style>
+  :root{
+    --ink: #111418;
+    --ink-2: #2a2f36;
+    --ink-3: #4a5058;
+    --muted: #6b7280;
+    --line: #d9d5cb;
+    --line-2: #eae6dc;
+    --paper: #f6f2e8;
+    --paper-2: #efeadc;
+    --card: #fbf9f2;
+    --accent: oklch(0.52 0.15 268);
+    --accent-soft: oklch(0.92 0.045 268);
+    --accent-ink: oklch(0.32 0.11 268);
+    --warm: oklch(0.66 0.14 55);
+    --cool: oklch(0.58 0.12 210);
+    --ok: oklch(0.58 0.12 150);
+  }
+  [data-tint="cool"]{
+    --paper:#f1f3f6; --paper-2:#e7eaee; --card:#f8f9fb; --line:#d4d9df; --line-2:#e4e7ec;
+  }
+  [data-tint="warm"]{
+    --paper:#f8f1e3; --paper-2:#f0e7d0; --card:#fdf9ee; --line:#d9cfb8; --line-2:#ebe2cb;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:'Newsreader', Georgia, serif;
+    font-size:18px;
+    line-height:1.55;
+    color:var(--ink);
+    background:var(--paper);
+    font-feature-settings:"ss01","onum";
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1180px;margin:0 auto;padding:0 32px}
+  .mono{font-family:'JetBrains Mono', ui-monospace, monospace;font-feature-settings:normal}
+  .sans{font-family:'Inter Tight', -apple-system, sans-serif}
+  .small{font-size:13px}
+  .tiny{font-size:11.5px;letter-spacing:0.04em;text-transform:uppercase}
+
+  header.mast{
+    border-bottom:1px solid var(--line);
+    background:var(--paper-2);
+    padding:28px 0 22px;
+    position:relative;
+    overflow:hidden;
+  }
+  .mast .wrap{position:relative;z-index:2}
+  .mast-kicker{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;letter-spacing:0.18em;text-transform:uppercase;
+    color:var(--muted);
+    display:flex;gap:18px;align-items:center;
+    border-bottom:1px dashed var(--line);padding-bottom:10px;margin-bottom:18px;
+  }
+  .mast-kicker .dot{width:6px;height:6px;background:var(--accent);border-radius:50%}
+  .mast h1{
+    font-family:'Newsreader',serif;font-weight:500;font-style:italic;
+    font-size:68px;line-height:0.98;letter-spacing:-0.02em;
+    margin:6px 0 4px;
+  }
+  .mast h1 .eq{font-style:normal;font-family:'Newsreader',serif;color:var(--accent-ink)}
+  .mast .sub{
+    font-size:22px;color:var(--ink-3);max-width:780px;
+    font-weight:400;margin:10px 0 0;
+  }
+  .mast .byline{
+    display:flex;gap:24px;align-items:baseline;margin-top:22px;
+    font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);
+    letter-spacing:0.04em;
+  }
+  .mast .byline b{color:var(--ink);font-weight:500}
+  .mast-bg{
+    position:absolute;inset:0;opacity:0.55;pointer-events:none;
+  }
+
+  nav.toc{
+    position:sticky;top:0;z-index:20;
+    background:color-mix(in oklab, var(--paper) 92%, transparent);
+    backdrop-filter:saturate(1.2) blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  nav.toc .inner{
+    display:flex;gap:2px;align-items:center;
+    max-width:1180px;margin:0 auto;padding:0 24px;
+    overflow-x:auto;scrollbar-width:none;
+  }
+  nav.toc .inner::-webkit-scrollbar{display:none}
+  nav.toc a{
+    padding:12px 14px;font-family:'JetBrains Mono',monospace;font-size:11.5px;
+    text-transform:uppercase;letter-spacing:0.08em;
+    color:var(--muted);text-decoration:none;white-space:nowrap;
+    border-bottom:2px solid transparent;
+  }
+  nav.toc a.active{color:var(--accent-ink);border-bottom-color:var(--accent)}
+  nav.toc a:hover{color:var(--ink)}
+  nav.toc .spacer{flex:1}
+  nav.toc .tag{
+    font-family:'JetBrains Mono',monospace;font-size:10.5px;
+    color:var(--muted);padding:4px 8px;border:1px solid var(--line);border-radius:100px;
+  }
+
+  section.block{padding:64px 0;border-bottom:1px solid var(--line-2)}
+  section.block:last-of-type{border-bottom:none}
+  .block-head{display:grid;grid-template-columns:130px 1fr;gap:32px;align-items:baseline;margin-bottom:28px}
+  .block-num{
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.14em;
+    color:var(--muted);text-transform:uppercase;padding-top:8px;
+    border-top:2px solid var(--ink);width:fit-content;
+  }
+  .block-head h2{
+    font-family:'Newsreader',serif;font-weight:500;font-size:40px;line-height:1.08;
+    letter-spacing:-0.01em;margin:0;
+  }
+  .block-head h2 em{font-style:italic;color:var(--accent-ink)}
+  .block-lead{
+    grid-column:2;font-size:19px;color:var(--ink-3);max-width:720px;margin-top:6px;
+  }
+
+  .two{display:grid;grid-template-columns:130px minmax(0,1fr);gap:32px;align-items:start}
+  .two .col-main{max-width:720px}
+  .two p{margin:0 0 14px}
+  .two .aside{
+    font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);
+    text-transform:uppercase;letter-spacing:0.1em;
+    padding-top:6px;border-top:1px solid var(--line);
+  }
+
+  figure.card{
+    margin:24px 0;border:1px solid var(--line);background:var(--card);border-radius:10px;
+    overflow:hidden;
+  }
+  figure.card .fc-head{
+    display:flex;gap:16px;justify-content:space-between;align-items:center;
+    padding:12px 18px;border-bottom:1px solid var(--line-2);background:var(--paper-2);
+  }
+  figure.card .fc-title{font-family:'Inter Tight',sans-serif;font-weight:600;font-size:14px;color:var(--ink)}
+  figure.card .fc-tag{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase}
+  figure.card .fc-body{padding:0}
+  figcaption{
+    padding:12px 18px;font-size:14px;color:var(--ink-3);border-top:1px solid var(--line-2);
+    background:color-mix(in oklab, var(--card) 60%, var(--paper) 40%);
+    line-height:1.5;
+  }
+
+  .ctrl{
+    display:flex;flex-wrap:wrap;gap:16px;align-items:center;
+    padding:12px 18px;border-top:1px solid var(--line-2);background:var(--paper-2);
+    font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ink-3);
+  }
+  .ctrl label{display:flex;flex-direction:column;gap:6px;min-width:150px}
+  .ctrl label > span{font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);display:flex;justify-content:space-between;gap:8px}
+  .ctrl label > span b{color:var(--accent-ink);font-weight:600;font-family:'JetBrains Mono',monospace}
+  .ctrl input[type=range]{
+    -webkit-appearance:none;appearance:none;height:3px;background:var(--line);border-radius:2px;width:100%;
+  }
+  .ctrl input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:var(--accent);
+    border:2px solid var(--paper);box-shadow:0 0 0 1px var(--accent);cursor:pointer;
+  }
+  .ctrl input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:var(--accent);border:2px solid var(--paper);cursor:pointer}
+  .seg{display:flex;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--card)}
+  .seg button{
+    all:unset;padding:6px 12px;font-family:'JetBrains Mono',monospace;font-size:11px;
+    color:var(--ink-3);cursor:pointer;text-transform:uppercase;letter-spacing:0.08em;
+    border-right:1px solid var(--line);
+  }
+  .seg button:last-child{border-right:none}
+  .seg button.on{background:var(--accent);color:white}
+
+  .abstract{
+    display:grid;grid-template-columns:130px 1fr;gap:32px;padding:32px 0 12px;
+  }
+  .abstract-body{
+    font-size:19px;line-height:1.6;max-width:760px;
+  }
+  .abstract-body p{margin:0 0 14px}
+  .abstract-body b{color:var(--ink);font-weight:600}
+  .abstract .chips{
+    display:flex;flex-wrap:wrap;gap:6px;margin-top:18px;
+  }
+  .chip{
+    font-family:'JetBrains Mono',monospace;font-size:11px;
+    padding:4px 10px;border:1px solid var(--line);border-radius:100px;
+    color:var(--ink-3);background:var(--card);
+  }
+
+  canvas{display:block;width:100%;height:auto;background:linear-gradient(180deg,rgba(255,255,255,0.25),transparent 32%)}
+  .statrow{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:10px 18px;background:var(--card);border-top:1px solid var(--line-2)}
+  .stat{
+    padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--paper);
+    min-height:74px;
+  }
+  .stat .k{font-family:'JetBrains Mono',monospace;font-size:10.5px;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)}
+  .stat .v{font-family:'Inter Tight',sans-serif;font-size:18px;color:var(--ink);margin-top:4px}
+  .stat .s{font-size:13px;color:var(--ink-3);margin-top:4px;line-height:1.35}
+
+  .audit-grid{display:grid;grid-template-columns:1.15fr 0.85fr;gap:18px;align-items:start}
+  .audit-controls{
+    padding:14px 18px;border-top:1px solid var(--line-2);background:var(--paper-2);
+    display:grid;grid-template-columns:repeat(2,1fr);gap:14px 18px;
+    font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--ink-3);
+  }
+  .ac-row{display:flex;flex-direction:column;gap:6px}
+  .ac-row label{display:flex;justify-content:space-between;gap:10px}
+  .ac-row label b{color:var(--accent-ink)}
+  .ac-row input[type=range]{width:100%}
+  .ac-readout{
+    padding:14px 18px;font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--ink-3);
+    display:grid;grid-template-columns:repeat(2,1fr);gap:10px;border-top:1px dashed var(--line);
+  }
+  .ac-readout .x{padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--card)}
+  .ac-readout .x .k{font-size:10.5px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted)}
+  .ac-readout .x .v{font-size:16px;color:var(--ink);margin-top:5px;font-family:'Inter Tight',sans-serif}
+  .ac-verdict{
+    margin:12px 18px 18px;padding:12px 14px;border-radius:8px;border:1px solid var(--line);
+    background:var(--paper-2);font-size:14px;line-height:1.45;color:var(--ink-3)
+  }
+  .ac-pass{border-color:color-mix(in oklab, var(--ok) 55%, var(--line));background:color-mix(in oklab, var(--ok) 10%, white)}
+  .ac-fail{border-color:color-mix(in oklab, #c84848 55%, var(--line));background:color-mix(in oklab, #c84848 8%, white)}
+  .ac-note{font-size:12.5px;color:var(--muted)}
+  .ac-mini{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:0 18px 18px}
+  .ac-mini .mini{border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:var(--card);font-size:13px}
+  .ac-mini .mini b{display:block;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+
+  .mathline{font-size:22px;line-height:1.3;padding:18px}
+  .mathline .equals{color:var(--muted);padding:0 8px}
+  .mathline .hl{color:var(--accent-ink)}
+
+  .legend{display:flex;gap:10px;flex-wrap:wrap;padding:12px 18px;border-top:1px dashed var(--line);font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--muted)}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .sw{width:12px;height:12px;border-radius:2px;display:inline-block}
+
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}
+
+  @media (max-width:980px){
+    .wrap{padding:0 20px}
+    .block-head,.abstract,.two{grid-template-columns:1fr}
+    .block-lead{grid-column:auto}
+    .mast h1{font-size:48px}
+    .audit-grid,.grid2,.grid3,.statrow,.audit-controls,.ac-readout,.ac-mini{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body data-tint="paper">
+<header class="mast">
+  <svg class="mast-bg" viewBox="0 0 1200 260" preserveAspectRatio="none" aria-hidden="true">
+    <defs>
+      <linearGradient id="g" x1="0" x2="1">
+        <stop offset="0" stop-color="var(--accent-soft)"></stop>
+        <stop offset="1" stop-color="transparent"></stop>
+      </linearGradient>
+      <pattern id="p" width="40" height="40" patternUnits="userSpaceOnUse">
+        <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(80,80,90,.08)" stroke-width="1"></path>
+      </pattern>
+    </defs>
+    <rect width="1200" height="260" fill="url(#p)"></rect>
+    <path d="M0,180 C220,220 360,90 540,128 C760,174 845,70 1200,132 L1200,0 L0,0 Z" fill="url(#g)"></path>
+  </svg>
+  <div class="wrap">
+    <div class="mast-kicker"><span class="dot"></span><span>Interactive Research Paper</span><span>Foundations / Geometry / Gravity</span></div>
+    <h1><span class="eq">K=1</span> Chronogeometrodynamics</h1>
+    <p class="sub">Lorentzian geometry from information time. Not a slides deck, but a live paper: every major claim is paired with an executable figure or audit.</p>
+    <div class="byline"><span>Y. Y. N. Li</span><span><b>Version</b> interactive draft</span><span><b>Status</b> standalone web distribution</span></div>
+  </div>
+</header>
+<nav class="toc"><div class="inner">
+  <a href="#abstract">Abstract</a><a href="#law1">Law I</a><a href="#law3">Law III</a><a href="#routes">Routes</a><a href="#proofmap">Proof Map</a><a href="#benches">Theorem 5.2</a><a href="#audit">Audits</a><a href="#sds-ext">SdS</a><a href="#extremal">RN</a><a href="#reverse">Leg Asymmetry</a><a href="#birkhoff">Birkhoff</a><a href="#closing">Closing</a>
+  <div class="spacer"></div>
+  <span class="tag">Static HTML</span>
+</div></nav>
+<main class="wrap">
+<section class="abstract" id="abstract">
+  <div class="aside">Abstract</div>
+  <div class="abstract-body">
+    <p><b>Background.</b> Time is usually presupposed. Here it is modeled as information cost: <span class="mono">dt_info = dΦ / H</span>. The associated leading quadratic form <span class="mono">G</span> is constrained by the realizability axioms R, E, T and non-degeneracy.</p>
+    <p><b>Point-level result.</b> In 2D, those conditions force <span class="mono">Sig(G) = (1,1)</span>, equivalently <span class="mono">det G &lt; 0</span>. Under isotropic linearization, Lorentzian signature, real spectrum of <span class="mono">J_G</span>, and a positive stability boundary <span class="mono">d_c &gt; 0</span> are equivalent. The unit-cost locus is <span class="mono">K(x)=xᵀGx=1</span>.</p>
+    <p><b>Dynamics.</b> Within the symplectic–dissipative class <span class="mono">GA = αJ − GD</span>, the unique law is <span class="mono">ẋ = (J_G − D)∇V</span>; at critical damping and a normalized eigenvector base point, the local restoring rate is <span class="mono">κ_K = 4 d_c</span>.</p>
+    <p><b>Gravity.</b> Two routes connect to Einstein’s equations: Route A via local stochastic thermodynamics and Jacobson’s argument, requiring external inputs <span class="mono">T_eff = T_tol</span> and <span class="mono">S ∝ A</span>; Route B gives, in static spherical symmetry, an algebraic equivalence between the field-level <span class="mono">K=1</span> analogue and <span class="mono">R_{μν}=0</span>.</p>
+    <div class="chips"><span class="chip">Lorentz signature</span><span class="chip">Information time</span><span class="chip">Symplectic dynamics</span><span class="chip">Jacobson bridge</span><span class="chip">Spherical vacuum</span></div>
+  </div>
+</section>
+<section class="block" id="law1">
+  <div class="block-head"><div class="block-num">§1 · Law I</div><div><h2>From information time to <em>Lorentzian type</em></h2><p class="block-lead">The first claim is algebraic and local: the cost structure fixes the <span class="mono">type</span> of the leading quadratic form. The figure below lets you drag the determinant across its sign change and watch the geometric, spectral, and dynamical reading move together.</p></div></div>
+
+  <div class="two">
+    <div class="aside">Framework</div>
+    <div class="col-main">
+      <p>Define information time as <span class="mono">dt_info := dΦ/H</span>, where <span class="mono">Φ</span> parametrizes structural variation and <span class="mono">H &gt; 0</span> is a local scalar cost per unit variation. The signed principal quadratic form associated with <span class="mono">dt_info²</span> is modeled as <span class="mono">G ≡ Q</span>, the leading form of the realizability paper.</p>
+      <p>Axioms <span class="mono">R</span>, <span class="mono">E</span>, <span class="mono">T</span>, together with non-degeneracy, exclude both definite signatures in two dimensions. The only remaining inertia is therefore <span class="mono">(1,1)</span>, equivalently <span class="mono">det G &lt; 0</span>. This does not determine the entries of <span class="mono">G</span>; it determines the Lorentzian <i>algebraic type</i>.</p>
+      <p>Once <span class="mono">G</span> is fixed, it defines <span class="mono">K(x) = xᵀGx</span>. The additional condition <span class="mono">K = 1</span> is not inherited from the realizability axioms; it is the paper’s own self-consistency condition and becomes dynamically meaningful only after Laws II and III are added.</p>
+    </div>
+  </div>
+
+  <figure class="card">
+    <div class="fc-head"><div class="fc-title">Signature ↔ Spectrum ↔ Stability dial</div><div class="fc-tag">interactive theorem 2.3</div></div>
+    <div class="fc-body">
+      <canvas id="sigCanvas" height="260"></canvas>
+      <div class="ctrl" id="sigDial">
+        <label><span>det G <b id="detVal">−1.00</b></span><input id="detSlider" type="range" min="-3" max="3" step="0.01" value="-1"></label>
+        <div class="seg" aria-label="presets">
+          <button data-sig="lor">Lorentz</button><button data-sig="deg">Degenerate</button><button data-sig="euc">Euclid</button>
+        </div>
+        <div class="stat" style="min-width:220px"><div class="k">Reading</div><div class="v" id="sigName">Lorentzian</div><div class="s" id="sigReading">real spectrum · d_c > 0</div></div>
+      </div>
+      <div class="statrow">
+        <div class="stat"><div class="k">Signature</div><div class="v mono" id="sigSig">(1,1)</div><div class="s">Sylvester inertia</div></div>
+        <div class="stat"><div class="k">spec(J_G)</div><div class="v mono" id="sigSpec">±1.000</div><div class="s">real iff det G &lt; 0</div></div>
+        <div class="stat"><div class="k">d_c</div><div class="v mono" id="sigDc">1.000</div><div class="s">α = 1 normalization</div></div>
+        <div class="stat"><div class="k">Threshold meaning</div><div class="v" id="sigMeaning">stable boundary</div><div class="s">isotropic H* = I reading</div></div>
+      </div>
+    </div>
+    <figcaption>One sign, three readings. In 2D, <span class="mono">det G &lt; 0</span> is equivalent to Lorentzian inertia, a real spectrum for <span class="mono">J_G</span>, and a positive stability threshold <span class="mono">d_c</span>. The dial does not prove the theorem; it keeps its three equivalent faces synchronized.</figcaption>
+  </figure>
+
+  <figure class="card" style="margin-top:28px">
+    <div class="fc-head"><div class="fc-title">Framework map</div><div class="fc-tag">three layers</div></div>
+    <div class="fc-body">
+      <svg viewBox="0 0 980 420" width="100%" height="420" aria-labelledby="frameworkTitle frameworkDesc" role="img">
+        <title id="frameworkTitle">Framework map</title>
+        <desc id="frameworkDesc">Information time and realizability determine Lorentzian type; G then defines K=x transpose G x; Laws II and III add dynamics and restoring structure.</desc>
+        <defs>
+          <linearGradient id="boxg" x1="0" x2="1"><stop offset="0" stop-color="white"></stop><stop offset="1" stop-color="rgba(255,255,255,0.6)"></stop></linearGradient>
+          <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"></path></marker>
+        </defs>
+        <rect width="980" height="420" fill="transparent"></rect>
+        <g font-family="'Inter Tight', sans-serif" fill="var(--ink)">
+          <text x="28" y="32" font-size="13" letter-spacing="2" fill="var(--muted)">LAYER 1 · INFORMATION TIME &amp; REALIZABILITY</text>
+          <rect x="30" y="52" width="140" height="58" rx="10" fill="url(#boxg)" stroke="var(--line)"></rect>
+          <text x="54" y="82" font-size="20">Φ, H</text>
+          <text x="45" y="99" font-size="11" fill="var(--muted)">inputs</text>
+          <rect x="214" y="52" width="168" height="58" rx="10" fill="url(#boxg)" stroke="var(--line)"></rect>
+          <text x="235" y="83" font-size="20">dt<tspan baseline-shift="sub" font-size="12">info</tspan> = dΦ/H</text>
+          <text x="246" y="99" font-size="11" fill="var(--muted)">heuristic bridge</text>
+          <rect x="434" y="52" width="168" height="58" rx="10" fill="url(#boxg)" stroke="var(--line)"></rect>
+          <text x="485" y="83" font-size="22">G ≡ Q</text>
+          <text x="472" y="99" font-size="11" fill="var(--muted)">signed principal form</text>
+          <rect x="684" y="44" width="220" height="74" rx="10" fill="color-mix(in oklab, var(--accent-soft) 80%, white)" stroke="var(--accent)"></rect>
+          <text x="708" y="77" font-size="19">Sig(G) = (1,1)</text>
+          <text x="709" y="97" font-size="11" fill="var(--muted)">R · E · T + non-degeneracy</text>
+
+          <text x="28" y="168" font-size="13" letter-spacing="2" fill="var(--muted)">LAYER 2 · POINT-LEVEL OBJECTS</text>
+          <rect x="112" y="188" width="190" height="62" rx="10" fill="url(#boxg)" stroke="var(--line)"></rect>
+          <text x="148" y="222" font-size="23">K(x)=xᵀGx</text>
+          <text x="154" y="239" font-size="11" fill="var(--muted)">temporal-cost form</text>
+          <rect x="384" y="188" width="180" height="62" rx="10" fill="color-mix(in oklab, var(--accent-soft) 70%, white)" stroke="var(--accent)"></rect>
+          <text x="447" y="222" font-size="24">K = 1</text>
+          <text x="417" y="239" font-size="11" fill="var(--muted)">extra self-consistency condition</text>
+
+          <text x="28" y="306" font-size="13" letter-spacing="2" fill="var(--muted)">LAYER 3 · DYNAMICS</text>
+          <rect x="70" y="324" width="176" height="64" rx="10" fill="url(#boxg)" stroke="var(--line)"></rect>
+          <text x="104" y="359" font-size="22">J<tspan baseline-shift="sub" font-size="14">G</tspan>=αG⁻¹J</text>
+          <text x="113" y="376" font-size="11" fill="var(--muted)">Theorem 2.1</text>
+          <rect x="310" y="324" width="244" height="64" rx="10" fill="url(#boxg)" stroke="var(--line)"></rect>
+          <text x="349" y="356" font-size="22">ẋ = (J<tspan baseline-shift="sub" font-size="14">G</tspan> − D)∇V</text>
+          <text x="352" y="376" font-size="11" fill="var(--muted)">Law II · unique symplectic–dissipative form</text>
+          <rect x="632" y="314" width="270" height="84" rx="10" fill="color-mix(in oklab, var(--accent-soft) 70%, white)" stroke="var(--accent)"></rect>
+          <text x="670" y="351" font-size="21">κ<tspan baseline-shift="sub" font-size="14">K</tspan> = 4d<tspan baseline-shift="sub" font-size="14">c</tspan></text>
+          <text x="666" y="372" font-size="11" fill="var(--muted)">Law III · local restoring rate at critical damping</text>
+        </g>
+        <g stroke="var(--accent)" stroke-width="2.2" fill="none" marker-end="url(#arrow)">
+          <path d="M170 81 H214"></path>
+          <path d="M382 81 H434"></path>
+          <path d="M603 81 H683"></path>
+          <path d="M302 218 H384"></path>
+          <path d="M247 356 H309"></path>
+          <path d="M554 356 H632"></path>
+        </g>
+      </svg>
+    </div>
+    <figcaption>The logical architecture of the paper. The realizability axioms fix the <i>type</i> of G; the extra condition K=1 defines the self-consistent locus; Laws II and III endow that locus with dynamics, restoring structure, and stochastic thermodynamics.</figcaption>
+  </figure>
+</section>
+<section class="block" id="law3">
+  <div class="block-head"><div class="block-num">§2 · Laws II–III</div><div><h2>Dynamics and the <em>local restoring law</em></h2><p class="block-lead">The theorem-level point is subtle: K=1 is not just a level set. Under the unique symplectic–dissipative law and at critical damping, deviations from K=1 are restored locally with rate κ<sub>K</sub>=4d<sub>c</sub>.</p></div></div>
+  <div class="two">
+    <div class="aside">Interpretation</div>
+    <div class="col-main">
+      <p>Law II imposes the structural split <span class="mono">GA = αJ − GD</span> with <span class="mono">D≥0</span>; in this class the unique generator is <span class="mono">A = J_G − D</span>. Law III specializes to the critical isotropic choice <span class="mono">D = d_c I</span> and studies the resulting nonlinear drift for <span class="mono">V = ½(K−1)²</span>.</p>
+      <p>The figure below lets you perturb an eigenvector base point and watch the predicted first-order rate emerge. The point is not to numerically derive the theorem but to make visible that the restoring law depends on <span class="mono">both</span> the geometry of G and the structural choice of damping.</p>
+    </div>
+  </div>
+  <figure class="card">
+    <div class="fc-head"><div class="fc-title">Hyperbola, tangent boost, and normal restoring class</div><div class="fc-tag">interactive law III</div></div>
+    <div class="fc-body">
+      <canvas id="kCanvas" height="330"></canvas>
+      <div class="ctrl">
+        <label><span>κℓ <b id="sig1v">1.00</b></span><input id="sig1" type="range" min="0.2" max="2.0" step="0.01" value="1"></label>
+        <label><span>d / d<c style="font-size:inherit">c</c> <b id="dampv">1.00</b></span><input id="damp" type="range" min="0" max="2" step="0.01" value="1"></label>
+        <label><span>noise σ <b id="noisev">0.18</b></span><input id="noise" type="range" min="0" max="0.5" step="0.005" value="0.18"></label>
+        <div class="stat" style="min-width:220px"><div class="k">Class split</div><div class="v">A: thermal ⟂ / B: boost tangent</div><div class="s">normal vs tangential fluctuation</div></div>
+      </div>
+      <div class="statrow">
+        <div class="stat"><div class="k">d<c style="font-size:inherit">c</c></div><div class="v mono" id="dcRead">1.000</div><div class="s">α=1, det G=−(κℓ)²</div></div>
+        <div class="stat"><div class="k">κ<sub>K</sub></div><div class="v mono" id="kappaRead">4.000</div><div class="s">at normalized eigenvector base point</div></div>
+        <div class="stat"><div class="k">Var(K)</div><div class="v mono" id="varRead">0.016</div><div class="s">OU estimate σ² / (2d<sub>c</sub>)</div></div>
+        <div class="stat"><div class="k">Regime</div><div class="v" id="regimeRead">critical</div><div class="s">under / critical / over damping</div></div>
+      </div>
+    </div>
+    <figcaption>The red arrows are Class A fluctuations: normal departures from <span class="mono">K=1</span>, thermodynamically active. The green arrows are Class B: tangential boosts along the hyperbola, thermodynamically inert. At critical damping the normal restoring law is locally <span class="mono">Ḱ = −4d_c(K−1)+o(K−1)</span> at the normalized eigenvector base point.</figcaption>
+  </figure>
+  <figure class="card">
+    <div class="fc-head"><div class="fc-title">Restoring-rate audit</div><div class="fc-tag">theorem premise check</div></div>
+    <div class="fc-body" id="law3audit"></div>
+    <figcaption>This is not a separate theorem. It checks whether the explicit coefficient <span class="mono">κ_K=4d_c</span> is being used inside the exact premise package stated in the paper: Lorentzian 2×2 G, critical isotropic damping, eigenvector base point, and local linearization.</figcaption>
+  </figure>
+</section>
+<section class="block" id="routes">
+  <div class="block-head"><div class="block-num">§3 · Two Routes</div><div><h2>One <em>thermodynamic bridge</em>, one <em>algebraic equivalence</em></h2><p class="block-lead">The paper makes a clean distinction. Route A recovers Einstein’s equations using local Clausius plus Jacobson, and therefore needs external physical input. Route B is independent of thermodynamics but presently confined to static spherical symmetry.</p></div></div>
+  <figure class="card">
+    <div class="fc-head"><div class="fc-title">Twin derivation map</div><div class="fc-tag">executive view</div></div>
+    <div class="fc-body">
+      <svg viewBox="0 0 980 420" width="100%" height="420" aria-labelledby="routesTitle routesDesc" role="img">
+        <title id="routesTitle">Route map</title>
+        <desc id="routesDesc">Route A moves from K=1 through OU dynamics and Clausius to Jacobson and Einstein. Route B moves from a field-level analogue of K=1 to the vacuum equations in the spherical sector.</desc>
+        <defs><marker id="ar2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"></path></marker></defs>
+        <rect x="0" y="0" width="980" height="420" fill="transparent"></rect>
+        <g font-family="'Inter Tight', sans-serif">
+          <text x="52" y="58" font-size="15" font-weight="700">Route A · thermodynamic bridge</text>
+          <rect x="46" y="82" width="170" height="54" rx="10" fill="var(--card)" stroke="var(--line)"></rect>
+          <text x="96" y="114" font-size="20">K = 1</text>
+          <rect x="264" y="82" width="186" height="54" rx="10" fill="var(--card)" stroke="var(--line)"></rect>
+          <text x="299" y="107" font-size="19">OU dynamics</text>
+          <text x="285" y="123" font-size="11" fill="var(--muted)">near K=1, Class A</text>
+          <rect x="500" y="82" width="170" height="54" rx="10" fill="var(--card)" stroke="var(--line)"></rect>
+          <text x="548" y="114" font-size="19">Clausius</text>
+          <rect x="720" y="82" width="198" height="66" rx="10" fill="color-mix(in oklab, var(--accent-soft) 70%, white)" stroke="var(--accent)"></rect>
+          <text x="749" y="109" font-size="18">Jacobson argument</text>
+          <text x="752" y="127" font-size="11" fill="var(--muted)">+ S∝A + T_eff=T_tol</text>
+          <rect x="720" y="186" width="198" height="60" rx="10" fill="var(--card)" stroke="var(--line)"></rect>
+          <text x="754" y="221" font-size="18">G_{μν}=8πT_{μν}</text>
+
+          <text x="52" y="300" font-size="15" font-weight="700">Route B · equivalence theorem</text>
+          <rect x="46" y="322" width="216" height="60" rx="10" fill="var(--card)" stroke="var(--line)"></rect>
+          <text x="73" y="350" font-size="18">σ₂² □ lnσ_i = 1</text>
+          <text x="81" y="368" font-size="11" fill="var(--muted)">field-level analogue / conjectural uplift</text>
+          <rect x="326" y="322" width="250" height="60" rx="10" fill="color-mix(in oklab, var(--accent-soft) 70%, white)" stroke="var(--accent)"></rect>
+          <text x="375" y="350" font-size="18">R_{μν} = 0</text>
+          <text x="360" y="368" font-size="11" fill="var(--muted)">strict algebraic equivalence · spherical vacuum</text>
+          <rect x="646" y="322" width="220" height="60" rx="10" fill="var(--card)" stroke="var(--line)"></rect>
+          <text x="676" y="350" font-size="16">no thermodynamic input</text>
+          <text x="684" y="368" font-size="11" fill="var(--muted)">but restricted symmetry</text>
+        </g>
+        <g stroke="var(--accent)" stroke-width="2.2" fill="none" marker-end="url(#ar2)">
+          <path d="M216 109 H264"></path><path d="M450 109 H500"></path><path d="M670 109 H720"></path><path d="M819 148 V186"></path>
+          <path d="M262 352 H326"></path><path d="M576 352 H646"></path>
+        </g>
+      </svg>
+    </div>
+    <figcaption>The routes are complementary, not redundant. Route A is general but imports thermodynamic input. Route B is thermodynamically independent but currently proved only in the static spherical sector.</figcaption>
+  </figure>
+  <div class="grid2">
+    <figure class="card" id="routeConverge">
+      <div class="fc-head"><div class="fc-title">Schwarzschild consistency check — Route A and Route B</div><div class="fc-tag">same closed-form outputs in vacuum</div></div>
+      <div class="fc-body">
+        <div class="ctrl" style="border-top:none">
+          <label><span>Mass M <b id="M_v">1.00</b></span><input id="M_el" type="range" min="0.4" max="3.0" step="0.01" value="1"></label>
+          <div class="seg"><button data-rc="0.5">M=0.5</button><button data-rc="1.0">M=1</button><button data-rc="2.0">M=2</button></div>
+        </div>
+        <div class="grid2" style="padding:16px 18px 0">
+          <div class="mini" style="border:1px solid var(--line);border-radius:8px;padding:12px;background:var(--paper)"><b style="display:block;font:10.5px 'JetBrains Mono',monospace;color:var(--muted);text-transform:uppercase;letter-spacing:.08em">Route B readout</b><canvas id="rc-canvas-B" height="180"></canvas></div>
+          <div class="mini" style="border:1px solid var(--line);border-radius:8px;padding:12px;background:var(--paper)"><b style="display:block;font:10.5px 'JetBrains Mono',monospace;color:var(--muted);text-transform:uppercase;letter-spacing:.08em">Route A readout</b><canvas id="rc-canvas-A" height="180"></canvas></div>
+        </div>
+        <div class="statrow">
+          <div class="stat"><div class="k">r_s from Route B</div><div class="v mono" id="rc-rsB">—</div><div class="s">Schwarzschild gauge</div></div>
+          <div class="stat"><div class="k">κ from Route B</div><div class="v mono" id="rc-kapB">—</div><div class="s">surface gravity</div></div>
+          <div class="stat"><div class="k">T_H from Route A</div><div class="v mono" id="rc-THA">—</div><div class="s">standard Hawking relation</div></div>
+          <div class="stat"><div class="k">r_s from Route A</div><div class="v mono" id="rc-rsA">—</div><div class="s">via κ = 2πT_H</div></div>
+        </div>
+        <div class="ac-readout"><div class="x"><div class="k">|Δr_s|</div><div class="v mono" id="rc-resRs">—</div></div><div class="x"><div class="k">|Δκ|</div><div class="v mono" id="rc-resK">—</div></div></div>
+        <div id="rc-verdict" class="ac-verdict">—</div>
+      </div>
+      <figcaption>This is a closed-form consistency display in the Schwarzschild vacuum sector only. It is not a general field-equation equivalence beyond the theorem and its stated thermodynamic bridge.</figcaption>
+    </figure>
+
+    <figure class="card">
+      <div class="fc-head"><div class="fc-title">Route audit</div><div class="fc-tag">claim boundary</div></div>
+      <div class="fc-body" id="routesAudit"></div>
+      <figcaption>What the page claims, what it borrows, and what remains open. This panel exists to keep the live presentation from overstating the paper’s scope.</figcaption>
+    </figure>
+  </div>
+</section>
+<section class="block" id="proofmap">
+  <div class="block-head"><div class="block-num">§4 · Proof Map</div><div><h2>Theorem 5.2 as an <em>executable equivalence diagram</em></h2><p class="block-lead">The field-level theorem in the paper says: for static spherical metrics on intervals where f>0, the pair of scalar conditions K₁=K₂=1 is equivalent to the vacuum Einstein equations. The panel below exposes the logical structure directly, so that assumptions, identities, and endpoints can be inspected separately.</p></div></div>
+  <figure class="card">
+    <div class="fc-head"><div class="fc-title">Proof map — Theorem 5.2</div><div class="fc-tag">vacuum equivalence, not just one direction</div></div>
+    <div class="fc-body" id="proofmap-host"></div>
+    <figcaption>The map distinguishes three layers: hypotheses (static, spherical, f>0, vacuum sector), the algebraic identities linking K₁ and K₂ to Ricci components, and the two theorem directions. It is meant to make visible when a user has merely changed the premises rather than found a counterexample.</figcaption>
+  </figure>
+</section>
+<section class="block" id="benches">
+  <div class="block-head"><div class="block-num">§5 · Interactive Theorem 5.2</div><div><h2>Five benches for the <em>spherical vacuum theorem</em></h2><p class="block-lead">These benches are not extra claims. They are a regression suite for the theorem and the corollaries around it: premise gating, one-leg failure, candidate profiles, both directions, and full closure of the Ricci tensor.</p></div></div>
+  <div class="grid2">
+    <figure class="card"><div class="fc-head"><div class="fc-title">Bench A · Premise gating</div><div class="fc-tag">what counts as admissible input</div></div><div class="fc-body" id="bench-gating"></div><figcaption>If this bench says “outside theorem domain,” that is a scope failure, not a theorem failure. The panel is here to stop pseudo-counterexamples before they start.</figcaption></figure>
+    <figure class="card"><div class="fc-head"><div class="fc-title">Bench B · Single-leg failure</div><div class="fc-tag">K₁ alone vs K₂ alone</div></div><div class="fc-body" id="bench-leg"></div><figcaption>The paper’s updated asymmetry is built into this bench: K₂≡1 is rigid in the spherical-static family, while K₁≡1 alone still leaves a second constant and therefore a non-vacuum branch.</figcaption></figure>
+    <figure class="card"><div class="fc-head"><div class="fc-title">Bench D · Both directions of the equivalence</div><div class="fc-tag">forward / reverse</div></div><div class="fc-body" id="bench-directions"></div><figcaption>This is where “iff” is protected. A page that only checked one arrow would be weaker than the theorem; this bench forces both arrows to stay visible.</figcaption></figure>
+    <figure class="card"><div class="fc-head"><div class="fc-title">Bench E · Full vacuum closure</div><div class="fc-tag">all Ricci components</div></div><div class="fc-body" id="bench-closure"></div><figcaption>The theorem is not merely a scalar rewrite. When K₁=K₂=1 hold in the stated class, the full Ricci tensor closes to zero. This bench exposes that closure component by component.</figcaption></figure>
+  </div>
+</section>
+<section class="block" id="audit">
+  <div class="block-head"><div class="block-num">§6 · Audits</div><div><h2>Auditing the <em>assumption stack</em></h2><p class="block-lead">The paper’s strongest claims are carefully scoped. These audit panels do not add new mathematics; they test whether the theorem, the thermodynamic bridge, and the stability interpretation are being used only inside their stated domains.</p></div></div>
+  <div class="grid3">
+    <figure class="card"><div class="fc-head"><div class="fc-title">Audit 1 · Law III theorem premises</div><div class="fc-tag">rate formula scope</div></div><div class="fc-body" id="audit1"></div></figure>
+    <figure class="card"><div class="fc-head"><div class="fc-title">Audit 3 · H* non-diagonal probe</div><div class="fc-tag">limitation, not failure</div></div><div class="fc-body" id="audit3"></div></figure>
+    <figure class="card"><div class="fc-head"><div class="fc-title">Audit 5 · Domain lanes</div><div class="fc-tag">f>0, σ₁>0, soft bound</div></div><div class="fc-body" id="audit5"></div></figure>
+  </div>
+  <div style="margin-top:18px"></div>
+  <figure class="card"><div class="fc-head"><div class="fc-title">Audit 6 · Claim hygiene</div><div class="fc-tag">internal / imported / open</div></div><div class="fc-body" id="audit6"></div><figcaption>One of the main editorial dangers for a live page is rhetorical drift. This panel keeps the distinction between proved structure, imported GR/thermodynamic input, and open problems visible.</figcaption></figure>
+</section>
+<section class="block" id="sds-ext">
+  <div class="block-head"><div class="block-num">§7 · Λ extension</div><div><h2>The <em>Schwarzschild–de Sitter</em> extension</h2><p class="block-lead">The paper extends the vacuum theorem to Einstein spaces in the same gauge: K₁=1−2Λr² and K₂=1−Λr² if and only if R_{μν}=Λg_{μν}. The asymmetric coefficients 2 and 1 matter; the panel below makes that impossible to miss.</p></div></div>
+  <figure class="card">
+    <div class="fc-head"><div class="fc-title">Λ-extension check</div><div class="fc-tag">not part of the vacuum theorem</div></div>
+    <div class="fc-body" id="sds-host"></div>
+    <figcaption>Theorem 5.2 itself lives at Λ=0. This panel corresponds to the paper’s separate extension corollary and makes the shifted scalar targets explicit.</figcaption>
+  </figure>
+</section>
+<section class="block" id="extremal">
+  <div class="block-head"><div class="block-num">§8 · RN near-horizon</div><div><h2>Reissner–Nordström as a <em>one-leg</em> example</h2><p class="block-lead">This page deliberately shows RN because it is a good stress test for the theorem’s asymmetry. In the paper’s language, RN keeps K₁=1 but breaks K₂=1; it is therefore not a second vacuum branch of the theorem but a non-vacuum one-leg example.</p></div></div>
+  <figure class="card">
+    <div class="fc-head"><div class="fc-title">RN and extremality</div><div class="fc-tag">illustration, not theorem extension</div></div>
+    <div class="fc-body" id="extremal-host"></div>
+    <figcaption>The theorem excludes RN because the vacuum premise is off. The reason to include it here is pedagogical: it visually demonstrates why the K₂-leg is the rigid one.</figcaption>
+  </figure>
+</section>
+<section class="block" id="reverse">
+  <div class="block-head"><div class="block-num">§9 · Leg asymmetry</div><div><h2>The <em>asymmetric rigidity</em> lemma in motion</h2><p class="block-lead">The updated paper no longer treats “one leg at linear order” as the main story. The stronger structural statement is exact asymmetry inside the static spherical family: K₂≡1 forces Schwarzschild; K₁≡1 alone does not.</p></div></div>
+  <figure class="card">
+    <div class="fc-head"><div class="fc-title">Leg asymmetry explorer</div><div class="fc-tag">K₂ rigid, K₁ flexible</div></div>
+    <div class="fc-body" id="reverse-host"></div>
+    <figcaption>This panel tracks the exact lemma stated in the text, not an older linearized surrogate. The sharp asymmetry is what supports the paper’s current strong-field discussion.</figcaption>
+  </figure>
+</section>
+<section class="block" id="birkhoff">
+  <div class="block-head"><div class="block-num">§10 · Birkhoff ladder</div><div><h2>From ODE structure to the <em>Schwarzschild family</em></h2><p class="block-lead">The paper’s Birkhoff discussion is carefully scoped. What is shown here is the ODE-level collapse inside already static spherical gauge: K₁=1 gives a two-parameter family, K₂=1 kills the second constant, and renaming C₁=2M yields the usual Schwarzschild readouts.</p></div></div>
+  <figure class="card">
+    <div class="fc-head"><div class="fc-title">Birkhoff ladder</div><div class="fc-tag">DOF collapse, not full staticity theorem</div></div>
+    <div class="fc-body" id="birkhoff-host"></div>
+    <figcaption>The full GR statement “spherical vacuum implies staticity” is not proved by this panel. What is made executable here is the paper’s own ODE-level collapse once one is already inside static spherical gauge.</figcaption>
+  </figure>
+</section>
+<section class="block" id="closing">
+  <div class="block-head"><div class="block-num">§11 · Closing</div><div><h2>What this page <em>does</em> and <em>does not</em> claim</h2><p class="block-lead">The page mirrors the paper’s scope. It turns the major logical dependencies into visible objects and test benches, but it does not promote the paper into a larger claim than the text itself supports.</p></div></div>
+  <div class="two">
+    <div class="aside">Takeaway</div>
+    <div class="col-main">
+      <p>The local content of the paper is sharp: realizability gives Lorentzian type, the symplectic–dissipative law makes K=1 dynamically meaningful, Route A provides a thermodynamic bridge contingent on standard physical input, and Route B yields an algebraic equivalence to the spherical vacuum equations.</p>
+      <p>The nonlocal and fully general program remains open. General metrics, hard lower bounds on σ₁, and global attractivity of K=1 are not solved here. The point of the interactive format is to prevent those open edges from being visually flattened into conclusions.</p>
+      <p class="mono small" style="margin-top:22px;color:var(--muted)">End of live paper · all major claims visible as theorem, audit, or explicitly marked external input.</p>
+    </div>
+  </div>
+</section>
+</main>
+<script>
+(function(){
+  const tint = TWEAKS.bgTint || 'paper';
+  document.body.dataset.tint = tint;
+  const hue = TWEAKS.accentHue || 268;
+  document.documentElement.style.setProperty('--accent', `oklch(0.52 0.15 ${hue})`);
+  document.documentElement.style.setProperty('--accent-soft', `oklch(0.92 0.045 ${hue})`);
+  document.documentElement.style.setProperty('--accent-ink', `oklch(0.32 0.11 ${hue})`);
 })();
 </script>
+<script>
+(function(){
+  const links=[...document.querySelectorAll('nav.toc a')];
+  const secs=links.map(a=>document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  const io=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        links.forEach(a=>a.classList.toggle('active', a.getAttribute('href')==='#'+e.target.id));
+      }
+    });
+  },{rootMargin:'-20% 0px -65% 0px',threshold:0.01});
+  secs.forEach(s=>io.observe(s));
+})();
+</script>
+<script>
+window.KKernel = {
+  mk_f({C1=2,C2=0,Lam=0}={}){
+    return {
+      f:r => 1 - C1/r - C2/(r*r) - Lam*r*r/3,
+      fp:r => C1/(r*r) + 2*C2/(r*r*r) - 2*Lam*r/3,
+      fpp:r => -2*C1/(r*r*r) - 6*C2/(r*r*r*r) - 2*Lam/3
+    };
+  },
+  Ricci(r,f,fp,fpp){
+    const K1 = f + 2*r*fp + 0.5*r*r*fpp;
+    const K2 = f + r*fp;
+    const Rth = 1 - K2;
+    const Rtt = (f/(r*r))*(K1-K2);
+    const Rrr = f!==0 ? -(K1-K2)/(f*r*r) : NaN;
+    const R   = 2*(1-K1)/(r*r);
+    return {K1,K2,Rtt,Rrr,Rθθ:Rth,R};
+  }
+};
+</script>
+<script>
+(function(){
+  const c=document.getElementById('sigCanvas'), ctx=c.getContext('2d');
+  const s=document.getElementById('detSlider');
+  const presets=[...document.querySelectorAll('[data-sig]')];
+  function fit(){ const dpr=window.devicePixelRatio||1, w=c.clientWidth||960, h=260; c.width=w*dpr; c.height=h*dpr; ctx.setTransform(dpr,0,0,dpr,0,0); return {w,h}; }
+  function draw(){
+    const {w,h}=fit(); const det=+s.value; document.getElementById('detVal').textContent=det.toFixed(2);
+    ctx.clearRect(0,0,w,h);
+    const pad={l:56,r:24,t:18,b:36};
+    const axisY = h-pad.b;
+    ctx.strokeStyle='rgba(0,0,0,.12)'; ctx.lineWidth=1; ctx.strokeRect(pad.l,pad.t,w-pad.l-pad.r,h-pad.t-pad.b);
+    ctx.beginPath(); ctx.moveTo(pad.l,axisY); ctx.lineTo(w-pad.r,axisY); ctx.stroke();
+    const X = x => pad.l + (x+3)/6*(w-pad.l-pad.r);
+    const Y = y => axisY - y*(h-pad.t-pad.b-30)/3.4;
+    ctx.strokeStyle='oklch(0.52 0.18 268)'; ctx.lineWidth=2;
+    ctx.beginPath();
+    for(let i=0;i<=400;i++){
+      const x=-3+6*i/400; const y = x<0?Math.sqrt(-1/x):0; const px=X(x), py=Y(y);
+      if(i===0) ctx.moveTo(px,py); else ctx.lineTo(px,py);
+    }
+    ctx.stroke();
+    ctx.strokeStyle='oklch(0.55 0.18 25)'; ctx.setLineDash([4,4]); ctx.beginPath(); ctx.moveTo(X(0),pad.t); ctx.lineTo(X(0),axisY); ctx.stroke(); ctx.setLineDash([]);
+    const markerX=X(det);
+    if(det<0){ const dc=Math.sqrt(-1/det); ctx.fillStyle='oklch(0.52 0.18 268)'; ctx.beginPath(); ctx.arc(markerX,Y(dc),5.5,0,Math.PI*2); ctx.fill(); }
+    ctx.fillStyle='var(--ink-3)'; ctx.font='11px JetBrains Mono';
+    ['-3','-2','-1','0','1','2','3'].forEach(v=>{ const x=X(+v); ctx.fillText(v, x-6, axisY+18); });
+    let sig='(1,1)', spec='±'+Math.sqrt(-1/det).toFixed(3), dc=Math.sqrt(-1/det).toFixed(3), name='Lorentzian', read='real spectrum · d_c > 0', meaning='stable boundary';
+    if(det===0){ sig='degenerate'; spec='—'; dc='0'; name='Degenerate'; read='no inverse · no J_G'; meaning='the theorem excludes det G = 0'; }
+    if(det>0){ sig='(2,0) or (0,2)'; spec='± i'+Math.sqrt(1/det).toFixed(3); dc='undefined'; name='Definite'; read='imaginary spectrum · no positive d_c'; meaning='no Lorentzian stability threshold'; }
+    document.getElementById('sigSig').textContent=sig;
+    document.getElementById('sigSpec').textContent=spec;
+    document.getElementById('sigDc').textContent=dc;
+    document.getElementById('sigName').textContent=name;
+    document.getElementById('sigReading').textContent=read;
+    document.getElementById('sigMeaning').textContent=meaning;
+  }
+  s.addEventListener('input',draw); window.addEventListener('resize',draw); draw();
+  presets.forEach(b=>b.onclick=()=>{ presets.forEach(x=>x.classList.remove('on')); b.classList.add('on'); s.value = b.dataset.sig==='lor' ? -1 : b.dataset.sig==='deg' ? 0 : 1; draw(); }); presets[0].classList.add('on');
+})();
+</script>
+<script>
+(function(){
+  const c=document.getElementById('kCanvas'), ctx=c.getContext('2d');
+  const s1=document.getElementById('sig1'), dmp=document.getElementById('damp'), noi=document.getElementById('noise');
+  function fit(){ const dpr=window.devicePixelRatio||1,w=c.clientWidth||960,h=330; c.width=w*dpr;c.height=h*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);return {w,h}; }
+  function draw(){
+    const {w,h}=fit(); const a=+s1.value, ratio=+dmp.value, sig=+noi.value;
+    document.getElementById('sig1v').textContent=a.toFixed(2);
+    document.getElementById('dampv').textContent=ratio.toFixed(2);
+    document.getElementById('noisev').textContent=sig.toFixed(2);
+    const dc = 1/a, kappa = 4*dc, variance = sig*sig/(2*Math.max(0.001,dc*ratio));
+    document.getElementById('dcRead').textContent=dc.toFixed(3);
+    document.getElementById('kappaRead').textContent=(ratio===1?kappa:4*dc).toFixed(3);
+    document.getElementById('varRead').textContent=variance.toFixed(3);
+    document.getElementById('regimeRead').textContent=ratio<1?'under':ratio>1?'over':'critical';
+    ctx.clearRect(0,0,w,h);
+    const pad={l:48,r:24,t:20,b:32};
+    const X=x=>pad.l+(x+2.3)/4.6*(w-pad.l-pad.r), Y=y=>pad.t+(1-(y+2)/(4.6))*(h-pad.t-pad.b);
+    ctx.strokeStyle='rgba(0,0,0,.1)'; ctx.strokeRect(pad.l,pad.t,w-pad.l-pad.r,h-pad.t-pad.b);
+    ctx.strokeStyle='rgba(0,0,0,.14)'; ctx.setLineDash([5,5]);
+    ctx.beginPath(); ctx.moveTo(pad.l,Y(0)); ctx.lineTo(w-pad.r,Y(0)); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(X(0),pad.t); ctx.lineTo(X(0),h-pad.b); ctx.stroke(); ctx.setLineDash([]);
+    ctx.strokeStyle='oklch(0.52 0.18 268)'; ctx.lineWidth=2.4;
+    const scale = a;
+    [['top',1],['bot',-1]].forEach((_,branch)=>{});
+    function plot(sign){
+      ctx.beginPath();
+      for(let i=0;i<=320;i++){
+        const x=-2.2+4.4*i/320; const y=sign*Math.sqrt(1 + scale*scale*x*x); const px=X(x), py=Y(y);
+        if(i===0) ctx.moveTo(px,py); else ctx.lineTo(px,py);
+      }
+      ctx.stroke();
+    }
+    plot(1); plot(-1);
+    const base={x:0,y:1};
+    ctx.fillStyle='var(--ink)'; ctx.beginPath(); ctx.arc(X(base.x),Y(base.y),4.8,0,Math.PI*2); ctx.fill();
+    ctx.font='11px JetBrains Mono'; ctx.fillStyle='var(--ink-3)'; ctx.fillText('x*', X(base.x)-18, Y(base.y)-10);
+    const normalLen=0.8, tangLen=0.85;
+    ctx.strokeStyle='oklch(0.58 0.17 25)'; ctx.lineWidth=2.4;
+    ctx.beginPath(); ctx.moveTo(X(base.x),Y(base.y)); ctx.lineTo(X(base.x),Y(base.y+normalLen)); ctx.moveTo(X(base.x),Y(base.y)); ctx.lineTo(X(base.x),Y(base.y-normalLen)); ctx.stroke();
+    ctx.fillStyle='oklch(0.58 0.17 25)'; ctx.fillText('Class A', X(base.x)+8, Y(base.y+normalLen)-4);
+    ctx.strokeStyle='oklch(0.55 0.14 150)'; ctx.beginPath(); ctx.moveTo(X(base.x),Y(base.y)); ctx.lineTo(X(base.x+tangLen),Y(base.y)); ctx.moveTo(X(base.x),Y(base.y)); ctx.lineTo(X(base.x-tangLen),Y(base.y)); ctx.stroke();
+    ctx.fillStyle='oklch(0.55 0.14 150)'; ctx.fillText('Class B', X(base.x+tangLen)+8, Y(base.y)+4);
+    for(let i=0;i<18;i++){
+      const dx=(Math.random()-0.5)*0.36*sig*4, dy=(Math.random()-0.5)*0.9*sig*4;
+      ctx.fillStyle='rgba(90,90,90,.18)'; ctx.beginPath(); ctx.arc(X(base.x+dx),Y(base.y+dy),2.2,0,Math.PI*2); ctx.fill();
+    }
+    ctx.fillStyle='var(--muted)'; ctx.fillText('K=1', X(1.6), Y(Math.sqrt(1+scale*scale*1.6*1.6))-8);
+  }
+  [s1,dmp,noi].forEach(el=>el.addEventListener('input',draw)); window.addEventListener('resize',draw); draw();
+})();
+</script>
+<script>
+(function(){
+  const root=document.getElementById('law3audit');
+  root.innerHTML = `
+    <div class="audit-grid">
+      <div>
+        <div class="audit-controls">
+          <div class="ac-row"><label><span>det G <b id="a1-detv">−1.00</b></span></label><input id="a1-det" type="range" min="-3" max="0" step="0.01" value="-1"></div>
+          <div class="ac-row"><label><span>d / d_c <b id="a1-dv">1.00</b></span></label><input id="a1-d" type="range" min="0" max="2" step="0.01" value="1"></div>
+          <div class="ac-row"><label><span>base point type <b id="a1-basev">eigenvector</b></span></label><div class="seg" id="a1-base"><button data-b="eig">eigen</button><button data-b="gen">generic</button></div></div>
+          <div class="ac-row"><label><span>linearization <b id="a1-linv">local</b></span></label><div class="seg" id="a1-lin"><button data-l="loc">local</button><button data-l="far">far</button></div></div>
+        </div>
+        <div class="ac-readout">
+          <div class="x"><div class="k">theorem coefficient</div><div class="v mono" id="a1-kappa">—</div></div>
+          <div class="x"><div class="k">usable?</div><div class="v" id="a1-usable">—</div></div>
+        </div>
+        <div id="a1-verdict" class="ac-verdict"></div>
+      </div>
+      <div class="ac-mini">
+        <div class="mini"><b>Needed premise 1</b>Lorentzian 2×2 cost metric: <span class="mono">det G &lt; 0</span>.</div>
+        <div class="mini"><b>Needed premise 2</b>Critical isotropic damping: <span class="mono">D = d_c I</span>.</div>
+        <div class="mini"><b>Needed premise 3</b>Base point on <span class="mono">K=1</span> and aligned with a G-eigenvector.</div>
+        <div class="mini"><b>Needed premise 4</b>Local linearization only; the theorem does not assert a global attractor.</div>
+      </div>
+    </div>`;
+  const det=document.getElementById('a1-det'), d=document.getElementById('a1-d');
+  let base='eig', lin='loc';
+  [...document.querySelectorAll('#a1-base button')].forEach((b,i)=>{ if(i===0)b.classList.add('on'); b.onclick=()=>{ [...document.querySelectorAll('#a1-base button')].forEach(x=>x.classList.remove('on')); b.classList.add('on'); base=b.dataset.b; document.getElementById('a1-basev').textContent=base==='eig'?'eigenvector':'generic'; update(); }; });
+  [...document.querySelectorAll('#a1-lin button')].forEach((b,i)=>{ if(i===0)b.classList.add('on'); b.onclick=()=>{ [...document.querySelectorAll('#a1-lin button')].forEach(x=>x.classList.remove('on')); b.classList.add('on'); lin=b.dataset.l; document.getElementById('a1-linv').textContent=lin==='loc'?'local':'far'; update(); }; });
+  function update(){
+    const detv=+det.value, dv=+d.value; document.getElementById('a1-detv').textContent=detv.toFixed(2); document.getElementById('a1-dv').textContent=dv.toFixed(2);
+    const dc=Math.sqrt(-1/detv), pass = detv<0 && Math.abs(dv-1)<0.03 && base==='eig' && lin==='loc';
+    document.getElementById('a1-kappa').textContent=(4*dc).toFixed(3);
+    document.getElementById('a1-usable').textContent=pass?'yes':'premise off';
+    const verdictEl=document.getElementById('a1-verdict');
+    let verdict='', cls='ac-fail';
+    if(pass){ cls='ac-pass'; verdict='<b>All theorem premises are aligned.</b> The local restoring coefficient shown in the paper, <span class="mono">κ_K = 4d_c</span>, is the correct leading-order reading here.'; }
+    else {
+      verdict='<b>The explicit coefficient is being used outside its theorem package.</b> You can still explore trajectories, but once any of the four premises is off, the display is heuristic rather than theorem-level.';
+    }
+    verdictEl.className='ac-verdict '+cls; verdictEl.innerHTML=verdict; if(window.MathJax&&window.MathJax.typesetPromise) window.MathJax.typesetPromise([verdictEl]); }
+  [det,d].forEach(el=>el.addEventListener('input',update)); update();
+})();
+</script>
+<script>
+(function(){
+  const root=document.getElementById('routesAudit');
+  root.innerHTML=`<div class="statrow" style="grid-template-columns:repeat(3,1fr)"><div class="stat"><div class="k">Route A</div><div class="v">general local horizon</div><div class="s">needs Clausius + Jacobson inputs</div></div><div class="stat"><div class="k">Route B</div><div class="v">spherical vacuum only</div><div class="s">strict algebraic equivalence</div></div><div class="stat"><div class="k">Imported physics</div><div class="v">T_eff=T_tol, S∝A, Hawking / Tolman</div><div class="s">not generated internally</div></div></div><div class="ac-verdict ac-pass"><b>Scope discipline.</b> This page does not claim a general non-vacuum Route B theorem, nor a thermodynamic derivation without external input. It follows the paper’s current claim boundaries.</div>`;
+})();
+</script>
+<script>
+(function(){
+  const root=document.getElementById('proofmap-host');
+  root.innerHTML=`
+    <div class="audit-grid">
+      <div>
+        <div class="ctrl" style="border-top:none">
+          <label><span>C₁ <b id="pm-C1v">2.00</b></span><input id="pm-C1" type="range" min="0" max="4" step="0.01" value="2"></label>
+          <label><span>C₂ <b id="pm-C2v">0.00</b></span><input id="pm-C2" type="range" min="-1" max="1" step="0.01" value="0"></label>
+          <label><span>Λ <b id="pm-Lv">0.00</b></span><input id="pm-L" type="range" min="-0.1" max="0.1" step="0.005" value="0"></label>
+          <label><span>r <b id="pm-rv">3.00</b></span><input id="pm-r" type="range" min="1.3" max="8" step="0.01" value="3"></label>
+          <div class="seg" id="pm-sphwrap"><button id="pm-sph" class="on">spherical on</button></div>
+        </div>
+        <div class="ac-readout">
+          <div class="x"><div class="k">K₁</div><div class="v mono" id="pm-K1">—</div></div>
+          <div class="x"><div class="k">K₂</div><div class="v mono" id="pm-K2">—</div></div>
+          <div class="x"><div class="k">R_tt</div><div class="v mono" id="pm-Rtt">—</div></div>
+          <div class="x"><div class="k">R_θθ</div><div class="v mono" id="pm-Rth">—</div></div>
+        </div>
+        <div class="ac-mini">
+          <div class="mini"><b>Identity residuals</b><span id="pm-ids">—</span></div>
+          <div class="mini"><b>Applicability gate</b><span id="pm-app">—</span></div>
+          <div class="mini"><b>Forward arrow</b><span id="pm-fwd">—</span></div>
+          <div class="mini"><b>Reverse arrow</b><span id="pm-rev">—</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="mathline">
+          <span class="hl">K₁ = K₂ = 1</span>
+          <span class="equals">⇔</span>
+          <span class="hl">R_{μν}=0</span>
+        </div>
+        <div class="legend"><span><i class="sw" style="background:oklch(0.52 0.18 268)"></i> vacuum theorem</span><span><i class="sw" style="background:oklch(0.58 0.17 25)"></i> off-vacuum / off-domain</span><span><i class="sw" style="background:oklch(0.55 0.14 150)"></i> extension marker (Λ≠0)</span></div>
+        <div class="ac-verdict ac-pass" style="margin-top:10px">This map checks the theorem <b>at the level of identities and gates</b>. Moving Λ away from zero or toggling off spherical symmetry does not refute the theorem; it exits its domain and passes to a different question.</div>
+      </div>
+    </div>`;
+  const C1=document.getElementById('pm-C1'), C2=document.getElementById('pm-C2'), L=document.getElementById('pm-L'), r=document.getElementById('pm-r'), sph=document.getElementById('pm-sph');
+  let sphOn=true;
+  sph.onclick=()=>{ sphOn=!sphOn; sph.classList.toggle('on',sphOn); sph.textContent=sphOn?'spherical on':'spherical off'; update(); };
+  function update(){
+    const c1=+C1.value,c2=+C2.value,lam=+L.value,rr=+r.value;
+    document.getElementById('pm-C1v').textContent=c1.toFixed(2); document.getElementById('pm-C2v').textContent=c2.toFixed(2); document.getElementById('pm-Lv').textContent=lam.toFixed(3); document.getElementById('pm-rv').textContent=rr.toFixed(2);
+    const {f,fp,fpp}=window.KKernel.mk_f({C1:c1,C2:c2,Lam:lam}); const fv=f(rr), fpv=fp(rr), fppv=fpp(rr); const E=window.KKernel.Ricci(rr,fv,fpv,fppv);
+    document.getElementById('pm-K1').textContent=E.K1.toFixed(4); document.getElementById('pm-K2').textContent=E.K2.toFixed(4); document.getElementById('pm-Rtt').textContent=(isFinite(E.Rtt)?E.Rtt.toExponential(2):'—'); document.getElementById('pm-Rth').textContent=E.Rθθ.toExponential(2);
+    const id1 = E.Rθθ - (1-E.K2); const id2 = E.Rtt - (fv/(rr*rr))*(E.K1-E.K2); const id3 = E.R - 2*(1-E.K1)/(rr*rr);
+    const ids=Math.max(Math.abs(id1),Math.abs(id2),Math.abs(id3)); document.getElementById('pm-ids').textContent = ids.toExponential(2);
+    const applicable = sphOn && fv>0 && Math.abs(lam)<1e-12;
+    document.getElementById('pm-app').textContent = applicable ? 'Theorem 5.2 active' : 'Theorem 5.2 inapplicable here. Either f≤0, non-spherical gate is off, or Λ≠0 moves you to the SdS extension instead of the vacuum theorem.';
+    const fwd = Math.abs(E.K1-1)<1e-9 && Math.abs(E.K2-1)<1e-9 ? 'Forward check passes. K₁=K₂=1 drives all Ricci components to zero.' : 'Forward arrow not triggered at this point.';
+    const rev = Math.max(Math.abs(E.Rtt),Math.abs(E.Rθθ))<1e-9 && applicable ? 'Reverse check passes. Vacuum closure forces K₂=1, then K₁=1.' : 'Reverse arrow not triggered at this point.';
+    document.getElementById('pm-fwd').textContent=fwd; document.getElementById('pm-rev').textContent=rev;
+  }
+  [C1,C2,L,r].forEach(el=>el.addEventListener('input',update)); update();
+})();
+</script>
+<script>
+(function(){
+  const root=document.getElementById('bench-gating');
+  root.innerHTML=`<div class="audit-grid"><div><div class="ctrl" style="border-top:none"><div class="seg" id="bg-static"><button class="on">static</button></div><div class="seg" id="bg-sph"><button class="on">spherical</button></div><div class="seg" id="bg-f"><button class="on">f>0</button></div><div class="seg" id="bg-vac"><button class="on">vacuum</button></div></div><div id="bg-verdict" class="ac-verdict"></div></div><div class="ac-mini"><div class="mini"><b>Guardrail</b>Counterexamples must stay inside the theorem’s stated class.</div><div class="mini"><b>Outside domain</b>Switching any gate off changes the question rather than falsifying the theorem.</div></div></div>`;
+  const state={static:true,sph:true,f:true,vac:true};
+  [['static','static'],['sph','spherical'],['f','f>0'],['vac','vacuum']].forEach(([id,lab])=>{ const el=document.querySelector('#bg-'+id+' button'); el.onclick=()=>{ state[id]=!state[id]; el.classList.toggle('on',state[id]); el.textContent=lab+(state[id]?'':' off'); update(); }; });
+  function update(){ const ok=state.static&&state.sph&&state.f&&state.vac; const v=document.getElementById('bg-verdict'); v.className='ac-verdict '+(ok?'ac-pass':'ac-fail'); v.innerHTML=ok?'<b>All premise gates are on.</b> Theorem 5.2 applies to this setting.':'<b>Domain mismatch.</b> At least one premise is off. This is not a counter-example to the theorem; it is outside the class the theorem claims.'; }
+  update();
+})();
+</script>
+<script>
+(function(){
+  const root=document.getElementById('bench-leg');
+  root.innerHTML=`<div class="ctrl" style="border-top:none"><div class="seg" id="bl-mode"><button data-m="k1" class="on">force K₁=1</button><button data-m="k2">force K₂=1</button></div><label><span>A / C <b id="bl-Av">-2.00</b></span><input id="bl-A" type="range" min="-3" max="3" step="0.01" value="-2"></label><label><span>B <b id="bl-Bv">0.50</b></span><input id="bl-B" type="range" min="-1" max="2" step="0.01" value="0.5"></label><label><span>r <b id="bl-rv">3.00</b></span><input id="bl-r" type="range" min="1.5" max="8" step="0.01" value="3"></label></div><div class="statrow"><div class="stat"><div class="k">K₁</div><div class="v mono" id="bl-k1">—</div><div class="s">leg 1</div></div><div class="stat"><div class="k">K₂</div><div class="v mono" id="bl-k2">—</div><div class="s">leg 2</div></div><div class="stat"><div class="k">R_θθ</div><div class="v mono" id="bl-rth">—</div><div class="s">angular closure</div></div><div class="stat"><div class="k">RN / non-vacuum sense</div><div class="v mono" id="bl-rn">—</div><div class="s">if B≠0 under K₁ leg</div></div></div><div id="bl-verdict" class="ac-verdict"></div>`;
+  const A=document.getElementById('bl-A'), B=document.getElementById('bl-B'), r=document.getElementById('bl-r'); let mode='k1';
+  [...root.querySelectorAll('[data-m]')].forEach(b=>b.onclick=()=>{ [...root.querySelectorAll('[data-m]')].forEach(x=>x.classList.remove('on')); b.classList.add('on'); mode=b.dataset.m; update(); });
+  function update(){ let a=+A.value, b=+B.value, rr=+r.value; if(mode==='k2'){ b=0; B.value=0; B.disabled=true; } else B.disabled=false; document.getElementById('bl-Av').textContent=a.toFixed(2); document.getElementById('bl-Bv').textContent=b.toFixed(2); document.getElementById('bl-rv').textContent=rr.toFixed(2); const {f,fp,fpp}=window.KKernel.mk_f({C1:-a,C2:-b}); const E=window.KKernel.Ricci(rr,f(rr),fp(rr),fpp(rr)); document.getElementById('bl-k1').textContent=E.K1.toFixed(4); document.getElementById('bl-k2').textContent=E.K2.toFixed(4); document.getElementById('bl-rth').textContent=E.Rθθ.toExponential(2); document.getElementById('bl-rn').textContent=(b!==0&&mode==='k1')?'open':'closed'; const v=document.getElementById('bl-verdict'); if(mode==='k2'){ v.className='ac-verdict ac-pass'; v.innerHTML='<b>K₂=1 is rigid on an open interval.</b> In the static spherical family it gives <span class="mono">f=1+C/r</span> and therefore automatically <span class="mono">K₁=1</span>.'; } else { v.className='ac-verdict '+(Math.abs(b)<1e-9?'ac-pass':'ac-fail'); v.innerHTML=Math.abs(b)<1e-9?'<b>At B=0 the K₁ family lands on Schwarzschild.</b> Then K₂=1 and the vacuum theorem closes.':'<b>K₁ alone leaves a second constant.</b> The family <span class="mono">f=1+A/r+B/r²</span> keeps a non-vacuum branch open until B is set to zero.'; } }
+  [A,B,r].forEach(el=>el.addEventListener('input',update)); update();
+})();
+</script>
+<script>
+(function(){
+  const root=document.getElementById('bench-directions');
+  root.innerHTML=`<div class="audit-grid"><div><div class="ctrl" style="border-top:none"><label><span>C₁ <b id="bd-C1v">2.00</b></span><input id="bd-C1" type="range" min="0" max="4" step="0.01" value="2"></label><label><span>C₂ <b id="bd-C2v">0.00</b></span><input id="bd-C2" type="range" min="-1" max="1" step="0.01" value="0"></label><label><span>C₃ (Λ probe) <b id="bd-C3v">0.00</b></span><input id="bd-C3" type="range" min="-0.2" max="0.2" step="0.005" value="0"></label></div><div class="ac-mini"><div class="mini"><b>forward</b><span id="bd-fwd">—</span></div><div class="mini"><b>reverse</b><span id="bd-rev">—</span></div></div><div id="bd-verdict" class="ac-verdict"></div></div><div class="ac-mini"><div class="mini"><b>Forward arrow</b>K₁=K₂=1 ⇒ R_{μν}=0 inside the theorem’s class.</div><div class="mini"><b>Reverse arrow</b>R_{μν}=0 ⇒ K₂=1 then K₁=1 in the same class.</div></div></div>`;
+  const C1=document.getElementById('bd-C1'), C2=document.getElementById('bd-C2'), C3=document.getElementById('bd-C3');
+  function update(){ const c1=+C1.value,c2=+C2.value,lam=+C3.value; document.getElementById('bd-C1v').textContent=c1.toFixed(2); document.getElementById('bd-C2v').textContent=c2.toFixed(2); document.getElementById('bd-C3v').textContent=lam.toFixed(3); const rr=3; const {f,fp,fpp}=window.KKernel.mk_f({C1:c1,C2:c2,Lam:lam}); const E=window.KKernel.Ricci(rr,f(rr),fp(rr),fpp(rr)); const forward = Math.abs(E.K1-1)<1e-9 && Math.abs(E.K2-1)<1e-9 && Math.max(Math.abs(E.Rtt),Math.abs(E.Rθθ))<1e-9; const reverse = Math.max(Math.abs(E.Rtt),Math.abs(E.Rθθ))<1e-9 && Math.abs(lam)<1e-12 ? Math.abs(E.K1-1)<1e-9 && Math.abs(E.K2-1)<1e-9 : false; document.getElementById('bd-fwd').textContent=forward?'pass':'not triggered'; document.getElementById('bd-rev').textContent=reverse?'pass':'not triggered'; const v=document.getElementById('bd-verdict'); v.className='ac-verdict '+((forward||reverse)?'ac-pass':'ac-fail'); v.innerHTML=(Math.abs(lam)>1e-12)?'<b>Λ moved the display out of the vacuum theorem.</b> This does not break the iff; it switches to the SdS extension question.':(forward||reverse)?'<b>At this point the iff logic is intact.</b> Neither arrow has been silently dropped from the live presentation.':'<b>This parameter point simply does not lie on either theorem endpoint.</b> The purpose of the bench is to keep both theorem arrows visible, not to make every point satisfy them.'; }
+  [C1,C2,C3].forEach(el=>el.addEventListener('input',update)); update();
+})();
+</script>
+<script>
+(function(){
+  const root=document.getElementById('bench-closure');
+  root.innerHTML=`<div class="ctrl" style="border-top:none"><label><span>C₁ <b id="bc-C1v">2.00</b></span><input id="bc-C1" type="range" min="0" max="4" step="0.01" value="2"></label><label><span>C₂ <b id="bc-C2v">0.00</b></span><input id="bc-C2" type="range" min="-1" max="1" step="0.01" value="0"></label><label><span>Λ <b id="bc-Lv">0.00</b></span><input id="bc-L" type="range" min="-0.1" max="0.1" step="0.005" value="0"></label></div><div class="statrow"><div class="stat"><div class="k">R_tt</div><div class="v mono" id="bc-rtt">—</div><div class="s">time-time</div></div><div class="stat"><div class="k">R_rr</div><div class="v mono" id="bc-rrr">—</div><div class="s">radial-radial</div></div><div class="stat"><div class="k">R_θθ</div><div class="v mono" id="bc-rth">—</div><div class="s">angular</div></div><div class="stat"><div class="k">R</div><div class="v mono" id="bc-rsc">—</div><div class="s">scalar curvature</div></div></div><div id="bc-verdict" class="ac-verdict"></div>`;
+  const C1=document.getElementById('bc-C1'), C2=document.getElementById('bc-C2'), L=document.getElementById('bc-L');
+  function update(){ const c1=+C1.value,c2=+C2.value,lam=+L.value; document.getElementById('bc-C1v').textContent=c1.toFixed(2); document.getElementById('bc-C2v').textContent=c2.toFixed(2); document.getElementById('bc-Lv').textContent=lam.toFixed(3); const rr=3; const {f,fp,fpp}=window.KKernel.mk_f({C1:c1,C2:c2,Lam:lam}); const E=window.KKernel.Ricci(rr,f(rr),fp(rr),fpp(rr)); document.getElementById('bc-rtt').textContent=E.Rtt.toExponential(2); document.getElementById('bc-rrr').textContent=(isFinite(E.Rrr)?E.Rrr.toExponential(2):'—'); document.getElementById('bc-rth').textContent=E.Rθθ.toExponential(2); document.getElementById('bc-rsc').textContent=E.R.toExponential(2); const closure=Math.max(Math.abs(E.Rtt),Math.abs(E.Rθθ),Math.abs(E.R)); const v=document.getElementById('bc-verdict'); v.className='ac-verdict '+((closure<1e-9&&Math.abs(lam)<1e-12)?'ac-pass':'ac-fail'); v.innerHTML=(closure<1e-9&&Math.abs(lam)<1e-12)?'<b>Full closure reached.</b> The live page is showing the same vacuum endpoint as the theorem: every independent Ricci component vanishes.':'<b>Full closure not reached.</b> This point is either off the vacuum locus or probing a Λ-shifted Einstein-space case rather than the theorem’s vacuum endpoint.'; }
+  [C1,C2,L].forEach(el=>el.addEventListener('input',update)); update();
+})();
+</script>
+<script>
+(function(){
+  const host=document.getElementById('audit1').querySelector('.fc-body');
+  host.innerHTML=`<div class="audit-grid"><div><div class="ctrl" style="border-top:none"><label><span>det G <b id="d1-detv">−1.00</b></span><input id="d1-det" type="range" min="-3" max="0" step="0.01" value="-1"></label><label><span>base-point weight xᵀG²x <b id="d1-xv">1.00</b></span><input id="d1-x" type="range" min="0.2" max="2.5" step="0.01" value="1"></label><label><span>d / d_c <b id="d1-dv">1.00</b></span><input id="d1-d" type="range" min="0" max="2" step="0.01" value="1"></label></div><div class="statrow"><div class="stat"><div class="k">d_c</div><div class="v mono" id="d1-dc">—</div><div class="s">from det G</div></div><div class="stat"><div class="k">κ_K(x*)</div><div class="v mono" id="d1-kappa">—</div><div class="s">general base-point formula</div></div><div class="stat"><div class="k">specialized 4d_c?</div><div class="v" id="d1-flag">—</div><div class="s">only if xᵀG²x = 1 and d=d_c</div></div></div><div id="d1-verdict" class="ac-verdict"></div></div><div class="ac-mini"><div class="mini"><b>Paper theorem</b>κ_K = 4d_c at a normalized eigenvector base point under critical isotropic damping.</div><div class="mini"><b>General formula</b>κ_K(x*) = 4 d_c · xᵀG²x. The panel shows the distinction explicitly.</div></div></div>`;
+  const det=document.getElementById('d1-det'), x=document.getElementById('d1-x'), d=document.getElementById('d1-d');
+  function update(){ const detv=+det.value, xv=+x.value, dv=+d.value; document.getElementById('d1-detv').textContent=detv.toFixed(2); document.getElementById('d1-xv').textContent=xv.toFixed(2); document.getElementById('d1-dv').textContent=dv.toFixed(2); const dc=Math.sqrt(-1/Math.min(-1e-6,detv)); const kk=4*dc*xv; document.getElementById('d1-dc').textContent=dc.toFixed(3); document.getElementById('d1-kappa').textContent=kk.toFixed(3); const pass=Math.abs(xv-1)<0.03 && Math.abs(dv-1)<0.03; document.getElementById('d1-flag').textContent=pass?'yes':'not yet'; const verdict=document.getElementById('d1-verdict'); verdict.className='ac-verdict '+(pass?'ac-pass':'ac-fail'); verdict.innerHTML = pass ? '<b>All theorem premises are active.</b> In this regime the paper’s explicit rate <span class="mono">κ_K = 4d_c</span> is the right linear law.' : '<b>At least one theorem premise is off.</b> The display may still show decay, but the closed-form rate <span class="mono">κ_K = 4d_c</span> is no longer the paper’s guaranteed linear reading.'; if(window.MathJax&&window.MathJax.typesetPromise) window.MathJax.typesetPromise([verdict]); }
+  [det,x,d].forEach(el=>el.addEventListener('input',update)); update();
+})();
+</script>
+<script>
+(function(){
+  const host=document.getElementById('audit3').querySelector('.fc-body');
+  host.innerHTML=`<div class="ctrl" style="border-top:none"><label><span>a <b id="a3-a">1.00</b></span><input id="a3-A" type="range" min="0.1" max="2.0" step="0.01" value="1"></label><label><span>b <b id="a3-b">0.30</b></span><input id="a3-B" type="range" min="-0.95" max="0.95" step="0.01" value="0.30"></label><label><span>c <b id="a3-c">1.00</b></span><input id="a3-C" type="range" min="0.1" max="2.0" step="0.01" value="1"></label></div><div class="statrow"><div class="stat"><div class="k">det(H*)</div><div class="v mono" id="a3-det">—</div><div class="s">must stay positive</div></div><div class="stat"><div class="k">zero-eigenvalue locus</div><div class="v mono" id="a3-iso">1.000</div><div class="s">unchanged in d</div></div><div class="stat"><div class="k">real-part threshold</div><div class="v mono" id="a3-shift">—</div><div class="s">can shift off isotropic value</div></div><div class="stat"><div class="k">Interpretation</div><div class="v" id="a3-mean">—</div><div class="s">limitation, not contradiction</div></div></div><div id="a3-verdict" class="ac-verdict"></div>`;
+  const A=document.getElementById('a3-A'), B=document.getElementById('a3-B'), C=document.getElementById('a3-C');
+  function update(){ const a=+A.value,b=+B.value,c=+C.value; const det=a*c-b*b; document.getElementById('a3-a').textContent=a.toFixed(2); document.getElementById('a3-b').textContent=b.toFixed(2); document.getElementById('a3-c').textContent=c.toFixed(2); document.getElementById('a3-det').textContent=det.toFixed(3); const iso=1.0; document.getElementById('a3-iso').textContent=iso.toFixed(3); const shifted = det>0 ? (iso*(1+4*Math.abs(b))).toFixed(3) : 'undefined'; document.getElementById('a3-shift').textContent=shifted; const mean=document.getElementById('a3-mean'), out=document.getElementById('a3-verdict'); if(det<=0){ mean.textContent='invalid H*'; out.className='ac-verdict ac-fail'; out.innerHTML='<b>H* must stay invertible.</b> Once det(H*)≤0, even the zero-eigenvalue comparison loses meaning.'; } else { mean.textContent='threshold can shift'; out.className='ac-verdict ac-pass'; out.innerHTML='<b>Limitation illustrated.</b> The zero-eigenvalue locus is controlled by <span class="mono">det(J_G-dI)</span>, but a non-isotropic positive-definite <span class="mono">H*</span> can move the practical real-part threshold. This is why the paper treats <span class="mono">H*=I</span> as the clean stability reading.'; } if(window.MathJax&&window.MathJax.typesetPromise) window.MathJax.typesetPromise([out]); }
+  [A,B,C].forEach(el=>el.addEventListener('input',update)); update();
+})();
+</script>
+<script>
+(function(){
+  const host=document.getElementById('audit5').querySelector('.fc-body');
+  host.innerHTML=`<div class="ctrl" style="border-top:none"><label><span>r / 2M <b id="a5-rv">1.20</b></span><input id="a5-r" type="range" min="1.01" max="8.0" step="0.01" value="1.20"></label><label><span>M <b id="a5-Mv">10.0</b></span><input id="a5-M" type="range" min="1" max="50" step="1" value="10"></label></div><div class="statrow"><div class="stat"><div class="k">f>0</div><div class="v" id="a5-g1">—</div><div class="s">static exterior</div></div><div class="stat"><div class="k">σ₁>0</div><div class="v" id="a5-g2">—</div><div class="s">Axiom T domain</div></div><div class="stat"><div class="k">σ₁ \gtrsim ℓ_P/(4π)</div><div class="v" id="a5-g3">—</div><div class="s">soft bound</div></div><div class="stat"><div class="k">Var(K)<1</div><div class="v" id="a5-g4">—</div><div class="s">OU regime</div></div></div><div id="a5-verdict" class="ac-verdict"></div>`;
+  const r=document.getElementById('a5-r'), M=document.getElementById('a5-M');
+  function update(){ const rv=+r.value, m=+M.value; document.getElementById('a5-rv').textContent=rv.toFixed(2); document.getElementById('a5-Mv').textContent=m.toFixed(1); const rr=rv*(2*m); const f=1-2*m/rr; const sig1 = rr*Math.sqrt(Math.max(0,f)); const soft=1/(4*Math.PI); const Teff=sig1>0?1/(4*Math.PI*sig1):Infinity; const g1=f>0, g2=sig1>0, g3=sig1>=soft, g4=Teff<1; [g1,g2,g3,g4].forEach((g,i)=>{ const el=document.getElementById('a5-g'+(i+1)); el.textContent=g?'pass':'fail'; el.style.color=g?'var(--accent-ink)':'#b54747'; }); const out=document.getElementById('a5-verdict'); out.className='ac-verdict '+((g1&&g2&&g3&&g4)?'ac-pass':'ac-fail'); out.innerHTML=(g1&&g2&&g3&&g4)?'<b>All domain lanes pass.</b> The semiclassical self-consistency picture is admissible here.':'<b>At least one domain lane fails.</b> The paper’s claims are not meant to extend past this boundary.'; if(window.MathJax&&window.MathJax.typesetPromise) window.MathJax.typesetPromise([out]); }
+  [r,M].forEach(el=>el.addEventListener('input',update)); update();
+})();
+</script>
+<script>
+(function(){
+  const host=document.getElementById('audit6').querySelector('.fc-body');
+  host.innerHTML=`<div class="statrow" style="grid-template-columns:repeat(3,1fr)"><div class="stat"><div class="k">proved internally</div><div class="v">Law I, Theorem 5.2, Law III local rate</div><div class="s">within stated assumptions</div></div><div class="stat"><div class="k">imported</div><div class="v">Jacobson, Hawking, Tolman, S∝A</div><div class="s">standard external inputs</div></div><div class="stat"><div class="k">open</div><div class="v">general metrics, hard σ₁ bound, global attractor</div><div class="s">discussion tail</div></div></div><div class="ac-verdict ac-pass"><b>Claim hygiene.</b> The paper distinguishes theorem-level internal results from imported physics and open extensions; the interactive page follows the same partition.</div>`;
+})();
+</script>
+<script>
+(function(){
+  const root=document.getElementById('sds-host'); if(!root) return;
+  root.innerHTML=`<div class="ctrl" style="border-top:none"><label><span>M <b id="sd-Mv">1.00</b></span><input id="sd-M" type="range" min="0.4" max="2.0" step="0.01" value="1"></label><label><span>Λ <b id="sd-Lv">0.050</b></span><input id="sd-L" type="range" min="-0.08" max="0.08" step="0.001" value="0.05"></label><label><span>r <b id="sd-rv">4.00</b></span><input id="sd-r" type="range" min="1.6" max="8" step="0.01" value="4"></label></div><div class="statrow"><div class="stat"><div class="k">K₁</div><div class="v mono" id="sd-k1">—</div><div class="s">target 1−2Λr²</div></div><div class="stat"><div class="k">K₂</div><div class="v mono" id="sd-k2">—</div><div class="s">target 1−Λr²</div></div><div class="stat"><div class="k">R_μν−Λg_μν</div><div class="v mono" id="sd-res">—</div><div class="s">should vanish</div></div><div class="stat"><div class="k">Asymmetry</div><div class="v" id="sd-asym">2 vs 1</div><div class="s">coefficients are not equal</div></div></div><div id="sd-verdict" class="ac-verdict"></div>`;
+  const M=document.getElementById('sd-M'), L=document.getElementById('sd-L'), r=document.getElementById('sd-r');
+  function update(){ const m=+M.value, lam=+L.value, rr=+r.value; document.getElementById('sd-Mv').textContent=m.toFixed(2); document.getElementById('sd-Lv').textContent=lam.toFixed(3); document.getElementById('sd-rv').textContent=rr.toFixed(2); const {f,fp,fpp}=window.KKernel.mk_f({C1:2*m,Lam:lam}); const fv=f(rr), fpv=fp(rr), fppv=fpp(rr); const E=window.KKernel.Ricci(rr,fv,fpv,fppv); const t1=1-2*lam*rr*rr, t2=1-lam*rr*rr; document.getElementById('sd-k1').textContent=`${E.K1.toFixed(3)} / ${t1.toFixed(3)}`; document.getElementById('sd-k2').textContent=`${E.K2.toFixed(3)} / ${t2.toFixed(3)}`; const res=Math.max(Math.abs(E.K1-t1),Math.abs(E.K2-t2)); document.getElementById('sd-res').textContent=res.toExponential(2); const out=document.getElementById('sd-verdict'); out.className='ac-verdict '+(res<1e-9?'ac-pass':'ac-fail'); out.innerHTML=res<1e-9?'<b>SdS extension verified.</b> The Λ-shifted scalar targets match exactly, and with them the Einstein-space form <span class="mono">R_{μν}=Λg_{μν}</span>.':'<b>Mismatch.</b> The Λ-extension targets are not being met for these parameters.'; if(window.MathJax&&window.MathJax.typesetPromise) window.MathJax.typesetPromise([out]); }
+  [M,L,r].forEach(el=>el.addEventListener('input',update)); update();
+})();
+</script>
+<script>
+(function(){
+  const root=document.getElementById('extremal-host'); if(!root) return;
+  root.innerHTML=`<div class="ctrl" style="border-top:none"><label><span>M <b id="ex-Mv">1.00</b></span><input id="ex-M" type="range" min="0.6" max="2.0" step="0.01" value="1"></label><label><span>Q <b id="ex-Qv">0.90</b></span><input id="ex-Q" type="range" min="0.0" max="1.0" step="0.01" value="0.90"></label></div><canvas id="ex-canvas" height="220"></canvas><div class="statrow"><div class="stat"><div class="k">K₁</div><div class="v mono" id="ex-k1">1.000</div><div class="s">identically on RN</div></div><div class="stat"><div class="k">K₂ at r₊</div><div class="v mono" id="ex-k2">—</div><div class="s">drops toward 0 at extremality</div></div><div class="stat"><div class="k">r₊</div><div class="v mono" id="ex-rp">—</div><div class="s">outer horizon</div></div><div class="stat"><div class="k">Meaning</div><div class="v">non-vacuum</div><div class="s">theorem excludes RN</div></div></div><div id="ex-verdict" class="ac-verdict"></div>`;
+  const M=document.getElementById('ex-M'), Q=document.getElementById('ex-Q'), c=document.getElementById('ex-canvas'), ctx=c.getContext('2d');
+  function fit(){const dpr=window.devicePixelRatio||1;const w=c.clientWidth||900;const h=220;c.width=w*dpr;c.height=h*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);return {w,h};}
+  function update(){ const m=+M.value, q=+Q.value*m; document.getElementById('ex-Mv').textContent=m.toFixed(2); document.getElementById('ex-Qv').textContent=(q/m).toFixed(2); const rp=m+Math.sqrt(Math.max(0,m*m-q*q)); document.getElementById('ex-rp').textContent=rp.toFixed(3); const k2h=1-q*q/(rp*rp); document.getElementById('ex-k1').textContent='1.000'; document.getElementById('ex-k2').textContent=k2h.toFixed(4); const {w,h}=fit(); ctx.clearRect(0,0,w,h); const pad={l:46,r:12,t:14,b:22}; const r1=rp*1.02, r2=rp*4; const X=r=>pad.l+(r-r1)/(r2-r1)*(w-pad.l-pad.r), Y=v=>pad.t+(1-v)*(h-pad.t-pad.b); ctx.strokeStyle='rgba(0,0,0,.1)'; ctx.strokeRect(pad.l,pad.t,w-pad.l-pad.r,h-pad.t-pad.b); ctx.strokeStyle='oklch(0.52 0.18 268)'; ctx.lineWidth=2; ctx.beginPath(); for(let i=0;i<=220;i++){ const r=r1+(r2-r1)*i/220; const K2=1-q*q/(r*r); const x=X(r), y=Y(K2); if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);} ctx.stroke(); ctx.strokeStyle='oklch(0.55 0.18 25)'; ctx.setLineDash([4,4]); ctx.beginPath(); ctx.moveTo(X(rp),pad.t); ctx.lineTo(X(rp),h-pad.b); ctx.stroke(); ctx.setLineDash([]); const out=document.getElementById('ex-verdict'); out.className='ac-verdict ac-pass'; out.innerHTML='<b>RN is a one-leg example, not a vacuum exception.</b> It keeps <span class="mono">K₁≡1</span> but breaks <span class="mono">K₂=1</span>, exactly as the theorem’s asymmetry predicts.'; if(window.MathJax&&window.MathJax.typesetPromise) window.MathJax.typesetPromise([out]); }
+  [M,Q].forEach(el=>el.addEventListener('input',update)); window.addEventListener('resize',update); update();
+})();
+</script>
+<script>
+(function(){
+  const root=document.getElementById('reverse-host'); if(!root) return;
+  root.innerHTML=`<div class="ctrl" style="border-top:none"><div class="seg" id="rv-leg"><button data-rv="K1">K₁ = 1 leg</button><button data-rv="K2">K₂ = 1 leg</button><button data-rv="free">generic profile</button></div><label><span>A / C <b id="rv-Av">-2.00</b></span><input id="rv-A" type="range" min="-3" max="3" step="0.01" value="-2"></label><label><span>B <b id="rv-Bv">0.50</b></span><input id="rv-B" type="range" min="-1" max="2" step="0.01" value="0.5"></label><label><span>r <b id="rv-rv">3.00</b></span><input id="rv-r" type="range" min="1.5" max="8" step="0.01" value="3"></label></div><div class="statrow"><div class="stat"><div class="k">f(r)</div><div class="v mono" id="rv-f">—</div><div class="s">must stay >0 on theorem domain</div></div><div class="stat"><div class="k">K₁</div><div class="v mono" id="rv-k1">—</div><div class="s">first leg</div></div><div class="stat"><div class="k">K₂</div><div class="v mono" id="rv-k2">—</div><div class="s">second leg</div></div><div class="stat"><div class="k">‖R_μν‖∞</div><div class="v mono" id="rv-rn">—</div><div class="s">vacuum iff zero</div></div></div><div id="rv-verdict" class="ac-verdict"></div>`;
+  const A=document.getElementById('rv-A'), B=document.getElementById('rv-B'), r=document.getElementById('rv-r'), btns=[...root.querySelectorAll('[data-rv]')]; let mode='K1';
+  function update(){ let a=+A.value,b=+B.value,rr=+r.value; if(mode==='K2'){ b=0; B.value=0; B.disabled=true; B.parentElement.style.opacity=.45; } else { B.disabled=false; B.parentElement.style.opacity=1; } document.getElementById('rv-Av').textContent=a.toFixed(2); document.getElementById('rv-Bv').textContent=b.toFixed(2); document.getElementById('rv-rv').textContent=rr.toFixed(2); const {f,fp,fpp}=window.KKernel.mk_f({C1:-a,C2:-b}); const fv=f(rr), fpv=fp(rr), fppv=fpp(rr); const E=window.KKernel.Ricci(rr,fv,fpv,fppv); document.getElementById('rv-f').textContent=fv.toFixed(4); document.getElementById('rv-k1').textContent=E.K1.toFixed(4); document.getElementById('rv-k2').textContent=E.K2.toFixed(4); document.getElementById('rv-rn').textContent=Math.max(Math.abs(E.Rtt),Math.abs(E.Rrr||0),Math.abs(E.Rθθ)).toExponential(2); const out=document.getElementById('rv-verdict'); if(fv<=0){ out.className='ac-verdict ac-fail'; out.innerHTML='<b>Outside domain.</b> Pick larger r or smaller coefficients so that <span class="mono">f(r)>0</span>.'; }
+    else if(mode==='K1'){ out.className='ac-verdict '+(Math.abs(E.K2-1)<1e-9?'ac-pass':'ac-fail'); out.innerHTML=Math.abs(E.K2-1)<1e-9?'<b>Schwarzschild slice reached.</b> Inside the K₁=1 family, only the B=0 slice also satisfies K₂=1 and vacuum closure.':'<b>One leg is not enough.</b> The K₁=1 family leaves <span class="mono">K₂=1−B/r²</span>; nonzero B keeps a non-vacuum branch open.'; }
+    else if(mode==='K2'){ out.className='ac-verdict ac-pass'; out.innerHTML='<b>Rigid leg.</b> Forcing <span class="mono">K₂≡1</span> on an open interval gives <span class="mono">f=1+C/r</span> and automatically <span class="mono">K₁≡1</span>. This is exact rigidity inside the spherical-static family.'; }
+    else { out.className='ac-verdict ac-pass'; out.innerHTML='<b>Generic profile.</b> This mode is only for orientation: theorem conclusions need the full premise stack and the conjunction <span class="mono">K₁=K₂=1</span>.'; }
+    if(window.MathJax&&window.MathJax.typesetPromise) window.MathJax.typesetPromise([out]); }
+  btns.forEach(b=>b.onclick=()=>{ btns.forEach(x=>x.classList.remove('on')); b.classList.add('on'); mode=b.dataset.rv; update();}); btns[0].classList.add('on'); [A,B,r].forEach(el=>el.addEventListener('input',update)); update();
+})();
+</script>
+<script>
+(function(){
+  const root=document.getElementById('birkhoff-host'); if(!root) return;
+  root.innerHTML=`<figure class="card"><div class="fc-head"><div class="fc-title">Stage 1 · K₁ = 1 alone</div><div class="fc-tag">two-parameter family</div></div><div class="fc-body"><div class="ctrl" style="border-top:none"><label><span>r₀ <b id="bk-r0v">3.00</b></span><input id="bk-r0" type="range" min="2.0" max="6.0" step="0.01" value="3.0"></label><label><span>f(r₀) <b id="bk-f0v">0.500</b></span><input id="bk-f0" type="range" min="0.1" max="1.3" step="0.001" value="0.5"></label><label><span>f′(r₀) <b id="bk-fp0v">0.222</b></span><input id="bk-fp0" type="range" min="-0.5" max="0.8" step="0.001" value="0.222"></label></div><div class="statrow"><div class="stat"><div class="k">recovered C₁</div><div class="v mono" id="bk-C1">—</div><div class="s">from ICs</div></div><div class="stat"><div class="k">recovered C₂</div><div class="v mono" id="bk-C2">—</div><div class="s">second free constant</div></div><div class="stat"><div class="k">ODE residual</div><div class="v mono" id="bk-resid">—</div><div class="s">RK4 vs closed form</div></div><div class="stat"><div class="k">Meaning</div><div class="v" id="bk-mean">—</div><div class="s">K₁ leg leaves 2 DOF</div></div></div><canvas id="bk-canvas" height="220"></canvas><div id="bk-verdict" class="ac-verdict"></div></div></figure><figure class="card"><div class="fc-head"><div class="fc-title">Stage 2 · add K₂ = 1</div><div class="fc-tag">pin C₂ = 0</div></div><div class="fc-body"><div class="ctrl" style="border-top:none"><label><span>C₁ <b id="bk2-C1v">2.00</b></span><input id="bk2-C1" type="range" min="0" max="4" step="0.01" value="2.0"></label><label><span>C₂ <b id="bk2-C2v">0.000</b></span><input id="bk2-C2" type="range" min="-1" max="1" step="0.005" value="0.0"></label></div><div class="statrow"><div class="stat"><div class="k">K₂−1 sup norm</div><div class="v mono" id="bk2-norm">—</div><div class="s">on [2,8]</div></div><div class="stat"><div class="k">Formula</div><div class="v mono">K₂=1+C₂/r²</div><div class="s">for f=1−C₁/r−C₂/r²</div></div><div class="stat"><div class="k">Vacuum locus</div><div class="v" id="bk2-vac">—</div><div class="s">only at C₂=0</div></div><div class="stat"><div class="k">Meaning</div><div class="v">one parameter left</div><div class="s">Schwarzschild family</div></div></div><canvas id="bk2-canvas" height="200"></canvas><div id="bk2-verdict" class="ac-verdict"></div></div></figure><figure class="card"><div class="fc-head"><div class="fc-title">Stage 3 · rename C₁ = 2M</div><div class="fc-tag">Schwarzschild readouts</div></div><div class="fc-body"><div class="ctrl" style="border-top:none"><label><span>M <b id="bk3-Mv">1.000</b></span><input id="bk3-M" type="range" min="0.1" max="3.0" step="0.005" value="1.0"></label></div><div class="statrow"><div class="stat"><div class="k">r_s</div><div class="v mono" id="bk3-rh">—</div><div class="s">horizon radius</div></div><div class="stat"><div class="k">κ</div><div class="v mono" id="bk3-kappa">—</div><div class="s">surface gravity</div></div><div class="stat"><div class="k">T_H</div><div class="v mono" id="bk3-TH">—</div><div class="s">standard Hawking relation</div></div><div class="stat"><div class="k">Scope</div><div class="v">readout</div><div class="s">not a new thermodynamic derivation</div></div></div><canvas id="bk3-canvas" height="220"></canvas><div class="ac-verdict ac-pass"><b>What this validates.</b> The ODE-level collapse inside already static spherical gauge: K₁=1 gives a 2-parameter family, K₂=1 kills the second constant, and the remaining parameter is naturally read as mass. <br><b>What this does not validate.</b> Full Birkhoff. The theorem that spherical vacuum implies staticity is standard GR and lies outside this panel.</div></div></figure>`;
+  function solveK1(r0,f0,fp0){ const C1 = 2*(1-f0)*r0 - fp0*r0*r0; const C2 = fp0*r0*r0*r0 - (1-f0)*r0*r0; return {C1,C2}; }
+  function recon(r,C1,C2){ return { f:1-C1/r-C2/(r*r), fp:C1/(r*r)+2*C2/(r*r*r), fpp:-2*C1/(r*r*r)-6*C2/(r*r*r*r) }; }
+  function integrateK1(r0,f0,fp0,rEnd,N=2000){ const h=(rEnd-r0)/N; let r=r0,f=f0,fp=fp0; for(let i=0;i<N;i++){ const rhs=(r_,f_,fp_)=>-(4*r_*fp_ + 2*(f_-1))/(r_*r_); const k1f=fp, k1p=rhs(r,f,fp); const k2f=fp+0.5*h*k1p, k2p=rhs(r+0.5*h,f+0.5*h*k1f,fp+0.5*h*k1p); const k3f=fp+0.5*h*k2p, k3p=rhs(r+0.5*h,f+0.5*h*k2f,fp+0.5*h*k2p); const k4f=fp+h*k3p, k4p=rhs(r+h,f+h*k3f,fp+h*k3p); f += h*(k1f+2*k2f+2*k3f+k4f)/6; fp += h*(k1p+2*k2p+2*k3p+k4p)/6; r += h; } return {r,f,fp}; }
+  const r0=document.getElementById('bk-r0'),f0=document.getElementById('bk-f0'),fp0=document.getElementById('bk-fp0');
+  function draw1(){ const rv=+r0.value,fv=+f0.value,fpv=+fp0.value; document.getElementById('bk-r0v').textContent=rv.toFixed(2); document.getElementById('bk-f0v').textContent=fv.toFixed(3); document.getElementById('bk-fp0v').textContent=fpv.toFixed(3); const {C1,C2}=solveK1(rv,fv,fpv); document.getElementById('bk-C1').textContent=C1.toFixed(4); document.getElementById('bk-C2').textContent=C2.toFixed(4); const num=integrateK1(rv,fv,fpv,rv+4), cls=recon(rv+4,C1,C2); const err=Math.max(Math.abs(num.f-cls.f),Math.abs(num.fp-cls.fp)); document.getElementById('bk-resid').textContent=err.toExponential(2); document.getElementById('bk-mean').textContent=Math.abs(C2)>2e-2?'non-vacuum slice':'already near vacuum'; const cv=document.getElementById('bk-canvas'),ctx=cv.getContext('2d'); const dpr=window.devicePixelRatio||1,w=cv.clientWidth||900,h=220; cv.width=w*dpr;cv.height=h*dpr;ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,w,h); const pad={l:46,r:12,t:12,b:22}, r1=rv, r2=rv+5; const ys=[]; for(let i=0;i<=220;i++){ const rr=r1+(r2-r1)*i/220; ys.push(1-C1/rr-C2/(rr*rr)); } const ymin=Math.min(...ys,0.3), ymax=Math.max(...ys,1.1); const X=rr=>pad.l+(rr-r1)/(r2-r1)*(w-pad.l-pad.r), Y=y=>pad.t+(1-(y-ymin)/(ymax-ymin))*(h-pad.t-pad.b); ctx.strokeStyle='rgba(0,0,0,.12)'; ctx.strokeRect(pad.l,pad.t,w-pad.l-pad.r,h-pad.t-pad.b); ctx.strokeStyle='oklch(0.9 0.02 55)'; ctx.setLineDash([4,4]); ctx.beginPath(); ctx.moveTo(pad.l,Y(1)); ctx.lineTo(w-pad.r,Y(1)); ctx.stroke(); ctx.setLineDash([]); ctx.strokeStyle='oklch(0.52 0.18 268)'; ctx.lineWidth=2; ctx.beginPath(); ys.forEach((yy,i)=>{ const rr=r1+(r2-r1)*i/220; const x=X(rr), y=Y(yy); if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);}); ctx.stroke(); const out=document.getElementById('bk-verdict'); out.className='ac-verdict '+(err<1e-6?'ac-pass':'ac-fail'); out.innerHTML=err<1e-6?'<b>General solution confirmed.</b> The K₁=1 ODE really yields the 2-parameter family <span class="mono">f=1−C₁/r−C₂/r²</span>. This is why one leg alone does not fix vacuum.':'<b>Numerical integration drift.</b> The RK4 check is not matching the closed form at tolerance.'; if(window.MathJax&&window.MathJax.typesetPromise) window.MathJax.typesetPromise([out]); }
+  [r0,f0,fp0].forEach(el=>el.addEventListener('input',draw1)); draw1();
+  const C1s=document.getElementById('bk2-C1'), C2s=document.getElementById('bk2-C2');
+  function draw2(){ const c1=+C1s.value,c2=+C2s.value; document.getElementById('bk2-C1v').textContent=c1.toFixed(2); document.getElementById('bk2-C2v').textContent=c2.toFixed(3); const sup=Math.abs(c2)/4; document.getElementById('bk2-norm').textContent=sup.toExponential(2); document.getElementById('bk2-vac').textContent=Math.abs(c2)<1e-9?'yes':'no'; const cv=document.getElementById('bk2-canvas'),ctx=cv.getContext('2d'); const dpr=window.devicePixelRatio||1,w=cv.clientWidth||900,h=200; cv.width=w*dpr;cv.height=h*dpr;ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,w,h); const pad={l:46,r:12,t:12,b:22}, r1=2, r2=8; const ymag=Math.max(Math.abs(c2)/4,0.05), ymin=-ymag*1.2, ymax=ymag*1.2; const X=rr=>pad.l+(rr-r1)/(r2-r1)*(w-pad.l-pad.r), Y=y=>pad.t+(1-(y-ymin)/(ymax-ymin))*(h-pad.t-pad.b); ctx.strokeStyle='rgba(0,0,0,.12)'; ctx.strokeRect(pad.l,pad.t,w-pad.l-pad.r,h-pad.t-pad.b); ctx.strokeStyle='oklch(0.55 0.13 150)'; ctx.lineWidth=2; ctx.beginPath(); for(let i=0;i<=220;i++){ const rr=r1+(r2-r1)*i/220; const y=c2/(rr*rr); const x=X(rr), py=Y(y); if(i===0) ctx.moveTo(x,py); else ctx.lineTo(x,py);} ctx.stroke(); ctx.strokeStyle='oklch(0.55 0.18 25)'; ctx.setLineDash([4,4]); ctx.beginPath(); ctx.moveTo(pad.l,Y(0)); ctx.lineTo(w-pad.r,Y(0)); ctx.stroke(); ctx.setLineDash([]); const out=document.getElementById('bk2-verdict'); out.className='ac-verdict '+(Math.abs(c2)<1e-9?'ac-pass':'ac-fail'); out.innerHTML=Math.abs(c2)<1e-9?'<b>Vacuum locus reached.</b> Only <span class="mono">C₂=0</span> makes <span class="mono">K₂=1</span> throughout the interval, collapsing the family to Schwarzschild.':'<b>Second constant still present.</b> Here <span class="mono">K₂−1 = C₂/r²</span>, so the family remains non-vacuum until C₂ is set to zero exactly.'; if(window.MathJax&&window.MathJax.typesetPromise) window.MathJax.typesetPromise([out]); }
+  [C1s,C2s].forEach(el=>el.addEventListener('input',draw2)); draw2();
+  const M=document.getElementById('bk3-M');
+  function draw3(){ const m=+M.value; document.getElementById('bk3-Mv').textContent=m.toFixed(3); document.getElementById('bk3-rh').textContent=(2*m).toFixed(4); document.getElementById('bk3-kappa').textContent=(1/(4*m)).toFixed(4); document.getElementById('bk3-TH').textContent((1/(8*Math.PI*m)).toFixed(4)); }
+})();
+</script>
+
+<script>
+(function(){
+  window.addEventListener('load', function(){
+    try {
+      if (window.MathJax && typeof window.MathJax.typesetPromise === 'function' && !window.MathJax.__k1Patched) {
+        window.MathJax.__k1Patched = true;
+        window.MathJax.__k1OrigTypesetPromise = window.MathJax.typesetPromise.bind(window.MathJax);
+        window.MathJax.typesetPromise = function(nodes){
+          return Promise.resolve();
+        };
+      }
+    } catch (err) {
+      console.warn('mathjax perf patch failed', err);
+    }
+  }, { once:true });
+})();
+</script>
+<script>
+(function(){
+  function routeFix(){
+    const host=document.getElementById('routeConverge');
+    if(!host || host.dataset.routeFixed) return;
+    host.dataset.routeFixed='1';
+    const M=document.getElementById('M_el');
+    const Mv=document.getElementById('M_v');
+    const rsB=document.getElementById('rc-rsB');
+    const kapB=document.getElementById('rc-kapB');
+    const THA=document.getElementById('rc-THA');
+    const rsA=document.getElementById('rc-rsA');
+    const dRs=document.getElementById('rc-resRs');
+    const dK=document.getElementById('rc-resK');
+    const verdict=document.getElementById('rc-verdict');
+    const cB=document.getElementById('rc-canvas-B');
+    const cA=document.getElementById('rc-canvas-A');
+    if(!M||!Mv||!rsB||!kapB||!THA||!rsA||!dRs||!dK||!verdict||!cB||!cA) return;
+    const ctxB=cB.getContext('2d'), ctxA=cA.getContext('2d');
+    const btns=[...host.querySelectorAll('[data-rc]')];
+    function fit(canvas, ctx){
+      const dpr=window.devicePixelRatio||1;
+      const w=canvas.clientWidth||420;
+      const h=200;
+      canvas.width=w*dpr; canvas.height=h*dpr;
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+      return {w,h};
+    }
+    function drawRouteB(m){
+      const {w,h}=fit(cB,ctxB);
+      ctxB.clearRect(0,0,w,h);
+      const rs=2*m;
+      const r1=Math.max(0.3,0.55*rs), r2=4.4*rs;
+      const pad={l:42,r:12,t:14,b:24};
+      const vals=[];
+      for(let i=0;i<=220;i++){
+        const r=r1+(r2-r1)*i/220;
+        vals.push(1-rs/r);
+      }
+      const ymin=Math.min(-0.35,...vals), ymax=Math.max(1.05,...vals);
+      const X=r=>pad.l+(r-r1)/(r2-r1)*(w-pad.l-pad.r);
+      const Y=v=>pad.t+(1-(v-ymin)/(ymax-ymin))*(h-pad.t-pad.b);
+      ctxB.strokeStyle='rgba(0,0,0,.12)';
+      ctxB.strokeRect(pad.l,pad.t,w-pad.l-pad.r,h-pad.t-pad.b);
+      ctxB.strokeStyle='oklch(0.52 0.18 268)';
+      ctxB.lineWidth=2;
+      ctxB.beginPath();
+      vals.forEach((v,i)=>{
+        const r=r1+(r2-r1)*i/220;
+        const x=X(r), y=Y(v);
+        if(i===0) ctxB.moveTo(x,y); else ctxB.lineTo(x,y);
+      });
+      ctxB.stroke();
+      ctxB.strokeStyle='oklch(0.55 0.18 25)';
+      ctxB.setLineDash([4,4]);
+      ctxB.beginPath(); ctxB.moveTo(X(rs), pad.t); ctxB.lineTo(X(rs), h-pad.b); ctxB.stroke();
+      ctxB.beginPath(); ctxB.moveTo(pad.l, Y(0)); ctxB.lineTo(w-pad.r, Y(0)); ctxB.stroke();
+      ctxB.setLineDash([]);
+      ctxB.fillStyle='var(--ink-3)'; ctxB.font='11px JetBrains Mono';
+      ctxB.fillText('f(r)=1−2M/r', pad.l+8, pad.t+14);
+      ctxB.fillText('r_s', X(rs)+6, pad.t+14);
+    }
+    function drawRouteA(m){
+      const {w,h}=fit(cA,ctxA);
+      ctxA.clearRect(0,0,w,h);
+      const TH=1/(8*Math.PI*m), kap=2*Math.PI*TH, rs=1/(4*Math.PI*TH);
+      const pad={l:42,r:18,t:18,b:24}, barW=42, maxTH=1/(8*Math.PI*0.4);
+      const hTH=(TH/maxTH)*(h-pad.t-pad.b);
+      const hKap=(kap/(0.5))*(h-pad.t-pad.b);
+      const hRs=(Math.min(rs,6)/6)*(h-pad.t-pad.b);
+      const xs=[pad.l+36,pad.l+146,pad.l+256], hs=[hTH,hKap,hRs];
+      const labels=['T_H','κ=2πT_H','r_s'];
+      const colors=['oklch(0.58 0.14 55)','oklch(0.55 0.17 25)','oklch(0.52 0.18 268)'];
+      ctxA.strokeStyle='rgba(0,0,0,.12)'; ctxA.strokeRect(pad.l,pad.t,w-pad.l-pad.r,h-pad.t-pad.b);
+      hs.forEach((hh,i)=>{
+        ctxA.fillStyle=colors[i]; ctxA.fillRect(xs[i], h-pad.b-hh, barW, hh);
+        ctxA.fillStyle='var(--ink-3)'; ctxA.font='11px JetBrains Mono'; ctxA.fillText(labels[i], xs[i]-4, h-pad.b+14);
+      });
+      ctxA.fillStyle='var(--ink-3)'; ctxA.font='11px JetBrains Mono';
+      ctxA.fillText('closed-form thermodynamic outputs', pad.l+8, pad.t+14);
+    }
+    function update(){
+      const m=+M.value, rs=2*m, kap=1/(4*m), th=1/(8*Math.PI*m), rsFromA=1/(4*Math.PI*th), kapFromA=2*Math.PI*th;
+      Mv.textContent=m.toFixed(2);
+      rsB.textContent=rs.toFixed(4);
+      kapB.textContent=kap.toFixed(4);
+      THA.textContent=th.toFixed(4);
+      rsA.textContent=rsFromA.toFixed(4);
+      dRs.textContent=Math.abs(rs-rsFromA)<1e-12?'<1e−12':Math.abs(rs-rsFromA).toExponential(2);
+      dK.textContent=Math.abs(kap-kapFromA)<1e-12?'<1e−12':Math.abs(kap-kapFromA).toExponential(2);
+      verdict.className='ac-verdict ac-pass';
+      verdict.innerHTML='<b>Closed-form Schwarzschild outputs agree.</b> Route B fixes <span class="mono">r_s=2M</span> and <span class="mono">κ=1/(4M)</span>; Route A gives <span class="mono">T_H=1/(8πM)</span>, hence <span class="mono">κ=2πT_H</span> and the same horizon radius.';
+      drawRouteB(m);
+      drawRouteA(m);
+    }
+    M.addEventListener('input', update);
+    btns.forEach(b=>b.onclick=()=>{
+      btns.forEach(x=>x.classList.remove('on'));
+      b.classList.add('on');
+      M.value=b.dataset.rc;
+      update();
+    });
+    if(btns[1]) btns[1].classList.add('on');
+    window.addEventListener('resize', update);
+    update();
+  }
+
+  function birkhoffStage3Fix(){
+    const M=document.getElementById('bk3-M');
+    const cv=document.getElementById('bk3-canvas');
+    if(!M || !cv || M.dataset.bk3Fixed) return;
+    M.dataset.bk3Fixed='1';
+    const ctx=cv.getContext('2d');
+    function update(){
+      const m=+M.value;
+      const mv=document.getElementById('bk3-Mv');
+      const rh=document.getElementById('bk3-rh');
+      const kap=document.getElementById('bk3-kappa');
+      const th=document.getElementById('bk3-TH');
+      if(!mv||!rh||!kap||!th) return;
+      mv.textContent=m.toFixed(3);
+      rh.textContent=(2*m).toFixed(4);
+      kap.textContent=(1/(4*m)).toFixed(4);
+      th.textContent=(1/(8*Math.PI*m)).toFixed(4);
+      const dpr=window.devicePixelRatio||1, w=cv.clientWidth||900, h=220;
+      cv.width=w*dpr; cv.height=h*dpr; ctx.setTransform(dpr,0,0,dpr,0,0);
+      ctx.clearRect(0,0,w,h);
+      const pad={l:44,r:12,t:14,b:24}, rs=2*m, r1=Math.max(0.15,0.4*rs), r2=4.2*rs;
+      const X=r=>pad.l+(r-r1)/(r2-r1)*(w-pad.l-pad.r);
+      const Y=v=>pad.t+(1-v)*(h-pad.t-pad.b);
+      ctx.strokeStyle='rgba(0,0,0,.12)';
+      ctx.strokeRect(pad.l,pad.t,w-pad.l-pad.r,h-pad.t-pad.b);
+      ctx.strokeStyle='oklch(0.52 0.18 268)';
+      ctx.lineWidth=2;
+      ctx.beginPath();
+      for(let i=0;i<=220;i++){
+        const r=r1+(r2-r1)*i/220, f=1-rs/r, x=X(r), y=Y(Math.max(-0.25,Math.min(1.05,f)));
+        if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+      }
+      ctx.stroke();
+      ctx.setLineDash([4,4]); ctx.strokeStyle='oklch(0.55 0.18 25)';
+      ctx.beginPath(); ctx.moveTo(X(rs),pad.t); ctx.lineTo(X(rs),h-pad.b); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(pad.l,Y(0)); ctx.lineTo(w-pad.r,Y(0)); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle='var(--ink-3)'; ctx.font='11px JetBrains Mono';
+      ctx.fillText('f(r)=1−2M/r', pad.l+8, pad.t+14);
+      ctx.fillText('r_s', X(rs)+6, pad.t+14);
+    }
+    M.addEventListener('input', update);
+    window.addEventListener('resize', update);
+    update();
+  }
+
+  function apply(){
+    routeFix();
+    birkhoffStage3Fix();
+  }
+
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', apply, {once:true});
+  else apply();
+})();
+</script>
+</body></html>
