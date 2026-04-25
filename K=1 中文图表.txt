@@ -130,7 +130,7 @@ dt_{\mathrm{info}}:=\frac{d\Phi}{H},
 \]
 故在本文的建模中, 代价结构在符号化主二次型层面强制 Lorentz 类型。
 
-\medskip\noindent\textit{更深动机.} 在更深的层面上, \cite{Realizability} 的公理 R, E, T 可被视为对与 $dt_{\mathrm{info}}^{2}$ 的局部二阶代价形式相关的 Hessian 层退化结构的可实现性编码, 其动机在于要求非平凡的变分运动保持可实现的性质, 而非塌缩为平凡位移。本文不进行从该结构对公理 R, E, T 的完整反向重构; 而是使用所相关的符号化主导形式 $G$ 连同~\cite{Realizability} 的可实现性定理, 作为操作性桥梁。
+\medskip\noindent\textit{更深动机.} \cite{Realizability} 的公理 R, E, T 可被视为对与 $dt_{\mathrm{info}}^{2}$ 的局部二阶代价形式相关的 Hessian 层退化结构的可实现性编码, 其动机在于要求非平凡的变分运动保持可实现的性质, 而非塌缩为平凡位移。本文不进行从该结构对公理 R, E, T 的完整反向重构; 而是使用所相关的符号化主导形式 $G$ 连同~\cite{Realizability} 的可实现性定理, 作为操作性桥梁。
 
 \medskip\noindent\textit{结论的范围.} 这里受约束的是 $G$ 的\emph{代数类型}(其号差), 而非其具体值。本文因此采用结构性框架: $\Phi$ 与 $H$ 不被指定为特定物理量, $dt_{\mathrm{info}}$ 是对 $G$ 的启发式构造, 而非对所有度规数据的完整内部推导。二次型
 \[
