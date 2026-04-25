@@ -86,7 +86,7 @@
 
 \smallskip\noindent\textbf{缺口.\ } 在本文采用的``局部代价主二次型''意义下, 现有方法通常把 Lorentz 号差或等价的因果结构作为输入; 本文关注的是位于此前一层的问题: 代价结构本身何时强制 Lorentz 型主符号。\footnote{探讨相关但不同问题的方法包括: Born--Infeld 号差问题、量子宇宙学中的号差变化, 以及时间问题~\cite{Gibbons1995,Kiefer2012,Isham1993}。熵引力方法~\cite{Verlinde,Padmanabhan} 以 Lorentz 时空为前提并推导引力动力学; 本文处理的是位于此前一层的、基于代价的号差问题。}
 
-\smallskip\noindent\textbf{局部回答.\ } 在本文的建模中, 时间既非坐标, 也非度规原语, 而是变化的代价。信息时间为 $dt_{\mathrm{info}}:=d\Phi/H$, 其中 $\Phi$ 表示结构变化, $H>0$ 为单位变化的局部代价; 与 $dt_{\mathrm{info}}^{2}$ 相关的符号化主二次型 $G$ 建模为~\cite{Realizability} 的主二次型 $Q$。\textbf{本文的第一个结果是局部的、点级的: 在 $2\times 2$ 可实现性框架中, 代价结构强制 Lorentz 类型}---公理 R, E, T 连同非退化性给出 $\det G<0$, 等价于 $\mathrm{Sig}(G)=(1,1)$ (\S\ref{sec:lawI})。诱导生成子 $J_G$、阈值 $d_c>0$、单位代价轨迹 $K(x)=x^{\top}Gx=1$ 随后都是这单一符号的代数推论; 使 $K=1$ 成为局部自洽吸引子需要律 II--III 的动力学补全。\emph{本文采用结构性框架: $\Phi$ 与 $H$ 不被指定为特定物理量; 只要它们诱导出的代价结构满足公理 R, E, T 与非退化性, 后续结论即约束所得主二次型的代数类型。}
+\smallskip\noindent\textbf{局部回答.\ } 在本文的建模中, 时间既非坐标, 也非度规原语, 而是变化的代价。信息时间为 $dt_{\mathrm{info}}:=d\Phi/H$, 其中 $\Phi$ 表示结构变化, $H>0$ 为单位变化的局部代价; 与 $dt_{\mathrm{info}}^{2}$ 相关的符号化主二次型 $G$ 建模为~\cite{Realizability} 的主二次型 $Q$。\textbf{本文的第一个结果是局部的、点级的: 在 $2\times 2$ 可实现性框架中, 代价结构强制 Lorentz 类型}---公理 R, E, T 连同非退化性给出 $\det G<0$, 等价于 $\mathrm{Sig}(G)=(1,1)$ (\S\ref{sec:lawI})。诱导生成子 $J_G$、阈值 $d_c>0$、单位代价轨迹 $K(x)=x^{\top}Gx=1$ 随后都是这单一符号的代数推论; 使 $K=1$ 成为局部自洽轨迹需要律 II--III 的动力学补全。\emph{本文采用结构性框架: $\Phi$ 与 $H$ 不被指定为特定物理量; 只要它们诱导出的代价结构满足公理 R, E, T 与非退化性, 后续结论即约束所得主二次型的代数类型。}
 
 \smallskip\noindent\textbf{与爱因斯坦方程相连的两条路径.}
 \begin{itemize}[leftmargin=2em, itemsep=0.4ex, parsep=0pt, topsep=0.3ex]
@@ -109,33 +109,39 @@
 
 \section{信息时间导出度规(律 I)}\label{sec:lawI}
 
+\medskip
 \noindent\textbf{律 I.} \textit{度规 $G$ 是量度局部位移代价的非退化对称双线性型\textup{(在~\cite{Realizability} 的意义下)}, 时间方向为正代价方向\textup{(\cite{Realizability} 的公理 T)}。}
 
 \medskip
-
 \noindent 图~\ref{fig:framework} 概括了三层框架的整体逻辑依赖关系(信息时间与可实现性、点级 $K=1$、动力学)。
 
 \medskip\noindent\textit{框架定义.} 本文围绕以下诸要素展开。\emph{输入}: 结构参数 $\Phi$ 与正标量代价 $H$, 给出信息时间 $dt_{\mathrm{info}}:=d\Phi/H$。\emph{公理层}: 与之相关的符号化主二次型 $G$ 被建模为满足~\cite{Realizability} 的公理 R, E, T, 并附加对 $G$ 的非退化性假设。\emph{附加条件}: 单位代价轨迹 $K(x):=x^{\top}Gx=1$ 在点级施加局部自洽性。\emph{动力学补全}: 律 II 在辛-耗散类 $GA=\alpha J-GD$ 中指定唯一演化 $\dot x=(J_G-D)\nabla V$(定理~\ref{thm:lawII}), 律 III 刻画其在临界阻尼处的恢复与涨落结构(定理~\ref{thm:restoring})。\emph{内部结论}: 在点级, Lorentz 号差 $\mathrm{Sig}(G)=(1,1)$、三重等价(定理~\ref{thm:equivalence})与局部恢复律, 在归一化特征向量基点上 $\kappa_K=4d_c$; 在依赖于猜想的途径 B 提升下, 在球对称真空部分中, 与 Einstein 真空方程的代数等价(定理~\ref{thm:field})。\emph{外部输入}(仅途径 A): 热力学等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 与熵-面积律 $S\propto A$。
 
-\medskip\noindent\textit{信息时间的角色.} 信息时间在本文中的角色是启发一个符号化主二次型 $G$; 一旦此二次型满足公理 R, E, T 与非退化性(本文作为假设, \cite{Realizability} 中作为定理确立), 其 Lorentz 类型即在代数上随之而得。受约束的是 $G$ 的\emph{代数类型}(其号差), 而非其具体值。
+\medskip\noindent\textit{主桥接.} 信息时间定义为
+\[
+dt_{\mathrm{info}}:=\frac{d\Phi}{H},
+\]
+其中 $\Phi$ 参数化结构变化, $H>0$ 是 $\Phi$ 单位变化的局部\emph{标量}代价(熵阻抗, 与 \S\ref{sec:stability} 中的矩阵权重 $H_{*}$ 无关)。与 $dt_{\mathrm{info}}^{2}$ 相关的有一个符号化主二次型 $G$, 启发式地记为 $G:=\nabla^{2}(dt_{\mathrm{info}}^{2})$。严格地说, 此记号是简写: $G$ 表示与 $dt_{\mathrm{info}}^{2}$ 相关的\emph{符号化主二次系数形式}, 等同于~\cite{Realizability} 的主二次型 $Q$。非负的信息时间代价本身由正部构造 $(x^{\top}Gx)_{+}$ 做主导阶表示, 而 $G$ 是其下面的符号化系数形式。因此~\cite{Realizability} 的主要定理直接适用: 公理 R, E, T 连同非退化性意味着
+\[
+\mathrm{Sig}(G)=(1,1),
+\qquad\text{等价于}\qquad
+\det G<0.
+\]
+故在本文的建模中, 代价结构在符号化主二次型层面强制 Lorentz 类型。
 
-\medskip
-
-信息时间 $dt_{\mathrm{info}}:=d\Phi/H$, 其中 $\Phi$ 参数化结构变化, $H>0$ 是 $\Phi$ 单位变化的局部\emph{标量}代价(熵阻抗, 与 \S\ref{sec:stability} 中的权重矩阵 $H_{*}$ 无关), 给出与 $dt_{\mathrm{info}}^{2}$ 相关的符号化主二次型 $G$ (启发式地记为 $G:=\nabla^{2}(dt_{\mathrm{info}}^{2})$): 在符号层面, 局部二次型代表为 $\delta x^{\top}G\,\delta x$, 非负代价通过~\cite{Realizability} 的正部构造 $(\delta x^{\top}G\,\delta x)_{+}$ 在主阶得到恢复。通过选择 $H$ 的单位, $dt_{\mathrm{info}}$ 按定义具有时间量纲。二次型 $K(x):=x^{\top}Gx$ 量度局部时间代价, $K=1$ 标识自洽轨迹。时间的这种重新定义仅通过 $G$ 进入诸定理:$dt_{\mathrm{info}}$ 作为对 $G$(即~\cite{Realizability} 的主二次型 $Q$)的启发式构造。
-
-\medskip\noindent\textit{通向可实现性框架的桥接.} 记号 $G:=\nabla^{2}(dt_{\mathrm{info}}^{2})$ 是一种简写: 严格地说, $G$ 表示与 $dt_{\mathrm{info}}^{2}$ 相关的\emph{符号化主二次系数形式}, 等同于~\cite{Realizability} 的主二次型 $Q$。非负的信息时间代价本身由其正部 $(x^{\top}Gx)_{+}$ 做主导阶近似, 正如~\cite{Realizability} 中所做; $G$ 则是其下面的符号化系数形式, 即便 $dt_{\mathrm{info}}^{2}\ge 0$, $G$ 仍可取正负两种符号。因此~\cite{Realizability} 的主要定理直接适用:公理 R, E, T 连同非退化性意味着 $\mathrm{Sig}(G)=(1,1)$, 等价于 $\det G<0$。条件 $K=x^{\top}Gx=1$ 不是~\cite{Realizability} 的结论, 而是本文引入的附加自洽条件。
+\medskip\noindent\textit{结论的范围.} 这里受约束的是 $G$ 的\emph{代数类型}(其号差), 而非其具体值。本文因此采用结构性框架: $\Phi$ 与 $H$ 不被指定为特定物理量, $dt_{\mathrm{info}}$ 是对 $G$ 的启发式构造, 而非对所有度规数据的完整内部推导。二次型
+\[
+K(x):=x^{\top}Gx
+\]
+量度局部时间代价, 而条件 $K=1$ 标识自洽轨迹; 此条件\emph{不是}~\cite{Realizability} 的结论, 而是本文引入的附加自洽条件。
 
 \medskip\noindent\textit{从~\cite{Realizability} 借用的最小内容.} 为使本文尽量自足, 此处所用机制如下。公理 E 将位移代价的主导阶化约为非退化二次型 $Q$。公理 T 给出一个具有严格正代价的特异时间方向, 由此排除纯负定的主二次型。公理 R 通过~\cite{Realizability} 的极限论证, 要求在该文所用的精确代价泛函下, 存在空间上非平凡的前向位移序列使代价与大小之比趋于零, 由此排除正定的主二次型。在二维情形下, 一旦正定与负定两种号差都被排除且非退化性被施加, 所剩的唯一惯性指数即为 $(1,1)$。将本文的 $G$ 等同于此符号化主二次型 $Q$, 即得 $\mathrm{Sig}(G)=(1,1)$, 等价于 $\det G<0$。完整的陈述, 包括精确的代价泛函、正部构造 $(x^{\top}Qx)_{+}$, 以及公理 R 中的极限论证, 均在~\cite{Realizability} 中证明。
 
-\medskip
-
-这里的 $\Phi$ 是 $\mathbb{R}^{2}$ 上一个光滑标量, 我们不指定它。一旦 $\Phi$ 使得 $dt_{\mathrm{info}}$ 满足可实现性公理 R, E, T 连同非退化性, $G$ 的 Lorentz 号差随之确定。不同的 $\Phi$ 选择可导致不同的 $G$, 但都满足相同的号差结论。
-
-\medskip
-
-与 $dt_{\mathrm{info}}$ 相关的代价结构须满足公理 R, E, T, 具体如下。公理 E($\delta x$ 中的二次展开)是要求信息时间代价接纳~\cite{Realizability} 的二次主导阶展开而被施加; $\Phi$ 与 $H$ 的光滑性提供了这样一个主二次系数形式存在的动机。公理 T(正时间代价)被施加为这样的要求:位移代价(记为 $d$, 按~\cite{Realizability} 的意义)沿特异的时间方向有正线性下界: $d(x;(\Delta t,0))\ge c_{t}\,\Delta t$, 其中 $c_{t}>0$。公理 R 要求存在带有非零空间分量的前向位移序列, 其代价与大小之比趋于零。从公理 R, E, T 与非退化性出发对 $\mathrm{Sig}(G)=(1,1)$ 的完整推导见~\cite{Realizability}。
-
-在广义相对论中, Lorentz 度规是在预先存在的可微流形上给出的; 此处 $G$ 及其因果结构都是推出的。
+\medskip\noindent\textit{推论.} Lorentz 号差因此在主导形式层面从代价结构涌现: $G$ 不定, 具有零集
+\[
+\{x:x^{\top}Gx=0\},
+\]
+以及由 $K$ 的符号决定的相伴局部因果结构。在广义相对论中, Lorentz 度规是在预先存在的可微流形上给出的; 此处主导代价形式的 Lorentz 代数类型是推出的, 而非给定的。
 
 \begin{figure}[ht]
 \centering
@@ -343,7 +349,7 @@ $A=G^{-1}(\alpha J-GD)=J_{G}-D$。\qed
 
 \medskip
 
-\noindent\textit{从代数到动力学.} 代数条件 $K=1$ 是位形空间中的一个轨迹; 它并未规定 $K$ 偏离 1 时如何回到 1。完成该框架需要动力学结构: 律 II 指定唯一的辛-耗散演化律, 律 III (下文) 刻画其在临界阻尼处的恢复与涨落行为。只有在这一补全之下, $K=1$ 才成为局部自洽的吸引子, 而非仅仅是水平集。
+\noindent\textit{从代数到动力学.} 代数条件 $K=1$ 是位形空间中的一个轨迹; 它并未规定 $K$ 偏离 1 时如何回到 1。完成该框架需要动力学结构: 律 II 指定唯一的辛-耗散演化律, 律 III (下文) 刻画其在临界阻尼处的恢复与涨落行为。只有在这一补全之下, $K=1$ 才成为具有局部恢复动力学的自洽轨迹, 而非仅仅是水平集。
 
 \medskip
 
@@ -543,14 +549,50 @@ f+2rf'+\tfrac{r^{2}}{2}f''=1,
 等价于 $R{=}0$, 其通解为 $f=1-C_{1}/r-C_{2}/r^{2}$; 进一步施加 $K_{2}{=}1$ 强制 $C_{2}{=}0$, 从而唯一地复现 Schwarzschild 解, 与 Birkhoff 定理一致。在弱场($f=1+\varepsilon\varphi$)下, $K_{2}{=}1$ 一步给出 $\varphi=C/r$(牛顿); $K_{1}{=}1$ 在线性阶自动满足, 故其独立内容纯为非线性(强场)。
 \end{corollary}
 
+\begin{lemma}[非对称刚性]\label{lem:rigidity}
+对度规~\eqref{eq:metric}, 设 $f\in C^{2}(I)$ 于区间 $I\subset(0,\infty)$:
+\begin{enumerate}
+\item[\textup{(a)}] $K_{2}\equiv 1$ 在 $I$ 上当且仅当 $f=1+C/r$(对某常数 $C$), 此时 $K_{1}\equiv 1$ 也在 $I$ 上自动成立。
+\item[\textup{(b)}] $K_{1}\equiv 1$ 在 $I$ 上当且仅当 $f=1+A/r+B/r^{2}$(对某常数 $A,B$)。代入 $K_{2}$ 的定义得
+\[
+K_{2}=1-B/r^{2},
+\]
+故 (a) 的逆不成立: 当 $B\neq 0$, $K_{1}\equiv 1$ 不蕴含 $K_{2}\equiv 1$。
+\end{enumerate}
+因此 $K_{2}\equiv 1$ 是严格更强的条件; 双参数族 $f=1+A/r+B/r^{2}$ 满足 $K_{1}\equiv 1$ 但一般违反 $K_{2}\equiv 1$。Reissner--Nordstr\"{o}m 即此类非真空例子之一。
+\end{lemma}
+
+\begin{proof}
+$(a)$\;$K_{2}=f+rf'=d(rf)/dr$, 故 $K_{2}\equiv 1$ 即一阶 ODE $d(rf)/dr=1$, 通解 $rf=r+C$, 即 $f=1+C/r$。直接代入得 $K_{1}=(1+C/r)+2r(-C/r^{2})+(r^{2}/2)(2C/r^{3})=1+C/r-2C/r+C/r=1$。\;
+$(b)$\;$K_{1}\equiv 1$ 即二阶线性 ODE $f+2rf'+(r^{2}/2)f''=1$, 这是 Euler 型方程, 具 Schwarzschild--Reissner-Nordstr\"{o}m 形式通解 $f=1+A/r+B/r^{2}$。代入 $K_{2}=f+rf'$ 得 $K_{2}=(1+A/r+B/r^{2})+r(-A/r^{2}-2B/r^{3})=1-B/r^{2}$。故 $K_{2}\equiv 1$ 要求 $B=0$。\qed
+\end{proof}
+
+\begin{remark}[$K_{1}$ 与 $K_{2}$ 的不对称作用]
+引理~\ref{lem:rigidity} 形式化了不对称: $K_{2}\equiv 1$ 是刚性的(经 $f=1+C/r$ 强制 $K_{1}\equiv 1$), 而 $K_{1}\equiv 1$ 是柔性的(承认违反 $K_{2}$ 的单参数族解)。这种不对称是开放问题 3 中可检验性讨论的根据。
+\end{remark}
+
 \begin{remark}[观测含义]
 在本文球对称真空分析的范围内, 特征值原理与标准广义相对论的观测差异必然来自强引力数据。
 \end{remark}
 
-对于 Schwarzschild--de Sitter 解, $K_2=1{-}\Lambda r^2$ 且 $K_{1}-K_{2}=-\Lambda r^{2}$, 按 $\rho=\Lambda/(8\pi)$ 给出非零 $R_{\mu\nu}$, 符合 $G_{\mu\nu}+\Lambda g_{\mu\nu}=0$。
+\begin{corollary}[定理~\ref{thm:field} 的 $\Lambda$ 扩展]\label{cor:SdS}
+对度规~\eqref{eq:metric}, 设 $f\in C^{2}(I)$ 且 $f>0$ 于 $I\subset(0,\infty)$, $K_{1},K_{2}$ 依定义~\ref{def:esc}:
+\begin{equation}\label{eq:Lambda-equiv}
+K_{1}=1-2\Lambda r^{2}\;\;\text{且}\;\;K_{2}=1-\Lambda r^{2}
+\quad\Longleftrightarrow\quad R_{\mu\nu}=\Lambda g_{\mu\nu}.
+\end{equation}
+通解为 Schwarzschild--de~Sitter 族 $f=1-2M/r-\Lambda r^{2}/3$。
+\end{corollary}
 
-\begin{remark}[非真空情形]
-对非真空球对称度规, 假设 $\rho$ 静态, 则 $K_{2}=1-8\pi r^{2}\rho$: 物质可读作角向特征值自洽性的缺损, 每单位面积上为 $\rho=(1-K_{2})/(8\pi r^{2})$。此\emph{重写}爱因斯坦 $G_{tt}$ 分量;因子 $8\pi$ 继承自 GR, 非推出。
+\begin{proof}
+$(\Rightarrow)$\;
+$K_{2}=1-\Lambda r^{2}$ 即 $f+rf'=1-\Lambda r^{2}$, 即 $d(rf)/dr=1-\Lambda r^{2}$, 通解 $rf=r-\Lambda r^{3}/3+\text{常数}$, 故 $f=1-2M/r-\Lambda r^{2}/3$ (对某常数 $M$)。直接代入得 $K_{1}=1-2\Lambda r^{2}$ 自动成立。对此 $f$, $R_{\theta\theta}=1-K_{2}=\Lambda r^{2}=\Lambda g_{\theta\theta}$ 且 $R_{tt}=(f/r^{2})(K_{1}-K_{2})=-\Lambda f=\Lambda g_{tt}$。对此规形 $R_{tt}=-f^{2}R_{rr}$~\cite{Wald1984}, 故 $R_{tt}=\Lambda g_{tt}$ 等价于 $R_{rr}=\Lambda g_{rr}$; 角向分量由 $R_{\theta\theta}=\Lambda g_{\theta\theta}$ 与球对称性 ($R_{\phi\phi}=\sin^{2}\!\theta\,R_{\theta\theta}=\Lambda g_{\phi\phi}$) 固定, 从而四个非平凡 Ricci 分量全部闭合。\;
+$(\Leftarrow)$\;
+$R_{\theta\theta}=\Lambda g_{\theta\theta}=\Lambda r^{2}$ 给出 $K_{2}=1-\Lambda r^{2}$。$R_{tt}=\Lambda g_{tt}=-\Lambda f$ 与 $R_{tt}=(f/r^{2})(K_{1}-K_{2})$ 结合给出 $K_{1}-K_{2}=-\Lambda r^{2}$, 故 $K_{1}=1-2\Lambda r^{2}$。\qed
+\end{proof}
+
+\begin{remark}[物质与 $\Lambda$ 的角色]
+对非真空球对称度规, 假设 $\rho$ 静态, 则 $K_{2}=1-8\pi r^{2}\rho$, 即 $\rho=(1-K_{2})/(8\pi r^{2})$: 物质可读作角向特征值自洽性的缺损, 按单位面积测度。此关系\emph{使用了}爱因斯坦方程, 是代价重写而非独立推导(因子 $8\pi$ 继承自 GR)。$\Lambda$ 的值不被本框架预言。
 \end{remark}
 
 \begin{remark}[更一般度规]
@@ -682,6 +724,10 @@ $\mathrm{Var}(K)\approx T_{\mathrm{eff}}$(由式~\eqref{eq:var} 与 $T_{\mathrm{
 \end{figure}
 
 两条途径的输入结构——包括 Jacobson 输入和外部等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 与 $S\propto A$——已总结于图~\ref{fig:routes} 并在 \S\ref{sec:thermo} 中详述。本文的新意在于:Lorentz 号差通常在熵引力论证中是外部假设, 在此则由可实现性内部给出(定理~\ref{thm:equivalence}, 在各向同性线性化下)。
+
+\subsection*{主张范围}
+
+本文不提出新物理。在途径 A 所达之处, Einstein 方程 $G_{\mu\nu}=8\pi T_{\mu\nu}$ 被恢复; 在途径 B 所适用之处, $R_{\mu\nu}=0$ 被重新表述。本文的贡献是概念性的: Lorentz 号差是内部供应而非假设的(定理~\ref{thm:equivalence}, 在各向同性线性化下), 球对称真空方程在代价结构语言中得到重新表述(定理~\ref{thm:field})。物质内容 $\rho=(1{-}K_2)/(8\pi r^2)$、宇宙学常数 $\Lambda$ 与熵-面积律 $S\propto A$ 均为来自广义相对论的输入, 而非本框架的预言。
 
 \subsection*{$(1{+}3)$-维扩展}
 
