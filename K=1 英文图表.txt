@@ -41,7 +41,7 @@
 
 \textit{The gap.} In the ``local cost-based leading quadratic form'' sense adopted here, existing approaches typically take Lorentzian signature or an equivalent causal structure as input; the present work addresses the prior question: when does the cost structure itself enforce a Lorentzian leading symbol?\footnote{Related but distinct questions include Born--Infeld signature issues, signature change in quantum cosmology, and the problem of time~\cite{Gibbons1995,Kiefer2012,Isham1993}. Entropic gravity approaches~\cite{Verlinde,Padmanabhan} presuppose Lorentzian spacetime and derive gravitational dynamics; the present work addresses the prior cost-based signature question.}
 
-\textit{A local answer.} In the present modelling, time is neither coordinate nor metric primitive, but the cost of change. Information time is $dt_{\mathrm{info}}:=d\Phi/H$, where $\Phi$ parametrises structural variation and $H>0$ is the local cost per unit variation; the signed leading quadratic form $G$ associated with $dt_{\mathrm{info}}^{2}$ is modelled as the leading form $Q$ of~\cite{Realizability}. \textbf{The paper's first result is local and point-level: in a $2\times 2$ realizability setting, the cost structure forces Lorentzian type} --- Axioms~R, E, T together with nondegeneracy give $\det G<0$, equivalently $\mathrm{Sig}(G)=(1,1)$ (\S\ref{sec:lawI}). The induced generator $J_G$, the threshold $d_c>0$, and the unit-cost locus $K(x)=x^{\top}Gx=1$ are then algebraic consequences of this single sign; making $K=1$ a locally self-consistent attractor requires the dynamical completion of Laws~II--III. \emph{The present work adopts a structural framework: $\Phi$ and $H$ are not fixed to specific physical quantities; provided the cost structure satisfies Axioms~R, E, T and nondegeneracy, the subsequent results constrain the algebraic type of the leading quadratic form.}
+\textit{A local answer.} In the present modelling, time is neither coordinate nor metric primitive, but the cost of change. Information time is $dt_{\mathrm{info}}:=d\Phi/H$, where $\Phi$ parametrises structural variation and $H>0$ is the local cost per unit variation; the signed leading quadratic form $G$ associated with $dt_{\mathrm{info}}^{2}$ is modelled as the leading form $Q$ of~\cite{Realizability}. \textbf{The paper's first result is local and point-level: in a $2\times 2$ realizability setting, the cost structure forces Lorentzian type} --- Axioms~R, E, T together with nondegeneracy give $\det G<0$, equivalently $\mathrm{Sig}(G)=(1,1)$ (\S\ref{sec:lawI}). The induced generator $J_G$, the threshold $d_c>0$, and the unit-cost locus $K(x)=x^{\top}Gx=1$ are then algebraic consequences of this single sign; making $K=1$ a locally self-consistent locus requires the dynamical completion of Laws~II--III. \emph{The present work adopts a structural framework: $\Phi$ and $H$ are not fixed to specific physical quantities; provided the cost structure satisfies Axioms~R, E, T and nondegeneracy, the subsequent results constrain the algebraic type of the leading quadratic form.}
 
 \textit{Two routes connecting to the Einstein equations.}
 \begin{itemize}
@@ -64,25 +64,31 @@ The two routes are complementary: Route~A applies locally on Rindler horizons bu
 
 \medskip\noindent\textit{Framework definition.} The present paper is organised around the following elements. \emph{Inputs}: a structural parameter $\Phi$ and a positive scalar cost $H$, giving the information time $dt_{\mathrm{info}}:=d\Phi/H$. \emph{Axiom layer}: the associated signed leading quadratic form $G$ is modelled as satisfying Axioms~R, E, T of~\cite{Realizability}, together with a nondegeneracy hypothesis on $G$. \emph{Additional condition}: the unit-cost locus $K(x):=x^{\top}Gx=1$ imposes local self-consistency at the point level. \emph{Dynamical completion}: Law~II specifies the unique evolution $\dot x=(J_G-D)\nabla V$ within the symplectic--dissipative class $GA=\alpha J-GD$ (Theorem~\ref{thm:lawII}), and Law~III characterises the resulting restoring and fluctuation structure at critical damping (Theorem~\ref{thm:restoring}). \emph{Internal conclusions}: at the point level, Lorentzian signature $\mathrm{Sig}(G)=(1,1)$, the three-way equivalence (Theorem~\ref{thm:equivalence}), and the local restoring law, with $\kappa_K=4d_c$ at a normalised eigenvector base point; conditional on the conjectured Route~B uplift, in the spherically symmetric vacuum sector, algebraic equivalence to the Einstein vacuum equations (Theorem~\ref{thm:field}). \emph{External inputs} (Route~A only): the thermal identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ and the entropy--area law $S\propto A$.
 
-\medskip\noindent\textit{Role of information time.} The role of information time in the present paper is to motivate a signed leading quadratic form $G$; once this form satisfies Axioms~R, E, T and nondegeneracy (as hypothesised here and established in~\cite{Realizability}), its Lorentzian type follows algebraically. What is constrained is the \emph{algebraic type} of $G$ (its signature), not its specific values.
+\medskip\noindent\textit{Main bridge.} The information time is defined by
+\[
+dt_{\mathrm{info}}:=\frac{d\Phi}{H},
+\]
+where $\Phi$ parametrises structural variation and $H>0$ is the local \emph{scalar} cost per unit variation of $\Phi$ (an entropic resistance, unrelated to the matrix weight $H_{*}$ of~\S\ref{sec:stability}). Associated with $dt_{\mathrm{info}}^{2}$ is a signed leading quadratic form $G$, written heuristically as $G:=\nabla^{2}(dt_{\mathrm{info}}^{2})$. Strictly, this notation is shorthand: $G$ denotes the \emph{signed leading quadratic coefficient form} associated with $dt_{\mathrm{info}}^{2}$, identified with the leading quadratic form $Q$ of~\cite{Realizability}. The nonnegative information-time cost itself is represented to leading order by the positive-part construction $(x^{\top}Gx)_{+}$, while $G$ is the underlying signed coefficient form. Hence the main theorem of~\cite{Realizability} applies directly: Axioms~R, E, T together with nondegeneracy imply
+\[
+\mathrm{Sig}(G)=(1,1),
+\qquad\text{equivalently}\qquad
+\det G<0.
+\]
+Thus, in the present modelling, the cost structure forces Lorentzian type at the level of the signed leading form.
 
-\medskip
-
-The information time $dt_{\mathrm{info}}:=d\Phi/H$, where $\Phi$ parametrises structural variation and $H>0$ is the local \emph{scalar} cost per unit variation of $\Phi$ (an entropic resistance, unrelated to the weight matrix $H_{*}$ of~\S\ref{sec:stability}), provides a signed leading quadratic form $G$ associated with $dt_{\mathrm{info}}^{2}$ (denoted heuristically by $G:=\nabla^{2}(dt_{\mathrm{info}}^{2})$): at the signed-symbol level, the local quadratic representative is $\delta x^{\top}G\,\delta x$, with the nonnegative cost recovered at leading order via the positive-part construction $(\delta x^{\top}G\,\delta x)_{+}$ of~\cite{Realizability}. By choice of units for $H$, $dt_{\mathrm{info}}$ has dimensions of time by definition. The quadratic form $K(x):=x^{\top}Gx$ quantifies local temporal cost, and $K=1$ identifies the self-consistent locus. This redefinition of time enters the theorems through $G$ alone: $dt_{\mathrm{info}}$ serves as the motivating construction for~$G$ (the leading-order form $Q$ of~\cite{Realizability}).
-
-\medskip\noindent\textit{Bridge to the Realizability framework.} The notation $G:=\nabla^{2}(dt_{\mathrm{info}}^{2})$ is used as a shorthand: strictly, $G$ denotes the \emph{signed leading quadratic coefficient form} associated with $dt_{\mathrm{info}}^{2}$, identified with the leading quadratic form $Q$ of~\cite{Realizability}. The nonnegative information-time cost itself is represented to leading order by the positive part $(x^{\top}Gx)_{+}$, as in~\cite{Realizability}; $G$ is the underlying signed coefficient form, which may take both signs even though $dt_{\mathrm{info}}^{2}\ge 0$. Hence the main theorem of~\cite{Realizability} applies directly: Axioms~R, E, T together with nondegeneracy imply $\mathrm{Sig}(G)=(1,1)$, equivalently $\det G<0$. The condition $K=x^{\top}Gx=1$ is not a conclusion of~\cite{Realizability}, but the additional self-consistency condition introduced in the present paper.
+\medskip\noindent\textit{Scope of the claim.} What is constrained here is the \emph{algebraic type} of $G$ (its signature), not its specific values. The present work therefore adopts a structural framework: $\Phi$ and $H$ are not fixed to specific physical quantities, and $dt_{\mathrm{info}}$ serves as the motivating construction for~$G$ rather than as a complete internal derivation of all metric data. The quadratic form
+\[
+K(x):=x^{\top}Gx
+\]
+quantifies local temporal cost, and the condition $K=1$ identifies the self-consistent locus; this condition is \emph{not} a conclusion of~\cite{Realizability}, but the additional self-consistency condition introduced in the present paper.
 
 \medskip\noindent\textit{Minimal content used from~\cite{Realizability}.} For self-containment, the mechanism used here is the following. Axiom~E reduces the leading-order displacement cost to a non-degenerate quadratic type $Q$. Axiom~T supplies a distinguished temporal direction with strictly positive cost, excluding a purely negative definite leading form. Axiom~R, through the limiting argument of~\cite{Realizability}, excludes a positive definite leading form by requiring spatially nontrivial forward displacements with vanishing cost-to-size ratio in the precise cost functional used there. In dimension two, once both definite signatures are excluded and nondegeneracy is imposed, the only remaining inertia is $(1,1)$. Identifying the present $G$ with this signed leading form $Q$, one obtains $\mathrm{Sig}(G)=(1,1)$, equivalently $\det G<0$. The full statement, including the precise cost functional, the positive-part construction $(x^{\top}Qx)_{+}$, and the limiting argument in Axiom~R, is proved in~\cite{Realizability}.
 
-\medskip
-
-The specific form of~$\Phi$ does not affect the algebraic theorems once the induced cost structure satisfies Axioms~R, E, T and nondegeneracy: what matters is that the cost structure satisfies the three axioms, which forces $\mathrm{Sig}(G)=(1,1)$ regardless of~$\Phi$. This is an \emph{argument by type} --- the theorems constrain the algebraic type of~$G$ (its signature), not its specific values.
-
-The cost structure associated with $dt_{\mathrm{info}}$ is required to satisfy Axioms~R, E, T as follows. Axiom~E (quadratic expansion in $\delta x$) is imposed by requiring that the information-time cost admit the quadratic leading-order expansion of~\cite{Realizability}; smoothness of $\Phi$ and $H$ motivates the existence of such a leading quadratic coefficient form. Axiom~T (positive temporal cost) is imposed as the requirement that the displacement cost (denoted $d$, in the sense of~\cite{Realizability}) has a positive linear lower bound along the distinguished temporal direction: $d(x;(\Delta t,0))\ge c_{t}\,\Delta t$ for some $c_{t}>0$. Axiom~R requires forward displacement sequences with nonzero spatial component whose cost-to-magnitude ratio tends to zero. A complete derivation of $\mathrm{Sig}(G)=(1,1)$ from Axioms~R, E, T together with nondegeneracy is given in~\cite{Realizability}.
-
-Lorentzian signature therefore emerges from the cost structure: $G$ is indefinite, with light cones (the null set $\{x:x^{\top}Gx=0\}$) and a causal structure determined by the sign of~$K$.
-
-In general relativity, the Lorentzian metric is prescribed on a pre-existing differentiable manifold; here $G$ and its causal structure are derived.
+\medskip\noindent\textit{Consequence.} Lorentzian signature therefore emerges from the cost structure at the level of the leading form: $G$ is indefinite, with null set
+\[
+\{x:x^{\top}Gx=0\},
+\]
+and with an associated local causal structure determined by the sign of $K$. In general relativity, the Lorentzian metric is prescribed on a pre-existing differentiable manifold; here the Lorentzian algebraic type of the leading cost form is derived rather than prescribed.
 
 \begin{figure}[ht]
 \centering
@@ -269,7 +275,7 @@ For Lorentzian $G$, $J_G$ has symmetric part $S=(J_{G}+J_{G}^{\top})/2\neq 0$, d
 
 \medskip
 
-\noindent\textit{From algebra to dynamics.} The algebraic condition $K=1$ is a locus in configuration space; it does not prescribe how deviations from $K=1$ evolve back toward it. Completing the framework requires dynamical structure: Law~II specifies the unique symplectic--dissipative evolution law, while Law~III below characterises its restoring and fluctuation behaviour at critical damping. Only with this completion does $K=1$ become a locally self-consistent attractor rather than a mere level set.
+\noindent\textit{From algebra to dynamics.} The algebraic condition $K=1$ is a locus in configuration space; it does not prescribe how deviations from $K=1$ evolve back toward it. Completing the framework requires dynamical structure: Law~II specifies the unique symplectic--dissipative evolution law, while Law~III below characterises its restoring and fluctuation behaviour at critical damping. Only with this completion does $K=1$ become a locally self-consistent locus with restoring dynamics rather than a mere level set.
 
 \medskip
 
@@ -491,21 +497,57 @@ $K_1{=}1$ is automatically satisfied at linear order,
 so its independent content is purely nonlinear (strong-field).
 \end{corollary}
 
+\begin{lemma}[Asymmetric rigidity]\label{lem:rigidity}
+For metric~\eqref{eq:metric} with $f\in C^{2}(I)$ on an interval $I\subset(0,\infty)$:
+\begin{enumerate}
+\item[\textup{(a)}] $K_{2}\equiv 1$ on $I$ if and only if $f=1+C/r$ for some constant $C$, in which case $K_{1}\equiv 1$ on $I$ as well.
+\item[\textup{(b)}] $K_{1}\equiv 1$ on $I$ if and only if $f=1+A/r+B/r^{2}$ for some constants $A,B$. Substituting into the definition of $K_{2}$ gives
+\[
+K_{2}=1-B/r^{2},
+\]
+so the converse of (a) fails when $B\neq 0$: $K_{1}\equiv 1$ does not imply $K_{2}\equiv 1$.
+\end{enumerate}
+Thus $K_{2}\equiv 1$ is the strictly stronger condition; the two-parameter family $f=1+A/r+B/r^{2}$ satisfies $K_{1}\equiv 1$ but generically violates $K_{2}\equiv 1$. Reissner--Nordstr\"{o}m is one such non-vacuum example.
+\end{lemma}
+
+\begin{proof}
+$(a)$\;$K_{2}=f+rf'=d(rf)/dr$, so $K_{2}\equiv 1$ is the first-order ODE $d(rf)/dr=1$ with general solution $rf=r+C$, i.e.\ $f=1+C/r$. Direct substitution then gives $K_{1}=(1+C/r)+2r(-C/r^{2})+(r^{2}/2)(2C/r^{3})=1+C/r-2C/r+C/r=1$.\;
+$(b)$\;$K_{1}\equiv 1$ is the second-order linear ODE $f+2rf'+(r^{2}/2)f''=1$, which is the Euler-type equation having Schwarzschild--Reissner-Nordstr\"{o}m form general solution $f=1+A/r+B/r^{2}$. Substituting into $K_{2}=f+rf'$ gives $K_{2}=(1+A/r+B/r^{2})+r(-A/r^{2}-2B/r^{3})=1-B/r^{2}$. Hence $K_{2}\equiv 1$ requires $B=0$.\qed
+\end{proof}
+
+\begin{remark}[Asymmetric roles of $K_1$ and $K_2$]
+Lemma~\ref{lem:rigidity} formalises the asymmetry: $K_{2}\equiv 1$ is rigid (forces $K_{1}\equiv 1$ via $f=1+C/r$), whereas $K_{1}\equiv 1$ is flexible (admits a one-parameter family of $K_{2}$-violating solutions). This asymmetry underlies the testability discussion of Open Problem~3.
+\end{remark}
+
 \begin{remark}[Observational implications]
 Within the present spherical-vacuum analysis, any observational distinction between the eigenvalue principle and standard GR must therefore arise from strong-gravity data.
 \end{remark}
 
-\begin{remark}[Non-vacuum and $\Lambda$]
+\begin{corollary}[$\Lambda$-extension of Theorem~\ref{thm:field}]\label{cor:SdS}
+For metric~\eqref{eq:metric} with $f\in C^{2}(I)$ and $f>0$ on $I\subset(0,\infty)$, and $K_{1},K_{2}$ as in Definition~\ref{def:esc}:
+\begin{equation}\label{eq:Lambda-equiv}
+K_{1}=1-2\Lambda r^{2}\;\;\text{and}\;\;K_{2}=1-\Lambda r^{2}
+\quad\Longleftrightarrow\quad R_{\mu\nu}=\Lambda g_{\mu\nu}.
+\end{equation}
+The general solution is the Schwarzschild--de~Sitter family $f=1-2M/r-\Lambda r^{2}/3$.
+\end{corollary}
+
+\begin{proof}
+$(\Rightarrow)$\;
+$K_{2}=1-\Lambda r^{2}$ rewrites as $f+rf'=1-\Lambda r^{2}$, i.e.\ $d(rf)/dr=1-\Lambda r^{2}$, with general solution $rf=r-\Lambda r^{3}/3+\text{const}$, so $f=1-2M/r-\Lambda r^{2}/3$ for some constant $M$. Direct substitution then gives $K_{1}=1-2\Lambda r^{2}$ automatically. For this $f$, $R_{\theta\theta}=1-K_{2}=\Lambda r^{2}=\Lambda g_{\theta\theta}$ and $R_{tt}=(f/r^{2})(K_{1}-K_{2})=-\Lambda f=\Lambda g_{tt}$. For this metric $R_{tt}=-f^{2}R_{rr}$~\cite{Wald1984}, so $R_{tt}=\Lambda g_{tt}$ is equivalent to $R_{rr}=\Lambda g_{rr}$; the angular components are fixed by $R_{\theta\theta}=\Lambda g_{\theta\theta}$ and spherical symmetry ($R_{\phi\phi}=\sin^{2}\!\theta\,R_{\theta\theta}=\Lambda g_{\phi\phi}$), closing all four nontrivial Ricci components.\;
+$(\Leftarrow)$\;
+$R_{\theta\theta}=\Lambda g_{\theta\theta}=\Lambda r^{2}$ gives $K_{2}=1-\Lambda r^{2}$. $R_{tt}=\Lambda g_{tt}=-\Lambda f$ combined with $R_{tt}=(f/r^{2})(K_{1}-K_{2})$ gives $K_{1}-K_{2}=-\Lambda r^{2}$, hence $K_{1}=1-2\Lambda r^{2}$.\qed
+\end{proof}
+
+\begin{remark}[Matter and the role of $\Lambda$]
 From the Einstein $G_{tt}$ component,
 $\rho = (1{-}K_2)/(8\pi r^2) = (1-\sigma_2^2\,\Box\ln\sigma_2)/(8\pi\sigma_2^2)$:
 matter may be read as the angular eigenvalue's failure to self-consistently
 propagate, measured per unit area.
-For Schwarzschild--de~Sitter, $K_2=1{-}\Lambda r^2$ and
-$K_1=1{-}2\Lambda r^2$.
-Both relations \emph{use} the Einstein equations;
-they are cost rewritings, not independent derivations
+This relation \emph{uses} the Einstein equations;
+it is a cost rewriting, not an independent derivation
 (in particular, $8\pi$ is inherited from GR).
-The cosmological constant shifts both eigenvalue conditions away from unity; its value is not predicted.
+The value of $\Lambda$ is not predicted by the present framework.
 \end{remark}
 
 \begin{remark}[General metrics and polarization]
@@ -646,6 +688,10 @@ The two routes meet in the vacuum sector: Route~B establishes $R_{\mu\nu}=0$ dir
 \caption{Two routes connecting to the Einstein equations. \emph{Route A} (left, thermodynamic bridge): Class A fluctuations near $\{K=1\}$ $\to$ OU dynamics $\to$ local Clausius $\to$ Jacobson argument $\to$ Einstein equations. Jacobson requires three inputs (grey dashed): Lorentzian signature $\mathrm{Sig}(G)=(1,1)$ (supplied by realizability, Theorem~\ref{thm:equivalence}); local Clausius (requires the external $T_{\mathrm{eff}}=T_{\mathrm{tol}}$); and the entropy-area law $S\propto A$ (external). Hence two external inputs overall: $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ and $S\propto A$. \emph{Route B} (right, equivalence theorem): $K{=}1\!\to\!\sigma_2^2\Box\ln\sigma_i=1$ is dashed (conjectured field-level analogue); $\sigma_2^2\Box\ln\sigma_i=1\Leftrightarrow R_{\mu\nu}=0$ is a \emph{strict algebraic equivalence} in spherically symmetric vacuum (Theorem~\ref{thm:field}).}
 \label{fig:routes}
 \end{figure}
+
+\subsection*{Scope of claims}
+
+The present paper does not propose new physics. Where Route~A reaches it, the Einstein equations $G_{\mu\nu}=8\pi T_{\mu\nu}$ are recovered; where Route~B applies, $R_{\mu\nu}=0$ is reformulated. The contribution is conceptual: Lorentzian signature is supplied internally rather than assumed (Theorem~\ref{thm:equivalence}, under isotropic linearisation), and the spherically symmetric vacuum equations are reformulated in cost-structural language (Theorem~\ref{thm:field}). The matter content $\rho=(1{-}K_2)/(8\pi r^2)$, the cosmological constant $\Lambda$, and the entropy--area law $S\propto A$ are inputs from GR, not predictions of the present framework.
 
 \subsection*{Extension to $(1{+}3)$ dimensions}
 
