@@ -116,10 +116,7 @@ dt_{\mathrm{info}}:=\frac{d\Phi}{H},
 \medskip
 \noindent\textbf{律 I.} \textit{度规 $G$ 是量度局部位移代价的非退化对称双线性型\textup{(在~\cite{Realizability} 的意义下)}, 时间方向为正代价方向\textup{(\cite{Realizability} 的公理 T)}。}
 
-\medskip
-\noindent 图~\ref{fig:framework} 概括了三层框架的整体逻辑依赖关系(信息时间与可实现性、点级 $K=1$、动力学)。
-
-\medskip\noindent\textit{框架定义.} 本文围绕以下诸要素展开。\emph{输入}: 结构参数 $\Phi$ 与正标量代价 $H$, 给出信息时间 $dt_{\mathrm{info}}:=d\Phi/H$。\emph{公理层}: 与之相关的符号化主二次型 $G$ 被建模为满足~\cite{Realizability} 的公理 R, E, T, 并附加对 $G$ 的非退化性假设。\emph{附加条件}: 单位代价轨迹 $K(x):=x^{\top}Gx=1$ 在点级施加局部自洽性。\emph{动力学补全}: 律 II 在辛-耗散类 $GA=\alpha J-GD$ 中指定唯一演化 $\dot x=(J_G-D)\nabla V$(定理~\ref{thm:lawII}), 律 III 刻画其在临界阻尼处的恢复与涨落结构(定理~\ref{thm:restoring})。\emph{内部结论}: 在点级, Lorentz 号差 $\mathrm{Sig}(G)=(1,1)$、三重等价(定理~\ref{thm:equivalence})与局部恢复律, 在归一化特征向量基点上 $\kappa_K=4d_c$; 在依赖于猜想的途径 B 提升下, 在球对称真空部分中, 与 Einstein 真空方程的代数等价(定理~\ref{thm:field})。\emph{外部输入}(仅途径 A): 热力学等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 与熵-面积律 $S\propto A$。
+\medskip\noindent\textit{框架定义.} 本文围绕以下诸要素展开。\emph{输入}: 结构参数 $\Phi$ 与正标量代价 $H$, 给出信息时间 $dt_{\mathrm{info}}:=d\Phi/H$。\emph{公理层}: 与 $dt_{\mathrm{info}}^{2}$ 相关的符号化主二次型 $G$, 建模为满足~\cite{Realizability} 的公理 R, E, T 连同非退化性假设。\emph{附加条件}: 单位代价轨迹 $K(x):=x^{\top}Gx=1$, 作为点级自洽性条件被施加。\emph{动力学补全}: 律 II, 它在辛-耗散类 $GA=\alpha J-GD$ 中指定唯一演化 $\dot x=(J_G-D)\nabla V$(定理~\ref{thm:lawII}); 与律 III, 它刻画在临界阻尼处所产生的恢复与涨落结构(定理~\ref{thm:restoring})。\emph{内部结论}: 在点级, Lorentz 号差 $\mathrm{Sig}(G)=(1,1)$、定理~\ref{thm:equivalence} 的三重等价、以及在归一化特征向量基点上具 $\kappa_K=4d_c$ 的局部恢复律; 在依赖于所猜想的途径 B 提升的情况下, 在球对称真空部分中, 与 Einstein 真空方程的代数等价(定理~\ref{thm:field})。\emph{外部输入}: 仅对于途径 A, 热力学等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 与熵-面积律 $S\propto A$。
 
 \medskip\noindent\textit{主桥接.} 信息时间定义为
 \[
@@ -132,6 +129,8 @@ dt_{\mathrm{info}}:=\frac{d\Phi}{H},
 \det G<0.
 \]
 故在本文的建模中, 代价结构在符号化主二次型层面强制 Lorentz 类型。
+
+\medskip\noindent\textit{更深动机.} 在更深的层面上, \cite{Realizability} 的公理 R, E, T 可被视为对与 $dt_{\mathrm{info}}^{2}$ 的局部二阶代价形式相关的 Hessian 层退化结构的可实现性编码, 其动机在于要求非平凡的变分运动保持可实现的性质, 而非塌缩为平凡位移。本文不进行从该结构对公理 R, E, T 的完整反向重构; 而是使用所相关的符号化主导形式 $G$ 连同~\cite{Realizability} 的可实现性定理, 作为操作性桥梁。
 
 \medskip\noindent\textit{结论的范围.} 这里受约束的是 $G$ 的\emph{代数类型}(其号差), 而非其具体值。本文因此采用结构性框架: $\Phi$ 与 $H$ 不被指定为特定物理量, $dt_{\mathrm{info}}$ 是对 $G$ 的启发式构造, 而非对所有度规数据的完整内部推导。二次型
 \[
@@ -210,7 +209,7 @@ K(x):=x^{\top}Gx
 \node[layerlab, above=0.05cm of G3.north west, anchor=south west] {第 3 层: 动力学};
 
 \end{tikzpicture}
-\caption{$K{=}1$ 框架的逻辑依赖关系. \emph{第 1 层}(信息时间与可实现性条件): 与 $dt_{\mathrm{info}}^{2}$ 的局部二阶展开关联的符号化主二次型 $G\equiv Q$(启发式桥梁, 见正文); 公理 R, E, T 连同非退化性作用于 $G$ 的\emph{条件}, 强制 $\mathrm{Sig}(G)=(1,1)$(即 $\det G<0$), 而非生成 $G$ 本身. \emph{第 2 层}(点级对象): $G$ 定义 $K(x)=x^{\top}Gx$; 条件 $K=1$ 是本文\emph{额外引入}的自洽条件, 非公理的推论. \emph{第 3 层}(动力学): $G$ 导出辛生成子 $J_G$; 律 II 在此基础上还需\emph{结构性约束} $GA=\alpha J-GD$ ($D\ge 0$), 由此给出 $\dot x=(J_G-D)\nabla V$. $K=1$ 与恢复势 $V=\tfrac12(K{-}1)^2$ 一起给出律 III, 其恢复结论进一步依赖临界阻尼 $D=d_{c}I$、$G$ 的特征向量基点与局部线性化. 虚线箭头表示启发式桥梁或定性几何关系, 不构成独立的推导; 实箭头表示定义、已引用定理或本文中的代数推论; 场级类似物 $\sigma_2^2\Box\ln\sigma_i=1$(作为猜想)见图~\ref{fig:routes}.}
+\caption{$K{=}1$ 框架的逻辑依赖关系. \emph{第 1 层}(信息时间与可实现性): 与 $dt_{\mathrm{info}}^{2}$ 的局部二阶展开关联的符号化主二次型 $G\equiv Q$, 为第 1 层中使用的可实现性编码提供动机(启发式桥梁; 见正文). 公理 R, E, T 连同非退化性约束 $G$ 所满足的\emph{条件}, 强制 $\mathrm{Sig}(G)=(1,1)$(等价于 $\det G<0$), 而非生成 $G$ 本身. \emph{第 2 层}(点级对象): $G$ 定义 $K(x)=x^{\top}Gx$; 条件 $K=1$ 是额外的自洽条件, 而非公理的推论. \emph{第 3 层}(动力学): $G$ 导出辛生成子 $J_G$; 律 II 强加结构性约束 $GA=\alpha J-GD$ ($D\ge 0$), 由此给出 $\dot x=(J_G-D)\nabla V$. 与 $V=\tfrac12(K{-}1)^2$ 一起, 在临界阻尼与局部线性化下导出律 III. 虚线箭头表示启发式或非推导性关系; 实箭头表示定义、已引用定理或代数推论.}
 \label{fig:framework}
 \end{figure}
 
@@ -312,9 +311,9 @@ $d_{c}>0 \Leftrightarrow -1/\det G>0$ (式~\eqref{eq:dc}) $\Leftrightarrow \det 
 
 \medskip\noindent\textit{范围.} 本节关注 $2\times 2$ 情形, 由单一局部 Rindler 视界所决定。向 $(1+3)$ 维的扩展需要额外的结构选择(见 \S\ref{sec:discussion} 中 $(1+3)$-维扩展一节)。
 
-\medskip
-
+\begin{remark}[各向同性缩放]
 $H$(标量, \S\ref{sec:lawI})是 $\Phi$ 单位变化的局部代价(熵阻抗), 出现于 $dt_{\mathrm{info}}=d\Phi/H$; $H_{*}$(矩阵)表示代价函数的权重矩阵, 出现于 $d(\delta x)/dt=(J_{G}-dI)H_{*}\,\delta x$ 中(在本节的线性化稳定性分析中)。二者是不同的数学对象, 本文不予等同; 若存在从同一深层代价原理同时导出二者的关系, 留待未来工作。$H_{*}=I$ 为默认。对 $H_{*}=cI$($c>0$), 在 $d$ 中的零实部阈值仍为 $d_{c}$, 但速率按 $c$ 整体缩放; 对一般正定的 $H_{*}$, 完整稳定性阈值可能偏移。
+\end{remark}
 
 \begin{remark}[对 $H_{*}$ 的依赖性]\label{rem:Hstar_dep}
 $d_{c}$ 的数值与号差等价性仅在 $H_{*}$ 的各向同性类内成立。对于一般的 $H_{*}>0$, $d_{c}$ 可偏离 $\alpha\sqrt{-1/\det G}$。举例: 取 $G=\mathrm{diag}(0.1,-10)$ 与 $H_{*}=\bigl(\begin{smallmatrix}1&0.9\\0.9&1\end{smallmatrix}\bigr)$, 则 $d_{c}^{\mathrm{iso}}=1$ 而 $d_{c}(H_{*})=4.55$, 证实在非各向同性类下 $d_{c}$ 依赖于 $H_{*}$. 此处 $d_{c}(H_{*})$ 指完整实部稳定阈值, 而非零特征值位置(后者由命题~\ref{prop:diag_inv} 保持为 $d_{c}=1$). 非各向同性类的号差-稳定性等价留作未解问题。
@@ -482,6 +481,10 @@ $(\Leftarrow)$: $\sigma^{2}=2d_{c}\cdot T_{\mathrm{tol}}$ 给 $T_{\mathrm{eff}}=
 (iii) OU 过程的局部细致平衡;
 (iv) 外部等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$;
 连同代数的 Tolman 恒等式 $T_{\mathrm{tol}}=d_{c}T_{H}$($\kappa$ 因子在式~\eqref{eq:nearhorizon} 中相消)。
+\end{remark}
+
+\begin{remark}[稳定性约束]
+对宏观黑洞, $T_{\mathrm{tol}}\ll d_{c}$; 设 $D=T_{\mathrm{tol}}I$ 将使 $K=1$ 不稳定。稳定性要求 $D\ge d_{c}I$; 临界阻尼 $D=d_{c}I$ 是唯一的边际稳定选择。
 \end{remark}
 
 \subsection*{位置依赖温度与伊藤修正}
