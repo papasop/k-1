@@ -14,8 +14,22 @@
 
   function fmt(x){ if (!Number.isFinite(x)) return '—'; const a = Math.abs(x); return a<1e-4 || a>1e5 ? x.toExponential(3) : x.toFixed(5); }
 
+  function ensureSigformHost(){
+    let root = document.getElementById('sigform-host');
+    if (root) return root;
+    const sds = document.getElementById('sds-ext');
+    if (!sds) return null;
+    const section = document.createElement('section');
+    section.className = 'block';
+    section.id = 'sigform';
+    section.innerHTML = '<div class="block-head"><div class="block-num">§B.0 · σ-form</div><div><h2>Direct check of the field-level conjecture — <em>without</em> routing through R<sub>μν</sub></h2><p class="block-lead">Route B Step 1 posits <span class="mono">σ₂² · □ ln σ_i = 1</span> for <span class="mono">i=1,2</span>, where <span class="mono">σ₁=r√f</span> and <span class="mono">σ₂=r</span>. This section exposes that statement directly and lets the page verify it before any Ricci-tensor rewriting is invoked.</p></div></div>' +
+      '<figure class="card"><div class="fc-head"><div class="fc-title">σ-form direct check</div><div class="fc-tag">unrouted Route B step</div></div><div class="fc-body" id="sigform-host"></div><figcaption>The live page evaluates <span class="mono">σ₂²□lnσ₁</span> and <span class="mono">σ₂²□lnσ₂</span> numerically. This is the direct field-level conjecture, shown before the equivalence is routed through <span class="mono">R_{μν}</span>.</figcaption></figure>';
+    sds.parentNode.insertBefore(section, sds);
+    return document.getElementById('sigform-host');
+  }
+
   function init(){
-    const root = document.getElementById('sigform-host');
+    const root = ensureSigformHost();
     if (!root) return;
 
     root.innerHTML = `
@@ -86,14 +100,16 @@
       const fv = f(r), fpv = fp(r), fppv = fpp(r);
       const s = KK.sigma_box(r, fv, fpv, fppv);
 
+      // σ₂² □ ln σ_i   vs  1
       const d1 = s.sig2sq_box_ln_sig1 - 1;
       const d2 = s.sig2sq_box_ln_sig2 - 1;
       const ok1 = Math.abs(d1) < 1e-9;
       const ok2 = Math.abs(d2) < 1e-9;
 
+      // Λ-modified check:  σ₂² □ ln σ_i  vs  1 − Λ_i r²
       const Lam = -3*C3;
-      const targ1 = 1 - 2*Lam*r*r;
-      const targ2 = 1 - Lam*r*r;
+      const targ1 = 1 - 2*Lam*r*r;   // K₁ target for Einstein + Λ
+      const targ2 = 1 - Lam*r*r;     // K₂ target for Einstein + Λ
       const d1L = s.sig2sq_box_ln_sig1 - targ1;
       const d2L = s.sig2sq_box_ln_sig2 - targ2;
 
