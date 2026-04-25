@@ -8,10 +8,10 @@
   .card{max-width:560px;border:1px solid #d9d5cb;border-radius:14px;background:#fbf9f2;padding:24px 28px;box-shadow:0 8px 24px rgba(0,0,0,.04)}
   .mono{font:12px ui-monospace,monospace;color:#6b7280}
 </style>
-<div class="loading"><div class="card"><h1 style="margin:0 0 8px;font-size:28px">Loading interactive paper…</h1><div class="mono">paper.base.html + paper-fixes.js</div></div></div>
+<div class="loading"><div class="card"><h1 style="margin:0 0 8px;font-size:28px">Loading interactive paper…</h1><div class="mono">paper.base.v2.html + paper-fixes.v2.js</div></div></div>
 <script>
-fetch('paper.base.html').then(r=>r.text()).then(html=>{
-  const fixTag = '<script src="paper-fixes.js"></' + 'script>';
+fetch('paper.base.v2.html?v=20260425b').then(r=>r.text()).then(html=>{
+  const fixTag = '<script src="paper-fixes.v2.js?v=20260425b"></' + 'script>';
   html = html.includes('</body>') ? html.replace('</body>', fixTag + '</body>') : html + fixTag;
   document.open();
   document.write(html);
