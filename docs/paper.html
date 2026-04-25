@@ -1,51 +1,23 @@
 <!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>K=1 Interactive Paper</title>
+<title>Redirecting…</title>
 <style>
-  html,body{margin:0;padding:0;height:100%;background:#f6f2e8}
-  #paper-frame{display:block;width:100vw;height:100vh;border:0;background:#f6f2e8}
-  .fallback{position:fixed;inset:auto 16px 16px 16px;font:13px ui-monospace,monospace;color:#6b7280;background:rgba(251,249,242,.92);border:1px solid #d9d5cb;border-radius:10px;padding:10px 12px;box-shadow:0 8px 24px rgba(0,0,0,.04)}
-  .fallback a{color:#394150}
+  html,body{margin:0;padding:0;background:#f6f2e8;color:#111418;font-family:Georgia,serif}
+  .card{max-width:640px;margin:12vh auto 0;padding:22px 24px;border:1px solid #d9d5cb;border-radius:14px;background:#fbf9f2;box-shadow:0 8px 24px rgba(0,0,0,.04)}
+  .mono{font:12px ui-monospace,monospace;color:#6b7280}
+  a{color:#394150}
 </style>
-<iframe id="paper-frame" title="K=1 Interactive Paper"></iframe>
-<div class="fallback">If the paper does not appear, open <a href="paper.base.v2.html">paper.base.v2.html</a>.</div>
+<div class="card">
+  <h1 style="margin:0 0 8px;font-size:28px">Opening interactive paper…</h1>
+  <p style="margin:0 0 10px">This entry now jumps directly to the full paper page, which avoids the iframe focus issue that made controls feel sticky.</p>
+  <div class="mono">Redirect target: paper.base.v2.html</div>
+  <p><a id="direct-link" href="paper.base.v2.html">Open directly if not redirected</a></p>
+</div>
 <script>
 (() => {
-  const base = 'paper.base.v2.html?v=20260425b';
-  const fix = 'paper-fixes.v2.js?v=20260425b';
-  const frame = document.getElementById('paper-frame');
-
-  function frameUrl(){
-    return base + (location.hash || '');
-  }
-
-  function injectFixes(){
-    try {
-      const doc = frame.contentDocument;
-      if(!doc || !doc.body) return;
-      if(doc.querySelector('script[data-k1-fixes]')) return;
-      const script = doc.createElement('script');
-      script.src = fix;
-      script.dataset.k1Fixes = '1';
-      doc.body.appendChild(script);
-    } catch (err) {
-      console.warn('fix injection failed', err);
-    }
-  }
-
-  function loadFrame(){
-    const next = frameUrl();
-    if(frame.dataset.src !== next){
-      frame.dataset.src = next;
-      frame.src = next;
-    } else {
-      injectFixes();
-    }
-  }
-
-  frame.addEventListener('load', injectFixes);
-  window.addEventListener('hashchange', loadFrame);
-  loadFrame();
+  const target = 'paper.base.v2.html' + (location.hash || '');
+  document.getElementById('direct-link').href = target;
+  location.replace(target);
 })();
 </script>
