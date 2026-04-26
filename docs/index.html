@@ -1212,6 +1212,35 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
             <h6 data-orig-html="Layer 2 · Only admissible paths enter the dt_info comparison">Layer 2 · Only admissible paths enter the dt_info comparison</h6>
             <div class="reading vc-micro">Traditional brachistochrone minimizes ordinary travel time per unit change. Here the endpoint is held fixed and the comparison is flipped: among admissible paths, which one achieves the same structural variation with the lowest information-time cost? The control <i>H</i> plays the role of local impedance in <i>dt</i><sub>info</sub> = <i>d</i>Φ / <i>H</i>, so the right panel compares average variation rates <i>d</i>Φ / <i>dt</i><sub>info</sub> rather than ordinary travel time alone.</div>
           </div>
+          <div class="vc-clockbar">
+            <div class="vc-clock-chip vc-clock-on">
+              <b>clock in use</b>
+              <span><code>dt_info = dΦ / H</code></span>
+            </div>
+            <div class="vc-clock-chip vc-clock-off">
+              <b>not compared here</b>
+              <span>external / laboratory time</span>
+            </div>
+          </div>
+          <div class="vc-compare-box">
+            <div class="vc-compare-col">
+              <div class="vc-compare-head">Traditional reading</div>
+              <div class="vc-compare-line">fix the change</div>
+              <div class="vc-compare-line">compare external time per change</div>
+              <div class="vc-compare-math"><code>dt / dΦ</code></div>
+            </div>
+            <div class="vc-compare-col vc-compare-col-on">
+              <div class="vc-compare-head">This module</div>
+              <div class="vc-compare-line">fix the same <code>ΔΦ</code> target</div>
+              <div class="vc-compare-line">compare change per information-time</div>
+              <div class="vc-compare-math"><code>dΦ / dt_info</code></div>
+            </div>
+          </div>
+          <div class="vc-sequence">
+            <span><b>1</b> set the target variation <code>ΔΦ</code></span>
+            <span><b>2</b> set the local impedance <code>H</code></span>
+            <span><b>3</b> compare accumulated <code>dt_info</code> and average <code>dΦ / dt_info</code></span>
+          </div>
           <canvas id="vcPathCanvas" style="width:100%;height:330px;display:block"></canvas>
           <canvas id="vcCostCanvas" style="width:100%;height:150px;display:block;margin-top:10px"></canvas>
           <div class="vc-legend">
@@ -1389,6 +1418,22 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
     .vc-proof-note{ margin-top:12px; padding:12px 14px; background:oklch(0.97 0.03 55); border:1px solid oklch(0.82 0.07 55); border-left:3px solid oklch(0.62 0.14 55); border-radius:6px; }
     .vc-bridge{ margin-top:14px; padding:10px 14px; display:flex; gap:10px; align-items:flex-start; background:rgba(255,252,248,0.82); border:1px solid var(--line); border-radius:8px; font-size:13px; line-height:1.55; color:var(--ink-3); }
     .vc-bridge b{ white-space:nowrap; }
+    .vc-clockbar{ display:flex; gap:10px; flex-wrap:wrap; margin:4px 0 10px; }
+    .vc-clock-chip{ flex:1 1 220px; padding:10px 12px; border-radius:10px; border:1px solid var(--line); background:var(--paper-2); font:11px/1.4 'JetBrains Mono',monospace; color:var(--muted); }
+    .vc-clock-chip b{ display:block; margin-bottom:4px; text-transform:uppercase; letter-spacing:0.08em; font-size:10px; }
+    .vc-clock-chip code{ font-family:'JetBrains Mono',monospace; font-size:11px; }
+    .vc-clock-on{ border-color:oklch(0.68 0.09 150); background:oklch(0.97 0.03 150); color:oklch(0.31 0.09 150); }
+    .vc-clock-off{ border-color:oklch(0.79 0.04 30); background:oklch(0.98 0.02 40); color:oklch(0.42 0.06 35); }
+    .vc-compare-box{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:0 0 10px; }
+    @media (max-width: 760px){ .vc-compare-box{ grid-template-columns:1fr; } }
+    .vc-compare-col{ padding:12px 14px; border-radius:10px; border:1px solid var(--line); background:var(--paper-2); }
+    .vc-compare-col-on{ border-color:oklch(0.65 0.09 150); background:linear-gradient(180deg, oklch(0.98 0.02 150), oklch(0.96 0.03 150)); }
+    .vc-compare-head{ font:600 11px/1.3 'Inter Tight',sans-serif; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
+    .vc-compare-line{ font-size:13px; line-height:1.5; color:var(--ink-3); }
+    .vc-compare-math{ margin-top:8px; font:12px/1.4 'JetBrains Mono',monospace; color:var(--accent-ink); }
+    .vc-sequence{ display:flex; gap:8px; flex-wrap:wrap; margin:0 0 12px; }
+    .vc-sequence span{ padding:7px 10px; border-radius:999px; background:rgba(255,252,248,0.88); border:1px solid var(--line); font:11px/1.35 'JetBrains Mono',monospace; color:var(--ink-3); }
+    .vc-sequence b{ display:inline-flex; width:18px; height:18px; align-items:center; justify-content:center; border-radius:50%; background:var(--accent-soft); color:var(--accent-ink); margin-right:6px; font-size:10px; }
     .lc-grid{ display:grid; grid-template-columns:1.08fr 1fr; gap:28px; align-items:start; }
     @media (max-width: 980px){ .lc-grid{ grid-template-columns:1fr; } }
     .lc-legend{ display:flex; gap:12px; flex-wrap:wrap; margin-top:10px; font:11px/1.35 'JetBrains Mono',monospace; color:var(--muted); }
