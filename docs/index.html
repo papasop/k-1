@@ -1218,20 +1218,23 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
           </div>
           <div class="vc-ctrl">
             <label class="vc-row">
-              <span>end x</span>
-              <input id="vcEndX" type="range" min="0.9" max="3.2" step="0.01" value="2.10">
-              <b id="vcEndXLab">2.10</b>
+              <span>ΔΦ target</span>
+              <input id="vcPhiTarget" type="range" min="1.10" max="3.60" step="0.01" value="2.44">
+              <b id="vcPhiTargetLab">2.44</b>
             </label>
             <label class="vc-row">
-              <span>end y</span>
-              <input id="vcEndY" type="range" min="0.4" max="2.4" step="0.01" value="1.25">
-              <b id="vcEndYLab">1.25</b>
+              <span>target tilt</span>
+              <input id="vcPhiTilt" type="range" min="15" max="75" step="0.5" value="31.0">
+              <b id="vcPhiTiltLab">31.0°</b>
             </label>
             <label class="vc-row">
               <span>impedance H</span>
               <input id="vcH" type="range" min="0.3" max="2.0" step="0.01" value="1.00">
               <b id="vcHLab">1.00</b>
             </label>
+            <div class="reading" style="margin:0;padding:4px 2px 2px 2px;font:11px/1.35 'JetBrains Mono',monospace;color:var(--muted)">
+              <b style="color:var(--ink)">preferred path.</b> <span id="vcPreferred">cycloid · lowest dt_info</span>
+            </div>
             <div class="vc-race">
               <button id="vcStartRace" type="button">Run dt_info comparison</button>
               <button id="vcResetRace" type="button">Reset paths</button>
@@ -1576,8 +1579,8 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
     const bEl = document.getElementById('vcB');
     const guideEl = document.getElementById('vcGuide');
     const syncGuideEl = document.getElementById('vcSyncGuide');
-    const endXEl = document.getElementById('vcEndX');
-    const endYEl = document.getElementById('vcEndY');
+    const phiTargetEl = document.getElementById('vcPhiTarget');
+    const phiTiltEl = document.getElementById('vcPhiTilt');
     const hEl = document.getElementById('vcH');
     const tableEl = document.getElementById('vcTable');
     const startBtn = document.getElementById('vcStartRace');
@@ -1671,8 +1674,11 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       const s = { a:+aEl.value, k:+kEl.value, b:+bEl.value };
       const guideDeg = +guideEl.value;
       const guide = { x: Math.cos(guideDeg*Math.PI/180), y: Math.sin(guideDeg*Math.PI/180) };
-      const X = +endXEl.value;
-      const Y = +endYEl.value;
+      const deltaPhi = +phiTargetEl.value;
+      const tiltDeg = +phiTiltEl.value;
+      const tilt = tiltDeg * Math.PI / 180;
+      const X = deltaPhi * Math.cos(tilt);
+      const Y = deltaPhi * Math.sin(tilt);
       const H = +hEl.value;
       const paths = [
         { key:'line', label:'line', color:'#667fc4', trail:'rgba(102,127,196,0.32)', glow:'rgba(102,127,196,0.24)' },
@@ -1700,7 +1706,7 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       const coneWidth = admissibleAngles.length ? (Math.max(...admissibleAngles) - Math.min(...admissibleAngles)) : 0;
       const cycloid = paths.find(p => p.key === 'cycloid');
       const cycloidDeg = cycloid ? dirToDeg(cycloid.tangent) : guideDeg;
-      return {s, guideDeg, guide, X, Y, H, paths, minForwardQ, coneWidth, cycloidDeg};
+      return {s, guideDeg, guide, X, Y, H, deltaPhi, tiltDeg, paths, minForwardQ, coneWidth, cycloidDeg};
     }
 
     function raceProgress(now){
@@ -1785,7 +1791,7 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       const {w,h} = pathSize;
       pctx.clearRect(0,0,w,h);
       const padL=28, padR=16, padT=18, padB=22;
-      const xmax = Math.max(3.4, st.X*1.15), ymax = Math.max(2.6, st.Y*1.18);
+      const xmax = Math.max(3.8, st.X*1.2), ymax = Math.max(2.8, st.Y*1.22);
       const toScreen = p => ({
         x: padL + (p.x/xmax)*(w-padL-padR),
         y: padT + (p.y/ymax)*(h-padT-padB)
@@ -1908,7 +1914,7 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       pctx.fillStyle = 'rgba(32,30,26,0.92)';
       pctx.beginPath(); pctx.arc(end.x,end.y,4,0,Math.PI*2); pctx.fill();
       pctx.font = "italic 12px Newsreader";
-      pctx.fillText('endpoint', end.x + 8, end.y - 4);
+      pctx.fillText('same ΔΦ target', end.x + 8, end.y - 4);
       pctx.fillStyle = 'rgba(92,88,80,0.78)';
       pctx.font = "italic 13px Newsreader";
       pctx.fillText('fixed ΔΦ, competing information-time costs', 18, 20);
@@ -1973,7 +1979,7 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
     }
 
     function redrawTable(st){
-      const deltaPhi = Math.hypot(st.X, st.Y);
+      const deltaPhi = st.deltaPhi;
       const admissible = st.paths.filter(p => p.admissible);
       const fastest = admissible.length ? Math.min(...admissible.map(p=>p.time)) : Infinity;
       tableEl.innerHTML = st.paths.map(p => {
@@ -2001,21 +2007,22 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       document.getElementById('vcBlab').textContent = fmt(st.s.b,2);
       document.getElementById('vcGuideLab').textContent = st.guideDeg.toFixed(1) + '°';
       document.getElementById('vcSyncLab').textContent = syncGuideEl && syncGuideEl.checked ? 'cycloid' : 'manual';
-      document.getElementById('vcEndXLab').textContent = st.X.toFixed(2);
-      document.getElementById('vcEndYLab').textContent = st.Y.toFixed(2);
+      document.getElementById('vcPhiTargetLab').textContent = st.deltaPhi.toFixed(2);
+      document.getElementById('vcPhiTiltLab').textContent = st.tiltDeg.toFixed(1) + '°';
       document.getElementById('vcHLab').textContent = st.H.toFixed(2);
       document.getElementById('vcGuideQ').textContent = fmt(qVal(st.guide.x, st.guide.y, st.s), 4);
       document.getElementById('vcConeWidth').textContent = fmt(st.coneWidth,1) + '°';
       document.getElementById('vcMinQ2').textContent = fmt(st.minForwardQ,4);
       const admissiblePaths = st.paths.filter(p => p.admissible);
       const admissibleTimes = admissiblePaths.map(p => p.time);
+      const preferred = admissiblePaths.slice().sort((a,b)=>a.time-b.time)[0];
+      document.getElementById('vcPreferred').textContent = preferred ? `${preferred.label} · lowest dt_info` : 'none · blocked';
       raceMaxTime = admissibleTimes.length ? Math.max(...admissibleTimes) : 1;
       raceDur = Math.max(4200, raceMaxTime * 2200);
       const runnerCount = admissibleTimes.length;
       const mode = raceRunning ? (raceProgress(now) >= 1 ? 'compared' : 'accumulating') : 'ready';
       raceStateEl.textContent = `${mode} · ${runnerCount} path${runnerCount === 1 ? '' : 's'}`;
       raceBarEl.style.width = (raceRunning ? (raceProgress(now) * 100) : 0).toFixed(1) + '%';
-      const deltaPhi = Math.hypot(st.X, st.Y);
       document.getElementById('vcDeltaPhi').textContent = fmt(deltaPhi,3);
       if(raceRunning){
         raceNoteEl.textContent = runnerCount
@@ -2048,7 +2055,7 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       }
     }
 
-    [aEl,kEl,bEl,guideEl,endXEl,endYEl,hEl].forEach(el => el.addEventListener('input', ()=>{
+    [aEl,kEl,bEl,guideEl,phiTargetEl,phiTiltEl,hEl].forEach(el => el.addEventListener('input', ()=>{
       if(el === guideEl && syncGuideEl && syncGuideEl.checked){
         syncGuideEl.checked = false;
       }
