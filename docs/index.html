@@ -1582,6 +1582,7 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
     let raceRunning = false;
     let raceStart = 0;
     let raceDur = 1;
+    let raceMaxTime = 1;
     let raceFrame = null;
     let lastWinner = '';
 
@@ -1756,6 +1757,9 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
         cctx.strokeStyle = 'rgba(255,255,255,0.92)';
         cctx.lineWidth = 1.4;
         cctx.stroke();
+        cctx.fillStyle = 'rgba(50,46,42,0.86)';
+        cctx.font = "10px JetBrains Mono";
+        cctx.fillText('sync runner', mx + 10, my - 10);
         cctx.restore();
       }
 
@@ -1814,7 +1818,7 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
         pctx.restore();
       }
       activePaths.forEach(path => {
-        const rel = raceRunning ? Math.pow(clamp((prog * raceDur) / Math.max(path.time, 1e-6), 0, 1), 0.82) : 0;
+        const rel = raceRunning ? Math.pow(clamp((prog * raceMaxTime) / Math.max(path.time, 1e-6), 0, 1), 0.82) : 0;
         const idx = Math.min(path.pts.length - 1, Math.round(rel * (path.pts.length - 1)));
         if(raceRunning && idx > 1){
           pctx.save();
@@ -1910,7 +1914,8 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       document.getElementById('vcMinQ2').textContent = fmt(st.minForwardQ,4);
       const admissiblePaths = st.paths.filter(p => p.admissible);
       const admissibleTimes = admissiblePaths.map(p => p.time);
-      raceDur = Math.max(4200, (admissibleTimes.length ? Math.max(...admissibleTimes) : 1) * 2200);
+      raceMaxTime = admissibleTimes.length ? Math.max(...admissibleTimes) : 1;
+      raceDur = Math.max(4200, raceMaxTime * 2200);
       const runnerCount = admissibleTimes.length;
       const mode = raceRunning ? (raceProgress(now) >= 1 ? 'finished' : 'racing') : 'idle';
       raceStateEl.textContent = `${mode} · ${runnerCount} runner${runnerCount === 1 ? '' : 's'}`;
