@@ -1206,7 +1206,7 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
         <div class="vc-col">
           <div class="vc-panel-head">
             <h6 data-orig-html="Layer 2 · Only admissible paths may race">Layer 2 · Only admissible paths may race</h6>
-            <div class="reading vc-micro">Traditional brachistochrone compares every candidate path. This module does not: the race starts only after realizability has filtered the field, so blocked paths never become legitimate competitors.</div>
+            <div class="reading vc-micro">Traditional brachistochrone minimizes ordinary travel time per unit change. Here the endpoint is held fixed and the comparison is flipped: among admissible paths, which one achieves the same structural variation with the lowest information-time cost, equivalently the highest variation rate per unit <i>dt</i><sub>info</sub>?</div>
           </div>
           <canvas id="vcPathCanvas" style="width:100%;height:330px;display:block"></canvas>
           <div class="vc-legend">
@@ -1238,22 +1238,22 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
             </div>
             <div class="eq-bar" style="margin-top:2px"><div class="fill" id="vcRaceBar" style="width:0%"></div></div>
             <div class="reading" style="margin:0;padding:8px 10px;background:rgba(255,252,248,0.82)">
-              <b>Race result.</b> <span id="vcRaceNote">Press Start race to watch the admissible paths move; blocked paths stay pinned at launch.</span>
+              <b>Info-time result.</b> <span id="vcRaceNote">Press Start race to compare admissible paths at fixed endpoint: the winner is the path with the lowest accumulated <i>dt</i><sub>info</sub>, equivalently the highest average variation rate.</span>
             </div>
           </div>
           <div class="vc-table" id="vcTable"></div>
           <div class="reading vc-proof-note">
-            <b>Why this is not the textbook brachistochrone.</b> RET asks which local variations are admissible. The brachistochrone asks which admissible path minimizes time. The cycloid is an intuition module for the second question only.
+            <b>Why this is not the textbook brachistochrone.</b> RET asks which local variations are admissible. The right panel then compares admissible paths by an information-time reading: same endpoint, same net structural variation, different accumulated <i>dt</i><sub>info</sub>. The cycloid is still an intuition module, but now for variation-per-info-time rather than for ordinary travel time alone.
           </div>
         </div>
       </div>
 
       <div class="vc-bridge">
         <b>Two-layer reading.</b>
-        <span>Layer 1 filters directions by realizability. Layer 2 optimizes only after that filter has been applied.</span>
+        <span>Layer 1 filters directions by realizability. Layer 2 optimizes only after that filter has been applied, and it does so in the information-time language: fixed structural variation, competing <i>dt</i><sub>info</sub> costs.</span>
       </div>
     </div>
-    <figcaption>This analogy module is intentionally downstream of the RET audit. It does not prove realizability. It clarifies the logical order: admissibility comes from the local Hessian-level cost structure; the cycloid enters only as a familiar example of variational selection inside the admissible set.</figcaption>
+    <figcaption>This analogy module is intentionally downstream of the RET audit. It does not prove realizability. It clarifies the logical order: admissibility comes from the local Hessian-level cost structure; only then does a second comparison ask which admissible path achieves the same endpoint variation with the lowest information-time cost.</figcaption>
   </figure>
 
   <style>
@@ -1903,17 +1903,19 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       pctx.fillText('endpoint', end.x + 8, end.y - 4);
       pctx.fillStyle = 'rgba(92,88,80,0.78)';
       pctx.font = "italic 13px Newsreader";
-      pctx.fillText('candidate paths between the same endpoints', 18, 20);
+      pctx.fillText('same endpoint variation, competing information-time costs', 18, 20);
     }
 
     function redrawTable(st){
+      const phiGain = Math.hypot(st.X, st.Y);
       const admissible = st.paths.filter(p => p.admissible);
       const fastest = admissible.length ? Math.min(...admissible.map(p=>p.time)) : Infinity;
       tableEl.innerHTML = st.paths.map(p => {
         const adm = p.admissible ? 'admissible' : 'blocked';
         const lag = p.time - fastest;
+        const phiRate = phiGain / Math.max(p.time, 1e-6);
         const tail = p.admissible
-          ? `time ${fmt(p.time,3)}${lag > 1e-3 ? ` · +${fmt(lag,3)}` : ' · fastest'}`
+          ? `dt_info ${fmt(p.time,3)} · Φ/t ${fmt(phiRate,3)}${lag > 1e-3 ? ` · +${fmt(lag,3)}` : ' · best cost'}`
           : 'blocked at launch';
         return `<div class="vc-tr"><b style="color:${p.color}">${p.label}</b><span>${adm}</span><span>${tail}</span></div>`;
       }).join('');
@@ -1947,14 +1949,17 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       const mode = raceRunning ? (raceProgress(now) >= 1 ? 'finished' : 'racing') : 'idle';
       raceStateEl.textContent = `${mode} · ${runnerCount} runner${runnerCount === 1 ? '' : 's'}`;
       raceBarEl.style.width = (raceRunning ? (raceProgress(now) * 100) : 0).toFixed(1) + '%';
+      const phiGain = Math.hypot(st.X, st.Y);
       if(raceRunning){
         raceNoteEl.textContent = runnerCount
-          ? `Race in progress: ${runnerCount} admissible path${runnerCount === 1 ? '' : 's'} running, blocked paths remain pinned at launch.`
+          ? `Info-time comparison in progress: ${runnerCount} admissible path${runnerCount === 1 ? '' : 's'} running at fixed endpoint variation Φ ≈ ${fmt(phiGain,3)}; blocked paths remain pinned at launch.`
           : 'No admissible path is available for launch under the current local filter.';
       } else if(lastWinner){
-        raceNoteEl.textContent = `Finished: ${lastWinner} reached the endpoint first among the admissible paths.`;
+        const winner = st.paths.find(p => p.label === lastWinner);
+        const rate = winner ? phiGain / Math.max(winner.time, 1e-6) : 0;
+        raceNoteEl.textContent = `Finished: ${lastWinner} achieved the same endpoint variation with the lowest dt_info cost, giving Φ/t_info ≈ ${fmt(rate,3)}.`;
       } else {
-        raceNoteEl.textContent = 'Press Start race to watch the admissible paths move; blocked paths stay pinned at launch.';
+        raceNoteEl.textContent = 'Press Start race to compare admissible paths at fixed endpoint variation: the winner is the one with the lowest accumulated dt_info, equivalently the largest average Φ/t_info.';
       }
       drawCone(st, now);
       drawPaths(st, now);
