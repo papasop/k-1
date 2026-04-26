@@ -26,7 +26,7 @@
 \begin{abstract}
 \textit{Background.} Time has invariably entered physics as a primitive --- an underived input.
 
-\textit{Framework.} Here time is modelled as the cost of change, with information time $dt_{\mathrm{info}}:=d\Phi/H$. The object constrained is not $dt_{\mathrm{info}}$ itself, but the signed leading quadratic form $G$ associated with the local second-order expansion of $dt_{\mathrm{info}}^{2}$. Modelling this form as satisfying Axioms~R, E, T of~\cite{Realizability} yields, under nondegeneracy, $\mathrm{Sig}(G)=(1,1)$, equivalently $\det G<0$; the unit-cost locus is $K(x)=x^{\top}Gx=1$.
+\textit{Framework.} Here the cost of change is modelled through an information time $dt_{\mathrm{info}}:=d\Phi/H$. The object constrained is not $dt_{\mathrm{info}}$ itself, but the signed leading quadratic form $G$ associated with the local second-order expansion of $dt_{\mathrm{info}}^{2}$. Modelling this form as satisfying Axioms~R, E, T of~\cite{Realizability} yields, under nondegeneracy, $\mathrm{Sig}(G)=(1,1)$, equivalently $\det G<0$; the unit-cost locus is $K(x)=x^{\top}Gx=1$.
 
 \textit{Dynamics and thermodynamics.} Within the symplectic--dissipative class $GA=\alpha J-GD$, the evolution law takes the uniquely reduced form $\dot x=(J_G-D)\nabla V$. Near $K=1$, the framework supplies the ingredients for a local Clausius relation, thereby providing Route~A's thermodynamic bridge to the Jacobson argument once the two external inputs $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ and $S\propto A$ are supplied.
 
@@ -41,11 +41,11 @@
 
 \textit{The gap.} In the ``local cost-based leading quadratic form'' sense adopted here, existing approaches typically take Lorentzian signature or an equivalent causal structure as input; the present work addresses the prior question: when does the cost structure itself enforce a Lorentzian leading symbol?
 
-\textit{A local answer.} In the present modelling, time is neither a coordinate nor a metric primitive, but the cost of change. Information time is introduced as
+\textit{A local answer.} In the present modelling, time is neither a coordinate nor a metric primitive, but the cost layer associated with change. Information time is introduced as
 \[
 dt_{\mathrm{info}}:=\frac{d\Phi}{H},
 \]
-where $\Phi$ parametrises structural variation and $H>0$ is the local cost per unit variation. The object constrained in the present paper is not $dt_{\mathrm{info}}$ itself, but the signed leading quadratic form $G$ associated with the local second-order expansion of $dt_{\mathrm{info}}^{2}$, modelled as the leading form $Q$ of~\cite{Realizability}. \textbf{The paper's first result is local and point-level: in a $2\times 2$ realizability setting, the cost structure forces Lorentzian type} --- Axioms~R, E, T together with nondegeneracy imply $\det G<0$, equivalently $\mathrm{Sig}(G)=(1,1)$ (\S\ref{sec:lawI}). What is obtained at this stage is the algebraic type of the leading form, not a full reconstruction of all metric data. The induced generator $J_G$, the threshold $d_c>0$, and the unit-cost locus $K(x)=x^{\top}Gx=1$ are then algebraic consequences of this sign structure; making $K=1$ a locally self-consistent locus requires the dynamical completion of Laws~II--III. \emph{Thus the present work adopts a structural rather than fully reconstructive framework: $\Phi$ and $H$ are not fixed to specific physical quantities, and the results below constrain the algebraic type of the leading quadratic form rather than derive all metric data from first principles.} Connecting this point-level result to the full Einstein equations requires, in the thermodynamic route (Route~A), two external inputs: the identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ and the entropy--area law $S\propto A$.
+where $\Phi$ parametrises structural variation and $H>0$ is the local cost per unit variation. The object constrained in the present paper is not $dt_{\mathrm{info}}$ itself, but the signed leading quadratic form $G$ associated with the local second-order expansion of $dt_{\mathrm{info}}^{2}$, modelled as the leading form $Q$ of~\cite{Realizability}. \textbf{The paper's first result is local and point-level: in a $2\times 2$ realizability setting, the cost structure forces Lorentzian type} --- Axioms~R, E, T together with nondegeneracy imply $\det G<0$, equivalently $\mathrm{Sig}(G)=(1,1)$ (\S\ref{sec:lawI}). What is obtained at this stage is the algebraic type of the leading form, not a full reconstruction of all metric data. The induced generator $J_G$, the threshold $d_c>0$, and the unit-cost locus $K(x)=x^{\top}Gx=1$ are then algebraic consequences of this sign structure; making $K=1$ a locally self-consistent locus requires the dynamical completion of Laws~II--III. \emph{Thus the present work adopts a structural rather than fully reconstructive framework: $\Phi$ and $H$ are not fixed to specific physical quantities, and the results below constrain the algebraic type of the leading quadratic form rather than derive all metric data from first principles.} Connecting this point-level result to the full Einstein equations requires, in the thermodynamic route (Route~A), two external inputs: the identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ and the entropy--area law $S\propto A$. The further identification of the motivating information time $dt_{\mathrm{info}}$ with the later dynamical evolution parameter is not completed here and is left as an open problem.
 
 \textit{Two routes connecting to the Einstein equations.}
 \begin{itemize}
@@ -90,37 +90,53 @@ exact for $r$-dependent $\phi$
 \section{Metric from information time (Law~I)}\label{sec:lawI}
 
 \medskip
-\noindent\textbf{Law~I.} \textit{The metric $G$ is a non-degenerate symmetric bilinear form measuring local displacement cost \textup{(in the sense of~\cite{Realizability})}, where the temporal direction is that of positive cost \textup{(Axiom~T of~\cite{Realizability})}.}
+\noindent\textbf{Law~I.} \textit{The metric $G$ is a non-degenerate symmetric bilinear form measuring local displacement cost, and the temporal direction is singled out as that of positive cost \textup{(Axiom~T of~\cite{Realizability})}.}
 
-\medskip\noindent\textit{Framework definition.} The present paper is organised around the following elements. \emph{Inputs}: a structural parameter $\Phi$ and a positive scalar cost $H$, giving the information time $dt_{\mathrm{info}}:=d\Phi/H$. \emph{Axiom layer}: a signed leading quadratic form $G$ associated with $dt_{\mathrm{info}}^{2}$, modelled as satisfying Axioms~R, E, T of~\cite{Realizability} together with a nondegeneracy hypothesis. \emph{Additional condition}: the unit-cost locus $K(x):=x^{\top}Gx=1$, imposed as a point-level self-consistency condition. \emph{Dynamical completion}: Law~II, which specifies the unique evolution $\dot x=(J_G-D)\nabla V$ within the symplectic--dissipative class $GA=\alpha J-GD$ (Theorem~\ref{thm:lawII}), and Law~III, which characterises the resulting restoring and fluctuation structure at critical damping (Theorem~\ref{thm:restoring}). \emph{Internal conclusions}: at the point level, Lorentzian signature $\mathrm{Sig}(G)=(1,1)$, the three-way equivalence of Theorem~\ref{thm:equivalence}, and the local restoring law with $\kappa_K=4d_c$ at a normalised eigenvector base point; conditionally, under the conjectured Route~B uplift, in the spherical vacuum sector, algebraic equivalence to the Einstein vacuum equations (Theorem~\ref{thm:field}). \emph{External inputs}: for Route~A only, the thermal identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ and the entropy--area law $S\propto A$.
+\medskip\noindent\textit{Framework definition.} The present paper is organised around the following layers. \emph{Input layer}: a structural parameter $\Phi$ and a positive scalar cost $H$, defining the information time $dt_{\mathrm{info}}:=d\Phi/H$. \emph{Axiom layer}: a signed leading quadratic form $G$ associated with $dt_{\mathrm{info}}^{2}$, modelled as satisfying Axioms~R, E, T of~\cite{Realizability} together with nondegeneracy. \emph{Additional condition}: the unit-cost locus $K(x):=x^{\top}Gx=1$, imposed as a point-level self-consistency condition. \emph{Dynamical completion}: Law~II gives the unique evolution $\dot x=(J_G-D)\nabla V$ within the symplectic--dissipative class $GA=\alpha J-GD$ (Theorem~\ref{thm:lawII}), and Law~III yields the restoring and fluctuation structure at critical damping (Theorem~\ref{thm:restoring}). \emph{Internal conclusions}: at the point level one obtains Lorentzian signature $\mathrm{Sig}(G)=(1,1)$, the threefold equivalence of Theorem~\ref{thm:equivalence}, and the local restoring law $\kappa_K=4d_c$ at a normalised eigenvector base point; conditionally, under the conjectured Route~B uplift, one obtains algebraic equivalence to the Einstein vacuum equations in the spherical vacuum sector (Theorem~\ref{thm:field}). \emph{External inputs}: only for Route~A, the thermal identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ and the entropy--area law $S\propto A$ are required.
 
 \medskip\noindent\textit{Main bridge.} The information time is defined by
 \[
 dt_{\mathrm{info}}:=\frac{d\Phi}{H},
 \]
-where $\Phi$ parametrises structural variation and $H>0$ is the local \emph{scalar} cost per unit variation of $\Phi$ (an entropic resistance, unrelated to the matrix weight $H_{*}$ of~\S\ref{sec:stability}). Associated with $dt_{\mathrm{info}}^{2}$ is a signed leading quadratic form $G$, heuristically written as $G:=\nabla^{2}(dt_{\mathrm{info}}^{2})$ at the level of its local second-order part. Strictly, this notation is shorthand: $G$ denotes the \emph{signed leading quadratic coefficient form} associated with $dt_{\mathrm{info}}^{2}$, identified with the leading quadratic form $Q$ of~\cite{Realizability}. The nonnegative information-time cost itself is represented to leading order by the positive-part construction $(x^{\top}Gx)_{+}$, while $G$ is the underlying signed coefficient form. Hence the main theorem of~\cite{Realizability} applies directly: Axioms~R, E, T together with nondegeneracy imply
+where $\Phi$ parametrises structural variation and $H>0$ is the local \emph{scalar} cost per unit variation of $\Phi$ (an entropic resistance, unrelated to the matrix weight $H_{*}$ of~\S\ref{sec:stability}). Associated with the local second-order part of $dt_{\mathrm{info}}^{2}$, we introduce a signed leading quadratic form $G$, heuristically written as $G:=\nabla^{2}(dt_{\mathrm{info}}^{2})$. Strictly speaking, this is shorthand: $G$ denotes the \emph{signed leading quadratic coefficient form} associated with $dt_{\mathrm{info}}^{2}$, not a full coordinate-level reconstruction obtained from an explicit expansion of $dt_{\mathrm{info}}$ in a specified chart. More precisely, the present framework models this signed leading coefficient form as the leading quadratic form $Q$ of~\cite{Realizability}. Thus the step from $G$ to the realizability theorem is a \emph{structural identification at the level of the signed leading form}, not an independent re-derivation of Axioms~R, E, T from the information-time construction itself.
+
+At the motivating level, the nonnegative cost is represented by the positive-part construction $(x^{\top}Gx)_{+}$, exactly as in the realizability framework of~\cite{Realizability}. Once the signature conclusion has been obtained, the later algebra and dynamics work directly with the underlying signed leading form $G$ itself, and no longer require the positive-part construction. The positive-part cost belongs to the realizability layer that constrains the signature of the leading form. The later potential
+\[
+V=\tfrac12(K-1)^2
+\]
+is not the primitive cost functional of the realizability layer, but an additional dynamical choice introduced after the Lorentzian type of $G$ has been established, in order to study local restoring behaviour near $K=1$. Hence the main theorem of~\cite{Realizability} applies directly: Axioms~R, E, T together with nondegeneracy imply
 \[
 \mathrm{Sig}(G)=(1,1),
 \qquad\text{equivalently}\qquad
 \det G<0.
 \]
-Thus, in the present modelling, the cost structure forces Lorentzian type at the level of the signed leading form.
+Axiom~R may be read intuitively as saying that there exist arbitrarily small forward displacements whose information cost vanishes relative to their size; this is the ingredient that rules out a positive-definite leading form. Thus, in the present modelling, the cost structure forces Lorentzian signature at the level of the signed leading form.
 
-\medskip\noindent\textit{Deeper motivation.} Axioms~R, E, T of~\cite{Realizability} may be viewed as a realizability encoding of the Hessian-level degeneracy structure associated with the local second-order cost form of $dt_{\mathrm{info}}^{2}$, motivated by the requirement that nontrivial variational motion remain realizable rather than collapse to trivial displacement. The present paper does not carry out a full reverse reconstruction of Axioms~R, E, T from that structure; rather, it uses the associated signed leading form $G$ together with the realizability theorem of~\cite{Realizability} as the operative bridge.
+\medskip\noindent\textit{Deeper motivation.} Axioms~R, E, T of~\cite{Realizability} may be viewed as a realizability encoding of the Hessian-level degeneracy structure associated with the local second-order cost form of $dt_{\mathrm{info}}^{2}$, motivated by the requirement that nontrivial variational motion remain realizable rather than collapse to trivial displacement. The present paper does not carry out a full reverse reconstruction of Axioms~R, E, T from that structure; rather, it uses the associated signed leading form $G$ together with the realizability theorem of~\cite{Realizability} as the operative bridge. For relative self-containment, \S\ref{sec:lawI} recalls only the minimal mechanism needed from~\cite{Realizability}, rather than reproducing the full proof.
 
-\medskip\noindent\textit{Scope of the claim.} What is constrained here is the \emph{algebraic type} of $G$ (its signature), not its specific values. The present work therefore adopts a structural framework: $\Phi$ and $H$ are not fixed to specific physical quantities, and $dt_{\mathrm{info}}$ serves as the motivating construction for~$G$ rather than as a complete internal derivation of all metric data. The quadratic form
+\medskip\noindent\textit{Scope of the claim.} What is constrained here is the \emph{algebraic type} of $G$ (its signature), not all of its specific values. Accordingly, $G$ should be read as a local cost-form forced by realizability, rather than as a complete reconstruction of the spacetime metric $g_{\mu\nu}$. The present work is therefore structural rather than fully reconstructive: $\Phi$ and $H$ are not fixed to specific physical quantities, and $dt_{\mathrm{info}}$ serves as the motivating cost-time layer from which the local leading form $G$ is introduced, rather than as a complete first-principles derivation of all metric data.
+
+The quadratic form
 \[
 K(x):=x^{\top}Gx
 \]
-quantifies local temporal cost, and the condition $K=1$ identifies the self-consistent locus; this condition is \emph{not} a conclusion of~\cite{Realizability}, but the additional self-consistency condition introduced in the present paper.
+measures local temporal cost, and the condition $K=1$ identifies the self-consistent locus. We adopt the normalisation $K=1$ by a choice of cost units, without loss of generality at the level of the present local theory. This condition is \emph{not} a conclusion of~\cite{Realizability}, but an additional self-consistency condition introduced in the present paper.
 
-\medskip\noindent\textit{Minimal content used from~\cite{Realizability}.} For self-containment, the mechanism used here is the following. Axiom~E reduces the leading-order displacement cost to a non-degenerate quadratic type $Q$. Axiom~T supplies a distinguished temporal direction with strictly positive cost, excluding a purely negative definite leading form. Axiom~R, through the limiting argument of~\cite{Realizability}, excludes a positive definite leading form by requiring spatially nontrivial forward displacements with vanishing cost-to-size ratio in the precise cost functional used there. In dimension two, once both definite signatures are excluded and nondegeneracy is imposed, the only remaining inertia is $(1,1)$. Identifying the present $G$ with this signed leading form $Q$, one obtains $\mathrm{Sig}(G)=(1,1)$, equivalently $\det G<0$. The full statement, including the precise cost functional, the positive-part construction $(x^{\top}Qx)_{+}$, and the limiting argument in Axiom~R, is proved in~\cite{Realizability}.
+\medskip\noindent\textit{Role of information time in the present paper.} In the present work, $dt_{\mathrm{info}}$ plays a motivating and structural role: it specifies the cost-time layer from which the local leading form $G$ is introduced. The later dynamical sections use an effective evolution parameter $t$; an explicit first-principles identification between that parameter and $dt_{\mathrm{info}}$ is not derived here. In this sense, Law~I establishes the local cost-geometric layer of the framework, while a full dynamical reconstruction from information time alone is left to future work. Throughout the paper, this $2\times 2$ construction is applied on distinguished local two-planes, such as the $(t,r)$ wedge of a local Rindler horizon in Route~A and the radial-time plane in spherical symmetry for Route~B. These are not arbitrary two-planes: they are the physically distinguished local planes selected by the problem under consideration.
 
-\medskip\noindent\textit{Consequence.} Lorentzian signature therefore emerges from the cost structure at the level of the leading form: $G$ is indefinite, with null set
+\medskip\noindent\textit{Sign conventions.} In this section, $G$ is written in the cost-sign convention, so that the temporal direction carries positive cost. In later sections, especially in the Rindler realisation of Route~A, we switch to the spacetime-sign convention
 \[
-\{x:x^{\top}Gx=0\},
+g_{\mu\nu}=-G_{\mu\nu}.
 \]
-and with an associated local causal structure determined by the sign of $K$. In general relativity, the Lorentzian metric is prescribed on a pre-existing differentiable manifold; here the Lorentzian algebraic type of the leading cost form is derived rather than prescribed.
+This overall sign reversal does not affect the Lorentzian signature statement $\det G<0$; it changes only the convention used when the quadratic form is presented in spacetime language. In later sections, when the physical spacetime metric is used directly, we switch notation explicitly to $g_{\mu\nu}$ to avoid conflating it with the cost-sign form of \S\ref{sec:lawI}.
+
+\medskip\noindent\textit{Minimal content used from~\cite{Realizability}.} For relative self-containment, the mechanism used here is the following. Axiom~E reduces the leading-order displacement cost to a non-degenerate quadratic type $Q$. Axiom~T supplies a distinguished temporal direction with strictly positive cost, thereby excluding a purely negative-definite leading form. Axiom~R, via the limiting argument proved in~\cite{Realizability}, requires spatially nontrivial forward displacements whose cost-to-size ratio tends to zero, thereby excluding a positive-definite leading form. In two dimensions, once both definite signatures are excluded and nondegeneracy is imposed, the only remaining inertia is $(1,1)$. Identifying the present $G$ with this signed leading form $Q$, one obtains $\mathrm{Sig}(G)=(1,1)$, equivalently $\det G<0$. The full statement, including the precise cost functional and the limiting argument in Axiom~R, is proved in~\cite{Realizability}.
+
+\medskip\noindent\textit{Consequence.} Lorentzian signature is therefore derived from the cost structure at the level of the leading form: $G$ is indefinite, and its null set
+\[
+\{x:x^{\top}Gx=0\}
+\]
+determines a local causal structure. In general relativity, the Lorentzian metric is prescribed on a pre-existing differentiable manifold; here the Lorentzian algebraic type of the leading cost form is derived rather than postulated.
 
 \begin{figure}[ht]
 \centering
@@ -422,7 +438,7 @@ Adding isotropic additive white noise (It\^{o} convention) to Law~II gives $dx=(
 \textit{Class~A} (thermodynamic): fluctuations of $K$ perpendicular to $\{K=1\}$ --- departures from metric self-consistency --- governed by restoring rate $\kappa_{K}(x_{*})=4d_{c}\,x_{*}^{\top}G^{2}x_{*}$; the linearised stationary distribution of the $K$-fluctuation at a fixed base point is Gaussian with variance $\sigma^{2}/(2d_{c})$, as follows from the standard stationary distribution of the one-dimensional OU process~\cite{Gardiner1985}. Although both the restoring rate and the $K$-space noise amplitude depend on $x_{*}^{\top}G^{2}x_{*}$, this factor cancels in the OU variance.
 
 \medskip\noindent
-\textit{Class~B} (kinematic; thermodynamically inert here): the tangential component of the fluctuation along $\{K=1\}$ in the boost direction. For the Rindler metric $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, $\{K=1\}$ is the hyperbola $-(\kappa\ell)^{2}x_{1}^{2}+x_{2}^{2}=1$; motion along it generates Lorentz boosts, changing the inertial observer but not the thermodynamic state. The Hessian of $V$ restricted to $\{K=1\}$ is rank-one with null space containing this tangent, confirming that Class~B carries no restoring force and no heat. The geometric picture of the two classes on the $\{K=1\}$ hyperbola is shown in Fig.~\ref{fig:K1geometry}.
+\textit{Class~B} (kinematic; thermodynamically inert here): the tangential component of the fluctuation along $\{K=1\}$ in the boost direction. For the Rindler metric $g=\mathrm{diag}(-(\kappa\ell)^{2},1)$, $\{K=1\}$ is the hyperbola $-(\kappa\ell)^{2}x_{1}^{2}+x_{2}^{2}=1$; motion along it generates Lorentz boosts, changing the inertial observer but not the thermodynamic state. The Hessian of $V$ restricted to $\{K=1\}$ is rank-one with null space containing this tangent, confirming that Class~B carries no restoring force and no heat. The geometric picture of the two classes on the $\{K=1\}$ hyperbola is shown in Fig.~\ref{fig:K1geometry}.
 
 \begin{figure}[ht]
 \centering
@@ -452,7 +468,7 @@ Adding isotropic additive white noise (It\^{o} convention) to Law~II gives $dx=(
 \node[label, green!50!black, right] at (1.05, 1.0) {Class B (kinematic)};
 \node[label, green!50!black, left] at (-1.05, 1.0) {boost};
 \end{tikzpicture}
-\caption{The $\{K=1\}$ manifold for the Rindler metric $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$. The hyperbola's asymptotes are the light cone. At the base point $x_{*}$: Class A (red, two-way arrows) — thermodynamic fluctuations \emph{along the $\nabla K$ normal} to $\{K=1\}$; Class B (green) — tangential boost along the curve, thermodynamically inert — at $x_{*}=(0,1)$, $dx_{2}/dx_{1}|_{x_{*}}=0$, so the tangent is exactly horizontal. The figure is drawn with $\kappa\ell=1$ and $x_{*}=(0,1)$, satisfying the normalisation $x_{*}^{\top}G^{2}x_{*}=1$; the restoring rate then reduces to $\kappa_{K}=4d_{c}$ (the general-base-point formula is discussed in the present section).}
+\caption{The $\{K=1\}$ manifold for the Rindler metric $g=\mathrm{diag}(-(\kappa\ell)^{2},1)$. The hyperbola's asymptotes are the light cone. At the base point $x_{*}$: Class A (red, two-way arrows) — thermodynamic fluctuations \emph{along the $\nabla K$ normal} to $\{K=1\}$; Class B (green) — tangential boost along the curve, thermodynamically inert — at $x_{*}=(0,1)$, $dx_{2}/dx_{1}|_{x_{*}}=0$, so the tangent is exactly horizontal. The figure is drawn with $\kappa\ell=1$ and $x_{*}=(0,1)$, satisfying the normalisation $x_{*}^{\top}g^{2}x_{*}=1$; the restoring rate then reduces to $\kappa_{K}=4d_{c}$ (the general-base-point formula is discussed in the present section).}
 \label{fig:K1geometry}
 \end{figure}
 
@@ -474,11 +490,21 @@ for that argument.
 
 This section develops Route~A as a thermodynamic and conditional bridge to the Einstein equations. Every external identification used in Route~A is marked explicitly; the full input list is summarised at the end of the section.
 
-\medskip\noindent\textit{Sign convention.} In Route~A we use the spacetime-sign convention $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$ for direct comparison with Rindler geometry. Statements depending only on $\det G$, $d_{c}$, or the hyperbolic spectrum are invariant under the overall sign change. Statements invoking Axiom~T as positive temporal cost are to be read in the cost-sign convention $G_{\mathrm{cost}}=-G=\mathrm{diag}((\kappa\ell)^{2},-1)$, used explicitly in \S~\ref{sec:singularity}. Both conventions have $\det G=-(\kappa\ell)^{2}$ and give the same $d_{c}$.
+\medskip\noindent\textit{Sign convention.} In Route~A we use the spacetime-sign convention
+\[
+g=\mathrm{diag}(-(\kappa\ell)^{2},1)
+\]
+for direct comparison with Rindler geometry. Statements depending only on $\det g$, $d_{c}$, or the hyperbolic spectrum are invariant under the overall sign change. Statements invoking Axiom~T as positive temporal cost are to be read in the cost-sign convention
+\[
+G_{\mathrm{cost}}=-g=\mathrm{diag}((\kappa\ell)^{2},-1),
+\]
+used explicitly in \S~\ref{sec:singularity}. Both conventions have determinant $-(\kappa\ell)^{2}$ and give the same $d_{c}$.
 
 As a concrete realisation, we apply the framework to the Rindler metric
-$G=\mathrm{diag}(-(\kappa\ell)^{2},1)$
-\textup{[external: $G$ is the standard Rindler metric from GR, not derived from Law~I]},
+\[
+g=\mathrm{diag}(-(\kappa\ell)^{2},1)
+\]
+\textup{[external: $g$ is the standard Rindler metric from GR, not derived from Law~I]},
 where $\kappa$ is the surface gravity and $\ell$ the proper distance
 from the horizon. The Rindler expressions are understood for a non-extremal local horizon, $\kappa>0$, and for $\ell>0$. Equation~\eqref{eq:dc} gives $d_{c}=\alpha/(\kappa\ell)$ (i.e., $\alpha/\sqrt{|g_{00}|}$ with $g_{00}=-(\kappa\ell)^{2}$ the temporal component of the Rindler metric). The expression for $d_{c}$ uses the diagonal/isotropic threshold described in \S~\ref{sec:stability}; for general $H_{*}$, the threshold may shift. With $T_{H}=\hbar\kappa/(2\pi)$~\cite{Hawking},
 \begin{equation}
@@ -543,7 +569,7 @@ This position dependence should not be read as a Class~B heat fluctuation: varia
 For macroscopic black holes, $T_{\mathrm{tol}}\ll d_{c}$; setting $D=T_{\mathrm{tol}}I$ renders $K=1$ unstable. Stability requires $D\ge d_{c}I$; critical damping $D=d_{c}I$ is the unique marginally stable choice.
 \end{remark}
 
-Since every local Rindler horizon admits the standard Rindler approximation~\cite{Jacobson} with $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$ (where $\kappa$ and $\ell$ vary by location), Proposition~\ref{prop:clausius} applies to each such horizon, yielding the Clausius relation locally. Together with Jacobson's argument~\cite{Jacobson}, this supplies the local Clausius input needed for the Einstein equations. Once the external identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ has been given, the remaining external input required to invoke Jacobson's argument is $S\propto A$.
+Since every local Rindler horizon admits the standard Rindler approximation~\cite{Jacobson} with $g=\mathrm{diag}(-(\kappa\ell)^{2},1)$ (where $\kappa$ and $\ell$ vary by location), Proposition~\ref{prop:clausius} applies to each such horizon, yielding the Clausius relation locally. Together with Jacobson's argument~\cite{Jacobson}, this supplies the local Clausius input needed for the Einstein equations. Once the external identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ has been given, the remaining external input required to invoke Jacobson's argument is $S\propto A$.
 
 \medskip
 \noindent
@@ -713,14 +739,14 @@ Principle & $K = x^{\top}G\,x = 1$
   & $\sigma_2^2\,\Box\ln\sigma_i = 1\;\;\forall\,i$ \\[3pt]
 Balance & unit temporal cost ($K{=}1$) & $\Box\ln\sigma_i = 1/\sigma_2^2$ \\[3pt]
 Vacuum & $K{=}1$ & $K_1{=}K_2{=}1\;\Leftrightarrow\;R_{\mu\nu}{=}0$ \\[3pt]
-Matter & $K \neq 1 \to V > 0$ & $K_2 \neq 1\;\to\;
+Response & $K \neq 1 \to \text{dynamical penalty } V>0$ & $K_2 \neq 1\;\to\;
   \rho = (1{-}K_2)/(8\pi r^2)$ \\[3pt]
 Conditions & 1 (2D wedge) & 2 (4D: one per eigenvalue) \\
 \bottomrule
 \end{tabular}
 \caption{Point-level $K{=}1$ and field-level eigenvalue self-consistency.
 At each level, the number of conditions equals the number of
-independent eigenvalues. The matter row is schematic: the point-level entry uses the internal penalty $V$, whereas the field-level density $\rho$ is a GR rewriting and inherits the factor $8\pi$.}
+independent eigenvalues. The response row is schematic: the point-level entry uses the internal dynamical penalty $V$, whereas the field-level density $\rho$ is a GR rewriting and inherits the factor $8\pi$.}
 \label{tab:corr}
 \end{table}
 
