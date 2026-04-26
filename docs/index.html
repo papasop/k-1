@@ -1065,14 +1065,14 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
   <div class="block-head">
     <div class="block-num" data-orig-html="§1.6 · Interactive">§1.6 · Interactive</div>
     <div>
-      <h2 data-orig-html="Hessian extraction and variational realizability">Hessian extraction and variational realizability</h2>
-      <p class="block-lead" data-orig-html="This panel separates the two logical layers of the realizability theorem. The Hessian side shows the quadratic leading form $Q$ extracted from the second-order part of the cost; the variational side tests whether a forward sequence can drive the cost-to-size ratio to zero.">This panel separates the two logical layers of the realizability theorem. The Hessian side shows the quadratic leading form <code>Q</code> extracted from the second-order part of the cost; the variational side tests whether a forward sequence can drive the cost-to-size ratio to zero.</p>
+      <h2 data-orig-html="Realizability gate to information-time path selection">Realizability gate to information-time path selection</h2>
+      <p class="block-lead" data-orig-html="This unified module now runs in two stages. Stage 1 extracts the Hessian-level quadratic form and tests forward realizability. Stage 2 keeps only those admissible directions and compares which path realizes the same target variation $\Delta\Phi$ with the lowest accumulated information time $dt_{\mathrm{info}}=d\Phi/H$.">This unified module now runs in two stages. Stage 1 extracts the Hessian-level quadratic form and tests forward realizability. Stage 2 keeps only those admissible directions and compares which path realizes the same target variation <code>ΔΦ</code> with the lowest accumulated information time <code>dt_info = dΦ/H</code>.</p>
     </div>
   </div>
 
   <figure class="card">
     <div class="fc-head">
-      <span class="fc-title">Interactive Hessian + variational audit</span>
+      <span class="fc-title">Stage 1 · Realizability gate</span>
       <span class="fc-tag">leading quadratic form · forward sequence test</span>
     </div>
     <div class="fc-body" style="padding:22px 24px;background:var(--card)">
@@ -1148,15 +1148,19 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
         </div>
       </div>
     </div>
-    <figcaption>The Hessian panel corresponds to Assumption E: the second-order part of the cost determines a quadratic coefficient form <code>Q</code>. The variational panel corresponds to Assumption R: along a forward sequence with <code>Q(u) ≤ 0</code>, the ratio <code>d(ρu)/ρ</code> tends to zero because only <code>(Q)_+</code> contributes at leading order.</figcaption>
+    <figcaption>Stage 1 is the gate. The Hessian panel corresponds to Assumption E: the second-order part of the cost determines a quadratic coefficient form <code>Q</code>. The variational panel corresponds to Assumption R: along a forward sequence with <code>Q(u) ≤ 0</code>, the ratio <code>d(ρu)/ρ</code> tends to zero because only <code>(Q)_+</code> contributes at leading order.</figcaption>
   </figure>
 
   <figure class="card" style="margin-top:18px">
     <div class="fc-head">
-      <span class="fc-title">Variational realizability + cycloid analogy</span>
-      <span class="fc-tag">admissibility first · optimality second</span>
+      <span class="fc-title">Stage 2 · dt_info path selection</span>
+      <span class="fc-tag">admissibility first · information-time cost second</span>
     </div>
     <div class="fc-body" style="padding:22px 24px;background:var(--card)">
+      <div class="vc-bridge" style="margin-top:0;margin-bottom:14px">
+        <b>Unified flow.</b>
+        <span>Stage 1 determines which directions survive the realizability gate. Stage 2 compares only those survivors at fixed <i>Δ</i>Φ and asks which one accumulates the least <i>dt</i><sub>info</sub>.</span>
+      </div>
       <div class="vc-grid">
         <div class="vc-col">
           <div class="vc-panel-head">
