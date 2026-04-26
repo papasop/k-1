@@ -194,13 +194,36 @@ $\det G>0$ gives $1/\det G>0$, so $\lambda^2=-1/\det G<0$ and both roots are pur
 
 \section{The isotropic stability boundary}\label{sec:stability}
 
+\noindent\textit{From algebraic identity to dynamical threshold.}
+Section~\ref{sec:symplectic} established the purely algebraic identity
+$d_{c}=\alpha\sqrt{-1/\det G}$ for any $2\times2$ Lorentzian $G$:
+$d_{c}$ is simply the magnitude of the real eigenvalues of $J_{G}$.
+No dynamics has been invoked so far.
+The purpose of the present section is to give this algebraic quantity
+a \emph{stability interpretation} under one additional specification:
+the linearisation weight matrix is taken as $H_{*}=I$ (isotropic).
+When $H_{*}=I$, the auxiliary linear system $d(\delta x)/dt=(J_{G}-dI)\delta x$
+has $\max\mathrm{Re}\,\mathrm{spec}(J_{G}-dI)=d_{c}-d$; hence $d>d_{c}$
+guarantees exponential decay of all modes, $d=d_{c}$ is critical damping,
+and $d_{c}>0$ becomes a positive stability threshold.
+This interprets the signature--spectrum triple of Fig.~\ref{fig:triangle}
+in dynamical terms.  For general positive-definite $H_{*}\neq I$,
+the zero-eigenvalue locus of $(J_{G}-dI)H_{*}$ is unchanged
+(Proposition~\ref{prop:diag_inv}), but the full Lyapunov stability
+threshold may shift (Remark~\ref{rem:Hstar_dep}); the equivalence
+stated in Theorem~\ref{thm:equivalence} therefore holds \emph{within
+the isotropic reading}.  No new algebraic derivation is introduced
+in this section.
+
+\medskip
+
 \begin{theorem}[Signature-Stability Equivalence]\label{thm:equivalence}
 For non-degenerate symmetric $2\times 2$ real $G$, under the isotropic linearisation $H_{*}=I$, the following are equivalent:
 \begin{itemize}
 \item[\textup{(a)}] The metric admits a stability boundary $d_{c}>0$.
 \item[\textup{(b)}] $\mathrm{Sig}(G)=(1,1)$ \textup{(Lorentzian)}, equivalently $\det G<0$.
 \end{itemize}
-For general $H_{*}$, the zero-eigenvalue locus in $d$ is invariant under invertible right multiplication by $H_{*}$ (Proposition~\ref{prop:diag_inv}), but the full real-part stability interpretation may fail (Remark~\ref{rem:Hstar_dep}); thus $d_c$ is a signature invariant only within the isotropic stability interpretation.
+For general $H_{*}$, the zero-eigenvalue locus in $d$ is invariant under invertible right multiplication by $H_{*}$ (Proposition~\ref{prop:diag_inv}), but the full real-part stability interpretation may fail (Remark~\ref{rem:Hstar_dep}); thus $d_{c}$ is a signature invariant only within the isotropic stability interpretation.
 \end{theorem}
 
 \begin{proof}
@@ -245,7 +268,6 @@ For the Rindler metric with diagonal $H_{*}>0$, the zero-eigenvalue threshold in
 \draw[equiv] (core) -- node[label, right] {2D inertia} (sig);
 \draw[equiv] (core) -- node[label, above left=-2pt, sloped] {spectral} (spec);
 \draw[equiv] (core) -- node[label, above right=-2pt, sloped] {$d_{c}$ definition} (dc);
-% H_*=I badge near d_c box (only the stability interpretation requires it)
 \node[rectangle, draw=black!60, fill=yellow!15, rounded corners=2pt, font=\footnotesize\bfseries, right=0.35cm of dc, inner sep=3pt] (isoflag) {$H_{*}=I$};
 \node[font=\scriptsize\itshape, text=black!60, below=0.02cm of isoflag, align=center] {required for\\ stability reading};
 \node[font=\footnotesize, text=black!60, below=2.6cm of core, text width=10cm, align=center] {
@@ -253,7 +275,7 @@ For the Rindler metric with diagonal $H_{*}>0$, the zero-eigenvalue threshold in
    (General $H_{*}$ may shift the threshold formula; see Remark~\ref{rem:Hstar_dep})
 };
 \end{tikzpicture}
-\caption{Signature-spectrum-stability triple correspondence. The core algebraic sign $\det G<0$ corresponds, under 2D nondegeneracy, to three expressions: Lorentzian signature $\mathrm{Sig}(G)=(1,1)$ (geometric, by Sylvester's inertia law); the symplectic generator $J_{G}$ having real eigenvalues $\lambda_{\pm}=\pm\alpha\sqrt{-1/\det G}$ (spectral, by direct computation); and a positive stability threshold $d_{c}>0$ (dynamical, \emph{whose stability interpretation requires isotropic linearisation $H_{*}=I$}). Theorems~\ref{thm:spectral}--\ref{thm:equivalence} together with Eq.~\eqref{eq:dc} establish these correspondences. General $H_{*}$ may shift the full real-part stability threshold away from the isotropic formula $\alpha\sqrt{-1/\det G}$, while the zero-eigenvalue locus remains invariant under invertible right multiplication by $H_{*}$; see Proposition~\ref{prop:diag_inv} and Remark~\ref{rem:Hstar_dep}.}
+\caption{Signature-spectrum-stability triple correspondence. The core algebraic sign $\det G<0$ corresponds, under 2D nondegeneracy, to three expressions: Lorentzian signature $\mathrm{Sig}(G)=(1,1)$ (geometric, by Sylvester's inertia law); the symplectic generator $J_{G}$ having real eigenvalues $\lambda_{\pm}=\pm\alpha\sqrt{-1/\det G}$ (spectral, by direct computation); and a positive stability threshold $d_{c}>0$ (dynamical, \emph{whose stability interpretation requires isotropic linearisation $H_{*}=I$}). The algebraic formula $d_{c}=\alpha\sqrt{-1/\det G}$ itself does not depend on $H_{*}$; only its reading as a Lyapunov stability boundary invokes the isotropic specification. Theorems~\ref{thm:spectral}--\ref{thm:equivalence} together with Eq.~\eqref{eq:dc} establish these correspondences. General $H_{*}$ may shift the full real-part stability threshold away from the isotropic formula, while the zero-eigenvalue locus remains invariant under invertible right multiplication by $H_{*}$; see Proposition~\ref{prop:diag_inv} and Remark~\ref{rem:Hstar_dep}.}
 \label{fig:triangle}
 \end{figure}
 
