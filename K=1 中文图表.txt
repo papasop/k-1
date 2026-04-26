@@ -73,7 +73,7 @@
 
 \smallskip\noindent\textbf{框架.\ } 此处时间被建模为变化的代价, 信息时间为 $dt_{\mathrm{info}}:=d\Phi/H$。所约束的对象不是 $dt_{\mathrm{info}}$ 本身, 而是与 $dt_{\mathrm{info}}^{2}$ 的局部二阶展开关联的符号化主二次型 $G$。将此二次型建模为满足~\cite{Realizability} 的公理 R, E, T, 在非退化性下, 给出 $\mathrm{Sig}(G)=(1,1)$, 等价于 $\det G<0$; 单位代价轨迹为 $K(x)=x^{\top}Gx=1$。
 
-\smallskip\noindent\textbf{动力学与热力学.\ } 在辛-耗散类 $GA=\alpha J-GD$ 内, 演化律取唯一约简的形式 $\dot x=(J_G-D)\nabla V$。在 $K=1$ 附近, 本框架供给局部 Clausius 关系所需的素材, 由此提供途径 A 通向 Jacobson 论证的热力学桥梁, 在给定 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 与 $S\propto A$ 时成立。
+\smallskip\noindent\textbf{动力学与热力学.\ } 在辛-耗散类 $GA=\alpha J-GD$ 内, 演化律取唯一约简的形式 $\dot x=(J_G-D)\nabla V$。在 $K=1$ 附近, 本框架供给局部 Clausius 关系所需的素材, 由此提供途径 A 通向 Jacobson 论证的热力学桥梁, 在两个外部输入 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 与 $S\propto A$ 被供给时成立。
 
 \smallskip\noindent\textbf{引力内容.\ } 在途径 B 中, 对于 $f>0$ 的静态、球对称度规, 所猜想的场级条件 $\sigma_2^2\Box\ln\sigma_i=1$ 被证明在球对称真空部分中代数等价于真空 Einstein 方程 $R_{\mu\nu}=0$(定理~\ref{thm:field})。因此 Lorentz 类型在点级被内部供应, 而真空 Einstein 方程在该部分中接纳等价的重新表述。
 \end{abstract}
