@@ -28,7 +28,7 @@
 
 \textit{Framework.} Here time is modelled as the cost of change, with information time $dt_{\mathrm{info}}:=d\Phi/H$. The object constrained is not $dt_{\mathrm{info}}$ itself, but the signed leading quadratic form $G$ associated with the local second-order expansion of $dt_{\mathrm{info}}^{2}$. Modelling this form as satisfying Axioms~R, E, T of~\cite{Realizability} yields, under nondegeneracy, $\mathrm{Sig}(G)=(1,1)$, equivalently $\det G<0$; the unit-cost locus is $K(x)=x^{\top}Gx=1$.
 
-\textit{Dynamics and thermodynamics.} Within the symplectic--dissipative class $GA=\alpha J-GD$, the unique law is $\dot x=(J_G-D)\nabla V$. Near $K=1$, the framework yields a local Clausius relation, supplying Route~A's thermodynamic bridge to the Jacobson argument once $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ and $S\propto A$ are given.
+\textit{Dynamics and thermodynamics.} Within the symplectic--dissipative class $GA=\alpha J-GD$, the evolution law takes the uniquely reduced form $\dot x=(J_G-D)\nabla V$. Near $K=1$, the framework yields a local Clausius relation, supplying Route~A's thermodynamic bridge to the Jacobson argument once $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ and $S\propto A$ are given.
 
 \textit{Gravitational content.} In Route~B, for static, spherically symmetric metrics with $f>0$, the conjectured field-level condition $\sigma_2^2\Box\ln\sigma_i=1$ is algebraically equivalent to the vacuum Einstein equations $R_{\mu\nu}=0$ (Theorem~\ref{thm:field}). Thus Lorentzian structure is supplied internally at the point level, while the vacuum Einstein equations admit an equivalent reformulation in the spherical sector.
 \end{abstract}
@@ -412,7 +412,7 @@ Adding isotropic additive white noise (It\^{o} convention) to Law~II gives $dx=(
 \node[label, green!50!black, right] at (1.05, 1.0) {Class B (kinematic)};
 \node[label, green!50!black, left] at (-1.05, 1.0) {boost};
 \end{tikzpicture}
-\caption{The $\{K=1\}$ manifold for the Rindler metric $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$. The hyperbola's asymptotes are the light cone. At the base point $x_{*}$: Class A (red, two-way arrows) — thermodynamic fluctuations \emph{along the $\nabla K$ normal} to $\{K=1\}$; Class B (green) — tangential boost along the curve, thermodynamically inert — at $x_{*}=(0,1)$, $dx_{2}/dx_{1}|_{x_{*}}=0$, so the tangent is exactly horizontal. The figure is drawn with $\kappa\ell=1$ and $x_{*}=(0,1)$, satisfying the normalisation $x_{*}^{\top}G^{2}x_{*}=1$; the restoring rate then reduces to $\kappa_{K}=4d_{c}$ (the general-base-point formula appears in \S\ref{sec:lawIII}).}
+\caption{The $\{K=1\}$ manifold for the Rindler metric $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$. The hyperbola's asymptotes are the light cone. At the base point $x_{*}$: Class A (red, two-way arrows) — thermodynamic fluctuations \emph{along the $\nabla K$ normal} to $\{K=1\}$; Class B (green) — tangential boost along the curve, thermodynamically inert — at $x_{*}=(0,1)$, $dx_{2}/dx_{1}|_{x_{*}}=0$, so the tangent is exactly horizontal. The figure is drawn with $\kappa\ell=1$ and $x_{*}=(0,1)$, satisfying the normalisation $x_{*}^{\top}G^{2}x_{*}=1$; the restoring rate then reduces to $\kappa_{K}=4d_{c}$ (the general-base-point formula is discussed in the present section).}
 \label{fig:K1geometry}
 \end{figure}
 
