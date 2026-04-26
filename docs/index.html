@@ -1151,6 +1151,97 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
     <figcaption>The Hessian panel corresponds to Assumption E: the second-order part of the cost determines a quadratic coefficient form <code>Q</code>. The variational panel corresponds to Assumption R: along a forward sequence with <code>Q(u) ≤ 0</code>, the ratio <code>d(ρu)/ρ</code> tends to zero because only <code>(Q)_+</code> contributes at leading order.</figcaption>
   </figure>
 
+  <figure class="card" style="margin-top:18px">
+    <div class="fc-head">
+      <span class="fc-title">Variational realizability + cycloid analogy</span>
+      <span class="fc-tag">admissibility first · optimality second</span>
+    </div>
+    <div class="fc-body" style="padding:22px 24px;background:var(--card)">
+      <div class="vc-grid">
+        <div class="vc-col">
+          <div class="vc-panel-head">
+            <h6 data-orig-html="Layer 1 · Realizability filter">Layer 1 · Realizability filter</h6>
+            <div class="reading vc-micro">The cone below does not choose the fastest path. It only marks which launch directions are admissible under the local quadratic form.</div>
+          </div>
+          <canvas id="vcConeCanvas" style="width:100%;height:330px;display:block"></canvas>
+          <div class="vc-legend">
+            <span><span class="vc-swatch vc-adm"></span>forward &amp; admissible</span>
+            <span><span class="vc-swatch vc-block"></span>forward but blocked</span>
+            <span><span class="vc-swatch vc-guide"></span>guide direction</span>
+          </div>
+          <div class="vc-ctrl">
+            <label class="vc-row">
+              <span>a</span>
+              <input id="vcA" type="range" min="-1.5" max="1.5" step="0.01" value="1.00">
+              <b id="vcAlab">1.00</b>
+            </label>
+            <label class="vc-row">
+              <span>κ</span>
+              <input id="vcK" type="range" min="-1.5" max="1.5" step="0.01" value="0.00">
+              <b id="vcKlab">0.00</b>
+            </label>
+            <label class="vc-row">
+              <span>b</span>
+              <input id="vcB" type="range" min="-1.5" max="1.5" step="0.01" value="-1.00">
+              <b id="vcBlab">−1.00</b>
+            </label>
+            <label class="vc-row">
+              <span>guide φ</span>
+              <input id="vcGuide" type="range" min="5" max="175" step="0.5" value="85">
+              <b id="vcGuideLab">85.0°</b>
+            </label>
+          </div>
+          <div class="vc-info">
+            <div class="vc-eq"><span>Q(u<sub>guide</sub>)</span><b id="vcGuideQ">0.000</b></div>
+            <div class="vc-eq"><span>admissible cone width</span><b id="vcConeWidth">0°</b></div>
+            <div class="vc-eq"><span>forward min Q</span><b id="vcMinQ2">−1.000</b></div>
+          </div>
+        </div>
+
+        <div class="vc-col">
+          <div class="vc-panel-head">
+            <h6 data-orig-html="Layer 2 · Variational selector">Layer 2 · Variational selector</h6>
+            <div class="reading vc-micro">Among admissible paths, the cycloid is the fastest. That is an analogy for selection, not a source of realizability.</div>
+          </div>
+          <canvas id="vcPathCanvas" style="width:100%;height:330px;display:block"></canvas>
+          <div class="vc-legend">
+            <span><span class="vc-swatch vc-line"></span>line</span>
+            <span><span class="vc-swatch vc-arc"></span>arc</span>
+            <span><span class="vc-swatch vc-para"></span>parabola</span>
+            <span><span class="vc-swatch vc-cyc"></span>cycloid</span>
+          </div>
+          <div class="vc-ctrl">
+            <label class="vc-row">
+              <span>end x</span>
+              <input id="vcEndX" type="range" min="0.9" max="3.2" step="0.01" value="2.10">
+              <b id="vcEndXLab">2.10</b>
+            </label>
+            <label class="vc-row">
+              <span>end y</span>
+              <input id="vcEndY" type="range" min="0.4" max="2.4" step="0.01" value="1.25">
+              <b id="vcEndYLab">1.25</b>
+            </label>
+            <label class="vc-row">
+              <span>gravity g</span>
+              <input id="vcG" type="range" min="0.3" max="2.0" step="0.01" value="1.00">
+              <b id="vcGLab">1.00</b>
+            </label>
+          </div>
+          <div class="vc-table" id="vcTable"></div>
+          <div class="reading vc-proof-note">
+            <b>Why cycloid is not the proof.</b> RET asks which local variations are admissible. The brachistochrone asks which admissible path minimizes time. The cycloid is an intuition module for the second question only.
+          </div>
+        </div>
+      </div>
+
+      <div class="vc-bridge">
+        <b>Two-layer reading.</b>
+        <span>Layer 1 filters directions by realizability. Layer 2 optimizes only after that filter has been applied.</span>
+      </div>
+    </div>
+    <figcaption>This analogy module is intentionally downstream of the RET audit. It does not prove realizability. It clarifies the logical order: admissibility comes from the local Hessian-level cost structure; the cycloid enters only as a familiar example of variational selection inside the admissible set.</figcaption>
+  </figure>
+
   <style>
     .hv-grid{ display:grid; grid-template-columns: 1.1fr 1fr; gap:28px; align-items:start; }
     @media (max-width: 980px){ .hv-grid{ grid-template-columns:1fr; } }
@@ -1178,6 +1269,34 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
     .hv-convention{ margin-top:12px; padding:10px 14px; background:oklch(0.97 0.03 55); border:1px solid oklch(0.82 0.07 55); border-left:3px solid oklch(0.62 0.14 55); border-radius:6px; font-size:12px; line-height:1.55; color:oklch(0.35 0.08 55); font-family:'Newsreader',serif; }
     .hv-convention b{ font-family:'Inter Tight',sans-serif; font-weight:600; font-size:10.5px; letter-spacing:0.08em; text-transform:uppercase; color:oklch(0.4 0.14 55); }
     .hv-convention code{ font-family:'JetBrains Mono',monospace; font-size:11px; background:oklch(0.92 0.04 55); padding:1px 5px; border-radius:3px; }
+    .vc-grid{ display:grid; grid-template-columns:1fr 1fr; gap:24px; align-items:start; }
+    @media (max-width: 980px){ .vc-grid{ grid-template-columns:1fr; } }
+    .vc-col h6{ font-family:'Inter Tight',sans-serif; font-weight:600; font-size:11px; letter-spacing:0.09em; text-transform:uppercase; color:var(--muted); margin:0 0 8px; }
+    .vc-panel-head{ margin-bottom:8px; }
+    .vc-micro{ margin:0 0 10px 0; font-size:13px; line-height:1.52; color:var(--ink-3); }
+    .vc-legend{ display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; font:11px/1.35 'JetBrains Mono',monospace; color:var(--muted); }
+    .vc-swatch{ display:inline-block; width:12px; height:12px; border-radius:3px; margin-right:6px; vertical-align:-2px; }
+    .vc-adm{ background:oklch(0.89 0.05 252); border:1px solid oklch(0.7 0.08 252); }
+    .vc-block{ background:oklch(0.93 0.05 55); border:1px solid oklch(0.76 0.08 55); }
+    .vc-guide{ background:oklch(0.52 0.15 25); }
+    .vc-line{ background:oklch(0.45 0.08 230); }
+    .vc-arc{ background:oklch(0.58 0.12 290); }
+    .vc-para{ background:oklch(0.58 0.11 70); }
+    .vc-cyc{ background:oklch(0.55 0.13 150); }
+    .vc-ctrl{ margin-top:12px; padding:12px 14px; background:var(--paper-2); border:1px solid var(--line); border-radius:10px; display:grid; gap:10px; }
+    .vc-row{ display:grid; grid-template-columns:auto 1fr auto; gap:12px; align-items:center; font:11px/1.35 'JetBrains Mono',monospace; color:var(--muted); }
+    .vc-row input[type=range]{ -webkit-appearance:none; appearance:none; height:3px; background:var(--line); border-radius:2px; }
+    .vc-row input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; width:14px; height:14px; border-radius:50%; background:var(--accent); cursor:pointer; }
+    .vc-row b{ color:var(--accent-ink); min-width:66px; text-align:right; }
+    .vc-info{ margin-top:10px; padding:12px 14px; background:var(--paper-2); border:1px solid var(--line); border-radius:10px; display:grid; gap:6px; }
+    .vc-eq{ display:grid; grid-template-columns:auto 1fr; gap:10px; align-items:baseline; font:11px/1.35 'JetBrains Mono',monospace; color:var(--muted); }
+    .vc-eq b{ text-align:right; color:var(--ink); font-weight:600; }
+    .vc-table{ margin-top:12px; padding:12px 14px; background:var(--paper-2); border:1px solid var(--line); border-radius:10px; display:grid; gap:8px; }
+    .vc-tr{ display:grid; grid-template-columns:80px 70px 1fr; gap:10px; align-items:baseline; font:11px/1.35 'JetBrains Mono',monospace; color:var(--muted); }
+    .vc-tr b{ color:var(--ink); }
+    .vc-proof-note{ margin-top:12px; padding:12px 14px; background:oklch(0.97 0.03 55); border:1px solid oklch(0.82 0.07 55); border-left:3px solid oklch(0.62 0.14 55); border-radius:6px; }
+    .vc-bridge{ margin-top:14px; padding:10px 14px; display:flex; gap:10px; align-items:flex-start; background:rgba(255,252,248,0.82); border:1px solid var(--line); border-radius:8px; font-size:13px; line-height:1.55; color:var(--ink-3); }
+    .vc-bridge b{ white-space:nowrap; }
   </style>
 
   <script>
@@ -1419,6 +1538,249 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
     }));
     presetBtns.forEach(btn => btn.addEventListener('click', ()=> setPreset(btn.dataset.hv)));
     setPreset('lor');
+  })();
+
+  (function(){
+    const coneCanvas = document.getElementById('vcConeCanvas');
+    const pathCanvas = document.getElementById('vcPathCanvas');
+    if(!coneCanvas || !pathCanvas) return;
+    const cctx = coneCanvas.getContext('2d');
+    const pctx = pathCanvas.getContext('2d');
+    const DPR = Math.max(1, window.devicePixelRatio || 1);
+    const aEl = document.getElementById('vcA');
+    const kEl = document.getElementById('vcK');
+    const bEl = document.getElementById('vcB');
+    const guideEl = document.getElementById('vcGuide');
+    const endXEl = document.getElementById('vcEndX');
+    const endYEl = document.getElementById('vcEndY');
+    const gEl = document.getElementById('vcG');
+    const tableEl = document.getElementById('vcTable');
+
+    function fit(el, ctx, h){
+      const w = Math.max(320, Math.floor(el.parentElement.getBoundingClientRect().width - 4));
+      el.style.width = w + 'px';
+      el.style.height = h + 'px';
+      el.width = w * DPR;
+      el.height = h * DPR;
+      ctx.setTransform(DPR,0,0,DPR,0,0);
+      return {w,h};
+    }
+    let coneSize = fit(coneCanvas, cctx, 330);
+    let pathSize = fit(pathCanvas, pctx, 330);
+    window.addEventListener('resize', ()=>{
+      coneSize = fit(coneCanvas, cctx, 330);
+      pathSize = fit(pathCanvas, pctx, 330);
+      redraw();
+    });
+
+    function clamp(x, lo, hi){ return Math.max(lo, Math.min(hi, x)); }
+    function fmt(x, d=3){ return Number(x).toFixed(d).replace('-', '−'); }
+    function qVal(dx, dy, s){ return s.a*dx*dx + 2*s.k*dx*dy + s.b*dy*dy; }
+    function norm(v){ const m = Math.hypot(v.x, v.y) || 1; return {x:v.x/m, y:v.y/m}; }
+
+    function solveCycloid(X, Y){
+      const ratio = Y / X;
+      const f = th => (1 - Math.cos(th)) / (th - Math.sin(th));
+      let lo = 0.1, hi = Math.min(6.2, 2*Math.PI - 1e-3);
+      for(let i=0;i<64;i++){
+        const mid = 0.5*(lo+hi);
+        if(f(mid) > ratio) lo = mid; else hi = mid;
+      }
+      const th1 = 0.5*(lo+hi);
+      const R = Y / (1 - Math.cos(th1));
+      return {th1, R};
+    }
+
+    function samplePath(kind, X, Y){
+      const pts = [];
+      if(kind === 'line'){
+        for(let i=0;i<=240;i++){ const t=i/240; pts.push({x:X*t, y:Y*t}); }
+      } else if(kind === 'arc'){
+        const cx = 0.5*X, cy = 0.15*Y;
+        for(let i=0;i<=240;i++){
+          const t=i/240;
+          const omt = 1-t;
+          pts.push({
+            x: 2*omt*t*cx + t*t*X,
+            y: 2*omt*t*cy + t*t*Y
+          });
+        }
+      } else if(kind === 'parabola'){
+        for(let i=0;i<=240;i++){ const t=i/240; pts.push({x:X*t, y:Y*t*t}); }
+      } else {
+        const {th1, R} = solveCycloid(X, Y);
+        for(let i=0;i<=240;i++){
+          const t=i/240, th=t*th1;
+          pts.push({ x:R*(th - Math.sin(th)), y:R*(1 - Math.cos(th)) });
+        }
+      }
+      return pts;
+    }
+
+    function travelTime(pts, g){
+      let sum = 0;
+      for(let i=1;i<pts.length;i++){
+        const p0 = pts[i-1], p1 = pts[i];
+        const ds = Math.hypot(p1.x-p0.x, p1.y-p0.y);
+        const ymid = Math.max(0.03, 0.5*(p0.y+p1.y));
+        sum += ds / Math.sqrt(2*g*ymid);
+      }
+      return sum;
+    }
+
+    function state(){
+      const s = { a:+aEl.value, k:+kEl.value, b:+bEl.value };
+      const guideDeg = +guideEl.value;
+      const guide = { x: Math.cos(guideDeg*Math.PI/180), y: Math.sin(guideDeg*Math.PI/180) };
+      const X = +endXEl.value;
+      const Y = +endYEl.value;
+      const g = +gEl.value;
+      const paths = [
+        { key:'line', label:'line', color:'oklch(0.45 0.08 230)' },
+        { key:'arc', label:'arc', color:'oklch(0.58 0.12 290)' },
+        { key:'parabola', label:'parabola', color:'oklch(0.58 0.11 70)' },
+        { key:'cycloid', label:'cycloid', color:'oklch(0.55 0.13 150)' }
+      ].map(p => {
+        const pts = samplePath(p.key, X, Y);
+        const t0 = norm({ x: pts[2].x - pts[0].x, y: pts[2].y - pts[0].y });
+        const q0 = qVal(t0.x, t0.y, s);
+        return {
+          ...p, pts, tangent:t0, q0, admissible:q0 <= 1e-6,
+          time: travelTime(pts, g)
+        };
+      });
+      let minForwardQ = Infinity, minAng = 0, maxAng = 180;
+      const admissibleAngles = [];
+      for(let deg=2; deg<=178; deg+=0.5){
+        const ang = deg*Math.PI/180;
+        const dx = Math.cos(ang), dy = Math.sin(ang);
+        const q = qVal(dx, dy, s);
+        if(q < minForwardQ) minForwardQ = q;
+        if(q <= 1e-6) admissibleAngles.push(deg);
+      }
+      const coneWidth = admissibleAngles.length ? (Math.max(...admissibleAngles) - Math.min(...admissibleAngles)) : 0;
+      return {s, guideDeg, guide, X, Y, g, paths, minForwardQ, coneWidth};
+    }
+
+    function drawCone(st){
+      const {w,h} = coneSize;
+      cctx.clearRect(0,0,w,h);
+      const cx = w/2, cy = h-28, R = Math.min(w*0.34, h*0.72);
+
+      cctx.fillStyle = 'rgba(245,242,234,1)';
+      cctx.fillRect(0,0,w,h);
+      cctx.fillStyle = 'rgba(248,245,238,0.95)';
+      cctx.beginPath(); cctx.moveTo(cx-R,cy); cctx.arc(cx,cy,R,Math.PI,2*Math.PI); cctx.closePath(); cctx.fill();
+
+      for(let deg=0; deg<=180; deg+=1){
+        const ang = deg*Math.PI/180;
+        const dx = Math.cos(ang), dy = Math.sin(ang);
+        const q = qVal(dx,dy,st.s);
+        cctx.strokeStyle = q <= 1e-6 ? 'rgba(212,220,244,0.95)' : 'rgba(246,234,215,0.95)';
+        cctx.lineWidth = 2;
+        cctx.beginPath();
+        cctx.moveTo(cx, cy);
+        cctx.lineTo(cx + R*dx, cy - R*dy);
+        cctx.stroke();
+      }
+
+      cctx.strokeStyle = 'rgba(93,88,80,0.22)';
+      cctx.lineWidth = 1.2;
+      cctx.beginPath(); cctx.moveTo(cx-R-8, cy); cctx.lineTo(cx+R+8, cy); cctx.stroke();
+      cctx.beginPath(); cctx.moveTo(cx, cy+8); cctx.lineTo(cx, cy-R-8); cctx.stroke();
+      cctx.fillStyle = 'rgba(92,88,80,0.72)';
+      cctx.font = "11px JetBrains Mono";
+      cctx.fillText('x', cx + R + 14, cy + 4);
+      cctx.fillText('y↓', cx + 8, cy - R - 10);
+
+      const gx = cx + R*0.92*st.guide.x, gy = cy - R*0.92*st.guide.y;
+      cctx.strokeStyle = 'oklch(0.52 0.15 25)';
+      cctx.lineWidth = 2.4;
+      cctx.beginPath(); cctx.moveTo(cx,cy); cctx.lineTo(gx,gy); cctx.stroke();
+      const ga = Math.atan2(gy-cy, gx-cx);
+      cctx.fillStyle = 'oklch(0.52 0.15 25)';
+      cctx.beginPath();
+      cctx.moveTo(gx,gy);
+      cctx.lineTo(gx - 8*Math.cos(ga-0.45), gy - 8*Math.sin(ga-0.45));
+      cctx.lineTo(gx - 8*Math.cos(ga+0.45), gy - 8*Math.sin(ga+0.45));
+      cctx.closePath(); cctx.fill();
+      cctx.font = "italic 12px Newsreader";
+      cctx.fillText('guide', gx + 8, gy - 6);
+
+      cctx.font = "italic 13px Newsreader";
+      cctx.fillStyle = 'rgba(92,88,80,0.78)';
+      cctx.fillText('forward admissibility cone', 18, 20);
+    }
+
+    function drawPaths(st){
+      const {w,h} = pathSize;
+      pctx.clearRect(0,0,w,h);
+      const padL=28, padR=16, padT=18, padB=22;
+      const xmax = Math.max(3.4, st.X*1.15), ymax = Math.max(2.6, st.Y*1.18);
+      const toScreen = p => ({
+        x: padL + (p.x/xmax)*(w-padL-padR),
+        y: padT + (p.y/ymax)*(h-padT-padB)
+      });
+
+      pctx.fillStyle = 'rgba(245,242,234,1)';
+      pctx.fillRect(0,0,w,h);
+      pctx.strokeStyle = 'rgba(93,88,80,0.22)';
+      pctx.lineWidth = 1.1;
+      pctx.beginPath(); pctx.moveTo(padL,padT); pctx.lineTo(padL,h-padB); pctx.lineTo(w-padR,h-padB); pctx.stroke();
+      pctx.fillStyle = 'rgba(92,88,80,0.72)';
+      pctx.font = "11px JetBrains Mono";
+      pctx.fillText('x', w-padR+4, h-padB+4);
+      pctx.fillText('y↓', padL-18, padT+2);
+
+      st.paths.forEach(path => {
+        pctx.strokeStyle = path.color;
+        pctx.lineWidth = path.key === 'cycloid' ? 2.6 : 1.9;
+        pctx.beginPath();
+        path.pts.forEach((pt,i)=>{
+          const p = toScreen(pt);
+          if(i===0) pctx.moveTo(p.x,p.y); else pctx.lineTo(p.x,p.y);
+        });
+        pctx.stroke();
+      });
+
+      const end = toScreen({x:st.X, y:st.Y});
+      pctx.fillStyle = 'rgba(32,30,26,0.92)';
+      pctx.beginPath(); pctx.arc(end.x,end.y,4,0,Math.PI*2); pctx.fill();
+      pctx.font = "italic 12px Newsreader";
+      pctx.fillText('endpoint', end.x + 8, end.y - 4);
+      pctx.fillStyle = 'rgba(92,88,80,0.78)';
+      pctx.font = "italic 13px Newsreader";
+      pctx.fillText('candidate paths between the same endpoints', 18, 20);
+    }
+
+    function redrawTable(st){
+      const fastest = Math.min(...st.paths.map(p=>p.time));
+      tableEl.innerHTML = st.paths.map(p => {
+        const adm = p.admissible ? 'admissible' : 'blocked';
+        const lag = p.time - fastest;
+        return `<div class="vc-tr"><b style="color:${p.color}">${p.label}</b><span>${adm}</span><span>time ${fmt(p.time,3)}${lag > 1e-3 ? ` · +${fmt(lag,3)}` : ' · fastest'}</span></div>`;
+      }).join('');
+    }
+
+    function redraw(){
+      const st = state();
+      document.getElementById('vcAlab').textContent = fmt(st.s.a,2);
+      document.getElementById('vcKlab').textContent = fmt(st.s.k,2);
+      document.getElementById('vcBlab').textContent = fmt(st.s.b,2);
+      document.getElementById('vcGuideLab').textContent = st.guideDeg.toFixed(1) + '°';
+      document.getElementById('vcEndXLab').textContent = st.X.toFixed(2);
+      document.getElementById('vcEndYLab').textContent = st.Y.toFixed(2);
+      document.getElementById('vcGLab').textContent = st.g.toFixed(2);
+      document.getElementById('vcGuideQ').textContent = fmt(qVal(st.guide.x, st.guide.y, st.s), 4);
+      document.getElementById('vcConeWidth').textContent = fmt(st.coneWidth,1) + '°';
+      document.getElementById('vcMinQ2').textContent = fmt(st.minForwardQ,4);
+      drawCone(st);
+      drawPaths(st);
+      redrawTable(st);
+    }
+
+    [aEl,kEl,bEl,guideEl,endXEl,endYEl,gEl].forEach(el => el.addEventListener('input', redraw));
+    redraw();
   })();
   </script>
 </section>
