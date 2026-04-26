@@ -1229,7 +1229,7 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
             <div class="vc-race">
               <button id="vcStartRace" type="button">Start race</button>
               <button id="vcResetRace" type="button">Reset</button>
-              <b id="vcRaceState">idle</b>
+              <b id="vcRaceState">idle · 1 runner</b>
             </div>
           </div>
           <div class="vc-table" id="vcTable"></div>
@@ -1755,26 +1755,47 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
 
       st.paths.forEach(path => {
         pctx.strokeStyle = path.color;
-        pctx.lineWidth = path.key === 'cycloid' ? 2.6 : 1.9;
+        pctx.lineWidth = path.key === 'cycloid' ? 2.8 : 1.9;
+        pctx.globalAlpha = path.admissible ? 1 : 0.38;
         pctx.beginPath();
         path.pts.forEach((pt,i)=>{
           const p = toScreen(pt);
           if(i===0) pctx.moveTo(p.x,p.y); else pctx.lineTo(p.x,p.y);
         });
         pctx.stroke();
+        pctx.globalAlpha = 1;
       });
 
       const prog = raceProgress(now);
       const activePaths = st.paths.filter(p => p.admissible);
+      const start = toScreen({x:0,y:0});
+      if(raceRunning){
+        const pulse = 7 + 4*Math.sin(Math.min(1, prog)*Math.PI);
+        pctx.save();
+        pctx.strokeStyle = 'rgba(188,122,40,0.55)';
+        pctx.lineWidth = 2;
+        pctx.beginPath(); pctx.arc(start.x, start.y, pulse, 0, Math.PI*2); pctx.stroke();
+        pctx.restore();
+      }
       activePaths.forEach(path => {
         const rel = raceRunning ? clamp((prog * raceDur) / Math.max(path.time, 1e-6), 0, 1) : 0;
         const idx = Math.min(path.pts.length - 1, Math.round(rel * (path.pts.length - 1)));
         const ball = toScreen(path.pts[idx]);
         pctx.fillStyle = path.color;
-        pctx.beginPath(); pctx.arc(ball.x, ball.y, path.key === 'cycloid' ? 5 : 4.3, 0, Math.PI*2); pctx.fill();
+        pctx.beginPath(); pctx.arc(ball.x, ball.y, path.key === 'cycloid' ? 6 : 4.8, 0, Math.PI*2); pctx.fill();
         pctx.strokeStyle = 'rgba(255,255,255,0.9)';
         pctx.lineWidth = 1.2;
         pctx.stroke();
+      });
+
+      const blocked = st.paths.filter(p => !p.admissible);
+      blocked.forEach((path, i) => {
+        const p0 = toScreen(path.pts[Math.min(6, path.pts.length-1)]);
+        pctx.save();
+        pctx.fillStyle = 'rgba(140,98,56,0.78)';
+        pctx.font = "10px JetBrains Mono";
+        pctx.fillText(`${path.label}: blocked`, p0.x + 10, p0.y + 14 + i*12);
+        pctx.restore();
       });
 
       const end = toScreen({x:st.X, y:st.Y});
@@ -1814,7 +1835,9 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       document.getElementById('vcMinQ2').textContent = fmt(st.minForwardQ,4);
       const admissibleTimes = st.paths.filter(p => p.admissible).map(p => p.time);
       raceDur = (admissibleTimes.length ? Math.max(...admissibleTimes) : 1) * 1000;
-      raceStateEl.textContent = raceRunning ? (raceProgress(now) >= 1 ? 'finished' : 'racing') : 'idle';
+      const runnerCount = admissibleTimes.length;
+      const mode = raceRunning ? (raceProgress(now) >= 1 ? 'finished' : 'racing') : 'idle';
+      raceStateEl.textContent = `${mode} · ${runnerCount} runner${runnerCount === 1 ? '' : 's'}`;
       drawCone(st);
       drawPaths(st, now);
       redrawTable(st);
