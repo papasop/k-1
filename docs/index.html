@@ -1205,10 +1205,11 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
 
         <div class="vc-col">
           <div class="vc-panel-head">
-            <h6 data-orig-html="Layer 2 · Only admissible paths may race">Layer 2 · Only admissible paths may race</h6>
+            <h6 data-orig-html="Layer 2 · Only admissible paths enter the dt_info comparison">Layer 2 · Only admissible paths enter the dt_info comparison</h6>
             <div class="reading vc-micro">Traditional brachistochrone minimizes ordinary travel time per unit change. Here the endpoint is held fixed and the comparison is flipped: among admissible paths, which one achieves the same structural variation with the lowest information-time cost? The control <i>H</i> plays the role of local impedance in <i>dt</i><sub>info</sub> = <i>d</i>Φ / <i>H</i>, so the right panel compares average variation rates <i>d</i>Φ / <i>dt</i><sub>info</sub> rather than ordinary travel time alone.</div>
           </div>
           <canvas id="vcPathCanvas" style="width:100%;height:330px;display:block"></canvas>
+          <canvas id="vcCostCanvas" style="width:100%;height:150px;display:block;margin-top:10px"></canvas>
           <div class="vc-legend">
             <span><span class="vc-swatch vc-line"></span>line</span>
             <span><span class="vc-swatch vc-arc"></span>arc</span>
@@ -1232,16 +1233,16 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
               <b id="vcHLab">1.00</b>
             </label>
             <div class="vc-race">
-              <button id="vcStartRace" type="button">Start race</button>
-              <button id="vcResetRace" type="button">Reset</button>
-              <b id="vcRaceState">idle · 1 runner</b>
+              <button id="vcStartRace" type="button">Run dt_info comparison</button>
+              <button id="vcResetRace" type="button">Reset paths</button>
+              <b id="vcRaceState">ready · 1 path</b>
             </div>
             <div class="eq-bar" style="margin-top:2px"><div class="fill" id="vcRaceBar" style="width:0%"></div></div>
             <div class="reading" style="margin:0;padding:0 2px 2px 2px;font:11px/1.35 'JetBrains Mono',monospace;color:var(--muted)">
               <b style="color:var(--ink)">ΔΦ endpoint.</b> <span id="vcDeltaPhi">0.000</span>
             </div>
             <div class="reading" style="margin:0;padding:8px 10px;background:rgba(255,252,248,0.82)">
-              <b>Info-time result.</b> <span id="vcRaceNote">Press Start race to compare admissible paths at fixed endpoint: the winner is the path with the lowest accumulated <i>dt</i><sub>info</sub>, equivalently the highest average variation rate <i>d</i>Φ / <i>dt</i><sub>info</sub>.</span>
+              <b>Info-time comparison.</b> <span id="vcRaceNote">Run the comparison to evaluate admissible paths at fixed endpoint: the preferred path is the one with the lowest accumulated <i>dt</i><sub>info</sub>, equivalently the highest average variation rate <i>d</i>Φ / <i>dt</i><sub>info</sub>.</span>
             </div>
           </div>
           <div class="vc-table" id="vcTable"></div>
@@ -1564,9 +1565,11 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
   (function(){
     const coneCanvas = document.getElementById('vcConeCanvas');
     const pathCanvas = document.getElementById('vcPathCanvas');
-    if(!coneCanvas || !pathCanvas) return;
+    const costCanvas = document.getElementById('vcCostCanvas');
+    if(!coneCanvas || !pathCanvas || !costCanvas) return;
     const cctx = coneCanvas.getContext('2d');
     const pctx = pathCanvas.getContext('2d');
+    const kctx = costCanvas.getContext('2d');
     const DPR = Math.max(1, window.devicePixelRatio || 1);
     const aEl = document.getElementById('vcA');
     const kEl = document.getElementById('vcK');
@@ -1600,9 +1603,11 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
     }
     let coneSize = fit(coneCanvas, cctx, 330);
     let pathSize = fit(pathCanvas, pctx, 330);
+    let costSize = fit(costCanvas, kctx, 150);
     window.addEventListener('resize', ()=>{
       coneSize = fit(coneCanvas, cctx, 330);
       pathSize = fit(pathCanvas, pctx, 330);
+      costSize = fit(costCanvas, kctx, 150);
       redraw();
     });
 
@@ -1909,6 +1914,64 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       pctx.fillText('fixed ΔΦ, competing information-time costs', 18, 20);
     }
 
+    function drawCost(st, now=performance.now()){
+      const {w,h} = costSize;
+      kctx.clearRect(0,0,w,h);
+      const padL=34, padR=12, padT=18, padB=24;
+      const prog = raceProgress(now);
+      const active = st.paths.filter(p=>p.admissible);
+      const maxCost = Math.max(0.2, ...active.map(p=>p.time), 0.2);
+      const tx = u => padL + u*(w-padL-padR);
+      const ty = c => padT + (1 - c/maxCost)*(h-padT-padB);
+      kctx.fillStyle = 'rgba(245,242,234,1)';
+      kctx.fillRect(0,0,w,h);
+      kctx.strokeStyle = 'rgba(93,88,80,0.22)';
+      kctx.lineWidth = 1.1;
+      kctx.beginPath();
+      kctx.moveTo(padL,padT);
+      kctx.lineTo(padL,h-padB);
+      kctx.lineTo(w-padR,h-padB);
+      kctx.stroke();
+      kctx.fillStyle = 'rgba(92,88,80,0.72)';
+      kctx.font = "11px JetBrains Mono";
+      kctx.fillText('path progress', w - padR - 74, h - 8);
+      kctx.save();
+      kctx.translate(12, h*0.66);
+      kctx.rotate(-Math.PI/2);
+      kctx.fillText('accumulated dt_info', 0, 0);
+      kctx.restore();
+      kctx.font = "italic 12px Newsreader";
+      kctx.fillStyle = 'rgba(92,88,80,0.78)';
+      kctx.fillText('same ΔΦ target, different dt_info accumulation', 18, 14);
+
+      st.paths.forEach(path => {
+        if(!path.admissible) return;
+        const rel = raceRunning ? Math.pow(clamp((prog * raceMaxTime) / Math.max(path.time, 1e-6), 0, 1), 0.82) : 1;
+        kctx.save();
+        kctx.strokeStyle = path.color;
+        kctx.lineWidth = path.key === 'cycloid' ? 3.2 : 2.1;
+        kctx.globalAlpha = raceRunning ? 0.95 : 0.7;
+        kctx.beginPath();
+        for(let i=0;i<=120;i++){
+          const u = i/120;
+          const c = path.time * u;
+          const x = tx(u);
+          const y = ty(c);
+          if(i===0) kctx.moveTo(x,y); else kctx.lineTo(x,y);
+        }
+        kctx.stroke();
+        const mx = tx(rel);
+        const my = ty(path.time * rel);
+        kctx.fillStyle = path.color;
+        kctx.beginPath(); kctx.arc(mx,my,path.key === 'cycloid' ? 4.8 : 3.8,0,Math.PI*2); kctx.fill();
+        if(raceRunning){
+          kctx.fillStyle = path.glow;
+          kctx.beginPath(); kctx.arc(mx,my,path.key === 'cycloid' ? 9 : 7,0,Math.PI*2); kctx.fill();
+        }
+        kctx.restore();
+      });
+    }
+
     function redrawTable(st){
       const deltaPhi = Math.hypot(st.X, st.Y);
       const admissible = st.paths.filter(p => p.admissible);
@@ -1949,24 +2012,25 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       raceMaxTime = admissibleTimes.length ? Math.max(...admissibleTimes) : 1;
       raceDur = Math.max(4200, raceMaxTime * 2200);
       const runnerCount = admissibleTimes.length;
-      const mode = raceRunning ? (raceProgress(now) >= 1 ? 'finished' : 'racing') : 'idle';
-      raceStateEl.textContent = `${mode} · ${runnerCount} runner${runnerCount === 1 ? '' : 's'}`;
+      const mode = raceRunning ? (raceProgress(now) >= 1 ? 'compared' : 'accumulating') : 'ready';
+      raceStateEl.textContent = `${mode} · ${runnerCount} path${runnerCount === 1 ? '' : 's'}`;
       raceBarEl.style.width = (raceRunning ? (raceProgress(now) * 100) : 0).toFixed(1) + '%';
       const deltaPhi = Math.hypot(st.X, st.Y);
       document.getElementById('vcDeltaPhi').textContent = fmt(deltaPhi,3);
       if(raceRunning){
         raceNoteEl.textContent = runnerCount
-          ? `Info-time comparison in progress: ${runnerCount} admissible path${runnerCount === 1 ? '' : 's'} running at fixed endpoint variation ΔΦ ≈ ${fmt(deltaPhi,3)} with local impedance H = ${fmt(st.H,2)}; blocked paths remain pinned at launch.`
+          ? `Info-time comparison in progress: ${runnerCount} admissible path${runnerCount === 1 ? '' : 's'} accumulating cost toward the same endpoint variation ΔΦ ≈ ${fmt(deltaPhi,3)} with local impedance H = ${fmt(st.H,2)}; blocked paths remain pinned at launch.`
           : 'No admissible path is available for launch under the current local filter.';
       } else if(lastWinner){
         const winner = st.paths.find(p => p.label === lastWinner);
         const rate = winner ? deltaPhi / Math.max(winner.time, 1e-6) : 0;
-        raceNoteEl.textContent = `Finished: ${lastWinner} achieved the same endpoint variation ΔΦ with the lowest dt_info cost, giving ΔΦ/t_info ≈ ${fmt(rate,3)}.`;
+        raceNoteEl.textContent = `Compared: ${lastWinner} achieved the same endpoint variation ΔΦ with the lowest dt_info cost, giving ΔΦ/t_info ≈ ${fmt(rate,3)}.`;
       } else {
-        raceNoteEl.textContent = 'Press Start race to compare admissible paths at fixed endpoint variation ΔΦ: the winner is the one with the lowest accumulated dt_info, equivalently the largest average dΦ/dt_info under the chosen impedance H.';
+        raceNoteEl.textContent = 'Run the dt_info comparison at fixed endpoint variation ΔΦ: the preferred path is the one with the lowest accumulated dt_info, equivalently the largest average dΦ/dt_info under the chosen impedance H.';
       }
       drawCone(st, now);
       drawPaths(st, now);
+      drawCost(st, now);
       redrawTable(st);
     }
 
