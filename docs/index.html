@@ -594,7 +594,7 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
     <div class="byline">
       <span><b>Y. Y. N. Li</b></span>
       <span data-en="· 9 sections · ~18 min read" data-zh="· 9 节 · 约 18 分钟" data-orig-html="· 9 sections · ~18 min read">· 9 sections · ~18 min read</span>
-      <span data-en="· interactive figures × 7" data-zh="· 互动图 × 7" data-orig-html="· interactive figures × 7">· interactive figures × 7</span>
+      <span data-en="· interactive figures × 10" data-zh="· 互动图 × 10" data-orig-html="· interactive figures × 10">· interactive figures × 10</span>
     </div>
   </div>
 </header>
@@ -1633,6 +1633,61 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       </div>
     </div>
     <figcaption>On the Lorentzian branch, the local restoring law fixes a positive real <code>d_c</code>, hence a real OU rate and a Gaussian stationary density. The similarity transform then produces a normalizable ground state ψ₀ with <code>|ψ₀|² = ρ_eq</code>. Flipping to the Euclidean branch removes the real stability scale and breaks the normalizable ground state.</figcaption>
+  </figure>
+
+  <figure class="card" style="margin-top:18px">
+    <div class="fc-head">
+      <span class="fc-title">Figure 4b · Collapse as a signature excursion</span>
+      <span class="fc-tag">favorite test · Lor → Euc → Lor chain break</span>
+    </div>
+    <div class="fig-split" style="grid-template-columns:1.02fr 0.98fr">
+      <div class="fs-vis" style="padding:18px 22px">
+        <canvas id="qcCanvas" width="1070" height="760" style="width:535px;height:380px"></canvas>
+        <div style="display:flex;gap:12px;margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:11px;flex-wrap:wrap">
+          <span><span style="display:inline-block;width:12px;height:2px;background:oklch(0.48 0.14 268);vertical-align:middle;margin-right:4px"></span>signature track</span>
+          <span><span style="display:inline-block;width:12px;height:2px;background:oklch(0.55 0.13 150);vertical-align:middle;margin-right:4px"></span>wave amplitude</span>
+          <span><span style="display:inline-block;width:12px;height:2px;background:oklch(0.55 0.17 25);vertical-align:middle;margin-right:4px;border-top:1px dashed"></span>chain break zone</span>
+        </div>
+      </div>
+      <div class="fs-side">
+        <h6 data-orig-html="Signature excursion">Signature excursion</h6>
+        <label style="display:flex;flex-direction:column;gap:4px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-bottom:10px">
+          <span style="display:flex;justify-content:space-between">timeline τ <b id="qcTauLab" style="color:var(--accent-ink)">0.20</b></span>
+          <input id="qcTau" type="range" min="0" max="1" step="0.005" value="0.20">
+        </label>
+        <label style="display:flex;flex-direction:column;gap:4px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-bottom:12px">
+          <span style="display:flex;justify-content:space-between">Euclidean depth <b id="qcDepthLab" style="color:var(--accent-ink)">0.75</b></span>
+          <input id="qcDepth" type="range" min="0.15" max="1.00" step="0.01" value="0.75">
+        </label>
+
+        <div class="reading" style="margin:0 0 14px 0;padding:10px 12px;background:rgba(255,252,248,0.82)">
+          <b>Quantum favorite.</b> Read collapse as a signature excursion: the Lorentzian branch supports OU, FP, Schr, and Born; the Euclidean excursion kills the real stability scale first, then the stationary density and normalizable wavefunction, before the return leg rebuilds them.
+        </div>
+
+        <h6 data-orig-html="Status">Status</h6>
+        <div class="eq-val"><span class="lbl">signature phase</span><b id="qcPhase">Lorentzian</b></div>
+        <div class="eq-val"><span class="lbl">effective d_c</span><b id="qcDc">1.000</b></div>
+        <div class="eq-bar"><div class="fill" id="qcDcBar" style="width:40%"></div></div>
+        <div class="eq-val"><span class="lbl">wave amplitude</span><b id="qcAmp">1.000</b></div>
+        <div class="eq-bar"><div class="fill" id="qcAmpBar" style="width:100%"></div></div>
+        <div class="eq-val"><span class="lbl">collapse indicator</span><b id="qcCollapse">0.000</b></div>
+        <div class="eq-bar"><div class="fill" id="qcCollapseBar" style="width:0%"></div></div>
+
+        <div class="reading" style="margin-top:12px">
+          <b>Interpretation.</b> <span id="qcInterp">Stable Lorentzian leg: the wavefunction is normalizable, |ψ₀|² agrees with ρ_eq, and no collapse channel is active.</span>
+        </div>
+        <div class="reading" style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(100,100,110,0.16)">
+          <b>Chain status.</b>
+          <div style="display:grid;grid-template-columns:auto 1fr;gap:6px 10px;margin-top:8px;font:11px/1.35 'JetBrains Mono',monospace;color:var(--muted)">
+            <span>OU drift</span><b id="qcOU" style="color:var(--ink)">active</b>
+            <span>FP stationary ρ</span><b id="qcFP" style="color:var(--ink)">exists</b>
+            <span>Schr ψ</span><b id="qcPsi" style="color:var(--ink)">normalizable</b>
+            <span>Born link</span><b id="qcBorn" style="color:var(--ink)">tracks |ψ|² = ρ_eq</b>
+          </div>
+        </div>
+      </div>
+    </div>
+    <figcaption>This module packages the paper’s proposed reading of collapse into a single slider. Moving through the Euclidean excursion removes the real stability scale, collapses the OU equilibrium and Schrödinger ground state, then restores them when the trajectory returns to the Lorentzian branch. It is a structural interpretation, not a laboratory-time simulation.</figcaption>
   </figure>
 </section>
 
@@ -2876,6 +2931,208 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       });
     });
     [s1El, noiseEl, modeEl].forEach(el => el.addEventListener('input', redraw));
+    window.addEventListener('resize', redraw, {passive:true});
+    redraw();
+  })();
+
+  // =========== Quantum collapse as signature excursion ============
+  (function(){
+    const canvas = document.getElementById('qcCanvas');
+    if(!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const DPR = window.devicePixelRatio || 1;
+    const tauEl = document.getElementById('qcTau');
+    const depthEl = document.getElementById('qcDepth');
+    const tauLab = document.getElementById('qcTauLab');
+    const depthLab = document.getElementById('qcDepthLab');
+    const phaseEl = document.getElementById('qcPhase');
+    const dcEl = document.getElementById('qcDc');
+    const ampEl = document.getElementById('qcAmp');
+    const collapseEl = document.getElementById('qcCollapse');
+    const dcBar = document.getElementById('qcDcBar');
+    const ampBar = document.getElementById('qcAmpBar');
+    const collapseBar = document.getElementById('qcCollapseBar');
+    const interpEl = document.getElementById('qcInterp');
+    const ouEl = document.getElementById('qcOU');
+    const fpEl = document.getElementById('qcFP');
+    const psiEl = document.getElementById('qcPsi');
+    const bornEl = document.getElementById('qcBorn');
+
+    function sizeCanvas(){
+      const rect = canvas.getBoundingClientRect();
+      const w = Math.round(rect.width || 535);
+      const h = Math.round(rect.height || 380);
+      canvas.width = w * DPR;
+      canvas.height = h * DPR;
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      return {w, h};
+    }
+    function clamp(x, lo, hi){ return Math.max(lo, Math.min(hi, x)); }
+    function smoothstep(a, b, x){
+      const t = clamp((x - a) / (b - a), 0, 1);
+      return t * t * (3 - 2 * t);
+    }
+    function state(){
+      const tau = +tauEl.value;
+      const depth = +depthEl.value;
+      let signature = 1;
+      if(tau < 0.32){
+        signature = 1 - 0.15 * smoothstep(0.20, 0.32, tau);
+      } else if(tau < 0.68){
+        signature = -depth * Math.sin(Math.PI * (tau - 0.32) / 0.36);
+      } else {
+        signature = 0.85 + 0.15 * smoothstep(0.68, 1.00, tau);
+      }
+      const lorWeight = clamp((signature + 0.08) / 1.08, 0, 1);
+      const collapse = 1 - lorWeight;
+      const dc = signature > 0 ? signature : NaN;
+      const amp = Math.pow(lorWeight, 0.72);
+      const phase = signature > 0.08 ? 'Lorentzian' : signature < -0.08 ? 'Euclidean excursion' : 'boundary layer';
+      return {tau, depth, signature, lorWeight, collapse, dc, amp, phase};
+    }
+    function updateReadout(s){
+      tauLab.textContent = s.tau.toFixed(2);
+      depthLab.textContent = s.depth.toFixed(2);
+      phaseEl.textContent = s.phase;
+      dcEl.textContent = Number.isFinite(s.dc) ? s.dc.toFixed(3) : 'imaginary';
+      ampEl.textContent = s.amp.toFixed(3);
+      collapseEl.textContent = s.collapse.toFixed(3);
+      dcBar.style.width = (clamp((Number.isFinite(s.dc) ? s.dc : 0) / 1.2, 0, 1) * 100).toFixed(1) + '%';
+      ampBar.style.width = (clamp(s.amp, 0, 1) * 100).toFixed(1) + '%';
+      collapseBar.style.width = (clamp(s.collapse, 0, 1) * 100).toFixed(1) + '%';
+
+      if(s.signature > 0.08){
+        ouEl.textContent = 'active';
+        fpEl.textContent = 'exists';
+        psiEl.textContent = s.amp > 0.92 ? 'normalizable' : 're-forming';
+        bornEl.textContent = s.amp > 0.92 ? 'tracks |ψ|² = ρ_eq' : 're-locking after return';
+        interpEl.textContent = s.tau < 0.68
+          ? 'Stable Lorentzian leg: the wavefunction is normalizable, |ψ₀|² agrees with ρ_eq, and no collapse channel is active.'
+          : 'Return leg: the signature has come back to the Lorentzian side, so the OU equilibrium, stationary density, and normalizable wavefunction re-form together.';
+      } else if(s.signature < -0.08){
+        ouEl.textContent = 'broken';
+        fpEl.textContent = 'no stationary ρ';
+        psiEl.textContent = 'collapsed / non-normalizable';
+        bornEl.textContent = 'suspended';
+        interpEl.textContent = 'Euclidean excursion: the real stability scale is gone, so the OU picture and the normalizable Schrödinger ground state both fail. This is the proposed collapse window.';
+      } else {
+        ouEl.textContent = 'marginal';
+        fpEl.textContent = 'fading';
+        psiEl.textContent = 'edge of support';
+        bornEl.textContent = 'unlocking';
+        interpEl.textContent = 'Boundary layer: the chain is losing the real stability scale before the Euclidean excursion fully opens. This is where the collapse channel turns on.';
+      }
+    }
+    function drawAxes(x, y, w, h){
+      ctx.save();
+      ctx.strokeStyle = 'rgba(93, 88, 80, 0.22)';
+      ctx.lineWidth = 1;
+      ctx.strokeRect(x, y, w, h);
+      ctx.beginPath();
+      ctx.moveTo(x, y + h / 2);
+      ctx.lineTo(x + w, y + h / 2);
+      ctx.stroke();
+      ctx.fillStyle = 'rgba(92, 88, 80, 0.72)';
+      ctx.font = "11px JetBrains Mono";
+      ctx.fillText('τ', x + w - 12, y + h + 14);
+      ctx.fillText('0', x - 10, y + h / 2 + 4);
+      ctx.fillText('+', x - 12, y + 10);
+      ctx.fillText('−', x - 12, y + h - 4);
+      ctx.restore();
+    }
+    function curveY(rect, v){
+      return rect.y + rect.h - ((v - rect.ymin) / (rect.ymax - rect.ymin)) * rect.h;
+    }
+    function curveX(rect, t){
+      return rect.x + t * rect.w;
+    }
+    function redraw(){
+      const {w, h} = sizeCanvas();
+      const st = state();
+      updateReadout(st);
+      ctx.clearRect(0, 0, w, h);
+
+      const top = {x: 28, y: 34, w: w - 56, h: 128, ymin: -1.1, ymax: 1.1};
+      const bot = {x: 28, y: 212, w: w - 56, h: 118, ymin: 0, ymax: 1.05};
+      drawAxes(top.x, top.y, top.w, top.h);
+      drawAxes(bot.x, bot.y, bot.w, bot.h);
+
+      ctx.save();
+      ctx.fillStyle = 'rgba(180, 90, 60, 0.08)';
+      const x1 = curveX(top, 0.32), x2 = curveX(top, 0.68);
+      ctx.fillRect(x1, top.y, x2 - x1, top.h);
+      ctx.fillRect(x1, bot.y, x2 - x1, bot.h);
+      ctx.restore();
+
+      const drawTrack = (rect, fn, color, width, dashed=false) => {
+        ctx.save();
+        ctx.strokeStyle = color;
+        ctx.lineWidth = width;
+        if(dashed) ctx.setLineDash([6,5]);
+        ctx.beginPath();
+        for(let i=0;i<=280;i++){
+          const t = i / 280;
+          const s = (() => {
+            if(t < 0.32) return 1 - 0.15 * smoothstep(0.20, 0.32, t);
+            if(t < 0.68) return -st.depth * Math.sin(Math.PI * (t - 0.32) / 0.36);
+            return 0.85 + 0.15 * smoothstep(0.68, 1.00, t);
+          })();
+          const val = fn(t, s);
+          const px = curveX(rect, t);
+          const py = curveY(rect, val);
+          if(i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+        }
+        ctx.stroke();
+        ctx.restore();
+      };
+
+      drawTrack(top, (_, s) => s, 'oklch(0.48 0.14 268)', 2.6);
+      drawTrack(bot, (_, s) => Math.pow(clamp((s + 0.08) / 1.08, 0, 1), 0.72), 'oklch(0.55 0.13 150)', 2.4);
+      drawTrack(bot, (_, s) => 1 - clamp((s + 0.08) / 1.08, 0, 1), 'oklch(0.55 0.17 25)', 1.6, true);
+
+      const px = curveX(top, st.tau);
+      const pySig = curveY(top, st.signature);
+      const pyAmp = curveY(bot, st.amp);
+      ctx.save();
+      ctx.setLineDash([3,3]);
+      ctx.strokeStyle = 'rgba(0,0,0,0.28)';
+      ctx.beginPath(); ctx.moveTo(px, top.y); ctx.lineTo(px, bot.y + bot.h); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = 'oklch(0.48 0.14 268)';
+      ctx.beginPath(); ctx.arc(px, pySig, 4, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = 'oklch(0.55 0.13 150)';
+      ctx.beginPath(); ctx.arc(px, pyAmp, 4, 0, Math.PI * 2); ctx.fill();
+      ctx.restore();
+
+      ctx.fillStyle = 'rgba(92, 88, 80, 0.72)';
+      ctx.font = "italic 13px Newsreader";
+      ctx.fillText('signature support', top.x + 8, top.y + 16);
+      ctx.fillText('wave amplitude / collapse indicator', bot.x + 8, bot.y + 16);
+
+      const boxes = [
+        {x: 38, y: h - 28, w: 104, label: 'OU'},
+        {x: 154, y: h - 28, w: 104, label: 'FP'},
+        {x: 270, y: h - 28, w: 104, label: 'Schr'},
+        {x: 386, y: h - 28, w: 120, label: 'Born'}
+      ];
+      const on = st.signature > 0.08;
+      const edge = Math.abs(st.signature) <= 0.08;
+      boxes.forEach((b, i) => {
+        ctx.fillStyle = on ? 'rgba(131, 180, 150, 0.24)' : edge ? 'rgba(229, 180, 94, 0.22)' : 'rgba(180, 90, 60, 0.18)';
+        if(!on && !edge && i > 0) ctx.fillStyle = 'rgba(180, 90, 60, 0.14)';
+        ctx.strokeStyle = on ? 'rgba(88, 140, 112, 0.7)' : edge ? 'rgba(188, 138, 54, 0.74)' : 'rgba(170, 78, 52, 0.64)';
+        ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        ctx.roundRect(b.x, b.y, b.w, 22, 6);
+        ctx.fill();
+        ctx.stroke();
+        ctx.fillStyle = 'rgba(32, 30, 26, 0.92)';
+        ctx.font = "11px JetBrains Mono";
+        ctx.fillText(b.label, b.x + 12, b.y + 14);
+      });
+    }
+
+    [tauEl, depthEl].forEach(el => el.addEventListener('input', redraw));
     window.addEventListener('resize', redraw, {passive:true});
     redraw();
   })();
