@@ -1796,7 +1796,7 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       st.paths.forEach(path => {
         pctx.strokeStyle = path.color;
         pctx.lineWidth = path.key === 'cycloid' ? 2.8 : 1.9;
-        pctx.globalAlpha = path.admissible ? 1 : 0.38;
+        pctx.globalAlpha = path.admissible ? 0.32 : 0.20;
         pctx.beginPath();
         path.pts.forEach((pt,i)=>{
           const p = toScreen(pt);
@@ -1820,6 +1820,20 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       activePaths.forEach(path => {
         const rel = raceRunning ? Math.pow(clamp((prog * raceMaxTime) / Math.max(path.time, 1e-6), 0, 1), 0.82) : 0;
         const idx = Math.min(path.pts.length - 1, Math.round(rel * (path.pts.length - 1)));
+        const pulseAmp = raceRunning ? (0.55 + 0.45*Math.sin(prog*Math.PI*3.2)) : 0;
+        if(raceRunning){
+          pctx.save();
+          pctx.strokeStyle = path.glow;
+          pctx.globalAlpha = path.key === 'cycloid' ? (0.18 + 0.12*pulseAmp) : (0.12 + 0.08*pulseAmp);
+          pctx.lineWidth = path.key === 'cycloid' ? (10.5 + 1.8*pulseAmp) : (6.2 + 1.2*pulseAmp);
+          pctx.beginPath();
+          path.pts.forEach((pt,i)=>{
+            const p = toScreen(pt);
+            if(i===0) pctx.moveTo(p.x,p.y); else pctx.lineTo(p.x,p.y);
+          });
+          pctx.stroke();
+          pctx.restore();
+        }
         if(raceRunning && idx > 1){
           pctx.save();
           pctx.strokeStyle = path.color;
@@ -1832,6 +1846,19 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
             const p = toScreen(path.pts[i]);
             if(i===0) pctx.moveTo(p.x,p.y); else pctx.lineTo(p.x,p.y);
           }
+          pctx.stroke();
+          pctx.restore();
+        }
+        if(!raceRunning && path.key === 'cycloid'){
+          pctx.save();
+          pctx.strokeStyle = path.color;
+          pctx.globalAlpha = 0.75;
+          pctx.lineWidth = 3.8;
+          pctx.beginPath();
+          path.pts.forEach((pt,i)=>{
+            const p = toScreen(pt);
+            if(i===0) pctx.moveTo(p.x,p.y); else pctx.lineTo(p.x,p.y);
+          });
           pctx.stroke();
           pctx.restore();
         }
