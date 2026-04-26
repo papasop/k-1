@@ -2613,15 +2613,15 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
   <div class="block-head">
     <div class="block-num" data-orig-html="§3.5 · Quantum sector">§3.5 · Quantum sector</div>
     <div>
-      <h2 data-orig-html="The ground-state wavefunction appears only on the Lorentzian branch">The ground-state wavefunction appears only on the Lorentzian branch</h2>
-      <p class="block-lead" data-orig-html="This panel turns the OU → Fokker–Planck → Schrödinger chain into a live check. On the Lorentzian side, the stationary density ρ_eq and the ground-state amplitude ψ₀ coexist and satisfy |ψ₀|² = ρ_eq. On the Euclidean side, the normalizable ψ₀ disappears.">This panel turns the OU → Fokker–Planck → Schrödinger chain into a live check. On the Lorentzian side, the stationary density ρ_eq and the ground-state amplitude ψ₀ coexist and satisfy |ψ₀|² = ρ_eq. On the Euclidean side, the normalizable ψ₀ disappears.</p>
+      <h2 data-orig-html="Signature gate, wave support, and collapse">Signature gate, wave support, and collapse</h2>
+      <p class="block-lead" data-orig-html="This unified quantum module has two views of the same story. The first checks that a normalizable wavefunction exists only on the Lorentzian branch. The second turns collapse into a signature excursion: once the real stability scale is lost, the downstream OU → Fokker–Planck → Schrödinger → Born scaffold fails in order, then reforms when the Lorentzian branch returns.">This unified quantum module has two views of the same story. The first checks that a normalizable wavefunction exists only on the Lorentzian branch. The second turns collapse into a signature excursion: once the real stability scale is lost, the downstream OU → Fokker–Planck → Schrödinger → Born scaffold fails in order, then reforms when the Lorentzian branch returns.</p>
     </div>
   </div>
 
   <figure class="card">
     <div class="fc-head">
-      <span class="fc-title">Figure 4 · Wavefunction emergence</span>
-      <span class="fc-tag">OU ↔ FP ↔ Schr · switch the signature</span>
+      <span class="fc-title">Figure 4 · Signature gate → wave support → collapse</span>
+      <span class="fc-tag">one quantum module · static branch check + dynamic excursion</span>
     </div>
     <div class="fig-split">
       <div class="fs-vis" style="padding:18px 22px">
@@ -2684,13 +2684,9 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
         </div>
       </div>
     </div>
-    <figcaption>On the Lorentzian branch, the local restoring law fixes a positive real <code>d_c</code>, hence a real OU rate and a Gaussian stationary density. The similarity transform then produces a normalizable ground state ψ₀ with <code>|ψ₀|² = ρ_eq</code>. Flipping to the Euclidean branch removes the real stability scale and breaks the normalizable ground state.</figcaption>
-  </figure>
-
-  <figure class="card" style="margin-top:18px">
-    <div class="fc-head">
+    <div class="fc-head" style="border-top:1px solid var(--line);margin-top:8px">
       <span class="fc-title">Figure 4b · Collapse as a signature excursion</span>
-      <span class="fc-tag">favorite test · Lor → Euc → Lor chain break</span>
+      <span class="fc-tag">same signature gate · now viewed dynamically</span>
     </div>
     <div class="fig-split" style="grid-template-columns:1.02fr 0.98fr">
       <div class="fs-vis" style="padding:18px 22px">
@@ -2805,7 +2801,7 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
         </div>
       </div>
     </div>
-    <figcaption>This module makes the paper’s proposed wave/collapse reading explicit. The Lorentzian side is the wave-supporting branch; the Euclidean excursion is the collapse window; the return leg re-forms the same downstream quantum scaffold once the Lorentzian gate is back. It is a structural interpretation, not a laboratory-time simulation.</figcaption>
+    <figcaption>This unified figure makes one signature story readable in two ways. The upper panel is the static branch test: only the Lorentzian branch supports a real stability scale, a stationary density, and a normalizable wavefunction with the Born identification. The lower panel is the dynamic reading of the same gate: collapse is the temporary Euclidean excursion in which the real <code>d_c</code> disappears first, taking OU, FP, Schr, and Born down with it before the Lorentzian return re-locks the scaffold. This is a structural interpretation, not a laboratory-time simulation.</figcaption>
   </figure>
 </section>
 
