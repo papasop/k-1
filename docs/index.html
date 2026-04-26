@@ -3065,8 +3065,13 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       const collapse = 1 - lorWeight;
       const dc = signature > 0 ? signature : NaN;
       const amp = Math.pow(lorWeight, 0.72);
-      const phase = signature > 0.08 ? 'Lorentzian' : signature < -0.08 ? 'Euclidean excursion' : 'boundary layer';
-      return {tau, depth, kick, effDepth, signature, lorWeight, collapse, dc, amp, phase};
+      const preBoundary = tau >= 0.26 && tau < 0.38;
+      const postBoundary = tau >= 0.62 && tau < 0.74;
+      let phase = 'Lorentzian';
+      if(preBoundary || postBoundary) phase = 'boundary layer';
+      else if(tau >= 0.38 && tau < 0.62) phase = 'Euclidean excursion';
+      else if(tau >= 0.74) phase = 'return layer';
+      return {tau, depth, kick, effDepth, signature, lorWeight, collapse, dc, amp, phase, preBoundary, postBoundary};
     }
     function updateReadout(s){
       tauLab.textContent = s.tau.toFixed(2);
@@ -3080,15 +3085,15 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       ampBar.style.width = (clamp(s.amp, 0, 1) * 100).toFixed(1) + '%';
       collapseBar.style.width = (clamp(s.collapse, 0, 1) * 100).toFixed(1) + '%';
 
-      if(s.signature > 0.08){
+      if(s.phase === 'Lorentzian' || s.phase === 'return layer'){
         ouEl.textContent = 'active';
         fpEl.textContent = 'exists';
         psiEl.textContent = s.amp > 0.92 ? 'normalizable' : 're-forming';
         bornEl.textContent = s.amp > 0.92 ? 'tracks |ψ|² = ρ_eq' : 're-locking after return';
-        interpEl.textContent = s.tau < 0.68
+        interpEl.textContent = s.phase === 'Lorentzian'
           ? 'Stable Lorentzian leg: the wavefunction is normalizable, |ψ₀|² agrees with ρ_eq, and no collapse channel is active.'
           : 'Return leg: the signature has come back to the Lorentzian side, so the OU equilibrium, stationary density, and normalizable wavefunction re-form together.';
-      } else if(s.signature < -0.08){
+      } else if(s.phase === 'Euclidean excursion'){
         ouEl.textContent = 'broken';
         fpEl.textContent = 'no stationary ρ';
         psiEl.textContent = 'collapsed / non-normalizable';
@@ -3115,14 +3120,14 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
         exc: 'Inside the excursion, the catalyst mainly deepens the Euclidean dip. This is the preferred collapse snapshot: the real d_c is gone first, then the stationary density and normalizable wavefunction disappear with it.',
         post: 'After return, the catalyst no longer creates new failure; it only leaves a wider re-locking tail. The OU scaffold reforms first, then the density and Born identification settle back in.'
       };
-      const currentSnap = s.tau < 0.35 ? 'pre' : s.tau < 0.68 ? 'exc' : 'post';
+      const currentSnap = s.tau < 0.38 ? 'pre' : s.tau < 0.62 ? 'exc' : 'post';
       snapExplainEl.textContent = snapText[currentSnap];
       snapButtons.forEach(btn => btn.classList.toggle('on', btn.dataset.qsnap === currentSnap));
 
       let currentState = 'wave';
-      if(s.signature < -0.08) currentState = 'collapse';
-      else if(s.signature <= 0.08) currentState = 'boundary';
-      else if(s.tau >= 0.68) currentState = 'return';
+      if(s.phase === 'Euclidean excursion') currentState = 'collapse';
+      else if(s.phase === 'boundary layer') currentState = 'boundary';
+      else if(s.phase === 'return layer') currentState = 'return';
 
       const stateText = {
         wave: {
