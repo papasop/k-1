@@ -149,110 +149,100 @@ K(x):=x^{\top}Gx
 \begin{figure}[ht]
 \centering
 \begin{tikzpicture}[
-    node distance=0.85cm and 0.9cm,
-    box/.style={rectangle, draw=black!70, rounded corners=3pt, minimum height=0.8cm, align=center, font=\small},
-    inpbox/.style={box, fill=gray!10, minimum width=2.3cm},
-    objbox/.style={box, fill=blue!8, minimum width=2.3cm},
-    outbox/.style={box, fill=green!10, minimum width=2.5cm},
-    lawbox/.style={box, fill=orange!10, minimum width=2.9cm},
-    condbox/.style={box, fill=green!14, draw=black!80, thick, minimum width=2.5cm},
-    arr/.style={-{Stealth[length=2mm]}, thick, draw=black!60},
-    layerlab/.style={font=\footnotesize\bfseries, text=black!70}
+    node distance=1.0cm and 1.05cm,
+    box/.style={
+        rectangle,
+        rounded corners=4pt,
+        draw=black!40,
+        thick,
+        minimum height=2.55cm,
+        minimum width=4.7cm,
+        text width=4.4cm,
+        align=center,
+        fill=white,
+        inner sep=10pt
+    },
+    bluebox/.style={box, draw=blue!50, fill=blue!2},
+    greenbox/.style={box, draw=green!50!black, fill=green!3},
+    graybox/.style={box, draw=black!40, fill=gray!2},
+    arr/.style={-{Stealth[length=2.6mm]}, thick, draw=black!60},
+    darr/.style={-{Stealth[length=2.4mm]}, thick, dashed, draw=black!50}
 ]
-% =========================================================
-% Layer 1: inputs  ->  G  +  R,E,T  => Sig(G)
-% Parallel structure: G and R,E,T are SEPARATE inputs to Sig
-% =========================================================
-\node[inpbox] (phi) {$\Phi,\ H$};
-\node[inpbox, right=of phi] (ti) {$dt_{\mathrm{info}}$};
-\node[objbox, right=of ti] (G1) {$G\equiv Q$};
-% R,E,T below dt/ti
-\node[inpbox, below=0.5cm of ti, minimum width=3.2cm] (RET) {R, E, T + 非退化};
-% Conjunction node: small merge indicating G AND axioms TOGETHER
-\node[circle, draw=black!60, fill=yellow!15, inner sep=1.5pt, font=\scriptsize, right=0.4cm of G1] (conj) {$\wedge$};
-% Sig receives a SINGLE arrow from the conjunction node (not two parallel arrows)
-\node[outbox, right=0.35cm of conj] (sig) {$\mathrm{Sig}(G){=}(1,1)$};
-\draw[arr] (phi) -- (ti);
-\draw[arr, dashed] (ti) -- node[font=\tiny\itshape, text=black!55, above=-1pt] {启发式} (G1);
-% Both G1 and RET feed into conjunction, then a SINGLE arrow to Sig
-\draw[arr, shorten >=1pt] (G1) -- (conj);
-\draw[arr, shorten >=1pt] (RET.east) -- ++(0.25cm,0) |- (conj);
-\draw[arr] (conj) -- (sig);
-\node[layerlab, above=0.05cm of phi.north west, anchor=south west] {第 1 层: 信息时间与可实现性条件};
-
-% =========================================================
-% Layer 2: point-level object
-% =========================================================
-\node[objbox, below=1.7cm of phi] (G2) {$G$};
-\node[objbox, right=of G2] (K) {$K(x)=x^{\top}Gx$};
-\node[condbox, right=of K] (K1) {$K=1$\\[-1pt]\scriptsize 本文额外引入};
-\draw[arr] (G2) -- (K);
-\draw[arr] (K) -- node[font=\tiny\itshape, text=black!55, above=-1pt] {定义} (K1);
-\node[layerlab, above=0.05cm of G2.north west, anchor=south west] {第 2 层: 点级对象};
-
-% =========================================================
-% Layer 3: dynamics (Laws II and III)
-% =========================================================
-\node[objbox, below=1.1cm of G2] (G3) {$G$};
-\node[objbox, right=of G3] (JG) {$J_G=\alpha G^{-1}J$};
-\node[lawbox, right=of JG] (law2) {律 II\\[-1pt]\scriptsize $\dot x=(J_G{-}D)\nabla V$};
-% Sidebox showing the structural constraint that Law II requires
-\node[rectangle, draw=gray!55, fill=gray!8, rounded corners=2pt, font=\scriptsize, align=center, above=0.05cm of law2, inner sep=2pt] {结构性约束 (律 II 所需):\\ $GA=\alpha J-GD$, $D\ge 0$};
-\draw[arr] (G3) -- (JG);
-\draw[arr] (JG) -- (law2);
-\node[objbox, below=0.4cm of G3] (K1b) {$K=1$};
-\node[objbox, right=of K1b] (V) {$V=\tfrac{1}{2}(K-1)^2$};
-\node[lawbox, right=of V] (law3) {律 III\\[-1pt]\scriptsize $D{=}d_{c}I$, 特征向量基点局部恢复};
-\draw[arr, dashed] (K1b) -- node[font=\tiny\itshape, text=black!55, above=-1pt] {最小处} (V);
-\draw[arr] (G3) to[bend right=20] node[font=\tiny\itshape, text=black!55, below=-1pt, sloped] {由 $K{=}x^{\top}Gx$ 定义} (V);
-\draw[arr] (V) -- (law3);
-\node[layerlab, above=0.05cm of G3.north west, anchor=south west] {第 3 层: 动力学};
-
+%--- top row
+\node[graybox] (info)
+  {{\footnotesize\bfseries 第 1 层 $\cdot$ 信息时间}\\[4pt]
+   {\normalsize$\Phi,\;H \to dt_{\mathrm{info}}$}\\[4pt]
+   {\footnotesize 激发 $G$, 经由 $dt_{\mathrm{info}}^{2}$ 的局部二阶展开}};
+\node[graybox, right=of info] (ret)
+  {{\footnotesize\bfseries 可实现性公理}\\[4pt]
+   {\normalsize$R,\;E,\;T + \mathrm{nondeg.}$}\\[4pt]
+   {\footnotesize 对主导形式的约束}};
+\node[bluebox, right=of ret] (sig)
+  {{\footnotesize\bfseries 结论}\\[4pt]
+   {\normalsize$\mathrm{Sig}(G)=(1,1)$}\\[4pt]
+   {\footnotesize 等价于 $\det G<0$}};
+%--- bottom row
+\node[graybox, below=1.0cm of info] (kobj)
+  {{\footnotesize\bfseries 第 2 层 $\cdot$ 点级对象}\\[4pt]
+   {\normalsize$K(x)=x^{\top}Gx$}\\[4pt]
+   {\footnotesize 本文额外引入条件 $K=1$}};
+\node[graybox, below=1.0cm of ret] (dyn)
+  {{\footnotesize\bfseries 第 3 层 $\cdot$ 动力学}\\[4pt]
+   {\normalsize$J_G=\alpha G^{-1}J$}\\[4pt]
+   {\footnotesize 律 II: $\dot x=(J_G-D)\nabla V$}};
+\node[greenbox, below=1.0cm of sig] (comp)
+  {{\footnotesize\bfseries 局部完成 (律 III)}\\[4pt]
+   {\normalsize$\kappa_K=4d_c$}\\[4pt]
+   {\footnotesize 临界阻尼; 归一化特征向量基}};
+%--- arrows
+\draw[arr] (ret.east) -- (sig.west);
+\draw[arr] (kobj.east) -- (dyn.west);
+\draw[arr] (dyn.east) -- (comp.west);
+\draw[darr] (info.south) -- node[right=2pt, font=\footnotesize] {经由主导形式 $G$} (kobj.north);
+\draw[arr] (ret.south) -- (dyn.north);
 \end{tikzpicture}
-\caption{$K{=}1$ 框架的逻辑依赖关系. \emph{第 1 层}(信息时间与可实现性): 与 $dt_{\mathrm{info}}^{2}$ 的局部二阶展开关联的符号化主二次型 $G\equiv Q$, 为第 1 层中使用的可实现性编码提供动机(启发式桥梁; 见正文). 公理 R, E, T 连同非退化性约束 $G$ 所满足的\emph{条件}, 强制 $\mathrm{Sig}(G)=(1,1)$(等价于 $\det G<0$), 而非生成 $G$ 本身. \emph{第 2 层}(点级对象): $G$ 定义 $K(x)=x^{\top}Gx$; 条件 $K=1$ 是额外的自洽条件, 而非公理的推论. \emph{第 3 层}(动力学): $G$ 导出辛生成子 $J_G$; 律 II 强加结构性约束 $GA=\alpha J-GD$ ($D\ge 0$), 由此给出 $\dot x=(J_G-D)\nabla V$. 与 $V=\tfrac12(K{-}1)^2$ 一起, 在临界阻尼与局部线性化下导出律 III. 虚线箭头表示启发式或非推导性关系; 实箭头表示定义、已引用定理或代数推论.}
+\caption{$K{=}1$ 框架的逻辑结构. \emph{上行}: 符号化主二次型 $G\equiv Q$ 与 $dt_{\mathrm{info}}^{2}$ 的局部二阶展开关联(启发式桥梁), 而公理 R, E, T 连同非退化性约束 $G$ 的代数类型, 强制 $\mathrm{Sig}(G)=(1,1)$(等价于 $\det G<0$). \emph{下行}: $G$ 定义 $K(x)=x^{\top}Gx$, 本文为之额外引入条件 $K=1$; $G$ 也导出辛生成子 $J_G$, 此处由其给出的演化律 $\dot x=(J_G-D)\nabla V$ 表示; 结构性约束 $GA=\alpha J-GD$ ($D\ge 0$) 见正文. 律 III 在临界阻尼与归一化特征向量基下成立, 给出 $\kappa_K=4d_c$. 虚线箭头表示启发式或非推导性关系; 实箭头表示定义、已引用定理或代数推论. 此图仅总结依赖关系: 公理约束 $G$ 所满足的条件, 而非由 $dt_{\mathrm{info}}$ 完全推导. 在更深的动机层面上, 这些公理可视为对与 $dt_{\mathrm{info}}^{2}$ 的局部二阶代价形式相关的 Hessian 层退化结构的编码.}
 \label{fig:framework}
 \end{figure}
 
 \section{由 \texorpdfstring{$G$}{G} 导出的辛结构}\label{sec:symplectic}
 
-\noindent\textit{从几何到动力学.} 律 I 确定了 $G$ 的代数类型, 但未指定系统如何演化。自然的下一步是仅从 $G$ 出发, 提取规范生成子 $J_G$, 把这个静态结构转化为可供律 II--III 与稳定性分析使用的动力学结构。下文的构造(定理~\ref{thm:unique})仅需非退化性; Lorentz 读出---谱的实数性与稳定性阈值 $d_c>0$---稍后通过定理~\ref{thm:spectral} 与 \S\ref{sec:stability} 的各向同性诠释进入。
+\noindent\textit{从几何到动力学.} 律 I 确定了 $G$ 的代数类型, 但未指定系统如何演化。下一步是从 $G$ 出发, 连同一个保守相容条件与一个 Euclidean 规范化约定, 得到可供律 II--III 与稳定性分析使用的规范生成子。保守相容条件是: 自由漂移保持由 $K(x)=x^{\top}Gx$ 编码的代价结构; 在线性层面, 这要求 $GM$ 斜对称。下文的构造(定理~\ref{thm:unique})仅需非退化性; Lorentz 读出---谱的实数性与稳定性阈值 $d_c>0$---稍后通过定理~\ref{thm:spectral} 与 \S\ref{sec:stability} 的各向同性诠释进入。
 
 \medskip
 
-要求哈密顿流保持代价结构, 连同一个规范化条件, 单出唯一的辛生成子。
-
 \begin{theorem}[结构唯一性]\label{thm:unique}
-设 $G$ 是 $2\times 2$ 非退化对称实矩阵, 且 $\alpha>0$ 是常数。则满足\\
-(i) $GM$ 斜对称 (即 $GM + M^{\top}G = 0$); \\
-(ii) 当 $G=I$ 时 $M=\alpha J$ \\
-的唯一矩阵 $M$ 为 $J_{G}=\alpha\,G^{-1}J$。
+设 $G$ 是 $2\times 2$ 非退化对称实矩阵。在所有满足
+\textup{(i)}~$GM$ 斜对称 与
+\textup{(ii)}~当 $G=I$ 时 $M=\alpha J$ \textup{(Euclidean 规范化)}
+的矩阵 $M$ 中, 唯一解为 $J_G=\alpha G^{-1}J$。
 \end{theorem}
 
 \begin{proof}
-由(i): $GM$ 斜对称, 故在二维中 $GM=\beta J$ 对某个 $\beta\in\mathbb{R}$。因此 $M=\beta G^{-1}J$。由(ii): 当 $G=I$ 时 $M=\beta J = \alpha J$, 故 $\beta = \alpha$。\qed
+由 $\dim(\mathrm{Skew}_2)=1$ 且 $J$ 张成 $\mathrm{Skew}_2$, 条件~\textup{(i)} 强制 $GM=\beta J$ 对某个 $\beta\in\mathbb{R}$, 故 $M=\beta G^{-1}J$; 条件~\textup{(ii)} 固定 $\beta=\alpha$。\qed
 \end{proof}
 
 \begin{remark}[非退化性与号差]
-定理~\ref{thm:unique} 仅需要 $\det G\neq 0$; 对任何号差都成立。定理~\ref{thm:spectral} 给出谱的计算; 在各向同性线性化之下, Lorentz 条件在定理~\ref{thm:equivalence} 中成为稳定性判据。由于 $GJ_{G}=\alpha J$ 斜对称, 按构造 $J_{G}$ 是 $G$-反对称; Lorentz 条件强制 $J_{G}$ 为双曲元(具有实特征值), 其实特征值给出 $d_{c}>0$。
+定理~\ref{thm:unique} 仅需要 $\det G\neq 0$; 对任何号差都成立。定理~\ref{thm:spectral} 给出谱的计算; 在各向同性线性化之下, Lorentz 条件在定理~\ref{thm:equivalence} 中成为稳定性判据。由于 $GJ_G=\alpha J$ 斜对称, 按构造 $J_G$ 是 $G$-反对称; Lorentz 条件强制 $J_G$ 为双曲元具实特征值, 给出 $d_c>0$。
 \end{remark}
 
 \begin{theorem}[谱实性]\label{thm:spectral}
-若 $G$ 是 Lorentz 的 $(\mathrm{Sig}(G)=(1,1))$, 则 $J_{G}$ 的辛特征值 $\pm d_{c}$ 实且满足
+设 $\mathrm{Sig}(G)=(1,1)$。$G^{-1}J$ 的特征多项式为 $\lambda^2+1/\det G=0$。由 $\det G<0$, 根为实数: $\lambda=\pm\sqrt{-1/\det G}$。在各向同性读出中, 相应的稳定性边界为
 \begin{equation}
-d_{c}=\alpha\sqrt{-1/\det G}.\label{eq:dc}
+d_c(\alpha)=\alpha\sqrt{-1/\det G}>0.\label{eq:dc}
 \end{equation}
 \end{theorem}
 
 \begin{proof}
-$\mathrm{tr}(G^{-1}J)=0$, $\det(G^{-1}J)=1/\det G$; 特征多项式 $\lambda^{2}+1/\det G=0$ 给出 $\mathrm{spec}(J_{G})=\{\pm d_{c}\}$。在各向同性情形 $H_{*}=I$(即基点处的代价函数二阶权重取单位矩阵; 见 \S\ref{sec:stability}), $\max\mathrm{Re}\,\mathrm{spec}(J_{G}-dI)=d_{c}-d$, 于 $d=d_{c}$ 处消失。\qed
+$\mathrm{tr}(G^{-1}J)=0$, $\det(G^{-1}J)=1/\det G$; 特征多项式 $\lambda^2+1/\det G=0$ 给出 $\mathrm{spec}(J_G)=\{\pm d_c\}$。在各向同性情形 $H_*=I$, $\max\mathrm{Re}\,\mathrm{spec}(J_G-dI)=d_c-d$, 于 $d=d_c$ 处消失。\qed
 \end{proof}
 
 \begin{theorem}[Lorentz 号差的必要性]\label{thm:necessity}
-若 $G$ 正定或负定 $(\mathrm{Sig}(G)=(2,0)$ 或 $(0,2))$, 则 $-1/\det G<0$, 故 $J_{G}$ 的特征值纯虚;不存在实的 $d_{c}>0$。
+若 $\mathrm{Sig}(G)=(2,0)$ 或 $(0,2)$, 则 $\det G>0$, 故 $\lambda^2+1/\det G=0$ 有纯虚根; 在定理~\ref{thm:equivalence} 的意义下不存在正实数 $d_c>0$。
 \end{theorem}
 
 \begin{proof}
-若 $G$ 正定或负定, 则 $\det G>0$。由特征方程 $\lambda^{2}+1/\det G=0$ 得 $\lambda^{2}=-1/\det G<0$, 故特征值纯虚, 不存在实的正特征值 $d_{c}>0$。\qed
+$\det G>0$ 给出 $1/\det G>0$, 故 $\lambda^2=-1/\det G<0$ 且两根均为纯虚; 不存在正实特征值 $d_c>0$。\qed
 \end{proof}
 
 \section{各向同性稳定性边界}\label{sec:stability}
