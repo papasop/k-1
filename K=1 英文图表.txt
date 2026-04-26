@@ -714,9 +714,15 @@ $\sigma_1>\hbar/(4\pi)$. This is a self-consistent bound: the OU approximation m
 \end{proof}
 
 \noindent
-Below $\sigma_{1,c}$, thermal fluctuations of $K$ exceed its
-mean value and the semiclassical metric loses its classical meaning.
-This is a \emph{soft} bound---analogous to classical mechanics at action~$\sim\hbar$: the OU approximation requires $\mathrm{Var}(K)<1$, which forces $\sigma_1>\sigma_{1,c}$; in that regime $\mathrm{Var}(K)<1$ is satisfied. Thus the bound is a self-consistency condition for the OU/semiclassical regime, not an independent derivation of a hard cutoff.
+Below $\sigma_{1,c}$, thermal fluctuations of $K$ become of order one, and the classical description of the $K{=}1$ locus dissolves into noise; this bound does not, by itself, imply a fundamental spacetime discreteness.
+
+\medskip\noindent
+\textit{Scope of the bound.}
+The derivation of $\sigma_{1,c}$ makes explicit use of the external identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, which belongs to Route~A (\S\ref{sec:thermo}). Within Route~B, where no such thermal identification is invoked, whether an analogous self-consistency scale exists remains an open question. Turning the soft consistency bound into a hard uncertainty bound \emph{independent} of the Route~A identification is the subject of Open Problem~4 in \S\ref{sec:discussion}.
+
+\medskip\noindent
+\textit{Terminology.}
+The adjective ``soft'' emphasises that the bound follows from the validity regime of the OU approximation ($\mathrm{Var}(K)<1$), not from an independent quantisation principle.
 
 %===================================================================
 \section{Discussion}\label{sec:discussion}
