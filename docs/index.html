@@ -1206,7 +1206,7 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
         <div class="vc-col">
           <div class="vc-panel-head">
             <h6 data-orig-html="Layer 2 · Only admissible paths may race">Layer 2 · Only admissible paths may race</h6>
-            <div class="reading vc-micro">Traditional brachistochrone minimizes ordinary travel time per unit change. Here the endpoint is held fixed and the comparison is flipped: among admissible paths, which one achieves the same structural variation with the lowest information-time cost, equivalently the highest variation rate per unit <i>dt</i><sub>info</sub>?</div>
+            <div class="reading vc-micro">Traditional brachistochrone minimizes ordinary travel time per unit change. Here the endpoint is held fixed and the comparison is flipped: among admissible paths, which one achieves the same structural variation with the lowest information-time cost? The control <i>H</i> plays the role of local impedance in <i>dt</i><sub>info</sub> = <i>d</i>Φ / <i>H</i>, so the right panel compares average variation rates <i>d</i>Φ / <i>dt</i><sub>info</sub> rather than ordinary travel time alone.</div>
           </div>
           <canvas id="vcPathCanvas" style="width:100%;height:330px;display:block"></canvas>
           <div class="vc-legend">
@@ -1227,9 +1227,9 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
               <b id="vcEndYLab">1.25</b>
             </label>
             <label class="vc-row">
-              <span>gravity g</span>
-              <input id="vcG" type="range" min="0.3" max="2.0" step="0.01" value="1.00">
-              <b id="vcGLab">1.00</b>
+              <span>impedance H</span>
+              <input id="vcH" type="range" min="0.3" max="2.0" step="0.01" value="1.00">
+              <b id="vcHLab">1.00</b>
             </label>
             <div class="vc-race">
               <button id="vcStartRace" type="button">Start race</button>
@@ -1238,7 +1238,7 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
             </div>
             <div class="eq-bar" style="margin-top:2px"><div class="fill" id="vcRaceBar" style="width:0%"></div></div>
             <div class="reading" style="margin:0;padding:8px 10px;background:rgba(255,252,248,0.82)">
-              <b>Info-time result.</b> <span id="vcRaceNote">Press Start race to compare admissible paths at fixed endpoint: the winner is the path with the lowest accumulated <i>dt</i><sub>info</sub>, equivalently the highest average variation rate.</span>
+              <b>Info-time result.</b> <span id="vcRaceNote">Press Start race to compare admissible paths at fixed endpoint: the winner is the path with the lowest accumulated <i>dt</i><sub>info</sub>, equivalently the highest average variation rate <i>d</i>Φ / <i>dt</i><sub>info</sub>.</span>
             </div>
           </div>
           <div class="vc-table" id="vcTable"></div>
@@ -1572,7 +1572,7 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
     const syncGuideEl = document.getElementById('vcSyncGuide');
     const endXEl = document.getElementById('vcEndX');
     const endYEl = document.getElementById('vcEndY');
-    const gEl = document.getElementById('vcG');
+    const hEl = document.getElementById('vcH');
     const tableEl = document.getElementById('vcTable');
     const startBtn = document.getElementById('vcStartRace');
     const resetBtn = document.getElementById('vcResetRace');
@@ -1648,13 +1648,13 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       return pts;
     }
 
-    function travelTime(pts, g){
+    function infoCost(pts, H){
       let sum = 0;
       for(let i=1;i<pts.length;i++){
         const p0 = pts[i-1], p1 = pts[i];
         const ds = Math.hypot(p1.x-p0.x, p1.y-p0.y);
-        const ymid = Math.max(0.03, 0.5*(p0.y+p1.y));
-        sum += ds / Math.sqrt(2*g*ymid);
+        const phiRate = Math.max(0.03, Math.sqrt(2*H*Math.max(0.03, 0.5*(p0.y+p1.y))));
+        sum += ds / phiRate;
       }
       return sum;
     }
@@ -1665,7 +1665,7 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       const guide = { x: Math.cos(guideDeg*Math.PI/180), y: Math.sin(guideDeg*Math.PI/180) };
       const X = +endXEl.value;
       const Y = +endYEl.value;
-      const g = +gEl.value;
+      const H = +hEl.value;
       const paths = [
         { key:'line', label:'line', color:'#667fc4', trail:'rgba(102,127,196,0.32)', glow:'rgba(102,127,196,0.24)' },
         { key:'arc', label:'arc', color:'#a06ac7', trail:'rgba(160,106,199,0.32)', glow:'rgba(160,106,199,0.24)' },
@@ -1677,7 +1677,7 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
         const q0 = qVal(t0.x, t0.y, s);
         return {
           ...p, pts, tangent:t0, q0, admissible:q0 <= 1e-6,
-          time: travelTime(pts, g)
+          time: infoCost(pts, H)
         };
       });
       let minForwardQ = Infinity, minAng = 0, maxAng = 180;
@@ -1692,7 +1692,7 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       const coneWidth = admissibleAngles.length ? (Math.max(...admissibleAngles) - Math.min(...admissibleAngles)) : 0;
       const cycloid = paths.find(p => p.key === 'cycloid');
       const cycloidDeg = cycloid ? dirToDeg(cycloid.tangent) : guideDeg;
-      return {s, guideDeg, guide, X, Y, g, paths, minForwardQ, coneWidth, cycloidDeg};
+      return {s, guideDeg, guide, X, Y, H, paths, minForwardQ, coneWidth, cycloidDeg};
     }
 
     function raceProgress(now){
@@ -1915,7 +1915,7 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
         const lag = p.time - fastest;
         const phiRate = phiGain / Math.max(p.time, 1e-6);
         const tail = p.admissible
-          ? `dt_info ${fmt(p.time,3)} · Φ/t ${fmt(phiRate,3)}${lag > 1e-3 ? ` · +${fmt(lag,3)}` : ' · best cost'}`
+          ? `dt_info ${fmt(p.time,3)} · Φ/t_info ${fmt(phiRate,3)}${lag > 1e-3 ? ` · +${fmt(lag,3)}` : ' · best cost'}`
           : 'blocked at launch';
         return `<div class="vc-tr"><b style="color:${p.color}">${p.label}</b><span>${adm}</span><span>${tail}</span></div>`;
       }).join('');
@@ -1937,7 +1937,7 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       document.getElementById('vcSyncLab').textContent = syncGuideEl && syncGuideEl.checked ? 'cycloid' : 'manual';
       document.getElementById('vcEndXLab').textContent = st.X.toFixed(2);
       document.getElementById('vcEndYLab').textContent = st.Y.toFixed(2);
-      document.getElementById('vcGLab').textContent = st.g.toFixed(2);
+      document.getElementById('vcHLab').textContent = st.H.toFixed(2);
       document.getElementById('vcGuideQ').textContent = fmt(qVal(st.guide.x, st.guide.y, st.s), 4);
       document.getElementById('vcConeWidth').textContent = fmt(st.coneWidth,1) + '°';
       document.getElementById('vcMinQ2').textContent = fmt(st.minForwardQ,4);
@@ -1952,14 +1952,14 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       const phiGain = Math.hypot(st.X, st.Y);
       if(raceRunning){
         raceNoteEl.textContent = runnerCount
-          ? `Info-time comparison in progress: ${runnerCount} admissible path${runnerCount === 1 ? '' : 's'} running at fixed endpoint variation Φ ≈ ${fmt(phiGain,3)}; blocked paths remain pinned at launch.`
+          ? `Info-time comparison in progress: ${runnerCount} admissible path${runnerCount === 1 ? '' : 's'} running at fixed endpoint variation Φ ≈ ${fmt(phiGain,3)} with local impedance H = ${fmt(st.H,2)}; blocked paths remain pinned at launch.`
           : 'No admissible path is available for launch under the current local filter.';
       } else if(lastWinner){
         const winner = st.paths.find(p => p.label === lastWinner);
         const rate = winner ? phiGain / Math.max(winner.time, 1e-6) : 0;
         raceNoteEl.textContent = `Finished: ${lastWinner} achieved the same endpoint variation with the lowest dt_info cost, giving Φ/t_info ≈ ${fmt(rate,3)}.`;
       } else {
-        raceNoteEl.textContent = 'Press Start race to compare admissible paths at fixed endpoint variation: the winner is the one with the lowest accumulated dt_info, equivalently the largest average Φ/t_info.';
+        raceNoteEl.textContent = 'Press Start race to compare admissible paths at fixed endpoint variation: the winner is the one with the lowest accumulated dt_info, equivalently the largest average dΦ/dt_info under the chosen impedance H.';
       }
       drawCone(st, now);
       drawPaths(st, now);
@@ -1980,7 +1980,7 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       }
     }
 
-    [aEl,kEl,bEl,guideEl,endXEl,endYEl,gEl].forEach(el => el.addEventListener('input', ()=>{
+    [aEl,kEl,bEl,guideEl,endXEl,endYEl,hEl].forEach(el => el.addEventListener('input', ()=>{
       if(el === guideEl && syncGuideEl && syncGuideEl.checked){
         syncGuideEl.checked = false;
       }
