@@ -219,6 +219,12 @@
     color:var(--ink-3);background:var(--card);
   }
   .chip.a{color:var(--accent-ink);border-color:var(--accent);background:var(--accent-soft)}
+  .layer-strip{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+  .layer-strip .chip{background:var(--paper-2)}
+  .layer-strip .chip.metric{background:oklch(0.97 0.02 230); border-color:oklch(0.78 0.05 230); color:oklch(0.32 0.08 230)}
+  .layer-strip .chip.real{background:oklch(0.97 0.03 55); border-color:oklch(0.82 0.07 55); color:oklch(0.38 0.11 55)}
+  .layer-strip .chip.quant{background:oklch(0.97 0.03 150); border-color:oklch(0.77 0.08 150); color:oklch(0.31 0.09 150)}
+  .layer-strip .chip.geom{background:oklch(0.97 0.03 25); border-color:oklch(0.80 0.07 25); color:oklch(0.39 0.10 25)}
 
   /* Pulls */
   .pull{
@@ -651,6 +657,9 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
     <div class="block-num" data-orig-html="§1 · Layer 1">§1 · Layer 1</div>
     <div>
       <h2 data-orig-html="Three axioms, &lt;em&gt;one signature&lt;/em&gt;">Three axioms, <em>one signature</em></h2>
+      <div class="layer-strip">
+        <span class="chip real" data-orig-html="Realizability layer">Realizability layer</span>
+      </div>
       <p class="block-lead" data-i18n-p="1" data-orig-html="$G$ is the symbolic principal quadratic form associated with $dt_{\mathrm{info}}^{2}$.  Three realizability axioms pin down its algebraic type — and exclude every alternative to Lorentz signature."><mjx-container class="MathJax CtxtMenu_Attached_0" jax="SVG" tabindex="0" ctxtmenu_counter="9" style="position: relative;"><svg xmlns="http://www.w3.org/2000/svg" width="1.778ex" height="1.645ex" role="img" focusable="false" viewBox="0 -705 786 727" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" style="vertical-align: -0.05ex;"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D43A" xlink:href="#MJX-TEX-I-1D43A"></use></g></g></g></svg><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>G</mi></math></mjx-assistive-mml></mjx-container> is the symbolic principal quadratic form associated with <mjx-container class="MathJax CtxtMenu_Attached_0" jax="SVG" tabindex="0" ctxtmenu_counter="10" style="position: relative;"><svg xmlns="http://www.w3.org/2000/svg" width="4.805ex" height="2.617ex" role="img" focusable="false" viewBox="0 -833.9 2123.7 1156.5" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" style="vertical-align: -0.73ex;"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D451" xlink:href="#MJX-TEX-I-1D451"></use></g><g data-mml-node="msubsup" transform="translate(520,0)"><g data-mml-node="mi"><use data-c="1D461" xlink:href="#MJX-TEX-I-1D461"></use></g><g data-mml-node="TeXAtom" transform="translate(394,363) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="mn"><use data-c="32" xlink:href="#MJX-TEX-N-32"></use></g></g><g data-mml-node="TeXAtom" transform="translate(394,-315.5) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="TeXAtom" data-mjx-texclass="ORD"><g data-mml-node="mi"><use data-c="69" xlink:href="#MJX-TEX-N-69"></use><use data-c="6E" xlink:href="#MJX-TEX-N-6E" transform="translate(278,0)"></use><use data-c="66" xlink:href="#MJX-TEX-N-66" transform="translate(834,0)"></use><use data-c="6F" xlink:href="#MJX-TEX-N-6F" transform="translate(1140,0)"></use></g></g></g></g></g></g></svg><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>d</mi><msubsup><mi>t</mi><mrow data-mjx-texclass="ORD"><mrow data-mjx-texclass="ORD"><mi data-mjx-auto-op="false">info</mi></mrow></mrow><mrow data-mjx-texclass="ORD"><mn>2</mn></mrow></msubsup></math></mjx-assistive-mml></mjx-container>.  Three realizability axioms pin down its algebraic type — and exclude every alternative to Lorentz signature.</p>
     </div>
   </div>
@@ -769,6 +778,9 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
     <div class="block-num" data-orig-html="§1.5 · Interactive">§1.5 · Interactive</div>
     <div>
       <h2 data-orig-html="Why Lorentz, and &lt;em&gt;not&lt;/em&gt; definite">Why Lorentz, and <em>not</em> definite</h2>
+      <div class="layer-strip">
+        <span class="chip real" data-orig-html="Realizability layer">Realizability layer</span>
+      </div>
       <p class="block-lead" data-orig-html="R · E · T plus non-degeneracy rule out both definite branches. This audit exposes all four 2D algebraic types directly: Lorentzian, positive-definite, negative-definite, and degenerate.">R · E · T plus non-degeneracy rule out both definite branches. This audit exposes all four 2D algebraic types directly: Lorentzian, positive-definite, negative-definite, and degenerate.</p>
     </div>
   </div>
@@ -1066,6 +1078,10 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
     <div class="block-num" data-orig-html="§1.6 · Interactive">§1.6 · Interactive</div>
     <div>
       <h2 data-orig-html="Realizability gate to information-time path selection">Realizability gate to information-time path selection</h2>
+      <div class="layer-strip">
+        <span class="chip real" data-orig-html="Realizability layer">Realizability layer</span>
+        <span class="chip metric" data-orig-html="Metric layer">Metric layer</span>
+      </div>
       <p class="block-lead" data-orig-html="This unified module now runs in two stages. Stage 1 extracts the Hessian-level quadratic form and tests forward realizability. Stage 2 keeps only those admissible directions and compares which path realizes the same target variation $\Delta\Phi$ with the lowest accumulated information time $dt_{\mathrm{info}}=d\Phi/H$.">This unified module now runs in two stages. Stage 1 extracts the Hessian-level quadratic form and tests forward realizability. Stage 2 keeps only those admissible directions and compares which path realizes the same target variation <code>ΔΦ</code> with the lowest accumulated information time <code>dt_info = dΦ/H</code>.</p>
     </div>
   </div>
@@ -2477,6 +2493,9 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
     <div class="block-num" data-orig-html="§2 · One sign">§2 · One sign</div>
     <div>
       <h2 data-orig-html="The &lt;em&gt;signature–spectrum–stability&lt;/em&gt; triangle">The <em>signature–spectrum–stability</em> triangle</h2>
+      <div class="layer-strip">
+        <span class="chip metric" data-orig-html="Metric layer">Metric layer</span>
+      </div>
       <p class="block-lead" data-i18n-p="1" data-orig-html="Theorem 2.3 collapses three a priori distinct statements into a single algebraic sign: $\det G &amp;lt; 0$. Click a vertex.">Theorem 2.3 collapses three a priori distinct statements into a single algebraic sign: <mjx-container class="MathJax CtxtMenu_Attached_0" jax="SVG" tabindex="0" ctxtmenu_counter="45" style="position: relative;"><svg xmlns="http://www.w3.org/2000/svg" width="9.446ex" height="1.686ex" role="img" focusable="false" viewBox="0 -705 4175.2 745" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" style="vertical-align: -0.09ex;"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mo"><use data-c="64" xlink:href="#MJX-TEX-N-64"></use><use data-c="65" xlink:href="#MJX-TEX-N-65" transform="translate(556,0)"></use><use data-c="74" xlink:href="#MJX-TEX-N-74" transform="translate(1000,0)"></use></g><g data-mml-node="mi" transform="translate(1555.7,0)"><use data-c="1D43A" xlink:href="#MJX-TEX-I-1D43A"></use></g><g data-mml-node="mo" transform="translate(2619.4,0)"><use data-c="3C" xlink:href="#MJX-TEX-N-3C"></use></g><g data-mml-node="mn" transform="translate(3675.2,0)"><use data-c="30" xlink:href="#MJX-TEX-N-30"></use></g></g></g></svg><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mo data-mjx-texclass="OP" movablelimits="true">det</mo><mi>G</mi><mo>&lt;</mo><mn>0</mn></math></mjx-assistive-mml></mjx-container>. Click a vertex.</p>
     </div>
   </div>
@@ -2550,6 +2569,9 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
     <div class="block-num" data-orig-html="§3 · Layer 3">§3 · Layer 3</div>
     <div>
       <h2 data-orig-html="The $K{=}1$ locus is &lt;em&gt;locally self‑restoring&lt;/em&gt;">The <mjx-container class="MathJax CtxtMenu_Attached_0" jax="SVG" tabindex="0" ctxtmenu_counter="58" style="position: relative;"><svg xmlns="http://www.w3.org/2000/svg" width="4.903ex" height="1.731ex" role="img" focusable="false" viewBox="0 -683 2167 765" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" style="vertical-align: -0.186ex;"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D43E" xlink:href="#MJX-TEX-I-1D43E"></use></g><g data-mml-node="TeXAtom" data-mjx-texclass="ORD" transform="translate(889,0)"><g data-mml-node="mo"><use data-c="3D" xlink:href="#MJX-TEX-N-3D"></use></g></g><g data-mml-node="mn" transform="translate(1667,0)"><use data-c="31" xlink:href="#MJX-TEX-N-31"></use></g></g></g></svg><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>K</mi><mrow data-mjx-texclass="ORD"><mo>=</mo></mrow><mn>1</mn></math></mjx-assistive-mml></mjx-container> locus is <em>locally self‑restoring</em></h2>
+      <div class="layer-strip">
+        <span class="chip metric" data-orig-html="Metric layer">Metric layer</span>
+      </div>
       <p class="block-lead" data-i18n-p="1" data-orig-html="A symplectic‑dissipative drift on $\mathbb{R}^{2}$ with potential $V = \tfrac{1}{2}(K-1)^{2}$. Near a normalized $G$-eigenvector base point, deviations from unit time cost decay locally at rate $\kappa_K = 4 d_c$.">A symplectic‑dissipative drift on $\mathbb{R}^{2}$ with potential $V = \tfrac{1}{2}(K-1)^{2}$. Near a normalized $G$-eigenvector base point, deviations from unit time cost decay locally at rate $\kappa_K = 4 d_c$.</p>
     </div>
   </div>
@@ -2614,6 +2636,9 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
     <div class="block-num" data-orig-html="§3.5 · Quantum sector">§3.5 · Quantum sector</div>
     <div>
       <h2 data-orig-html="Signature gate, wave support, and collapse">Signature gate, wave support, and collapse</h2>
+      <div class="layer-strip">
+        <span class="chip quant" data-orig-html="Quantum consequence">Quantum consequence</span>
+      </div>
       <p class="block-lead" data-orig-html="This unified quantum module has two views of the same story. The first checks that a normalizable wavefunction exists only on the Lorentzian branch. The second turns collapse into a signature excursion: once the real stability scale is lost, the downstream OU → Fokker–Planck → Schrödinger → Born scaffold fails in order, then reforms when the Lorentzian branch returns.">This unified quantum module has two views of the same story. The first checks that a normalizable wavefunction exists only on the Lorentzian branch. The second turns collapse into a signature excursion: once the real stability scale is lost, the downstream OU → Fokker–Planck → Schrödinger → Born scaffold fails in order, then reforms when the Lorentzian branch returns.</p>
     </div>
   </div>
@@ -2811,6 +2836,9 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
     <div class="block-num" data-orig-html="§4 · Two bridges">§4 · Two bridges</div>
     <div>
       <h2 data-orig-html="Two routes to the &lt;em&gt;Einstein equations&lt;/em&gt;">Two routes to the <em>Einstein equations</em></h2>
+      <div class="layer-strip">
+        <span class="chip geom" data-orig-html="Geometric consequence">Geometric consequence</span>
+      </div>
       <p class="block-lead" data-i18n-p="1" data-orig-html="From $K=1$ to gravity, via two complementary paths.  Route A supplies the thermodynamic input for the Jacobson route once $T_{\mathrm{eff}} = T_{\mathrm{tol}}$ and $S \propto A$ are given.  Route B proceeds by direct algebra in the spherical vacuum sector.">From <mjx-container class="MathJax CtxtMenu_Attached_0" jax="SVG" tabindex="0" ctxtmenu_counter="98" style="position: relative;"><svg xmlns="http://www.w3.org/2000/svg" width="6.16ex" height="1.731ex" role="img" focusable="false" viewBox="0 -683 2722.6 765" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" style="vertical-align: -0.186ex;"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D43E" xlink:href="#MJX-TEX-I-1D43E"></use></g><g data-mml-node="mo" transform="translate(1166.8,0)"><use data-c="3D" xlink:href="#MJX-TEX-N-3D"></use></g><g data-mml-node="mn" transform="translate(2222.6,0)"><use data-c="31" xlink:href="#MJX-TEX-N-31"></use></g></g></g></svg><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>K</mi><mo>=</mo><mn>1</mn></math></mjx-assistive-mml></mjx-container> to gravity, via two complementary paths.  Route A supplies the thermodynamic input for the Jacobson route once $T_{\mathrm{eff}} = T_{\mathrm{tol}}$ and $S \propto A$ are given.  Route B proceeds by direct algebra in the spherical vacuum sector.</p>
     </div>
   </div>
@@ -2928,6 +2956,9 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
     <div class="block-num" data-orig-html="§5 · Live">§5 · Live</div>
     <div>
       <h2 data-orig-html="Sculpt matter, watch the &lt;em&gt;tt-component rewrite&lt;/em&gt;">Sculpt matter, watch the <em>tt-component rewrite</em></h2>
+      <div class="layer-strip">
+        <span class="chip geom" data-orig-html="Geometric consequence">Geometric consequence</span>
+      </div>
       <p class="block-lead" data-i18n-p="1" data-orig-html="Paint a radial density profile $\rho(r)$.  This panel visualizes the &lt;em&gt;$tt$-component / mass-function rewriting&lt;/em&gt;: $m'(r)=4\pi r^{2}\rho$, $f = 1 - 2m(r)/r$, and $K_2 = 1 - 8\pi r^{2}\rho$. It is &lt;em&gt;not&lt;/em&gt; a full TOV solver — pressure and the remaining Einstein components are not determined here.">Paint a radial density profile $\rho(r)$. This panel visualizes the <em>$tt$-component / mass-function rewriting</em>: $m'(r)=4\pi r^{2}\rho$, $f = 1 - 2m(r)/r$, and $K_2 = 1 - 8\pi r^{2}\rho$. It is <em>not</em> a full TOV solver — pressure and the remaining Einstein components are not determined here.</p>
     </div>
   </div>
@@ -3061,6 +3092,9 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
     <div class="block-num" data-orig-html="§6 · Route B">§6 · Route B</div>
     <div>
       <h2 data-orig-html="Eigenvalue self‑consistency &lt;em&gt;equals&lt;/em&gt; vacuum Einstein">Eigenvalue self‑consistency <em>equals</em> vacuum Einstein</h2>
+      <div class="layer-strip">
+        <span class="chip geom" data-orig-html="Geometric consequence">Geometric consequence</span>
+      </div>
       <p class="block-lead" data-i18n-p="1" data-orig-html="In the spherical vacuum sector, $K_1 = \sigma_2^{2}\Box\ln\sigma_1$ and $K_2 = \sigma_2^{2}\Box\ln\sigma_2$ give simple ODE content for $f(r)$. When both equal 1, you are looking at Schwarzschild.">In the spherical vacuum sector, <mjx-container class="MathJax CtxtMenu_Attached_0" jax="SVG" tabindex="0" ctxtmenu_counter="165" style="position: relative;"><svg xmlns="http://www.w3.org/2000/svg" width="14.886ex" height="2.538ex" role="img" focusable="false" viewBox="0 -833.9 6579.5 1121.9" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" style="vertical-align: -0.651ex;"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msub"><g data-mml-node="mi"><use data-c="1D43E" xlink:href="#MJX-TEX-I-1D43E"></use></g><g data-mml-node="mn" transform="translate(882,-150) scale(0.707)"><use data-c="31" xlink:href="#MJX-TEX-N-31"></use></g></g><g data-mml-node="mo" transform="translate(1563.3,0)"><use data-c="3D" xlink:href="#MJX-TEX-N-3D"></use></g><g data-mml-node="msubsup" transform="translate(2619.1,0)"><g data-mml-node="mi"><use data-c="1D70E" xlink:href="#MJX-TEX-I-1D70E"></use></g><g data-mml-node="TeXAtom" transform="translate(604,363) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="mn"><use data-c="32" xlink:href="#MJX-TEX-N-32"></use></g></g><g data-mml-node="mn" transform="translate(604,-287.9) scale(0.707)"><use data-c="32" xlink:href="#MJX-TEX-N-32"></use></g></g><g data-mml-node="mi" transform="translate(3626.7,0)"><use data-c="25FB" xlink:href="#MJX-TEX-I-25FB"></use></g><g data-mml-node="mi" transform="translate(4571.3,0)"><use data-c="6C" xlink:href="#MJX-TEX-N-6C"></use><use data-c="6E" xlink:href="#MJX-TEX-N-6E" transform="translate(278,0)"></use></g><g data-mml-node="mo" transform="translate(5405.3,0)"><use data-c="2061" xlink:href="#MJX-TEX-N-2061"></use></g><g data-mml-node="msub" transform="translate(5572,0)"><g data-mml-node="mi"><use data-c="1D70E" xlink:href="#MJX-TEX-I-1D70E"></use></g><g data-mml-node="mn" transform="translate(604,-150) scale(0.707)"><use data-c="31" xlink:href="#MJX-TEX-N-31"></use></g></g></g></g></svg><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mi>K</mi><mn>1</mn></msub><mo>=</mo><msubsup><mi>σ</mi><mn>2</mn><mrow data-mjx-texclass="ORD"><mn>2</mn></mrow></msubsup><mi>◻</mi><mi>ln</mi><mo data-mjx-texclass="NONE">⁡</mo><msub><mi>σ</mi><mn>1</mn></msub></math></mjx-assistive-mml></mjx-container> and <mjx-container class="MathJax CtxtMenu_Attached_0" jax="SVG" tabindex="0" ctxtmenu_counter="166" style="position: relative;"><svg xmlns="http://www.w3.org/2000/svg" width="14.886ex" height="2.538ex" role="img" focusable="false" viewBox="0 -833.9 6579.5 1121.9" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" style="vertical-align: -0.651ex;"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msub"><g data-mml-node="mi"><use data-c="1D43E" xlink:href="#MJX-TEX-I-1D43E"></use></g><g data-mml-node="mn" transform="translate(882,-150) scale(0.707)"><use data-c="32" xlink:href="#MJX-TEX-N-32"></use></g></g><g data-mml-node="mo" transform="translate(1563.3,0)"><use data-c="3D" xlink:href="#MJX-TEX-N-3D"></use></g><g data-mml-node="msubsup" transform="translate(2619.1,0)"><g data-mml-node="mi"><use data-c="1D70E" xlink:href="#MJX-TEX-I-1D70E"></use></g><g data-mml-node="TeXAtom" transform="translate(604,363) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="mn"><use data-c="32" xlink:href="#MJX-TEX-N-32"></use></g></g><g data-mml-node="mn" transform="translate(604,-287.9) scale(0.707)"><use data-c="32" xlink:href="#MJX-TEX-N-32"></use></g></g><g data-mml-node="mi" transform="translate(3626.7,0)"><use data-c="25FB" xlink:href="#MJX-TEX-I-25FB"></use></g><g data-mml-node="mi" transform="translate(4571.3,0)"><use data-c="6C" xlink:href="#MJX-TEX-N-6C"></use><use data-c="6E" xlink:href="#MJX-TEX-N-6E" transform="translate(278,0)"></use></g><g data-mml-node="mo" transform="translate(5405.3,0)"><use data-c="2061" xlink:href="#MJX-TEX-N-2061"></use></g><g data-mml-node="msub" transform="translate(5572,0)"><g data-mml-node="mi"><use data-c="1D70E" xlink:href="#MJX-TEX-I-1D70E"></use></g><g data-mml-node="mn" transform="translate(604,-150) scale(0.707)"><use data-c="32" xlink:href="#MJX-TEX-N-32"></use></g></g></g></g></svg><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mi>K</mi><mn>2</mn></msub><mo>=</mo><msubsup><mi>σ</mi><mn>2</mn><mrow data-mjx-texclass="ORD"><mn>2</mn></mrow></msubsup><mi>◻</mi><mi>ln</mi><mo data-mjx-texclass="NONE">⁡</mo><msub><mi>σ</mi><mn>2</mn></msub></math></mjx-assistive-mml></mjx-container> give simple ODE content for <mjx-container class="MathJax CtxtMenu_Attached_0" jax="SVG" tabindex="0" ctxtmenu_counter="167" style="position: relative;"><svg xmlns="http://www.w3.org/2000/svg" width="4.025ex" height="2.262ex" role="img" focusable="false" viewBox="0 -750 1779 1000" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" style="vertical-align: -0.566ex;"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D453" xlink:href="#MJX-TEX-I-1D453"></use></g><g data-mml-node="mo" transform="translate(550,0)"><use data-c="28" xlink:href="#MJX-TEX-N-28"></use></g><g data-mml-node="mi" transform="translate(939,0)"><use data-c="1D45F" xlink:href="#MJX-TEX-I-1D45F"></use></g><g data-mml-node="mo" transform="translate(1390,0)"><use data-c="29" xlink:href="#MJX-TEX-N-29"></use></g></g></g></svg><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>f</mi><mo stretchy="false">(</mo><mi>r</mi><mo stretchy="false">)</mo></math></mjx-assistive-mml></mjx-container>.  When both equal 1, you are looking at Schwarzschild.</p>
     </div>
   </div>
@@ -3156,6 +3190,9 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
     <div class="block-num" data-orig-html="§6.5 · Kerr">§6.5 · Kerr</div>
     <div>
       <h2 data-orig-html="Principal-null self-consistency in Kerr">Principal-null self-consistency in Kerr</h2>
+      <div class="layer-strip">
+        <span class="chip geom" data-orig-html="Geometric consequence">Geometric consequence</span>
+      </div>
       <p class="block-lead" data-orig-html="This panel checks the exact identity <code>Σ □<sub>null</sub> ln √Σ = 1</code> directly. Drag <code>M</code>, <code>a</code>, <code>r</code>, and <code>θ</code>: the cancellation is local, exact, and independent of the mass parameter.">This panel checks the exact identity <code>Σ □<sub>null</sub> ln √Σ = 1</code> directly. Drag <code>M</code>, <code>a</code>, <code>r</code>, and <code>θ</code>: the cancellation is local, exact, and independent of the mass parameter.</p>
     </div>
   </div>
