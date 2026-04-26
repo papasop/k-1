@@ -71,11 +71,11 @@
 \begin{abstract}
 \noindent\textbf{背景.\ } 时间一向作为元始概念进入物理学 --- 一种未被推导的输入。
 
-\smallskip\noindent\textbf{框架.\ } 此处时间被建模为变化的代价, 信息时间为 $dt_{\mathrm{info}}:=d\Phi/H$。所约束的对象不是 $dt_{\mathrm{info}}$ 本身, 而是与 $dt_{\mathrm{info}}^{2}$ 的局部二阶展开关联的符号化主二次型 $G$。将此二次型建模为满足~\cite{Realizability} 的公理 R, E, T, 在非退化性下, 给出 $\mathrm{Sig}(G)=(1,1)$, 等价于 $\det G<0$。在各向同性线性化之下, 此符号等价于: Lorentz 号差、$G$ 诱导的辛生成子 $J_{G}$ 的实谱、以及一个正的稳定性阈值 $d_{c}$(定理~\ref{thm:equivalence})。单位代价轨迹为 $K(x)=x^{\top}Gx=1$。
+\smallskip\noindent\textbf{框架.\ } 此处时间被建模为变化的代价, 信息时间为 $dt_{\mathrm{info}}:=d\Phi/H$。所约束的对象不是 $dt_{\mathrm{info}}$ 本身, 而是与 $dt_{\mathrm{info}}^{2}$ 的局部二阶展开关联的符号化主二次型 $G$。将此二次型建模为满足~\cite{Realizability} 的公理 R, E, T, 在非退化性下, 给出 $\mathrm{Sig}(G)=(1,1)$, 等价于 $\det G<0$; 单位代价轨迹为 $K(x)=x^{\top}Gx=1$。
 
-\smallskip\noindent\textbf{动力学与热力学.\ } 在辛-耗散类 $GA=\alpha J-GD$ 内, 唯一演化律为 $\dot x=(J_G-D)\nabla V$; 在临界阻尼处, 局部恢复率为 $\kappa_K=4d_c$。在 $K=1$ 附近, Clausius 关系按 Tolman 温度与 $d_c$ 确定噪声幅度, 在给定 $S\propto A$ 时, 提供途径 A 通向 Jacobson 论证的局部热力学桥梁。
+\smallskip\noindent\textbf{动力学与热力学.\ } 在辛-耗散类 $GA=\alpha J-GD$ 内, 唯一演化律为 $\dot x=(J_G-D)\nabla V$。在 $K=1$ 附近, 由此得到的 Clausius 关系在给定 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 与 $S\propto A$ 时, 提供途径 A 通向 Jacobson 论证的局部热力学桥梁。
 
-\smallskip\noindent\textbf{引力内容.\ } 在途径 B 中, 对于 $f>0$ 的静态、球对称度规, 所猜想的场级条件 $\sigma_2^2\Box\ln\sigma_i=1$ 在代数上等价于真空 Einstein 方程 $R_{\mu\nu}=0$(定理~\ref{thm:field})。公理 T 将 $\sigma_1$ 退化区域排除在定义域之外, OU 方差界给出 Planck 量级的自洽尺度。
+\smallskip\noindent\textbf{引力内容.\ } 在途径 B 中, 对于 $f>0$ 的静态、球对称度规, 所猜想的场级条件 $\sigma_2^2\Box\ln\sigma_i=1$ 在代数上等价于真空 Einstein 方程 $R_{\mu\nu}=0$(定理~\ref{thm:field})。因此 Lorentz 结构在点级被内部供应, 而真空 Einstein 方程在球对称部分中接纳等价的重新表述。
 \end{abstract}
 
 \noindent\textbf{关键词:} Lorentz 号差; 信息时间; 辛-耗散动力学; Jacobson 论证; Rindler 视界
