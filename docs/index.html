@@ -5295,6 +5295,7 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
     }
 
     function redraw(){
+      try{
       const s = state();
       updateReadout(s);
       const {w,h} = sz;
@@ -5369,6 +5370,15 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
         surCtx.fillStyle = 'rgba(92,88,80,0.72)';
         surCtx.font = 'italic 13px Newsreader';
         surCtx.fillText(sigFamily === 'sigma' ? 'θ sweep stays pinned to 1' : 'θ sweep exposes the wrong surrogate', rect.x + 8, rect.y + 16);
+      }
+      } catch(err){
+        console.error('Kerr interactive redraw failed:', err);
+        const caveat = document.getElementById('kRicciCaveat');
+        if(caveat) caveat.textContent = 'Independent Kerr Ricci evaluation failed in this browser runtime. The rest of the page should remain active; reload once, or move the Kerr probe away from the horizon.';
+        const ricci = document.getElementById('kRicci');
+        const gap = document.getElementById('kRicciGap');
+        if(ricci) ricci.textContent = 'error';
+        if(gap) gap.textContent = 'error';
       }
     }
 
