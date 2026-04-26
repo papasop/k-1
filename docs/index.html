@@ -1659,9 +1659,21 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
           <span style="display:flex;justify-content:space-between">Euclidean depth <b id="qcDepthLab" style="color:var(--accent-ink)">0.75</b></span>
           <input id="qcDepth" type="range" min="0.15" max="1.00" step="0.01" value="0.75">
         </label>
+        <label style="display:flex;flex-direction:column;gap:4px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-bottom:12px">
+          <span style="display:flex;justify-content:space-between">measurement catalyst <b id="qcKickLab" style="color:var(--accent-ink)">0.00</b></span>
+          <input id="qcKick" type="range" min="0" max="1" step="0.01" value="0.00">
+        </label>
 
         <div class="reading" style="margin:0 0 14px 0;padding:10px 12px;background:rgba(255,252,248,0.82)">
-          <b>Quantum favorite.</b> Read collapse as a signature excursion: the Lorentzian branch supports OU, FP, Schr, and Born; the Euclidean excursion kills the real stability scale first, then the stationary density and normalizable wavefunction, before the return leg rebuilds them.
+          <b>Quantum favorite.</b> Read collapse as a signature excursion: the Lorentzian branch supports OU, FP, Schr, and Born; the Euclidean excursion kills the real stability scale first, then the stationary density and normalizable wavefunction, before the return leg rebuilds them. The catalyst slider does not create collapse from nothing; it widens and deepens the excursion.
+        </div>
+
+        <h6 data-orig-html="Chain-break viewer">Chain-break viewer</h6>
+        <div class="seg" id="qcStage" style="margin-bottom:14px;flex-wrap:wrap">
+          <button data-qs="ou" class="on">OU</button>
+          <button data-qs="fp">FP</button>
+          <button data-qs="schr">Schr</button>
+          <button data-qs="born">Born</button>
         </div>
 
         <h6 data-orig-html="Status">Status</h6>
@@ -1675,6 +1687,9 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
 
         <div class="reading" style="margin-top:12px">
           <b>Interpretation.</b> <span id="qcInterp">Stable Lorentzian leg: the wavefunction is normalizable, |ψ₀|² agrees with ρ_eq, and no collapse channel is active.</span>
+        </div>
+        <div class="reading" style="margin-top:10px">
+          <b>Focused step.</b> <span id="qcStepExplain">OU is the first gate: once the real stability scale disappears, the whole downstream chain loses support.</span>
         </div>
         <div class="reading" style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(100,100,110,0.16)">
           <b>Chain status.</b>
@@ -2943,8 +2958,10 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
     const DPR = window.devicePixelRatio || 1;
     const tauEl = document.getElementById('qcTau');
     const depthEl = document.getElementById('qcDepth');
+    const kickEl = document.getElementById('qcKick');
     const tauLab = document.getElementById('qcTauLab');
     const depthLab = document.getElementById('qcDepthLab');
+    const kickLab = document.getElementById('qcKickLab');
     const phaseEl = document.getElementById('qcPhase');
     const dcEl = document.getElementById('qcDc');
     const ampEl = document.getElementById('qcAmp');
@@ -2953,10 +2970,13 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
     const ampBar = document.getElementById('qcAmpBar');
     const collapseBar = document.getElementById('qcCollapseBar');
     const interpEl = document.getElementById('qcInterp');
+    const stepExplainEl = document.getElementById('qcStepExplain');
     const ouEl = document.getElementById('qcOU');
     const fpEl = document.getElementById('qcFP');
     const psiEl = document.getElementById('qcPsi');
     const bornEl = document.getElementById('qcBorn');
+    const stageButtons = document.querySelectorAll('#qcStage button');
+    let stageFocus = 'ou';
 
     function sizeCanvas(){
       const rect = canvas.getBoundingClientRect();
@@ -2975,24 +2995,27 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
     function state(){
       const tau = +tauEl.value;
       const depth = +depthEl.value;
+      const kick = +kickEl.value;
+      const effDepth = clamp(depth * (1 + 0.7 * kick), 0.15, 1.25);
       let signature = 1;
       if(tau < 0.32){
-        signature = 1 - 0.15 * smoothstep(0.20, 0.32, tau);
+        signature = 1 - (0.15 + 0.18 * kick) * smoothstep(0.20, 0.32, tau);
       } else if(tau < 0.68){
-        signature = -depth * Math.sin(Math.PI * (tau - 0.32) / 0.36);
+        signature = -effDepth * Math.sin(Math.PI * (tau - 0.32) / 0.36);
       } else {
-        signature = 0.85 + 0.15 * smoothstep(0.68, 1.00, tau);
+        signature = (0.85 - 0.12 * kick) + (0.15 + 0.12 * kick) * smoothstep(0.68, 1.00, tau);
       }
       const lorWeight = clamp((signature + 0.08) / 1.08, 0, 1);
       const collapse = 1 - lorWeight;
       const dc = signature > 0 ? signature : NaN;
       const amp = Math.pow(lorWeight, 0.72);
       const phase = signature > 0.08 ? 'Lorentzian' : signature < -0.08 ? 'Euclidean excursion' : 'boundary layer';
-      return {tau, depth, signature, lorWeight, collapse, dc, amp, phase};
+      return {tau, depth, kick, effDepth, signature, lorWeight, collapse, dc, amp, phase};
     }
     function updateReadout(s){
       tauLab.textContent = s.tau.toFixed(2);
       depthLab.textContent = s.depth.toFixed(2);
+      kickLab.textContent = s.kick.toFixed(2);
       phaseEl.textContent = s.phase;
       dcEl.textContent = Number.isFinite(s.dc) ? s.dc.toFixed(3) : 'imaginary';
       ampEl.textContent = s.amp.toFixed(3);
@@ -3022,6 +3045,14 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
         bornEl.textContent = 'unlocking';
         interpEl.textContent = 'Boundary layer: the chain is losing the real stability scale before the Euclidean excursion fully opens. This is where the collapse channel turns on.';
       }
+
+      const focusText = {
+        ou: 'OU is the first gate: once the real stability scale disappears, the whole downstream chain loses support.',
+        fp: 'FP is the first density-level casualty: no real OU drift means no stationary ρ to feed the Schrödinger transform.',
+        schr: 'Schr is where wavefunction language visibly fails: the ground state stops being normalizable in the Euclidean excursion.',
+        born: 'Born is the final identification, not the first failure. It breaks because the upstream OU/FP/Schr scaffold has already been lost.'
+      };
+      stepExplainEl.textContent = focusText[stageFocus];
     }
     function drawAxes(x, y, w, h){
       ctx.save();
@@ -3117,11 +3148,12 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       ];
       const on = st.signature > 0.08;
       const edge = Math.abs(st.signature) <= 0.08;
+      const focusIndex = {ou:0, fp:1, schr:2, born:3}[stageFocus];
       boxes.forEach((b, i) => {
         ctx.fillStyle = on ? 'rgba(131, 180, 150, 0.24)' : edge ? 'rgba(229, 180, 94, 0.22)' : 'rgba(180, 90, 60, 0.18)';
         if(!on && !edge && i > 0) ctx.fillStyle = 'rgba(180, 90, 60, 0.14)';
-        ctx.strokeStyle = on ? 'rgba(88, 140, 112, 0.7)' : edge ? 'rgba(188, 138, 54, 0.74)' : 'rgba(170, 78, 52, 0.64)';
-        ctx.lineWidth = 1.2;
+        ctx.strokeStyle = i === focusIndex ? 'oklch(0.56 0.16 65)' : (on ? 'rgba(88, 140, 112, 0.7)' : edge ? 'rgba(188, 138, 54, 0.74)' : 'rgba(170, 78, 52, 0.64)');
+        ctx.lineWidth = i === focusIndex ? 2 : 1.2;
         ctx.beginPath();
         ctx.roundRect(b.x, b.y, b.w, 22, 6);
         ctx.fill();
@@ -3132,7 +3164,12 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       });
     }
 
-    [tauEl, depthEl].forEach(el => el.addEventListener('input', redraw));
+    [tauEl, depthEl, kickEl].forEach(el => el.addEventListener('input', redraw));
+    stageButtons.forEach(btn => btn.addEventListener('click', ()=>{
+      stageFocus = btn.dataset.qs;
+      stageButtons.forEach(x => x.classList.toggle('on', x === btn));
+      redraw();
+    }));
     window.addEventListener('resize', redraw, {passive:true});
     redraw();
   })();
