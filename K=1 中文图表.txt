@@ -104,9 +104,9 @@ dt_{\mathrm{info}}:=\frac{d\Phi}{H},
 \smallskip\noindent\textbf{记号.\ }
 \begin{itemize}[leftmargin=1.5em, itemsep=0.15ex, parsep=0pt, topsep=0.2ex, label={$\triangleright$}]
 \item $\mathrm{spec}(A)$: $A$ 的谱; $\mathrm{Sig}(G)=(p,q)$: 惯性指数($p$ 个正、$q$ 个负特征值); $J=\bigl(\begin{smallmatrix}0&1\\-1&0\end{smallmatrix}\bigr)$: 标准辛矩阵。
-\item $\|\cdot\|$: $\mathbb{R}^{2}$ 上的欧氏范数; $\nabla$: $\mathbb{R}^{2}$ 上的欧氏梯度。
+\item $\|\cdot\|$: $\mathbb{R}^{2}$ 上的欧氏范数; $\nabla$: $\mathbb{R}^{2}$ 上的欧氏梯度; 它作用于势 $V$, 度规 $G$ 已编码在势本身之中(对 $V=\tfrac12(K-1)^2$, $\nabla V=2(K-1)Gx$), 故无需度规相容的梯度。
 \item $\alpha>0$: 归一化常数(与热力学量比较时取 $\alpha=1$); $\kappa$: 视界的表面引力(与恢复速率 $\kappa_{K}$ 区别); $\ell$: 距视界的固有距离。
-\item $\sigma>0$: 随机动力学中的噪声幅度; $\sigma_{1}:=r\sqrt{f}$(在 $f>0$ 的实分支上, 途径 B), $\sigma_{2}:=r$: 度规的辛特征值; $D\ge 0$: $2\times 2$ 半正定耗散矩阵。
+\item $\sigma>0$: 随机动力学中的噪声幅度; $\sigma_{1}:=r\sqrt{f}$(在 $f>0$ 的实分支上, 途径 B), $\sigma_{2}:=r$: 度规的辛特征值, 不要与噪声幅度 $\sigma$ 混淆; $K$ 空间噪声幅度 $\sigma_{K}(x)=2\sigma\|Gx\|$ 在 \S\ref{sec:thermo} 中单独引入; $D\ge 0$: $2\times 2$ 半正定耗散矩阵。
 \item $H$(标量, \S\ref{sec:lawI})与 $H_{*}$(矩阵, \S\ref{sec:stability})是不同的数学对象; 二者的显式关系留待未来工作。
 \item $\Box\phi := r^{-2}\partial_{r}(r^{2}f\,\partial_{r}\phi)$: \emph{径向}达朗贝尔算子, 对仅依赖 $r$ 的 $\phi$ 精确(非完整四维波算子)。
 \end{itemize}
