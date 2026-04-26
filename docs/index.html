@@ -1666,10 +1666,10 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       const Y = +endYEl.value;
       const g = +gEl.value;
       const paths = [
-        { key:'line', label:'line', color:'oklch(0.45 0.08 230)' },
-        { key:'arc', label:'arc', color:'oklch(0.58 0.12 290)' },
-        { key:'parabola', label:'parabola', color:'oklch(0.58 0.11 70)' },
-        { key:'cycloid', label:'cycloid', color:'oklch(0.55 0.13 150)' }
+        { key:'line', label:'line', color:'#667fc4', trail:'rgba(102,127,196,0.32)', glow:'rgba(102,127,196,0.24)' },
+        { key:'arc', label:'arc', color:'#a06ac7', trail:'rgba(160,106,199,0.32)', glow:'rgba(160,106,199,0.24)' },
+        { key:'parabola', label:'parabola', color:'#b38c3c', trail:'rgba(179,140,60,0.32)', glow:'rgba(179,140,60,0.24)' },
+        { key:'cycloid', label:'cycloid', color:'#47a975', trail:'rgba(71,169,117,0.42)', glow:'rgba(71,169,117,0.34)' }
       ].map(p => {
         const pts = samplePath(p.key, X, Y);
         const t0 = norm({ x: pts[2].x - pts[0].x, y: pts[2].y - pts[0].y });
@@ -1804,8 +1804,10 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
         if(raceRunning && idx > 1){
           pctx.save();
           pctx.strokeStyle = path.color;
-          pctx.globalAlpha = path.key === 'cycloid' ? 0.42 : 0.32;
+          pctx.globalAlpha = 1;
           pctx.lineWidth = path.key === 'cycloid' ? 8 : 5.2;
+          pctx.shadowColor = path.glow;
+          pctx.shadowBlur = path.key === 'cycloid' ? 16 : 10;
           pctx.beginPath();
           for(let i=0;i<=idx;i++){
             const p = toScreen(path.pts[i]);
@@ -1817,9 +1819,9 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
         const ball = toScreen(path.pts[idx]);
         if(raceRunning){
           pctx.save();
-          pctx.fillStyle = path.key === 'cycloid'
-            ? 'rgba(98,206,160,0.34)'
-            : path.color.replace(')', ' / 0.24)');
+          pctx.fillStyle = path.glow;
+          pctx.shadowColor = path.glow;
+          pctx.shadowBlur = path.key === 'cycloid' ? 18 : 12;
           pctx.beginPath(); pctx.arc(ball.x, ball.y, path.key === 'cycloid' ? 18 : 14, 0, Math.PI*2); pctx.fill();
           pctx.fillStyle = 'rgba(255,255,255,0.18)';
           pctx.beginPath(); pctx.arc(ball.x - 1.5, ball.y - 1.5, path.key === 'cycloid' ? 10 : 8, 0, Math.PI*2); pctx.fill();
