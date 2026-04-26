@@ -96,98 +96,100 @@ and with an associated local causal structure determined by the sign of $K$. In 
 \begin{figure}[ht]
 \centering
 \begin{tikzpicture}[
-    node distance=0.85cm and 0.9cm,
-    box/.style={rectangle, draw=black!70, rounded corners=3pt, minimum height=0.8cm, align=center, font=\small},
-    inpbox/.style={box, fill=gray!10, minimum width=2.3cm},
-    objbox/.style={box, fill=blue!8, minimum width=2.3cm},
-    outbox/.style={box, fill=green!10, minimum width=2.5cm},
-    lawbox/.style={box, fill=orange!10, minimum width=2.9cm},
-    condbox/.style={box, fill=green!14, draw=black!80, thick, minimum width=2.5cm},
-    arr/.style={-{Stealth[length=2mm]}, thick, draw=black!60},
-    layerlab/.style={font=\footnotesize\bfseries, text=black!70}
+    node distance=1.0cm and 1.05cm,
+    box/.style={
+        rectangle,
+        rounded corners=4pt,
+        draw=black!40,
+        thick,
+        minimum height=2.55cm,
+        minimum width=4.7cm,
+        text width=4.4cm,
+        align=center,
+        fill=white,
+        inner sep=10pt
+    },
+    bluebox/.style={box, draw=blue!50, fill=blue!2},
+    greenbox/.style={box, draw=green!50!black, fill=green!3},
+    graybox/.style={box, draw=black!40, fill=gray!2},
+    arr/.style={-{Stealth[length=2.6mm]}, thick, draw=black!60},
+    darr/.style={-{Stealth[length=2.4mm]}, thick, dashed, draw=black!50}
 ]
-% Layer 1: inputs -> G + R,E,T => Sig(G)
-\node[inpbox] (phi) {$\Phi,\ H$};
-\node[inpbox, right=of phi] (ti) {$dt_{\mathrm{info}}$};
-\node[objbox, right=of ti] (G1) {$G\equiv Q$};
-\node[inpbox, below=0.5cm of ti, minimum width=3.2cm] (RET) {R, E, T + nondeg.};
-\node[circle, draw=black!60, fill=yellow!15, inner sep=1.5pt, font=\scriptsize, right=0.4cm of G1] (conj) {$\wedge$};
-\node[outbox, right=0.35cm of conj] (sig) {$\mathrm{Sig}(G){=}(1,1)$};
-\draw[arr] (phi) -- (ti);
-\draw[arr, dashed] (ti) -- node[font=\tiny\itshape, text=black!55, above=-1pt] {heuristic} (G1);
-\draw[arr, shorten >=1pt] (G1) -- (conj);
-\draw[arr, shorten >=1pt] (RET.east) -- ++(0.25cm,0) |- (conj);
-\draw[arr] (conj) -- (sig);
-\node[layerlab, above=0.05cm of phi.north west, anchor=south west] {Layer 1: information time \& realizability};
-
-% Layer 2: point-level object
-\node[objbox, below=1.7cm of phi] (G2) {$G$};
-\node[objbox, right=of G2] (K) {$K(x)=x^{\top}Gx$};
-\node[condbox, right=of K] (K1) {$K=1$\\[-1pt]\scriptsize extra condition};
-\draw[arr] (G2) -- (K);
-\draw[arr] (K) -- node[font=\tiny\itshape, text=black!55, above=-1pt] {def.} (K1);
-\node[layerlab, above=0.05cm of G2.north west, anchor=south west] {Layer 2: point-level objects};
-
-% Layer 3: dynamics
-\node[objbox, below=1.1cm of G2] (G3) {$G$};
-\node[objbox, right=of G3] (JG) {$J_G=\alpha G^{-1}J$};
-\node[lawbox, right=of JG] (law2) {Law II\\[-1pt]\scriptsize $\dot x=(J_G{-}D)\nabla V$};
-\node[rectangle, draw=gray!55, fill=gray!8, rounded corners=2pt, font=\scriptsize, align=center, above=0.05cm of law2, inner sep=2pt] {Structural constraint (required by Law~II):\\ $GA=\alpha J-GD$, $D\ge 0$};
-\draw[arr] (G3) -- (JG);
-\draw[arr] (JG) -- (law2);
-\node[objbox, below=0.4cm of G3] (K1b) {$K=1$};
-\node[objbox, right=of K1b] (V) {$V=\tfrac{1}{2}(K-1)^2$};
-\node[lawbox, right=of V] (law3) {Law III\\[-1pt]\scriptsize $D{=}d_{c}I$, local restoring at eigenvector base};
-\draw[arr, dashed] (K1b) -- node[font=\tiny\itshape, text=black!55, above=-1pt] {minimum at} (V);
-\draw[arr] (G3) to[bend right=20] node[font=\tiny\itshape, text=black!55, below=-1pt, sloped] {def.\ via $K{=}x^{\top}Gx$} (V);
-\draw[arr] (V) -- (law3);
-\node[layerlab, above=0.05cm of G3.north west, anchor=south west] {Layer 3: dynamics};
+%--- top row
+\node[graybox] (info)
+  {{\footnotesize\bfseries\scshape Layer 1 $\cdot$ Information Time}\\[4pt]
+   {\normalsize$\Phi,\;H \to dt_{\mathrm{info}}$}\\[4pt]
+   {\footnotesize motivates $G$ via local 2nd-order expansion of $dt_{\mathrm{info}}^{2}$}};
+\node[graybox, right=of info] (ret)
+  {{\footnotesize\bfseries\scshape Realizability Axioms}\\[4pt]
+   {\normalsize$R,\;E,\;T + \mathrm{nondeg.}$}\\[4pt]
+   {\footnotesize constraints on the leading form}};
+\node[bluebox, right=of ret] (sig)
+  {{\footnotesize\bfseries\scshape Conclusion}\\[4pt]
+   {\normalsize$\mathrm{Sig}(G)=(1,1)$}\\[4pt]
+   {\footnotesize equivalently $\det G<0$}};
+%--- bottom row
+\node[graybox, below=1.0cm of info] (kobj)
+  {{\footnotesize\bfseries\scshape Layer 2 $\cdot$ Point Objects}\\[4pt]
+   {\normalsize$K(x)=x^{\top}Gx$}\\[4pt]
+   {\footnotesize paper adds extra condition $K=1$}};
+\node[graybox, below=1.0cm of ret] (dyn)
+  {{\footnotesize\bfseries\scshape Layer 3 $\cdot$ Dynamics}\\[4pt]
+   {\normalsize$J_G=\alpha G^{-1}J$}\\[4pt]
+   {\footnotesize Law II: $\dot x=(J_G-D)\nabla V$}};
+\node[greenbox, below=1.0cm of sig] (comp)
+  {{\footnotesize\bfseries\scshape Local Completion (Law III)}\\[4pt]
+   {\normalsize$\kappa_K=4d_c$}\\[4pt]
+   {\footnotesize critical damping; normalized eigenvector base}};
+%--- arrows
+\draw[arr] (ret.east) -- (sig.west);
+\draw[arr] (kobj.east) -- (dyn.west);
+\draw[arr] (dyn.east) -- (comp.west);
+\draw[darr] (info.south) -- node[right=2pt, font=\footnotesize] {via the leading form $G$} (kobj.north);
+\draw[arr] (ret.south) -- (dyn.north);
 \end{tikzpicture}
-\caption{Logical dependency of the $K{=}1$ framework. \emph{Layer 1} (information time \& realizability): the signed leading quadratic form $G\equiv Q$ is associated with the local second-order expansion of $dt_{\mathrm{info}}^{2}$, which motivates the realizability encoding used in Layer 1 (heuristic bridge; see text). Axioms~R, E, T together with nondegeneracy constrain the \emph{conditions} satisfied by $G$, forcing $\mathrm{Sig}(G)=(1,1)$ (equivalently $\det G<0$), rather than generating $G$ itself. \emph{Layer 2} (point-level objects): $G$ defines $K(x)=x^{\top}Gx$; the condition $K=1$ is an extra self-consistency condition, not a consequence of the axioms. \emph{Layer 3} (dynamics): $G$ induces the symplectic generator $J_G$; Law~II imposes the structural constraint $GA=\alpha J-GD$ ($D\ge 0$), yielding $\dot x=(J_G-D)\nabla V$. Together with $V=\tfrac12(K{-}1)^2$, this leads to Law~III under critical damping and local linearisation. Dashed arrows indicate heuristic or non-derivational relations; solid arrows indicate definitions, cited theorems, or algebraic consequences.}
+\caption{Logical structure of the $K{=}1$ framework. \emph{Top row}: the signed leading quadratic form $G\equiv Q$ is associated with the local second-order expansion of $dt_{\mathrm{info}}^{2}$ (heuristic bridge), while Axioms~R, E, T together with nondegeneracy constrain its algebraic type, forcing $\mathrm{Sig}(G)=(1,1)$ (equivalently $\det G<0$). \emph{Bottom row}: $G$ defines $K(x)=x^{\top}Gx$, to which the paper adds the extra condition $K=1$; $G$ also induces the symplectic generator $J_G$, here represented by its resulting evolution law $\dot x=(J_G-D)\nabla V$; the structural constraint $GA=\alpha J-GD$ with $D\ge 0$ is stated in the text. Law~III follows under critical damping with a normalised eigenvector base, giving $\kappa_K=4d_c$. Dashed arrows indicate heuristic or non-derivational relations; solid arrows indicate definitions, cited theorems, or algebraic consequences. The figure summarises dependence relations only: the axioms constrain the conditions satisfied by $G$, rather than being fully derived from $dt_{\mathrm{info}}$. At a deeper motivational level, the axioms may be viewed as encoding the Hessian-level degeneracy structure associated with the local second-order cost form of $dt_{\mathrm{info}}^{2}$.}
 \label{fig:framework}
 \end{figure}
 
 \section{Symplectic structure from \texorpdfstring{$G$}{G}}\label{sec:symplectic}
 
-\noindent\textit{From geometry to dynamics.} Law~I specifies the algebraic type of $G$, but not how the system evolves. The natural next step is to extract from $G$ alone a canonical generator $J_G$ that turns this static structure into dynamics usable for Laws~II--III and stability analysis. The construction below (Theorem~\ref{thm:unique}) requires only nondegeneracy; the Lorentzian reading --- spectral reality and the stability threshold $d_c>0$ --- enters subsequently, through Theorem~\ref{thm:spectral} and the isotropic interpretation of~\S\ref{sec:stability}.
+\noindent\textit{From geometry to dynamics.} Law~I specifies the algebraic type of $G$, but not how the system evolves. The next step is to obtain from $G$, together with a conservative compatibility condition and a Euclidean normalisation convention, a canonical generator usable for Laws~II--III and stability analysis. The conservative compatibility condition is that the free drift preserve the cost structure encoded by $K(x)=x^{\top}Gx$; at the linear level, this requires $GM$ to be skew-symmetric. The construction below (Theorem~\ref{thm:unique}) requires only nondegeneracy; the Lorentzian reading --- spectral reality and the stability threshold $d_c>0$ --- enters subsequently, through Theorem~\ref{thm:spectral} and the isotropic interpretation of \S\ref{sec:stability}.
 
 \medskip
 
-The requirement that the Hamiltonian flow preserve the cost structure, together with a Euclidean normalisation condition, singles out a unique symplectic generator.
-
 \begin{theorem}[Structural Uniqueness]\label{thm:unique}
 Let $G$ be a non-degenerate symmetric $2\times 2$ real matrix. Among all matrices $M$ such that
-\textup{(i)}~$GM$ is skew-symmetric and \textup{(ii)}~$M=\alpha J$ when $G=I$ \textup{(Euclidean normalisation)},
-the unique solution is $J_{G}=\alpha G^{-1}J$.
+\textup{(i)}~$GM$ is skew-symmetric and
+\textup{(ii)}~$M=\alpha J$ when $G=I$ \textup{(Euclidean normalisation)},
+the unique solution is $J_G=\alpha G^{-1}J$.
 \end{theorem}
 
-Here $\alpha>0$ is a normalisation constant fixed by condition~(ii); all results scale with $\alpha$, and $\alpha=1$ is adopted wherever $d_{c}$ is compared with thermal quantities. Condition~(ii) is the Euclidean normalisation: when $G=I$, the framework reduces to standard Hamiltonian mechanics.
-
 \begin{proof}
-Since $\dim(\mathrm{Skew}_{2})=1$ and $J$ spans $\mathrm{Skew}_{2}$, condition~(i) forces $GM=\beta J$ for some $\beta\in\mathbb{R}$, hence $M=\beta G^{-1}J$; condition~(ii) fixes $\beta=\alpha$.\qed
+Since $\dim(\mathrm{Skew}_2)=1$ and $J$ spans $\mathrm{Skew}_2$, condition~\textup{(i)} forces $GM=\beta J$ for some $\beta\in\mathbb{R}$, hence $M=\beta G^{-1}J$; condition~\textup{(ii)} fixes $\beta=\alpha$.\qed
 \end{proof}
 
 \begin{remark}[Non-degeneracy vs.\ signature]
-Theorem~\ref{thm:unique} requires only $\det G\neq 0$; it holds for any signature. Theorem~\ref{thm:spectral} provides the spectral computation; the Lorentzian condition becomes a stability criterion in Theorem~\ref{thm:equivalence}, under isotropic linearisation. Since $GJ_{G}=\alpha J$ is skew-symmetric, $J_{G}$ is $G$-antisymmetric by construction; the Lorentzian condition forces $J_{G}$ to be a hyperbolic element (with real eigenvalues), whose real eigenvalues yield $d_{c}>0$.
+Theorem~\ref{thm:unique} requires only $\det G\neq 0$; it holds for any signature. Theorem~\ref{thm:spectral} provides the spectral computation; the Lorentzian condition becomes a stability criterion in Theorem~\ref{thm:equivalence}, under isotropic linearisation. Since $GJ_G=\alpha J$ is skew-symmetric, $J_G$ is $G$-antisymmetric by construction; the Lorentzian condition forces $J_G$ to be a hyperbolic element with real eigenvalues, yielding $d_c>0$.
 \end{remark}
 
 \begin{theorem}[Spectral Reality]\label{thm:spectral}
-Let $\mathrm{Sig}(G)=(1,1)$. The characteristic polynomial of $G^{-1}J$ is $\lambda^{2}+1/\det G=0$. Since $\det G<0$, the roots are real: $\lambda=\pm\sqrt{-1/\det G}$. The stability boundary is
+Let $\mathrm{Sig}(G)=(1,1)$. The characteristic polynomial of $G^{-1}J$ is $\lambda^2+1/\det G=0$. Since $\det G<0$, the roots are real: $\lambda=\pm\sqrt{-1/\det G}$. In the isotropic reading, the corresponding stability boundary is
 \begin{equation}
-d_{c}(\alpha)=\alpha\sqrt{-1/\det G}>0.\label{eq:dc}
+d_c(\alpha)=\alpha\sqrt{-1/\det G}>0.\label{eq:dc}
 \end{equation}
 \end{theorem}
 
 \begin{proof}
-$\mathrm{tr}(G^{-1}J)=0$ and $\det(G^{-1}J)=1/\det G$; the characteristic polynomial $\lambda^{2}+1/\det G=0$ then gives $\mathrm{spec}(J_{G})=\{\pm d_{c}\}$. For the isotropic case $H_{*}=I$ (i.e.\ the cost-function second-order weight at the base point taken as the identity matrix; see \S\ref{sec:stability}), $\max\mathrm{Re}\,\mathrm{spec}(J_{G}-dI)=d_{c}-d$, which vanishes at $d=d_{c}$.\qed
+$\mathrm{tr}(G^{-1}J)=0$ and $\det(G^{-1}J)=1/\det G$; the characteristic polynomial $\lambda^2+1/\det G=0$ then gives $\mathrm{spec}(J_G)=\{\pm d_c\}$. For the isotropic case $H_*=I$, $\max \mathrm{Re}\,\mathrm{spec}(J_G-dI)=d_c-d$, which vanishes at $d=d_c$.\qed
 \end{proof}
 
 \begin{theorem}[Necessity of Lorentzian Signature]\label{thm:necessity}
-If $\mathrm{Sig}(G)=(2,0)$ or $(0,2)$, then $\det G>0$, so $\lambda^{2}+1/\det G=0$ has purely imaginary roots; no positive real $d_{c}>0$ exists in the sense of Theorem~\ref{thm:equivalence}.
+If $\mathrm{Sig}(G)=(2,0)$ or $(0,2)$, then $\det G>0$, so $\lambda^2+1/\det G=0$ has purely imaginary roots; no positive real $d_c>0$ exists in the sense of Theorem~\ref{thm:equivalence}.
 \end{theorem}
 
 \begin{proof}
-$\det G>0$ gives $1/\det G>0$, so $\lambda^{2}=-1/\det G<0$ and both roots are purely imaginary; no positive real eigenvalue $d_{c}>0$ exists.\qed
+$\det G>0$ gives $1/\det G>0$, so $\lambda^2=-1/\det G<0$ and both roots are purely imaginary; no positive real eigenvalue $d_c>0$ exists.\qed
 \end{proof}
 
 \section{The isotropic stability boundary}\label{sec:stability}
