@@ -283,7 +283,11 @@ For the Rindler metric with diagonal $H_{*}>0$, the zero-eigenvalue threshold in
 
 \section{Unique dynamics (Law~II)}\label{sec:lawII}
 
-\noindent\textbf{Law~II.} \textit{The generator of the dynamics splits as $GA = \alpha J - GD$ with $D\ge 0$ (positive-semidefinite dissipation). This symplectic-dissipative decomposition is the content of Law~II; it is a structural axiom, not derived from Laws~I or~III, motivated by the universal Helmholtz-type splitting of physical evolution into reversible (symplectic) and irreversible (dissipative) parts~\cite{GENERIC}. Under this axiom, the unique evolution law for any smooth potential $V$ is $\dot{x}=(J_{G}-D)\nabla V$. The local restoring role of $\{K=1\}$ is specified separately by Law~III.}
+\noindent\textbf{Law~II.} \textit{The generator of the dynamics splits as $GA = \alpha J - GD$ with $D\ge 0$ (positive-semidefinite dissipation). This symplectic-dissipative decomposition is the content of Law~II; it is a structural axiom, not derived from Laws~I or~III, motivated by the universal Helmholtz-type splitting of physical evolution into reversible (symplectic) and irreversible (dissipative) parts~\cite{GENERIC}. Under this axiom, the generator is uniquely reduced to the form $J_{G}-D$, so that the evolution law for any smooth potential $V$ is
+\[
+\dot{x}=(J_{G}-D)\nabla V,
+\]
+with the dissipation matrix $D$ remaining free within the positive-semidefinite class until it is fixed further, in the isotropic critical-damping reading, by Law~III. The local restoring role of $\{K=1\}$ is specified separately by Law~III.}
 
 The splitting $GA=\alpha J-GD$ is the axiomatic content of Law~II. Combined with Theorem~\ref{thm:unique} (which fixes $J_{G}$), this yields the unique admissible evolution law (Theorem~\ref{thm:lawII}).
 
@@ -300,18 +304,55 @@ For Lorentzian $G$, $J_G$ has symmetric part $S=(J_{G}+J_{G}^{\top})/2\neq 0$, d
 
 \section{Critical damping and fluctuation structure (Law~III)}\label{sec:lawIII}
 
-\noindent\textbf{Law~III.} \textit{Near any $G$-eigenvector on $\{K=1\}$, the drift term generates a restoring component towards $K=1$ (Theorem~\ref{thm:restoring}): $K=1$ is a \emph{locally} self-consistent locus. Whether global attractivity holds remains open (Open Problem~5 in \S\ref{sec:discussion}).}
+\noindent\textbf{Law~III (Dissipation selection).}
+\emph{The dissipation matrix $D$ is selected by requiring that
+$K{=}1$ be a locally stable equilibrium of the drift
+$\dot x=(J_G-D)\nabla V$ with $V=\tfrac12(K{-}1)^2$, and by choosing
+the smallest isotropic dissipation compatible with that stability.}
 
 \medskip
 
-\noindent\textit{From algebra to dynamics.} The algebraic condition $K=1$ is a locus in configuration space; it does not prescribe how deviations from $K=1$ evolve back toward it. Completing the framework requires dynamical structure: Law~II specifies the unique symplectic--dissipative evolution law, while Law~III below characterises its restoring and fluctuation behaviour at critical damping. Only with this completion does $K=1$ become a locally self-consistent locus with restoring dynamics rather than a mere level set.
+\noindent\textit{From open dynamics to a concrete physical model.}
+Law~II fixes the algebraic form of the generator,
+$\dot x=(J_G-D)\nabla V$ with $D\ge 0$, but leaves $D$ unspecified.
+To obtain a concrete physical model, one must therefore select a
+particular dissipation matrix.
+The natural criterion is that the unit-cost locus $K{=}1$, which
+plays the role of a self-consistency condition in the framework,
+should be dynamically stable: small departures from $K{=}1$ should be
+driven back toward it.
+Among such stabilising choices, we select the one with the smallest
+isotropic dissipation.
+
+Restricting to the isotropic class $D=dI$ ($d>0$), the strength of the
+normal restoring behaviour is controlled by the dissipation level $d$,
+while the relevant stability scale is set by the spectral quantity
+$d_{c}$ introduced in \S\ref{sec:stability}, namely the spectral radius
+of the hyperbolic symplectic generator $J_{G}$.
+Accordingly, stability requires $d\ge d_{c}$, and the boundary choice
+$d=d_{c}$ gives critical damping.
+It is therefore the unique member of the isotropic family that
+stabilises $K{=}1$ with minimal dissipation.
+Thus Law~III selects
+\begin{equation}\label{eq:Dcritical}
+D = d_{c}I,
+\end{equation}
+with
+\[
+d_{c}=\alpha\sqrt{-1/\det G},
+\]
+as obtained in \S\ref{sec:symplectic}.
+
+The remainder of this section develops the consequences of this
+selection: first, the local effective restoring rate toward $K{=}1$
+(Theorem~\ref{thm:restoring}); and second, the natural separation of
+fluctuations on $\{K=1\}$ into a thermodynamic class and a purely
+kinematic class.
 
 \medskip
-
-The auxiliary linear system $\dot{x}=(J_{G}-d_{c}I)x$ has eigenvalues $0$ and $-2d_{c}$ at critical damping (from $\mathrm{spec}(J_{G})=\{\pm d_{c}\}$ at $d=d_{c}$). Theorem~\ref{thm:restoring} concerns the nonlinear system $\dot{x}=(J_{G}-d_{c}I)\nabla V$, $V=\tfrac{1}{2}(K{-}1)^2$, where departure from $K{=}1$ generates a penalty~$V$. The choice $D=d_{c}I$ is the unique marginally stable isotropic damping: the minimum isotropic dissipation stabilising $K{=}1$, and yielding the most explicit restoring-rate formula (eq.~\eqref{eq:kappa}).
 
 \begin{theorem}[Local Effective Restoring Rate]\label{thm:restoring}
-Let $G$ be a $2\times 2$ Lorentzian metric, $D=d_{c}I$, and $J_{G}=\alpha G^{-1}J$ (Theorem~\ref{thm:unique}). Define $K(x)=x^{\top}Gx$, $V=\tfrac{1}{2}(K-1)^{2}$, with drift $\dot{x}=(J_{G}-d_{c}I)\nabla V$. Then for all $x\in\mathbb{R}^{2}$:
+Let $G$ be a $2\times 2$ Lorentzian metric, $D=d_{c}I$ (Law~III), and $J_{G}=\alpha G^{-1}J$ (Theorem~\ref{thm:unique}). Define $K(x)=x^{\top}Gx$, $V=\tfrac{1}{2}(K-1)^{2}$, with drift $\dot{x}=(J_{G}-d_{c}I)\nabla V$. Then for all $x\in\mathbb{R}^{2}$:
 \begin{equation}
 \dot{K} = 4(K-1)\bigl[\alpha\,x^{\top}(JG)\,x - d_{c}\,x^{\top}G^{2}x\bigr].\label{eq:Kdot}
 \end{equation}
@@ -335,7 +376,7 @@ The local effective restoring rate is $\kappa_{K}(x_{*})=4d_{c}\cdot x_{*}^{\top
 
 \subsection*{Two classes of fluctuation on $\{K=1\}$}
 
-Adding isotropic additive white noise (It\^{o} convention) to Law~II gives $dx=(J_{G}-D)\nabla V\,dt+\sigma\,dW_{t}$, where $W_{t}$ is a standard $\mathbb{R}^{2}$-valued Wiener process and $\sigma>0$ is constant. At $D=d_{c}I$ (critical damping), two geometrically distinct classes arise:
+Adding isotropic additive white noise (It\^{o} convention) to Law~II gives $dx=(J_{G}-D)\nabla V\,dt+\sigma\,dW_{t}$, where $W_{t}$ is a standard $\mathbb{R}^{2}$-valued Wiener process and $\sigma>0$ is constant. At $D=d_{c}I$ (critical damping, Law~III), two geometrically distinct classes arise:
 
 \medskip\noindent
 \textit{Class~A} (thermodynamic): fluctuations of $K$ perpendicular to $\{K=1\}$ --- departures from metric self-consistency --- governed by restoring rate $\kappa_{K}(x_{*})=4d_{c}\,x_{*}^{\top}G^{2}x_{*}$; the linearised stationary distribution of the $K$-fluctuation at a fixed base point is Gaussian with variance $\sigma^{2}/(2d_{c})$, as follows from the standard stationary distribution of the one-dimensional OU process~\cite{Gardiner1985}. Although both the restoring rate and the $K$-space noise amplitude depend on $x_{*}^{\top}G^{2}x_{*}$, this factor cancels in the OU variance.
@@ -374,6 +415,19 @@ Adding isotropic additive white noise (It\^{o} convention) to Law~II gives $dx=(
 \caption{The $\{K=1\}$ manifold for the Rindler metric $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$. The hyperbola's asymptotes are the light cone. At the base point $x_{*}$: Class A (red, two-way arrows) — thermodynamic fluctuations \emph{along the $\nabla K$ normal} to $\{K=1\}$; Class B (green) — tangential boost along the curve, thermodynamically inert — at $x_{*}=(0,1)$, $dx_{2}/dx_{1}|_{x_{*}}=0$, so the tangent is exactly horizontal. The figure is drawn with $\kappa\ell=1$ and $x_{*}=(0,1)$, satisfying the normalisation $x_{*}^{\top}G^{2}x_{*}=1$; the restoring rate then reduces to $\kappa_{K}=4d_{c}$ (the general-base-point formula appears in \S\ref{sec:lawIII}).}
 \label{fig:K1geometry}
 \end{figure}
+
+\medskip
+\noindent
+\textbf{Summary of logical status.}
+Law~III closes the dynamical sector by selecting $D=d_{c}I$ through a
+stability criterion with minimal isotropic dissipation.
+With this choice, Theorem~\ref{thm:restoring} shows that $K{=}1$ is a
+locally restoring equilibrium, while the fluctuation analysis separates
+the dynamics into a thermodynamic channel (Class~A) and a purely
+kinematic channel (Class~B).
+The thermodynamic channel will supply the local Clausius relation in
+the next section; the kinematic channel carries no heat and is inert
+for that argument.
 
 
 \section{Spacetime thermodynamics (Route~A)}\label{sec:thermo}
