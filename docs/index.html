@@ -1577,8 +1577,8 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
         <div style="display:flex;gap:12px;margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:11px;flex-wrap:wrap">
           <span><span style="display:inline-block;width:12px;height:2px;background:var(--accent);vertical-align:middle;margin-right:4px"></span>effective potential</span>
           <span><span style="display:inline-block;width:12px;height:2px;background:oklch(0.55 0.13 150);vertical-align:middle;margin-right:4px"></span>ρ_eq(ε)</span>
-          <span><span style="display:inline-block;width:12px;height:2px;background:oklch(0.55 0.17 25);vertical-align:middle;margin-right:4px"></span>ψ₀(ε)</span>
-          <span><span style="display:inline-block;width:12px;height:2px;background:oklch(0.38 0.10 240);vertical-align:middle;margin-right:4px;border-top:1px dashed"></span>|ψ₀|²</span>
+          <span><span style="display:inline-block;width:12px;height:2px;background:oklch(0.55 0.17 25);vertical-align:middle;margin-right:4px"></span><span id="qmPsiLegend">ψ₀(ε)</span></span>
+          <span><span style="display:inline-block;width:12px;height:2px;background:oklch(0.38 0.10 240);vertical-align:middle;margin-right:4px;border-top:1px dashed"></span><span id="qmBornLegend">|ψ₀|²</span></span>
         </div>
       </div>
       <div class="fs-side">
@@ -1626,8 +1626,8 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
           <div style="display:grid;grid-template-columns:auto 1fr;gap:6px 10px;margin-top:8px;font:11px/1.35 'JetBrains Mono',monospace;color:var(--muted)">
             <span>OU drift</span><b id="qmOU" style="color:var(--ink)">active</b>
             <span>FP stationary ρ</span><b id="qmFP" style="color:var(--ink)">exists</b>
-            <span>Schr ground ψ₀</span><b id="qmPsi" style="color:var(--ink)">normalizable</b>
-            <span>Born check</span><b id="qmBorn" style="color:var(--ink)">|ψ₀|² = ρ_eq</b>
+            <span id="qmPsiRowLabel">Schr ground ψ₀</span><b id="qmPsi" style="color:var(--ink)">normalizable</b>
+            <span id="qmBornRowLabel">Born check</span><b id="qmBorn" style="color:var(--ink)">|ψ₀|² = ρ_eq</b>
           </div>
         </div>
       </div>
@@ -2690,6 +2690,10 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
     const interp = document.getElementById('qmInterp');
     const ouEl = document.getElementById('qmOU');
     const fpEl = document.getElementById('qmFP');
+    const psiLegendEl = document.getElementById('qmPsiLegend');
+    const bornLegendEl = document.getElementById('qmBornLegend');
+    const psiRowLabelEl = document.getElementById('qmPsiRowLabel');
+    const bornRowLabelEl = document.getElementById('qmBornRowLabel');
     const psiEl = document.getElementById('qmPsi');
     const bornEl = document.getElementById('qmBorn');
     let sigMode = 'lor';
@@ -2781,6 +2785,10 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       s1Lab.textContent = st.sigma1.toFixed(2);
       noiseLab.textContent = st.sigmaNoise.toFixed(3);
       modeLab.textContent = String(st.mode);
+      psiLegendEl.textContent = st.mode === 0 ? 'ψ₀(ε)' : `ψ_${st.mode}(ε)`;
+      bornLegendEl.textContent = st.mode === 0 ? '|ψ₀|²' : `|ψ_${st.mode}|²`;
+      psiRowLabelEl.textContent = st.mode === 0 ? 'Schr ground ψ₀' : `Schr mode ψ_${st.mode}`;
+      bornRowLabelEl.textContent = st.mode === 0 ? 'Born check' : 'Born mismatch';
 
       if(st.lorentzian){
         dcEl.textContent = fmt(st.dc, 3);
@@ -2813,7 +2821,9 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
         tempBar.style.width = '0%';
         varBar.style.width = '0%';
         residBar.style.width = '0%';
-        interp.textContent = 'Euclidean branch: the real stability scale disappears, so the OU equilibrium and the normalizable ground-state ψ₀ both fail. The chain stops before the Born identification can be made.';
+        interp.textContent = st.mode === 0
+          ? 'Euclidean branch: the real stability scale disappears, so the OU equilibrium and the normalizable ground-state ψ₀ both fail. The chain stops before the Born identification can be made.'
+          : `Euclidean branch: the real stability scale disappears, so the OU equilibrium and the normalizable mode ψ_${st.mode} both fail. The chain stops before the Born identification can be made.`;
         ouEl.textContent = 'inactive';
         fpEl.textContent = 'no stationary ρ';
         psiEl.textContent = 'no bound spectrum';
