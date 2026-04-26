@@ -1237,6 +1237,9 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
               <b id="vcRaceState">idle · 1 runner</b>
             </div>
             <div class="eq-bar" style="margin-top:2px"><div class="fill" id="vcRaceBar" style="width:0%"></div></div>
+            <div class="reading" style="margin:0;padding:0 2px 2px 2px;font:11px/1.35 'JetBrains Mono',monospace;color:var(--muted)">
+              <b style="color:var(--ink)">ΔΦ endpoint.</b> <span id="vcDeltaPhi">0.000</span>
+            </div>
             <div class="reading" style="margin:0;padding:8px 10px;background:rgba(255,252,248,0.82)">
               <b>Info-time result.</b> <span id="vcRaceNote">Press Start race to compare admissible paths at fixed endpoint: the winner is the path with the lowest accumulated <i>dt</i><sub>info</sub>, equivalently the highest average variation rate <i>d</i>Φ / <i>dt</i><sub>info</sub>.</span>
             </div>
@@ -1253,7 +1256,7 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
         <span>Layer 1 filters directions by realizability. Layer 2 optimizes only after that filter has been applied, and it does so in the information-time language: fixed structural variation, competing <i>dt</i><sub>info</sub> costs.</span>
       </div>
     </div>
-    <figcaption>This analogy module is intentionally downstream of the RET audit. It does not prove realizability. It clarifies the logical order: admissibility comes from the local Hessian-level cost structure; only then does a second comparison ask which admissible path achieves the same endpoint variation with the lowest information-time cost.</figcaption>
+    <figcaption>This analogy module is intentionally downstream of the RET audit. It does not prove realizability. It clarifies the logical order: admissibility comes from the local Hessian-level cost structure; only then does a second comparison ask which admissible path achieves the same endpoint variation <i>Δ</i>Φ with the lowest information-time cost.</figcaption>
   </figure>
 
   <style>
@@ -1903,19 +1906,19 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       pctx.fillText('endpoint', end.x + 8, end.y - 4);
       pctx.fillStyle = 'rgba(92,88,80,0.78)';
       pctx.font = "italic 13px Newsreader";
-      pctx.fillText('same endpoint variation, competing information-time costs', 18, 20);
+      pctx.fillText('fixed ΔΦ, competing information-time costs', 18, 20);
     }
 
     function redrawTable(st){
-      const phiGain = Math.hypot(st.X, st.Y);
+      const deltaPhi = Math.hypot(st.X, st.Y);
       const admissible = st.paths.filter(p => p.admissible);
       const fastest = admissible.length ? Math.min(...admissible.map(p=>p.time)) : Infinity;
       tableEl.innerHTML = st.paths.map(p => {
         const adm = p.admissible ? 'admissible' : 'blocked';
         const lag = p.time - fastest;
-        const phiRate = phiGain / Math.max(p.time, 1e-6);
+        const phiRate = deltaPhi / Math.max(p.time, 1e-6);
         const tail = p.admissible
-          ? `dt_info ${fmt(p.time,3)} · Φ/t_info ${fmt(phiRate,3)}${lag > 1e-3 ? ` · +${fmt(lag,3)}` : ' · best cost'}`
+          ? `dt_info ${fmt(p.time,3)} · ΔΦ/t_info ${fmt(phiRate,3)}${lag > 1e-3 ? ` · +${fmt(lag,3)}` : ' · best cost'}`
           : 'blocked at launch';
         return `<div class="vc-tr"><b style="color:${p.color}">${p.label}</b><span>${adm}</span><span>${tail}</span></div>`;
       }).join('');
@@ -1949,17 +1952,18 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       const mode = raceRunning ? (raceProgress(now) >= 1 ? 'finished' : 'racing') : 'idle';
       raceStateEl.textContent = `${mode} · ${runnerCount} runner${runnerCount === 1 ? '' : 's'}`;
       raceBarEl.style.width = (raceRunning ? (raceProgress(now) * 100) : 0).toFixed(1) + '%';
-      const phiGain = Math.hypot(st.X, st.Y);
+      const deltaPhi = Math.hypot(st.X, st.Y);
+      document.getElementById('vcDeltaPhi').textContent = fmt(deltaPhi,3);
       if(raceRunning){
         raceNoteEl.textContent = runnerCount
-          ? `Info-time comparison in progress: ${runnerCount} admissible path${runnerCount === 1 ? '' : 's'} running at fixed endpoint variation Φ ≈ ${fmt(phiGain,3)} with local impedance H = ${fmt(st.H,2)}; blocked paths remain pinned at launch.`
+          ? `Info-time comparison in progress: ${runnerCount} admissible path${runnerCount === 1 ? '' : 's'} running at fixed endpoint variation ΔΦ ≈ ${fmt(deltaPhi,3)} with local impedance H = ${fmt(st.H,2)}; blocked paths remain pinned at launch.`
           : 'No admissible path is available for launch under the current local filter.';
       } else if(lastWinner){
         const winner = st.paths.find(p => p.label === lastWinner);
-        const rate = winner ? phiGain / Math.max(winner.time, 1e-6) : 0;
-        raceNoteEl.textContent = `Finished: ${lastWinner} achieved the same endpoint variation with the lowest dt_info cost, giving Φ/t_info ≈ ${fmt(rate,3)}.`;
+        const rate = winner ? deltaPhi / Math.max(winner.time, 1e-6) : 0;
+        raceNoteEl.textContent = `Finished: ${lastWinner} achieved the same endpoint variation ΔΦ with the lowest dt_info cost, giving ΔΦ/t_info ≈ ${fmt(rate,3)}.`;
       } else {
-        raceNoteEl.textContent = 'Press Start race to compare admissible paths at fixed endpoint variation: the winner is the one with the lowest accumulated dt_info, equivalently the largest average dΦ/dt_info under the chosen impedance H.';
+        raceNoteEl.textContent = 'Press Start race to compare admissible paths at fixed endpoint variation ΔΦ: the winner is the one with the lowest accumulated dt_info, equivalently the largest average dΦ/dt_info under the chosen impedance H.';
       }
       drawCone(st, now);
       drawPaths(st, now);
