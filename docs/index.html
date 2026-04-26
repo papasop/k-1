@@ -280,8 +280,12 @@
   .field-grid > div{padding:18px 22px}
   .field-grid > div + div{border-left:1px solid var(--line-2)}
   .field-grid h5{margin:0 0 10px;font-family:'Inter Tight',sans-serif;font-size:12px;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;font-weight:600}
-  .eq-val{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--ink);margin:6px 0}
-  .eq-val .lbl{display:inline-block;width:60px;color:var(--muted)}
+  .eq-val{
+    display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+    font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--ink);margin:6px 0
+  }
+  .eq-val .lbl{display:block;flex:1 1 auto;min-width:0;color:var(--muted)}
+  .eq-val b{flex:0 0 auto;text-align:right}
   .eq-bar{
     height:6px;background:var(--line-2);border-radius:3px;overflow:hidden;position:relative;margin:4px 0 12px;
   }
@@ -2105,17 +2109,17 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
         </label>
 
         <h6 data-orig-html="Local identity at the probe point">Local identity at the probe point</h6>
-        <div class="eq-val"><span class="lbl">\u03a3 = r² + a²cos²\u03b8</span><b id="kSigma">16.180</b></div>
-        <div class="eq-val"><span class="lbl">\u03b8_exp = 2r/\u03a3</span><b id="kThetaExp">0.495</b></div>
-        <div class="eq-val"><span class="lbl">\u2202_r ln\u221a\u03a3 = r/\u03a3</span><b id="kDrLn">0.247</b></div>
-        <div class="eq-val"><span class="lbl">\u2202_r² ln\u221a\u03a3</span><b id="kD2Ln">-0.046</b></div>
-        <div class="eq-val"><span class="lbl">\u25a1_null ln\u221a\u03a3</span><b id="kBox">0.062</b></div>
+        <div class="eq-val"><span class="lbl">Σ = r² + a²cos²θ</span><b id="kSigma">16.180</b></div>
+        <div class="eq-val"><span class="lbl">θ_exp = 2r/Σ</span><b id="kThetaExp">0.495</b></div>
+        <div class="eq-val"><span class="lbl">∂<sub>r</sub> ln√Σ = r/Σ</span><b id="kDrLn">0.247</b></div>
+        <div class="eq-val"><span class="lbl">∂<sub>r</sub>² ln√Σ</span><b id="kD2Ln">-0.046</b></div>
+        <div class="eq-val"><span class="lbl">□<sub>null</sub> ln√Σ</span><b id="kBox">0.062</b></div>
         <div class="eq-bar"><div class="fill" id="kBoxBar" style="width:20%"></div></div>
-        <div class="eq-val"><span class="lbl">K = \u03a3 \u00b7 \u25a1_null ln\u221a\u03a3</span><b id="kK">1.000000</b></div>
+        <div class="eq-val"><span class="lbl">K = Σ · □<sub>null</sub> ln√Σ</span><b id="kK">1.000000</b></div>
         <div class="eq-bar"><div class="fill" id="kKBar" style="width:50%"></div><div class="mark" style="left:50%"></div></div>
         <div class="eq-val"><span class="lbl">residual K - 1</span><b id="kRes">0.0e+0</b></div>
-        <div class="eq-val"><span class="lbl">\u00bd\u03b8_exp\u00b2 + \u03c9\u00b2</span><b id="kKinLhs">0.124</b></div>
-        <div class="eq-val"><span class="lbl">2/\u03a3</span><b id="kKinRhs">0.124</b></div>
+        <div class="eq-val"><span class="lbl">½θ_exp² + ω²</span><b id="kKinLhs">0.124</b></div>
+        <div class="eq-val"><span class="lbl">2/Σ</span><b id="kKinRhs">0.124</b></div>
 
         <div class="reading" style="margin-top:12px">
           <b>Cancellation.</b> <span id="kExplain">The numerator combines as $(a^2\cos^2\theta-r^2)+2r^2 = r^2+a^2\cos^2\theta = \Sigma$, so $\Box_{\mathrm{null}}\ln\sqrt{\Sigma}=1/\Sigma$ and therefore $K=1$ exactly.</span>
