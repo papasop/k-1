@@ -1649,8 +1649,8 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
         <canvas id="qcCanvas" width="1070" height="760" style="width:535px;height:380px"></canvas>
         <div style="display:flex;gap:12px;margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:11px;flex-wrap:wrap">
           <span><span style="display:inline-block;width:12px;height:2px;background:oklch(0.48 0.14 268);vertical-align:middle;margin-right:4px"></span>signature track</span>
-          <span><span style="display:inline-block;width:12px;height:2px;background:oklch(0.55 0.13 150);vertical-align:middle;margin-right:4px"></span>wave amplitude</span>
-          <span><span style="display:inline-block;width:12px;height:2px;background:oklch(0.55 0.17 25);vertical-align:middle;margin-right:4px;border-top:1px dashed"></span>chain break zone</span>
+          <span><span style="display:inline-block;width:12px;height:2px;background:oklch(0.55 0.13 150);vertical-align:middle;margin-right:4px"></span>wave support</span>
+          <span><span style="display:inline-block;width:12px;height:2px;background:oklch(0.55 0.17 25);vertical-align:middle;margin-right:4px;border-top:1px dashed"></span>collapse zone</span>
         </div>
       </div>
       <div class="fs-side">
@@ -1690,6 +1690,29 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
           <b>Snapshot view.</b> <span id="qcSnapExplain">Before the excursion opens, the Lorentzian branch carries the full OU → FP → Schr → Born chain. Raising the catalyst will pull the later snapshots deeper into the Euclidean sector, but it does not create the channel by itself.</span>
         </div>
 
+        <h6 data-orig-html="Wave / collapse state">Wave / collapse state</h6>
+        <div id="qcStateCards" style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:12px">
+          <div class="reading" data-qcard="wave" style="margin:0;padding:10px 10px 9px;background:rgba(242,250,246,0.92)">
+            <b>Wave</b>
+            <div style="margin-top:4px;font:11px/1.35 'JetBrains Mono',monospace;color:var(--muted)">Lorentzian support intact</div>
+          </div>
+          <div class="reading" data-qcard="boundary" style="margin:0;padding:10px 10px 9px;background:rgba(255,247,228,0.88)">
+            <b>Boundary</b>
+            <div style="margin-top:4px;font:11px/1.35 'JetBrains Mono',monospace;color:var(--muted)">real d<sub>c</sub> is fading</div>
+          </div>
+          <div class="reading" data-qcard="collapse" style="margin:0;padding:10px 10px 9px;background:rgba(255,238,232,0.92)">
+            <b>Collapse</b>
+            <div style="margin-top:4px;font:11px/1.35 'JetBrains Mono',monospace;color:var(--muted)">Euclidean excursion open</div>
+          </div>
+          <div class="reading" data-qcard="return" style="margin:0;padding:10px 10px 9px;background:rgba(238,246,255,0.9)">
+            <b>Return</b>
+            <div style="margin-top:4px;font:11px/1.35 'JetBrains Mono',monospace;color:var(--muted)">wavefunction re-locks</div>
+          </div>
+        </div>
+        <div class="reading" style="margin:0 0 14px 0;padding:10px 12px;background:rgba(255,252,248,0.82)">
+          <b id="qcStateName">Wave state.</b> <span id="qcStateExplain">The Lorentzian branch supports a normalizable wavefunction, so the quantum description is fully alive here.</span>
+        </div>
+
         <h6 data-orig-html="Status">Status</h6>
         <div class="eq-val"><span class="lbl">signature phase</span><b id="qcPhase">Lorentzian</b></div>
         <div class="eq-val"><span class="lbl">effective d_c</span><b id="qcDc">1.000</b></div>
@@ -1716,7 +1739,7 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
         </div>
       </div>
     </div>
-    <figcaption>This module packages the paper’s proposed reading of collapse into a single slider. Moving through the Euclidean excursion removes the real stability scale, collapses the OU equilibrium and Schrödinger ground state, then restores them when the trajectory returns to the Lorentzian branch. It is a structural interpretation, not a laboratory-time simulation.</figcaption>
+    <figcaption>This module makes the paper’s proposed wave/collapse reading explicit. The Lorentzian side is the wave-supporting branch; the Euclidean excursion is the collapse window; the return leg re-forms the same downstream quantum scaffold once the Lorentzian gate is back. It is a structural interpretation, not a laboratory-time simulation.</figcaption>
   </figure>
 </section>
 
@@ -2996,12 +3019,15 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
     const interpEl = document.getElementById('qcInterp');
     const stepExplainEl = document.getElementById('qcStepExplain');
     const snapExplainEl = document.getElementById('qcSnapExplain');
+    const stateNameEl = document.getElementById('qcStateName');
+    const stateExplainEl = document.getElementById('qcStateExplain');
     const ouEl = document.getElementById('qcOU');
     const fpEl = document.getElementById('qcFP');
     const psiEl = document.getElementById('qcPsi');
     const bornEl = document.getElementById('qcBorn');
     const stageButtons = document.querySelectorAll('#qcStage button');
     const snapButtons = document.querySelectorAll('#qcSnap button');
+    const stateCards = document.querySelectorAll('#qcStateCards [data-qcard]');
     let stageFocus = 'ou';
     const snapshotDefs = {
       pre: {tau: 0.18, stage: 'ou'},
@@ -3092,6 +3118,38 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       const currentSnap = s.tau < 0.35 ? 'pre' : s.tau < 0.68 ? 'exc' : 'post';
       snapExplainEl.textContent = snapText[currentSnap];
       snapButtons.forEach(btn => btn.classList.toggle('on', btn.dataset.qsnap === currentSnap));
+
+      let currentState = 'wave';
+      if(s.signature < -0.08) currentState = 'collapse';
+      else if(s.signature <= 0.08) currentState = 'boundary';
+      else if(s.tau >= 0.68) currentState = 'return';
+
+      const stateText = {
+        wave: {
+          name: 'Wave state.',
+          explain: 'The Lorentzian branch is carrying the full quantum scaffold: OU support, a stationary density, and a normalizable wavefunction all line up.'
+        },
+        boundary: {
+          name: 'Boundary state.',
+          explain: 'This is the pre-collapse rim: the real stability scale is thinning out, so the wave description is still visible but already losing structural support.'
+        },
+        collapse: {
+          name: 'Collapse state.',
+          explain: 'The Euclidean excursion is open. In this design, collapse is not a sharpened wavepacket but the temporary loss of the Lorentzian branch that kept ψ normalizable.'
+        },
+        return: {
+          name: 'Return state.',
+          explain: 'The system has come back onto the Lorentzian side. The wavefunction is not created from nowhere; it re-locks because the structural gate has reopened.'
+        }
+      };
+      stateNameEl.textContent = stateText[currentState].name;
+      stateExplainEl.textContent = stateText[currentState].explain;
+      stateCards.forEach(card => {
+        const on = card.dataset.qcard === currentState;
+        card.style.outline = on ? '2px solid oklch(0.56 0.16 65)' : '1px solid rgba(100,100,110,0.10)';
+        card.style.transform = on ? 'translateY(-1px)' : 'none';
+        card.style.boxShadow = on ? '0 10px 24px rgba(60,44,20,0.10)' : 'none';
+      });
     }
     function drawAxes(x, y, w, h){
       ctx.save();
