@@ -3166,6 +3166,9 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
             <span>R_tt</span><b id="Rttv" style="color:var(--ink)">0.000</b>
             <span>R_thth</span><b id="Rthv" style="color:var(--ink)">0.000</b>
           </div>
+          <div class="reading" style="margin-top:10px;background:rgba(255,255,255,0.62)">
+            <b>Direct curvature.</b> These Ricci readouts are evaluated directly from <code>f(r)</code>, <code>f'(r)</code>, and <code>f''(r)</code>. They are not reconstructed from <code>K_1</code> or <code>K_2</code>.
+          </div>
           <div style="margin-top:8px;font-size:12px;color:var(--ink)">
             <b>Dominant channel.</b> <span id="domv">Vacuum point: both eigenvalue conditions are close.</span>
           </div>
@@ -4798,6 +4801,14 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       return {f, K1, K2};
     }
 
+    function directCurvature(r){
+      const {f,fp,fpp} = f_and_derivs(r);
+      const R = -fpp - 4*fp/r + 2*(1-f)/(r*r);
+      const Rtt = f * (0.5*fpp + fp/r);
+      const Rth = 1 - f - r*fp;
+      return {R,Rtt,Rth};
+    }
+
     const rMin = 0.4, rMax = 10;
 
     function toScreen(r, val, w, h){
@@ -4911,9 +4922,10 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       document.getElementById('k2b').style.width = Math.max(0,Math.min(100, K2*50))+'%';
       const dK1 = K1 - 1;
       const dK2 = K2 - 1;
-      const R = 2 * (1 - K1) / (rAt * rAt);
-      const Rtt = f * (K1 - K2) / (rAt * rAt);
-      const Rth = 1 - K2;
+      const direct = directCurvature(rAt);
+      const R = direct.R;
+      const Rtt = direct.Rtt;
+      const Rth = direct.Rth;
       document.getElementById('dk1v').textContent = isFinite(dK1) ? dK1.toFixed(3) : '—';
       document.getElementById('dk2v').textContent = isFinite(dK2) ? dK2.toFixed(3) : '—';
       document.getElementById('Rv').textContent = isFinite(R) ? R.toFixed(3) : '—';
@@ -4923,8 +4935,10 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       // interpretation
       let txt = '';
       const dev1 = Math.abs(K1-1), dev2 = Math.abs(K2-1);
-      if(dev1 < 0.01 && dev2 < 0.01){
-        txt = 'Both $K_i = 1$ at this $r$. Vacuum: $R_{\\mu\\nu}=0$ (Schwarzschild).';
+      const absR = Math.abs(R), absRtt = Math.abs(Rtt), absRth = Math.abs(Rth);
+      const vacuumDirect = absR < 0.01 && absRtt < 0.01 && absRth < 0.01;
+      if(vacuumDirect){
+        txt = 'Direct metric curvature vanishes at this probe point: $R$, $R_{tt}$, and $R_{\\theta\\theta}$ are all near zero. On the Schwarzschild branch this matches $K_1 = K_2 = 1$.';
       } else if(dev1 < 0.01 && dev2 > 0.01){
         txt = '$K_1 = 1$ but $K_2 \\ne 1$. RN-type / charge-like branch: $f = 1 - 2M/r + Q^2/r^2$ gives $K_1=1$, $K_2 = 1-Q^2/r^2$.';
       } else if(profile === 'sds'){
@@ -4938,9 +4952,8 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       }
       document.getElementById('interp').innerHTML = txt;
       let dom = '';
-      const absR = Math.abs(R), absRtt = Math.abs(Rtt), absRth = Math.abs(Rth);
-      if(dev1 < 0.01 && dev2 < 0.01){
-        dom = 'Vacuum point: both eigenvalue conditions are close.';
+      if(vacuumDirect){
+        dom = 'Vacuum point: direct metric curvature is close to zero.';
       } else if(absRth >= absRtt && absRth >= absR){
         dom = 'Angular channel dominates: K2 mismatch is driving the deviation.';
       } else if(absRtt >= absRth && absRtt >= absR){
