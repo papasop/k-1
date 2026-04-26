@@ -1267,6 +1267,69 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
     <figcaption>This analogy module is intentionally downstream of the RET audit. It does not prove realizability. It clarifies the logical order: admissibility comes from the local Hessian-level cost structure; only then does a second comparison ask which admissible path achieves the same endpoint variation <i>Δ</i>Φ with the lowest information-time cost.</figcaption>
   </figure>
 
+  <figure class="card" style="margin-top:18px">
+    <div class="fc-head">
+      <span class="fc-title">Light cone from realizability</span>
+      <span class="fc-tag">signature forcing · null directions · causal split</span>
+    </div>
+    <div class="fc-body" style="padding:22px 24px;background:var(--card)">
+      <div class="lc-grid">
+        <div class="lc-vis">
+          <canvas id="lcCanvas" style="width:100%;height:380px;display:block"></canvas>
+          <div class="lc-legend">
+            <span><span class="lc-swatch lc-time"></span>positive-cost temporal sector</span>
+            <span><span class="lc-swatch lc-space"></span>zero-threshold compatible sector</span>
+            <span><span class="lc-swatch lc-null"></span>null set / emerging light cone</span>
+          </div>
+        </div>
+        <div class="lc-side">
+          <h6>Quadratic coefficient form</h6>
+          <label class="lc-row">
+            <span>a (temporal cost)</span>
+            <input id="lcA" type="range" min="-1.5" max="1.5" step="0.01" value="1.00">
+            <b id="lcAlab">1.00</b>
+          </label>
+          <label class="lc-row">
+            <span>κ (tilt)</span>
+            <input id="lcK" type="range" min="-1.5" max="1.5" step="0.01" value="0.00">
+            <b id="lcKlab">0.00</b>
+          </label>
+          <label class="lc-row">
+            <span>b (spatial cost)</span>
+            <input id="lcB" type="range" min="-1.5" max="1.5" step="0.01" value="-1.00">
+            <b id="lcBlab">−1.00</b>
+          </label>
+          <div class="lc-presets">
+            <button data-lc="lor">Lorentz</button>
+            <button data-lc="tilt">tilted Lorentz</button>
+            <button data-lc="pos">positive-definite</button>
+            <button data-lc="neg">negative-definite</button>
+            <button data-lc="deg">degenerate</button>
+          </div>
+
+          <div class="lc-panel">
+            <div class="lc-eq"><span>Q(t,r)</span><b id="lcQeq">t² − r²</b></div>
+            <div class="lc-eq"><span>det Q</span><b id="lcDet">−1.000</b></div>
+            <div class="lc-eq"><span>signature</span><b id="lcSig">(1,1)</b></div>
+            <div class="lc-eq"><span>null directions</span><b id="lcNull">two real rays</b></div>
+            <div class="lc-eq"><span>causal split</span><b id="lcCausal">light cone present</b></div>
+            <div class="lc-eq"><span>theorem verdict</span><b id="lcVerdict">Lorentz survives</b></div>
+          </div>
+
+          <div class="lc-audit">
+            <div class="lc-ax" id="lcRbox"><span>R</span><b id="lcRtxt">excludes +/+</b></div>
+            <div class="lc-ax" id="lcEbox"><span>E</span><b id="lcEtxt">nondeg.</b></div>
+            <div class="lc-ax" id="lcTbox"><span>T</span><b id="lcTtxt">excludes -/-</b></div>
+          </div>
+
+          <p class="lc-note" id="lcExplain">This is the closest interactive rendering of the realizability theorem itself: once positive-definite branches are excluded by R, negative-definite branches by T, and degeneracy by E, the only surviving two-dimensional signature is Lorentzian, and its null set appears as the light cone.</p>
+          <div class="lc-convention"><b>Reading rule.</b> This card is about the <i>theorem layer</i>, not the downstream <i>dt</i><sub>info</sub> comparison. It shows how the null cone emerges from the surviving quadratic form once the realizability exclusions have been applied.</div>
+        </div>
+      </div>
+    </div>
+    <figcaption>This panel is closer to the realizability paper than the downstream path selector. A positive-definite leading form leaves no zero-threshold forward directions and is removed by <i>R</i>; an all-negative form violates the positive temporal direction required by <i>T</i>; degeneracy violates the nondegenerate theorem hypothesis. What remains is the Lorentzian branch, whose real null set is the light cone.</figcaption>
+  </figure>
+
   <style>
     .hv-grid{ display:grid; grid-template-columns: 1.1fr 1fr; gap:28px; align-items:start; }
     @media (max-width: 980px){ .hv-grid{ grid-template-columns:1fr; } }
@@ -1326,6 +1389,31 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
     .vc-proof-note{ margin-top:12px; padding:12px 14px; background:oklch(0.97 0.03 55); border:1px solid oklch(0.82 0.07 55); border-left:3px solid oklch(0.62 0.14 55); border-radius:6px; }
     .vc-bridge{ margin-top:14px; padding:10px 14px; display:flex; gap:10px; align-items:flex-start; background:rgba(255,252,248,0.82); border:1px solid var(--line); border-radius:8px; font-size:13px; line-height:1.55; color:var(--ink-3); }
     .vc-bridge b{ white-space:nowrap; }
+    .lc-grid{ display:grid; grid-template-columns:1.08fr 1fr; gap:28px; align-items:start; }
+    @media (max-width: 980px){ .lc-grid{ grid-template-columns:1fr; } }
+    .lc-legend{ display:flex; gap:12px; flex-wrap:wrap; margin-top:10px; font:11px/1.35 'JetBrains Mono',monospace; color:var(--muted); }
+    .lc-swatch{ display:inline-block; width:12px; height:12px; border-radius:3px; margin-right:6px; vertical-align:-2px; }
+    .lc-time{ background:oklch(0.93 0.05 55); border:1px solid oklch(0.76 0.08 55); }
+    .lc-space{ background:oklch(0.89 0.05 252); border:1px solid oklch(0.7 0.08 252); }
+    .lc-null{ background:oklch(0.55 0.14 25); }
+    .lc-side h6{ font-family:'Inter Tight',sans-serif; font-weight:600; font-size:11px; letter-spacing:0.09em; text-transform:uppercase; color:var(--muted); margin:0 0 10px; }
+    .lc-row{ display:grid; grid-template-columns:auto 1fr auto; gap:12px; align-items:center; font:11px/1.35 'JetBrains Mono',monospace; color:var(--muted); margin-bottom:10px; }
+    .lc-row input[type=range]{ -webkit-appearance:none; appearance:none; height:3px; background:var(--line); border-radius:2px; }
+    .lc-row input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; width:14px; height:14px; border-radius:50%; background:var(--accent); cursor:pointer; }
+    .lc-row b{ color:var(--accent-ink); min-width:66px; text-align:right; }
+    .lc-presets{ display:flex; flex-wrap:wrap; gap:6px; margin:2px 0 12px; }
+    .lc-presets button{ background:var(--card); border:1px solid var(--line); padding:6px 10px; border-radius:6px; font-family:'JetBrains Mono',monospace; font-size:10.5px; letter-spacing:0.04em; color:var(--ink-3); cursor:pointer; }
+    .lc-presets button.on{ background:var(--accent-soft); border-color:var(--accent); color:var(--accent-ink); }
+    .lc-panel{ padding:12px 14px; background:var(--paper-2); border:1px solid var(--line); border-radius:10px; display:grid; gap:6px; }
+    .lc-eq{ display:grid; grid-template-columns:auto 1fr; gap:10px; align-items:baseline; font:11px/1.35 'JetBrains Mono',monospace; color:var(--muted); }
+    .lc-eq b{ text-align:right; color:var(--ink); font-weight:600; }
+    .lc-audit{ display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:12px; }
+    .lc-ax{ display:flex; justify-content:space-between; align-items:center; padding:8px 10px; border:1px solid var(--line); border-radius:8px; background:var(--card); font:11px/1.2 'JetBrains Mono',monospace; }
+    .lc-ax.pass{ background:oklch(0.97 0.03 150); border-color:oklch(0.73 0.1 150); color:oklch(0.34 0.12 150); }
+    .lc-ax.fail{ background:oklch(0.97 0.04 25); border-color:oklch(0.74 0.11 25); color:oklch(0.38 0.14 25); }
+    .lc-note{ margin:12px 0 0; font-size:13px; line-height:1.58; color:var(--ink-3); }
+    .lc-convention{ margin-top:12px; padding:10px 14px; background:oklch(0.96 0.03 250); border:1px solid oklch(0.82 0.06 250); border-left:3px solid oklch(0.58 0.12 250); border-radius:6px; font-size:12px; line-height:1.55; color:oklch(0.31 0.07 250); font-family:'Newsreader',serif; }
+    .lc-convention b{ font-family:'Inter Tight',sans-serif; font-weight:600; font-size:10.5px; letter-spacing:0.08em; text-transform:uppercase; color:oklch(0.39 0.12 250); }
   </style>
 
   <script>
@@ -2089,6 +2177,251 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       redraw();
     });
     redraw();
+  })();
+
+  (function(){
+    const canvas = document.getElementById('lcCanvas');
+    if(!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const DPR = Math.max(1, window.devicePixelRatio || 1);
+    const aEl = document.getElementById('lcA');
+    const kEl = document.getElementById('lcK');
+    const bEl = document.getElementById('lcB');
+    const presetBtns = document.querySelectorAll('#hessianVar .lc-presets button');
+
+    function fit(){
+      const w = Math.max(360, Math.floor(canvas.parentElement.getBoundingClientRect().width - 4));
+      const h = 380;
+      canvas.style.width = w + 'px';
+      canvas.style.height = h + 'px';
+      canvas.width = w * DPR;
+      canvas.height = h * DPR;
+      ctx.setTransform(DPR,0,0,DPR,0,0);
+      return {w,h};
+    }
+    let size = fit();
+    window.addEventListener('resize', ()=>{ size = fit(); redraw(); });
+
+    function clamp(x, lo, hi){ return Math.max(lo, Math.min(hi, x)); }
+    function fmt(x, d=3){ return Number(x).toFixed(d).replace('-', '−'); }
+    function signFmt(x, d=2){
+      const s = Math.abs(x).toFixed(d);
+      return (x < 0 ? '−' : '') + s;
+    }
+    function qVal(t,r,s){ return s.a*t*t + 2*s.k*t*r + s.b*r*r; }
+    function toScreen(x,y,w,h){
+      const padL=22, padR=22, padT=20, padB=18;
+      const xmin=-1.6, xmax=1.6, ymin=-1.6, ymax=1.6;
+      const px = padL + (x - xmin)/(xmax - xmin) * (w - padL - padR);
+      const py = padT + (1 - (y - ymin)/(ymax - ymin)) * (h - padT - padB);
+      return [px,py];
+    }
+    function slopeLinePoints(m){
+      const pts = [];
+      for(let t=-1.55;t<=1.55;t+=0.02){ pts.push({x:t, y:m*t}); }
+      return pts.filter(p=>Math.abs(p.y)<=1.58);
+    }
+    function verticalLinePoints(){
+      const pts = [];
+      for(let r=-1.55;r<=1.55;r+=0.02){ pts.push({x:0, y:r}); }
+      return pts;
+    }
+    function setAudit(id, pass, txt){
+      const box = document.getElementById(id + 'box');
+      const lab = document.getElementById(id + 'txt');
+      box.classList.remove('pass','fail');
+      box.classList.add(pass ? 'pass' : 'fail');
+      lab.textContent = txt;
+    }
+    function state(){
+      const a = +aEl.value, k = +kEl.value, b = +bEl.value;
+      const det = a*b - k*k;
+      let sig = '(?,?)', nullDesc = 'none', causal='no light cone', verdict='undetermined';
+      let type='mixed', rPass=true, tPass=true, ePass=Math.abs(det)>1e-6, lines=[];
+      if(Math.abs(det) <= 1e-6){
+        type = 'degenerate';
+        sig = 'degenerate';
+        nullDesc = 'collapsed null line';
+        causal = 'cone collapse';
+        verdict = 'E / nondegeneracy fails';
+      } else if(det < 0){
+        type = 'Lorentzian';
+        sig = '(1,1)';
+        nullDesc = 'two real rays';
+        causal = 'light cone present';
+        verdict = 'Lorentz survives';
+      } else if(a > 0 && b > 0){
+        type = 'positive';
+        sig = '(2,0)';
+        nullDesc = 'no real null directions';
+        causal = 'R blocks this branch';
+        verdict = 'positive-definite excluded by R';
+        rPass = false;
+      } else if(a < 0 && b < 0){
+        type = 'negative';
+        sig = '(0,2)';
+        nullDesc = 'no real null directions';
+        causal = 'T blocks this branch';
+        verdict = 'negative-definite excluded by T';
+        tPass = false;
+      } else {
+        type = 'same-sign rotated';
+        sig = '(2,0)/(0,2)';
+        nullDesc = 'no real null directions';
+        causal = 'definite after rotation';
+        verdict = 'definite branch rejected';
+        if(a > 0) rPass = false; else tPass = false;
+      }
+      if(Math.abs(b) > 1e-6){
+        const disc = k*k - a*b;
+        if(disc > 1e-6){
+          const root = Math.sqrt(disc);
+          lines = [(-k + root)/b, (-k - root)/b].map(m => slopeLinePoints(m));
+        } else if(Math.abs(disc) <= 1e-6){
+          lines = [slopeLinePoints(-k / b)];
+        }
+      } else if(Math.abs(k) > 1e-6){
+        const m = -a/(2*k);
+        lines = [verticalLinePoints(), slopeLinePoints(m)];
+      } else if(Math.abs(a) <= 1e-6){
+        lines = [verticalLinePoints()];
+      }
+      return {a,k,b,det,sig,nullDesc,causal,verdict,type,rPass,tPass,ePass,lines};
+    }
+    function setPreset(name){
+      const presets = {
+        lor:[1,0,-1],
+        tilt:[1,0.5,-1],
+        pos:[1,0,1],
+        neg:[-1,0,-1],
+        deg:[1,1,1]
+      };
+      const p = presets[name] || presets.lor;
+      aEl.value = p[0];
+      kEl.value = p[1];
+      bEl.value = p[2];
+      presetBtns.forEach(btn => btn.classList.toggle('on', btn.dataset.lc === name));
+      redraw();
+    }
+    function redraw(){
+      const s = state();
+      document.getElementById('lcAlab').textContent = signFmt(s.a,2);
+      document.getElementById('lcKlab').textContent = signFmt(s.k,2);
+      document.getElementById('lcBlab').textContent = signFmt(s.b,2);
+      document.getElementById('lcQeq').textContent = fmt(s.a,2) + ' t² ' + (s.k >= 0 ? '+' : '−') + ' ' + fmt(Math.abs(2*s.k),2) + ' tr ' + (s.b >= 0 ? '+' : '−') + ' ' + fmt(Math.abs(s.b),2) + ' r²';
+      document.getElementById('lcDet').textContent = fmt(s.det,4);
+      document.getElementById('lcSig').textContent = s.sig;
+      document.getElementById('lcNull').textContent = s.nullDesc;
+      document.getElementById('lcCausal').textContent = s.causal;
+      document.getElementById('lcVerdict').textContent = s.verdict;
+      setAudit('lcR', s.rPass, s.rPass ? 'survives' : 'blocks +/+');
+      setAudit('lcE', s.ePass, s.ePass ? 'nondeg.' : 'fails');
+      setAudit('lcT', s.tPass, s.tPass ? 'survives' : 'blocks -/-');
+      const explain = document.getElementById('lcExplain');
+      if(!s.ePass){
+        explain.textContent = 'At the degenerate boundary the null directions have collapsed into a single line. The theorem needs a nondegenerate quadratic coefficient form, so cone emergence is not yet complete here.';
+      } else if(s.type === 'positive'){
+        explain.textContent = 'A positive-definite branch has no real null directions at all. Every forward displacement pays positive quadratic cost, so realizability removes this branch before any causal cone can emerge.';
+      } else if(s.type === 'negative'){
+        explain.textContent = 'An all-negative branch also has no real null directions, but here the failure is temporal: the distinguished time direction no longer has positive cost, so Assumption T rejects it.';
+      } else {
+        explain.textContent = 'Once the definite branches are removed and nondegeneracy is kept, the remaining 2D option is Lorentzian. Its null set appears as two real rays, and those rays are exactly the emerging light cone.';
+      }
+
+      const activePreset =
+        Math.abs(s.a-1)<1e-6 && Math.abs(s.k)<1e-6 && Math.abs(s.b+1)<1e-6 ? 'lor' :
+        Math.abs(s.a-1)<1e-6 && Math.abs(s.k-0.5)<0.02 && Math.abs(s.b+1)<1e-6 ? 'tilt' :
+        Math.abs(s.a-1)<1e-6 && Math.abs(s.k)<1e-6 && Math.abs(s.b-1)<1e-6 ? 'pos' :
+        Math.abs(s.a+1)<1e-6 && Math.abs(s.k)<1e-6 && Math.abs(s.b+1)<1e-6 ? 'neg' :
+        Math.abs(s.a-1)<1e-6 && Math.abs(s.k-1)<1e-6 && Math.abs(s.b-1)<1e-6 ? 'deg' : null;
+      presetBtns.forEach(btn => btn.classList.toggle('on', btn.dataset.lc === activePreset));
+
+      const {w,h} = size;
+      ctx.clearRect(0,0,w,h);
+      const img = ctx.createImageData(w,h);
+      const data = img.data;
+      for(let py=0; py<h; py++){
+        for(let px=0; px<w; px++){
+          const x = -1.6 + px / w * 3.2;
+          const y = 1.6 - py / h * 3.2;
+          const v = qVal(x,y,s);
+          const idx = (py*w + px)*4;
+          if(v > 0){
+            data[idx]=246; data[idx+1]=238; data[idx+2]=218; data[idx+3]=175;
+          } else {
+            data[idx]=225; data[idx+1]=229; data[idx+2]=244; data[idx+3]=175;
+          }
+        }
+      }
+      ctx.putImageData(img,0,0);
+
+      ctx.strokeStyle = 'rgba(92,88,80,0.22)';
+      ctx.lineWidth = 1;
+      const [x0,cy] = toScreen(-1.6,0,w,h);
+      const [x1,] = toScreen(1.6,0,w,h);
+      const [cx0,y0] = toScreen(0,-1.6,w,h);
+      const [,y1] = toScreen(0,1.6,w,h);
+      ctx.beginPath();
+      ctx.moveTo(x0,cy); ctx.lineTo(x1,cy);
+      ctx.moveTo(cx0,y0); ctx.lineTo(cx0,y1);
+      ctx.stroke();
+      for(let g=-1; g<=1; g+=0.5){
+        if(Math.abs(g) < 1e-6) continue;
+        const [gx0,gy0] = toScreen(g,-1.6,w,h);
+        const [gx1,gy1] = toScreen(g,1.6,w,h);
+        const [hx0,hy0] = toScreen(-1.6,g,w,h);
+        const [hx1,hy1] = toScreen(1.6,g,w,h);
+        ctx.strokeStyle = 'rgba(92,88,80,0.08)';
+        ctx.beginPath(); ctx.moveTo(gx0,gy0); ctx.lineTo(gx1,gy1); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(hx0,hy0); ctx.lineTo(hx1,hy1); ctx.stroke();
+      }
+
+      ctx.font = "11px JetBrains Mono";
+      ctx.fillStyle = 'rgba(92,88,80,0.72)';
+      ctx.fillText('t', x1-10, cy-6);
+      ctx.fillText('r', cx0+6, 16);
+
+      if(s.lines.length){
+        ctx.save();
+        ctx.strokeStyle = '#b35e34';
+        ctx.lineWidth = 2.6;
+        ctx.setLineDash([7,5]);
+        s.lines.forEach(line=>{
+          ctx.beginPath();
+          line.forEach((pt,i)=>{
+            const [px,py] = toScreen(pt.x,pt.y,w,h);
+            if(i===0) ctx.moveTo(px,py); else ctx.lineTo(px,py);
+          });
+          ctx.stroke();
+        });
+        ctx.restore();
+      }
+
+      ctx.fillStyle = 'rgba(92,88,80,0.8)';
+      ctx.font = "italic 13px Newsreader";
+      ctx.fillText('real null set from the surviving quadratic form', 18, 20);
+      if(s.type === 'Lorentzian'){
+        ctx.fillStyle = 'rgba(45,64,120,0.84)';
+        ctx.fillText('spatially realizable sectors', 18, h-16);
+        ctx.fillStyle = 'rgba(116,84,34,0.84)';
+        ctx.fillText('positive-cost temporal sectors', w-210, h-16);
+      } else if(s.type === 'positive'){
+        ctx.fillStyle = 'rgba(116,84,34,0.84)';
+        ctx.fillText('every direction pays positive quadratic cost', 18, h-16);
+      } else if(s.type === 'negative'){
+        ctx.fillStyle = 'rgba(116,84,34,0.84)';
+        ctx.fillText('temporal cost orientation is lost here', 18, h-16);
+      } else {
+        ctx.fillStyle = 'rgba(116,84,34,0.84)';
+        ctx.fillText('null cone collapses at the degenerate boundary', 18, h-16);
+      }
+    }
+    [aEl,kEl,bEl].forEach(el => el.addEventListener('input', ()=>{
+      presetBtns.forEach(btn=> btn.classList.remove('on'));
+      redraw();
+    }));
+    presetBtns.forEach(btn => btn.addEventListener('click', ()=> setPreset(btn.dataset.lc)));
+    setPreset('lor');
   })();
   </script>
 </section>
