@@ -28,7 +28,7 @@
 
 \textit{Framework.} Here time is modelled as the cost of change, with information time $dt_{\mathrm{info}}:=d\Phi/H$. The object constrained is not $dt_{\mathrm{info}}$ itself, but the signed leading quadratic form $G$ associated with the local second-order expansion of $dt_{\mathrm{info}}^{2}$. Modelling this form as satisfying Axioms~R, E, T of~\cite{Realizability} yields, under nondegeneracy, $\mathrm{Sig}(G)=(1,1)$, equivalently $\det G<0$; the unit-cost locus is $K(x)=x^{\top}Gx=1$.
 
-\textit{Dynamics and thermodynamics.} Within the symplectic--dissipative class $GA=\alpha J-GD$, the evolution law takes the uniquely reduced form $\dot x=(J_G-D)\nabla V$. Near $K=1$, the framework yields a local Clausius relation, supplying Route~A's thermodynamic bridge to the Jacobson argument once $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ and $S\propto A$ are given.
+\textit{Dynamics and thermodynamics.} Within the symplectic--dissipative class $GA=\alpha J-GD$, the evolution law takes the uniquely reduced form $\dot x=(J_G-D)\nabla V$. Near $K=1$, the framework supplies the ingredients for a local Clausius relation, thereby providing Route~A's thermodynamic bridge to the Jacobson argument once $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ and $S\propto A$ are given.
 
 \textit{Gravitational content.} In Route~B, for static, spherically symmetric metrics with $f>0$, the conjectured field-level condition $\sigma_2^2\Box\ln\sigma_i=1$ is algebraically equivalent to the vacuum Einstein equations $R_{\mu\nu}=0$ (Theorem~\ref{thm:field}). Thus Lorentzian structure is supplied internally at the point level, while the vacuum Einstein equations admit an equivalent reformulation in the spherical sector.
 \end{abstract}
@@ -560,7 +560,7 @@ Equivalently, $K_2{=}1$ states that the Misner--Sharp mass
 $m=\frac{r}{2}(1{-}f)$ is constant: $dm/dr=(1{-}K_2)/2=0$.
 
 \medskip\noindent
-The following is an equivalence theorem in the spherical vacuum sector, not an autonomous derivation: it asserts that the conjectured eigenvalue condition (introduced as an external input) is algebraically equivalent to $R_{\mu\nu}=0$.
+The following is an equivalence theorem in the spherical vacuum sector, not an autonomous derivation: it asserts that the conjectured eigenvalue condition, introduced as a field-level assumption rather than derived from the framework's axioms, is algebraically equivalent to $R_{\mu\nu}=0$.
 
 \begin{theorem}[Field-Level Equivalence]\label{thm:field}
 For~\eqref{eq:metric} with $f\in C^{2}(I)$ and $f>0$ on an interval $I\subset(0,\infty)$ (so that $\sigma_{1}=r\sqrt{f}$ and $\ln\sigma_{1}$ are real), and $K_1,K_2$ as in Definition~\ref{def:esc}:
@@ -738,9 +738,9 @@ The adjective ``soft'' emphasises that the bound follows from the validity regim
 
 \subsection*{Two routes: one derivation, one equivalence theorem}
 
-Within Route~A, the Einstein equations are reached via stochastic dynamics and the Jacobson argument (\S\ref{sec:thermo}), once the required external identifications are supplied; Route~B establishes a strict algebraic equivalence between the conjectured eigenvalue condition and $R_{\mu\nu}=0$ in spherical vacuum, with no thermodynamic input.
+Within Route~A, once the required external identifications are supplied, the Einstein equations are reached via stochastic dynamics and the Jacobson argument (\S\ref{sec:thermo}); Route~B establishes a strict algebraic equivalence between the conjectured eigenvalue condition and $R_{\mu\nu}=0$ in spherical vacuum, with no thermodynamic input.
 
-The input structure of both routes --- including the Jacobson inputs and the external identifications $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ and $S\propto A$ --- is summarised in Fig.~\ref{fig:routes} and detailed in \S\ref{sec:thermo}. The novelty here is that Lorentzian signature, normally an external assumption in entropic-gravity arguments, is supplied internally by realizability (Theorem~\ref{thm:equivalence}, under isotropic linearisation).
+The input structure of both routes --- including the Jacobson inputs and the external identifications $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ and $S\propto A$ --- is summarised in Fig.~\ref{fig:routes} and detailed in \S\ref{sec:thermo}. The novelty here is that Lorentzian signature, normally an external assumption in entropic-gravity arguments, is supplied internally by the realizability bridge of Law~I; Theorem~\ref{thm:equivalence} gives its isotropic stability reading.
 
 The two routes meet in the vacuum sector: Route~B establishes $R_{\mu\nu}=0$ directly, while Route~A recovers the same conclusion via $G_{\mu\nu}=8\pi T_{\mu\nu}$ with $T_{\mu\nu}=0$.
 
@@ -790,7 +790,7 @@ The two routes meet in the vacuum sector: Route~B establishes $R_{\mu\nu}=0$ dir
 \node[title, above=0.1cm of OU] {Route A: thermodynamic bridge};
 \node[title, above=0.1cm of sigma] {Route B: equivalence theorem};
 \end{tikzpicture}
-\caption{Two routes connecting to the Einstein equations. \emph{Route A} (left, thermodynamic bridge): Class A fluctuations near $\{K=1\}$ $\to$ OU dynamics $\to$ local Clausius $\to$ Jacobson argument $\to$ Einstein equations. Jacobson requires three inputs (grey dashed): Lorentzian signature $\mathrm{Sig}(G)=(1,1)$ (supplied by realizability, Theorem~\ref{thm:equivalence}); local Clausius (requires the external $T_{\mathrm{eff}}=T_{\mathrm{tol}}$); and the entropy-area law $S\propto A$ (external). Hence two external inputs overall: $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ and $S\propto A$. \emph{Route B} (right, equivalence theorem): $K{=}1\!\to\!\sigma_2^2\Box\ln\sigma_i=1$ is dashed (conjectured field-level analogue); $\sigma_2^2\Box\ln\sigma_i=1\Leftrightarrow R_{\mu\nu}=0$ is a \emph{strict algebraic equivalence} in spherically symmetric vacuum (Theorem~\ref{thm:field}).}
+\caption{Two routes connecting to the Einstein equations. \emph{Route A} (left, thermodynamic bridge): Class A fluctuations near $\{K=1\}$ $\to$ OU dynamics $\to$ local Clausius $\to$ Jacobson argument $\to$ Einstein equations. Jacobson requires three inputs (grey dashed): Lorentzian signature $\mathrm{Sig}(G)=(1,1)$ (supplied internally by Law~I via realizability; Theorem~\ref{thm:equivalence} provides its isotropic stability reading); local Clausius (requires the external $T_{\mathrm{eff}}=T_{\mathrm{tol}}$); and the entropy-area law $S\propto A$ (external). Hence two external inputs overall: $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ and $S\propto A$. \emph{Route B} (right, equivalence theorem): $K{=}1\!\to\!\sigma_2^2\Box\ln\sigma_i=1$ is dashed (conjectured field-level analogue); $\sigma_2^2\Box\ln\sigma_i=1\Leftrightarrow R_{\mu\nu}=0$ is a \emph{strict algebraic equivalence} in spherically symmetric vacuum (Theorem~\ref{thm:field}).}
 \label{fig:routes}
 \end{figure}
 
