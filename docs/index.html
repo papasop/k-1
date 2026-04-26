@@ -3250,12 +3250,14 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
           <b>Vacuum null check.</b>
           <div style="display:grid;grid-template-columns:auto 1fr;gap:6px 10px;margin-top:8px;font:11px/1.35 'JetBrains Mono',monospace;color:var(--muted)">
             <span>Raychaudhuri side</span><b id="kRay">K = 1</b>
-            <span>R_{\u03bc\u03bd}\u2113^\u03bc\u2113^\u03bd</span><b id="kRicci">0.0e+0</b>
+            <span>R_{\u03bc\u03bd}\u2113^\u03bc\u2113^\u03bd (indep.)</span><b id="kRicci">0.0e+0</b>
+            <span>equivalence backfill</span><b id="kRicciBackfill">0.0e+0</b>
+            <span>indep. − backfill</span><b id="kRicciGap">0.0e+0</b>
             <span>Kinematic identity</span><b id="kKin">matched</b>
             <span>Mass dependence</span><b id="kMassDep">drops out</b>
           </div>
           <div class="reading" style="margin-top:10px;background:rgba(255,255,255,0.62)">
-            <b>Display caveat.</b> <span id="kRicciCaveat">The <code>R_{\mu\nu}\ell^\mu\ell^\nu</code> readout shown here is reconstructed from the equivalence chain <code>K = 1 - \tfrac12 \Sigma R_{\mu\nu}\ell^\mu\ell^\nu</code>. It is not an independent Newman–Penrose / Ricci solver built from the full Kerr connection.</span>
+            <b>Independent solver.</b> <span id="kRicciCaveat">The first Ricci readout is now computed numerically from the full Boyer–Lindquist Kerr connection and then contracted with the principal null vector. The backfill line remains only as a comparison against the paper's equivalence chain <code>K = 1 - \tfrac12 \Sigma R_{\mu\nu}\ell^\mu\ell^\nu</code>. Near the Boyer–Lindquist horizon, the independent contraction becomes numerically ill-conditioned because the Kinnersley null vector carries <code>\u0394^{-1}</code> factors.</span>
           </div>
         </div>
       </div>
@@ -5019,6 +5021,125 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       context.setTransform(DPR,0,0,DPR,0,0);
       return {w,h};
     }
+    function zeroMat4(){
+      return [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
+    }
+    function invert4(m){
+      const n = 4;
+      const aug = Array.from({length:n}, (_,i)=>{
+        const row = new Array(2*n).fill(0);
+        for(let j=0;j<n;j++) row[j] = m[i][j];
+        row[n+i] = 1;
+        return row;
+      });
+      for(let col=0; col<n; col++){
+        let pivot = col;
+        for(let r=col+1; r<n; r++) if(Math.abs(aug[r][col]) > Math.abs(aug[pivot][col])) pivot = r;
+        if(Math.abs(aug[pivot][col]) < 1e-15) return null;
+        if(pivot !== col){ const tmp = aug[col]; aug[col] = aug[pivot]; aug[pivot] = tmp; }
+        const scale = aug[col][col];
+        for(let j=0;j<2*n;j++) aug[col][j] /= scale;
+        for(let r=0; r<n; r++){
+          if(r === col) continue;
+          const factor = aug[r][col];
+          if(Math.abs(factor) < 1e-15) continue;
+          for(let j=0;j<2*n;j++) aug[r][j] -= factor * aug[col][j];
+        }
+      }
+      return aug.map(row => row.slice(n));
+    }
+    function kerrMetricBL(M, a, r, theta){
+      const s = Math.sin(theta);
+      const c = Math.cos(theta);
+      const s2 = s*s;
+      const c2 = c*c;
+      const Sigma = r*r + a*a*c2;
+      const Delta = r*r - 2*M*r + a*a;
+      const A = r*r + a*a;
+      const g = zeroMat4();
+      g[0][0] = -(1 - (2*M*r)/Sigma);
+      g[0][3] = g[3][0] = -(2*M*a*r*s2)/Sigma;
+      g[1][1] = Sigma / Delta;
+      g[2][2] = Sigma;
+      g[3][3] = s2 * (A + (2*M*a*a*r*s2)/Sigma);
+      return {g,Sigma,Delta,c2};
+    }
+    function diffMetric(M, a, r, theta, coord, h){
+      const z = zeroMat4();
+      if(coord !== 1 && coord !== 2) return z;
+      const rp = coord === 1 ? r + h : r;
+      const rm = coord === 1 ? Math.max(r - h, 1e-4) : r;
+      const tp = coord === 2 ? Math.min(theta + h, Math.PI - 1e-5) : theta;
+      const tm = coord === 2 ? Math.max(theta - h, 1e-5) : theta;
+      const gp = kerrMetricBL(M, a, rp, tp).g;
+      const gm = kerrMetricBL(M, a, rm, tm).g;
+      const denom = coord === 1 ? (rp - rm) : (tp - tm);
+      for(let i=0;i<4;i++) for(let j=0;j<4;j++) z[i][j] = (gp[i][j] - gm[i][j]) / denom;
+      return z;
+    }
+    function gammaAt(M, a, r, theta){
+      const base = kerrMetricBL(M, a, r, theta);
+      const gInv = invert4(base.g);
+      if(!gInv) return null;
+      const hr = Math.max(1e-4, 1e-4 * Math.max(1, Math.abs(r)));
+      const ht = 1e-4;
+      const dg = [zeroMat4(), diffMetric(M,a,r,theta,1,hr), diffMetric(M,a,r,theta,2,ht), zeroMat4()];
+      const Gamma = Array.from({length:4}, ()=> Array.from({length:4}, ()=> new Array(4).fill(0)));
+      for(let rho=0; rho<4; rho++){
+        for(let mu=0; mu<4; mu++){
+          for(let nu=0; nu<4; nu++){
+            let sum = 0;
+            for(let sigma=0; sigma<4; sigma++){
+              sum += gInv[rho][sigma] * (dg[mu][sigma][nu] + dg[nu][sigma][mu] - dg[sigma][mu][nu]);
+            }
+            Gamma[rho][mu][nu] = 0.5 * sum;
+          }
+        }
+      }
+      return {Gamma,Delta:base.Delta};
+    }
+    function ricciNullIndependent(M, a, r, theta){
+      const th = Math.min(Math.max(theta, 1e-5), Math.PI - 1e-5);
+      const g0 = gammaAt(M, a, r, th);
+      if(!g0 || !Number.isFinite(g0.Delta) || Math.abs(g0.Delta) < 1e-3) return {value: NaN, mode:'ill-conditioned near Δ = 0'};
+      const hr = Math.max(1e-4, 1e-4 * Math.max(1, Math.abs(r)));
+      const ht = 1e-4;
+      const rp = r + hr, rm = Math.max(r - hr, 1e-4);
+      const tp = Math.min(th + ht, Math.PI - 1e-5), tm = Math.max(th - ht, 1e-5);
+      const grP = gammaAt(M, a, rp, th), grM = gammaAt(M, a, rm, th);
+      const gtP = gammaAt(M, a, r, tp), gtM = gammaAt(M, a, r, tm);
+      if(!grP || !grM || !gtP || !gtM) return {value: NaN, mode:'metric inverse failed'};
+      const dGamma = Array.from({length:4}, ()=> Array.from({length:4}, ()=> Array.from({length:4}, ()=> new Array(4).fill(0))));
+      for(let rho=0; rho<4; rho++){
+        for(let mu=0; mu<4; mu++){
+          for(let nu=0; nu<4; nu++){
+            dGamma[1][rho][mu][nu] = (grP.Gamma[rho][mu][nu] - grM.Gamma[rho][mu][nu]) / (rp - rm);
+            dGamma[2][rho][mu][nu] = (gtP.Gamma[rho][mu][nu] - gtM.Gamma[rho][mu][nu]) / (tp - tm);
+          }
+        }
+      }
+      const G = g0.Gamma;
+      const Ric = Array.from({length:4}, ()=> new Array(4).fill(0));
+      for(let mu=0; mu<4; mu++){
+        for(let nu=0; nu<4; nu++){
+          let t1 = 0, t2 = 0, t3 = 0, t4 = 0;
+          for(let lam=0; lam<4; lam++){
+            if(lam === 1 || lam === 2) t1 += dGamma[lam][lam][mu][nu];
+            if(nu === 1 || nu === 2) t2 += dGamma[nu][lam][mu][lam];
+            let trace = 0;
+            for(let sig=0; sig<4; sig++) trace += G[sig][lam][sig];
+            t3 += G[lam][mu][nu] * trace;
+            for(let sig=0; sig<4; sig++) t4 += G[sig][mu][lam] * G[lam][nu][sig];
+          }
+          Ric[mu][nu] = t1 - t2 + t3 - t4;
+        }
+      }
+      const Delta = g0.Delta;
+      const ell = [(r*r + a*a) / Delta, 1, 0, a / Delta];
+      let val = 0;
+      for(let mu=0; mu<4; mu++) for(let nu=0; nu<4; nu++) val += Ric[mu][nu] * ell[mu] * ell[nu];
+      return {value: val, mode:'full Kerr connection'};
+    }
     let sz = fitCanvas(canvas, ctx);
     let szSur = surCanvas && surCtx ? fitCanvas(surCanvas, surCtx) : null;
     window.addEventListener('resize', ()=>{
@@ -5042,10 +5163,11 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       const box = d2Ln + thetaExp * drLn;
       const K = Sigma * box;
       const residual = K - 1;
-      const ricciNull = 2 * (1 - K) / Sigma;
+      const ricciBackfill = 2 * (1 - K) / Sigma;
+      const ricciIndep = ricciNullIndependent(M, a, r, theta);
       const kinLhs = 2 * r * r / (Sigma * Sigma) + 2 * a * a * c2 / (Sigma * Sigma);
       const kinRhs = 2 / Sigma;
-      return {M,a,thetaDeg,theta,c2,r,Sigma,thetaExp,drLn,d2Ln,box,K,residual,ricciNull,kinLhs,kinRhs};
+      return {M,a,thetaDeg,theta,c2,r,Sigma,thetaExp,drLn,d2Ln,box,K,residual,ricciBackfill,ricciIndep,kinLhs,kinRhs};
     }
 
     function fmt(x,d=3){ return Number.isFinite(x) ? x.toFixed(d) : '—'; }
@@ -5087,12 +5209,17 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       document.getElementById('kBox').textContent = fmt(s.box, 6);
       document.getElementById('kK').textContent = fmt(s.K, 6);
       document.getElementById('kRes').textContent = expfmt(s.residual);
-      document.getElementById('kRicci').textContent = expfmt(s.ricciNull);
+      document.getElementById('kRicci').textContent = expfmt(s.ricciIndep.value);
+      document.getElementById('kRicciBackfill').textContent = expfmt(s.ricciBackfill);
+      document.getElementById('kRicciGap').textContent = expfmt(s.ricciIndep.value - s.ricciBackfill);
       document.getElementById('kKinLhs').textContent = fmt(s.kinLhs, 6);
       document.getElementById('kKinRhs').textContent = fmt(s.kinRhs, 6);
       document.getElementById('kRay').textContent = Math.abs(s.residual) < 1e-12 ? 'K = 1' : 'K ≠ 1';
       document.getElementById('kKin').textContent = Math.abs(s.kinLhs - s.kinRhs) < 1e-12 ? 'matched' : 'mismatch';
       document.getElementById('kMassDep').textContent = 'M sets Δ, not K';
+      document.getElementById('kRicciCaveat').textContent = Number.isFinite(s.ricciIndep.value)
+        ? 'The first Ricci readout is computed numerically from the full Boyer–Lindquist Kerr connection and then contracted with the principal null vector. The backfill line remains only as a comparison against the paper\\'s equivalence chain K = 1 - 1/2 Σ R_{μν}ℓ^μℓ^ν.'
+        : 'The independent Ricci contraction becomes numerically ill-conditioned near the Boyer–Lindquist horizon because the Kinnersley null vector carries Δ^{-1} factors there. The backfill line remains available as an algebraic comparison away from that chart singularity.';
       document.getElementById('kBoxBar').style.width = (clamp(s.box / 0.25, 0, 1) * 100).toFixed(1) + '%';
       document.getElementById('kKBar').style.width = (clamp(s.K / 2, 0, 1) * 100).toFixed(1) + '%';
       document.getElementById('kExplain').textContent =
