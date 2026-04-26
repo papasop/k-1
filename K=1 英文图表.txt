@@ -30,7 +30,7 @@
 
 \textit{Dynamics and thermodynamics.} Within the symplectic--dissipative class $GA=\alpha J-GD$, the evolution law takes the uniquely reduced form $\dot x=(J_G-D)\nabla V$. Near $K=1$, the framework supplies the ingredients for a local Clausius relation, thereby providing Route~A's thermodynamic bridge to the Jacobson argument once $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ and $S\propto A$ are given.
 
-\textit{Gravitational content.} In Route~B, for static, spherically symmetric metrics with $f>0$, the conjectured field-level condition $\sigma_2^2\Box\ln\sigma_i=1$ is algebraically equivalent to the vacuum Einstein equations $R_{\mu\nu}=0$ (Theorem~\ref{thm:field}). Thus Lorentzian structure is supplied internally at the point level, while the vacuum Einstein equations admit an equivalent reformulation in the spherical sector.
+\textit{Gravitational content.} In Route~B, for static, spherically symmetric metrics with $f>0$, the conjectured field-level condition $\sigma_2^2\Box\ln\sigma_i=1$ is shown to be algebraically equivalent to the vacuum Einstein equations $R_{\mu\nu}=0$ in the spherical vacuum sector (Theorem~\ref{thm:field}). Thus Lorentzian type is supplied internally at the point level, while the vacuum Einstein equations admit an equivalent reformulation in that sector.
 \end{abstract}
 
 \noindent\textbf{Keywords:} Lorentzian signature; Information time; Symplectic-dissipative dynamics; Jacobson argument; Rindler horizon
@@ -748,7 +748,7 @@ The adjective ``soft'' emphasises that the bound follows from the validity regim
 
 \subsection*{Two routes: one derivation, one equivalence theorem}
 
-Within Route~A, once the required external identifications are supplied, the Einstein equations are reached via stochastic dynamics and the Jacobson argument (\S\ref{sec:thermo}); Route~B establishes a strict algebraic equivalence between the conjectured eigenvalue condition and $R_{\mu\nu}=0$ in the spherical vacuum sector, with no thermodynamic input.
+Within Route~A, once the required external identifications are supplied, the Einstein equations are conditionally recovered via stochastic dynamics and the Jacobson argument (\S\ref{sec:thermo}); Route~B establishes a strict algebraic equivalence between the conjectured eigenvalue condition and $R_{\mu\nu}=0$ in the spherical vacuum sector, with no thermodynamic input.
 
 The input structure of both routes --- including the Jacobson inputs and the external identifications $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ and $S\propto A$ --- is summarised in Fig.~\ref{fig:routes} and detailed in \S\ref{sec:thermo}. The novelty here is that Lorentzian signature, normally an external assumption in entropic-gravity arguments, is supplied internally by the realizability bridge of Law~I; Theorem~\ref{thm:equivalence} gives its isotropic stability reading.
 
