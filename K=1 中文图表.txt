@@ -73,7 +73,7 @@
 
 \smallskip\noindent\textbf{框架.\ } 此处时间被建模为变化的代价, 信息时间为 $dt_{\mathrm{info}}:=d\Phi/H$。所约束的对象不是 $dt_{\mathrm{info}}$ 本身, 而是与 $dt_{\mathrm{info}}^{2}$ 的局部二阶展开关联的符号化主二次型 $G$。将此二次型建模为满足~\cite{Realizability} 的公理 R, E, T, 在非退化性下, 给出 $\mathrm{Sig}(G)=(1,1)$, 等价于 $\det G<0$; 单位代价轨迹为 $K(x)=x^{\top}Gx=1$。
 
-\smallskip\noindent\textbf{动力学与热力学.\ } 在辛-耗散类 $GA=\alpha J-GD$ 内, 唯一演化律为 $\dot x=(J_G-D)\nabla V$。在 $K=1$ 附近, 本框架给出局部 Clausius 关系, 在给定 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 与 $S\propto A$ 时, 提供途径 A 通向 Jacobson 论证的热力学桥梁。
+\smallskip\noindent\textbf{动力学与热力学.\ } 在辛-耗散类 $GA=\alpha J-GD$ 内, 演化律取唯一约简的形式 $\dot x=(J_G-D)\nabla V$。在 $K=1$ 附近, 本框架给出局部 Clausius 关系, 在给定 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 与 $S\propto A$ 时, 提供途径 A 通向 Jacobson 论证的热力学桥梁。
 
 \smallskip\noindent\textbf{引力内容.\ } 在途径 B 中, 对于 $f>0$ 的静态、球对称度规, 所猜想的场级条件 $\sigma_2^2\Box\ln\sigma_i=1$ 在代数上等价于真空 Einstein 方程 $R_{\mu\nu}=0$(定理~\ref{thm:field})。因此 Lorentz 结构在点级被内部供应, 而真空 Einstein 方程在球对称部分中接纳等价的重新表述。
 \end{abstract}
@@ -463,7 +463,7 @@ $\dot{K}=2x^{\top}G\dot{x}=4(K-1)\,x^{\top}G(J_{G}-d_{c}I)Gx$。由 $GJ_{G}=\alp
 \node[label, green!50!black, right] at (1.05, 1.0) {B 类 (运动学)};
 \node[label, green!50!black, left] at (-1.05, 1.0) {boost};
 \end{tikzpicture}
-\caption{Rindler 度规 $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$ 下的 $\{K=1\}$ 流形. 双曲线的渐近线为光锥. 在基点 $x_{*}$ 处, A 类(红, 双向箭头): 沿 $\nabla K$ 法向偏离 $\{K=1\}$ 的热力学涨落; B 类(绿): 沿曲线的切向 boost, 热力学上惰性——在 $x_{*}=(0,1)$ 处 $dx_{2}/dx_{1}|_{x_{*}}=0$, 切向恰为水平方向. 图中取 $\kappa\ell=1$ 且 $x_{*}=(0,1)$, 满足归一化 $x_{*}^{\top}G^{2}x_{*}=1$, 此时恢复率简化为 $\kappa_{K}=4d_{c}$(一般基点的公式见 \S\ref{sec:lawIII}).}
+\caption{Rindler 度规 $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$ 下的 $\{K=1\}$ 流形. 双曲线的渐近线为光锥. 在基点 $x_{*}$ 处, A 类(红, 双向箭头): 沿 $\nabla K$ 法向偏离 $\{K=1\}$ 的热力学涨落; B 类(绿): 沿曲线的切向 boost, 热力学上惰性——在 $x_{*}=(0,1)$ 处 $dx_{2}/dx_{1}|_{x_{*}}=0$, 切向恰为水平方向. 图中取 $\kappa\ell=1$ 且 $x_{*}=(0,1)$, 满足归一化 $x_{*}^{\top}G^{2}x_{*}=1$, 此时恢复率简化为 $\kappa_{K}=4d_{c}$(一般基点的公式将在本节中讨论).}
 \label{fig:K1geometry}
 \end{figure}
 
