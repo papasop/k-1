@@ -5218,7 +5218,7 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       document.getElementById('kKin').textContent = Math.abs(s.kinLhs - s.kinRhs) < 1e-12 ? 'matched' : 'mismatch';
       document.getElementById('kMassDep').textContent = 'M sets Δ, not K';
       document.getElementById('kRicciCaveat').textContent = Number.isFinite(s.ricciIndep.value)
-        ? 'The first Ricci readout is computed numerically from the full Boyer–Lindquist Kerr connection and then contracted with the principal null vector. The backfill line remains only as a comparison against the paper\\'s equivalence chain K = 1 - 1/2 Σ R_{μν}ℓ^μℓ^ν.'
+        ? 'The first Ricci readout is computed numerically from the full Boyer–Lindquist Kerr connection and then contracted with the principal null vector. The backfill line remains only as a comparison against the paper\'s equivalence chain K = 1 - 1/2 Σ R_{μν}ℓ^μℓ^ν.'
         : 'The independent Ricci contraction becomes numerically ill-conditioned near the Boyer–Lindquist horizon because the Kinnersley null vector carries Δ^{-1} factors there. The backfill line remains available as an algebraic comparison away from that chart singularity.';
       document.getElementById('kBoxBar').style.width = (clamp(s.box / 0.25, 0, 1) * 100).toFixed(1) + '%';
       document.getElementById('kKBar').style.width = (clamp(s.K / 2, 0, 1) * 100).toFixed(1) + '%';
