@@ -1676,6 +1676,16 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
           <button data-qs="born">Born</button>
         </div>
 
+        <h6 data-orig-html="Collapse snapshots">Collapse snapshots</h6>
+        <div class="seg" id="qcSnap" style="margin-bottom:10px;flex-wrap:wrap">
+          <button data-qsnap="pre" class="on">pre-measurement</button>
+          <button data-qsnap="exc">excursion</button>
+          <button data-qsnap="post">post-return</button>
+        </div>
+        <div class="reading" style="margin:0 0 14px 0;padding:10px 12px;background:rgba(255,252,248,0.82)">
+          <b>Snapshot view.</b> <span id="qcSnapExplain">Before the excursion opens, the Lorentzian branch carries the full OU → FP → Schr → Born chain. Raising the catalyst will pull the later snapshots deeper into the Euclidean sector, but it does not create the channel by itself.</span>
+        </div>
+
         <h6 data-orig-html="Status">Status</h6>
         <div class="eq-val"><span class="lbl">signature phase</span><b id="qcPhase">Lorentzian</b></div>
         <div class="eq-val"><span class="lbl">effective d_c</span><b id="qcDc">1.000</b></div>
@@ -2971,12 +2981,19 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
     const collapseBar = document.getElementById('qcCollapseBar');
     const interpEl = document.getElementById('qcInterp');
     const stepExplainEl = document.getElementById('qcStepExplain');
+    const snapExplainEl = document.getElementById('qcSnapExplain');
     const ouEl = document.getElementById('qcOU');
     const fpEl = document.getElementById('qcFP');
     const psiEl = document.getElementById('qcPsi');
     const bornEl = document.getElementById('qcBorn');
     const stageButtons = document.querySelectorAll('#qcStage button');
+    const snapButtons = document.querySelectorAll('#qcSnap button');
     let stageFocus = 'ou';
+    const snapshotDefs = {
+      pre: {tau: 0.18, stage: 'ou'},
+      exc: {tau: 0.50, stage: 'schr'},
+      post: {tau: 0.84, stage: 'born'}
+    };
 
     function sizeCanvas(){
       const rect = canvas.getBoundingClientRect();
@@ -2992,19 +3009,18 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       const t = clamp((x - a) / (b - a), 0, 1);
       return t * t * (3 - 2 * t);
     }
+    function signatureAt(tau, depth, kick){
+      const effDepth = clamp(depth * (1 + 0.7 * kick), 0.15, 1.25);
+      if(tau < 0.32) return 1 - (0.15 + 0.18 * kick) * smoothstep(0.20, 0.32, tau);
+      if(tau < 0.68) return -effDepth * Math.sin(Math.PI * (tau - 0.32) / 0.36);
+      return (0.85 - 0.12 * kick) + (0.15 + 0.12 * kick) * smoothstep(0.68, 1.00, tau);
+    }
     function state(){
       const tau = +tauEl.value;
       const depth = +depthEl.value;
       const kick = +kickEl.value;
       const effDepth = clamp(depth * (1 + 0.7 * kick), 0.15, 1.25);
-      let signature = 1;
-      if(tau < 0.32){
-        signature = 1 - (0.15 + 0.18 * kick) * smoothstep(0.20, 0.32, tau);
-      } else if(tau < 0.68){
-        signature = -effDepth * Math.sin(Math.PI * (tau - 0.32) / 0.36);
-      } else {
-        signature = (0.85 - 0.12 * kick) + (0.15 + 0.12 * kick) * smoothstep(0.68, 1.00, tau);
-      }
+      const signature = signatureAt(tau, depth, kick);
       const lorWeight = clamp((signature + 0.08) / 1.08, 0, 1);
       const collapse = 1 - lorWeight;
       const dc = signature > 0 ? signature : NaN;
@@ -3053,6 +3069,15 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
         born: 'Born is the final identification, not the first failure. It breaks because the upstream OU/FP/Schr scaffold has already been lost.'
       };
       stepExplainEl.textContent = focusText[stageFocus];
+
+      const snapText = {
+        pre: 'Before the excursion opens, the Lorentzian branch carries the full OU → FP → Schr → Born chain. Raising the catalyst will pull the later snapshots deeper into the Euclidean sector, but it does not create the channel by itself.',
+        exc: 'Inside the excursion, the catalyst mainly deepens the Euclidean dip. This is the preferred collapse snapshot: the real d_c is gone first, then the stationary density and normalizable wavefunction disappear with it.',
+        post: 'After return, the catalyst no longer creates new failure; it only leaves a wider re-locking tail. The OU scaffold reforms first, then the density and Born identification settle back in.'
+      };
+      const currentSnap = s.tau < 0.35 ? 'pre' : s.tau < 0.68 ? 'exc' : 'post';
+      snapExplainEl.textContent = snapText[currentSnap];
+      snapButtons.forEach(btn => btn.classList.toggle('on', btn.dataset.qsnap === currentSnap));
     }
     function drawAxes(x, y, w, h){
       ctx.save();
@@ -3121,6 +3146,25 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       drawTrack(bot, (_, s) => Math.pow(clamp((s + 0.08) / 1.08, 0, 1), 0.72), 'oklch(0.55 0.13 150)', 2.4);
       drawTrack(bot, (_, s) => 1 - clamp((s + 0.08) / 1.08, 0, 1), 'oklch(0.55 0.17 25)', 1.6, true);
 
+      ['pre', 'exc', 'post'].forEach((key, idx) => {
+        const t = snapshotDefs[key].tau;
+        const sig = signatureAt(t, st.depth, st.kick);
+        const amp = Math.pow(clamp((sig + 0.08) / 1.08, 0, 1), 0.72);
+        const sx = curveX(top, t);
+        const syTop = curveY(top, sig);
+        const syBot = curveY(bot, amp);
+        ctx.save();
+        ctx.strokeStyle = ['rgba(80,90,180,0.52)','rgba(180,92,48,0.6)','rgba(72,140,108,0.6)'][idx];
+        ctx.fillStyle = 'rgba(255,250,244,0.98)';
+        ctx.lineWidth = 1.4;
+        ctx.beginPath(); ctx.arc(sx, syTop, 4.4, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+        ctx.beginPath(); ctx.arc(sx, syBot, 4.4, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+        ctx.font = "10px JetBrains Mono";
+        ctx.fillStyle = 'rgba(50,46,42,0.88)';
+        ctx.fillText(key === 'pre' ? 'pre' : key === 'exc' ? 'exc' : 'post', sx - 10, top.y - 7);
+        ctx.restore();
+      });
+
       const px = curveX(top, st.tau);
       const pySig = curveY(top, st.signature);
       const pyAmp = curveY(bot, st.amp);
@@ -3168,6 +3212,14 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
     stageButtons.forEach(btn => btn.addEventListener('click', ()=>{
       stageFocus = btn.dataset.qs;
       stageButtons.forEach(x => x.classList.toggle('on', x === btn));
+      redraw();
+    }));
+    snapButtons.forEach(btn => btn.addEventListener('click', ()=>{
+      const cfg = snapshotDefs[btn.dataset.qsnap];
+      tauEl.value = cfg.tau.toFixed(3);
+      tauLab.textContent = (+tauEl.value).toFixed(2);
+      stageFocus = cfg.stage;
+      stageButtons.forEach(x => x.classList.toggle('on', x.dataset.qs === stageFocus));
       redraw();
     }));
     window.addEventListener('resize', redraw, {passive:true});
