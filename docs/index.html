@@ -1597,6 +1597,13 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
           <span style="display:flex;justify-content:space-between">σ noise <b id="qmNoiseLab" style="color:var(--accent-ink)">0.10</b></span>
           <input id="qmNoise" type="range" min="0.02" max="0.30" step="0.005" value="0.10">
         </label>
+        <label style="display:flex;flex-direction:column;gap:4px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-bottom:6px">
+          <span style="display:flex;justify-content:space-between">Schr mode n <b id="qmModeLab" style="color:var(--accent-ink)">0</b></span>
+          <input id="qmMode" type="range" min="0" max="3" step="1" value="0">
+        </label>
+        <div class="reading" style="margin:0 0 14px 0;padding:10px 12px;background:rgba(255,252,248,0.82)">
+          <b>Quantum favorite.</b> Climb the Hermite ladder: only the ground state reproduces the stationary density. Excited states stay normalizable on the Lorentz branch, but their Born profile no longer equals <code>ρ_eq</code>.
+        </div>
 
         <h6 data-orig-html="Lorentzian readout">Lorentzian readout</h6>
         <div class="eq-val"><span class="lbl">d_c</span><b id="qmdc">1.000</b></div>
@@ -1607,6 +1614,9 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
         <div class="eq-bar"><div class="fill" id="qmTempBar" style="width:5%"></div></div>
         <div class="eq-val"><span class="lbl">Var(ε) = T_eff</span><b id="qmVar">0.005</b></div>
         <div class="eq-bar"><div class="fill" id="qmVarBar" style="width:5%"></div></div>
+        <div class="eq-val"><span class="lbl">mode profile</span><b id="qmModeRead">0 · ground</b></div>
+        <div class="eq-val"><span class="lbl">Born residual</span><b id="qmResid">0.000e+0</b></div>
+        <div class="eq-bar"><div class="fill" id="qmResidBar" style="width:0%"></div></div>
 
         <div class="reading" style="margin-top:12px">
           <b>Interpretation.</b> <span id="qmInterp">Lorentzian branch: the OU process has a stationary density, the Schrödinger transform has a normalizable ground state, and |ψ₀|² matches ρ_eq pointwise.</span>
@@ -2539,16 +2549,21 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
     const sigButtons = document.querySelectorAll('#qmSigMode button');
     const s1El = document.getElementById('qmS1');
     const noiseEl = document.getElementById('qmNoise');
+    const modeEl = document.getElementById('qmMode');
     const s1Lab = document.getElementById('qmS1Lab');
     const noiseLab = document.getElementById('qmNoiseLab');
+    const modeLab = document.getElementById('qmModeLab');
     const dcEl = document.getElementById('qmdc');
     const kappaEl = document.getElementById('qmkappa');
     const tempEl = document.getElementById('qmTemp');
     const varEl = document.getElementById('qmVar');
+    const modeRead = document.getElementById('qmModeRead');
+    const residEl = document.getElementById('qmResid');
     const dcBar = document.getElementById('qmdcBar');
     const kappaBar = document.getElementById('qmkBar');
     const tempBar = document.getElementById('qmTempBar');
     const varBar = document.getElementById('qmVarBar');
+    const residBar = document.getElementById('qmResidBar');
     const interp = document.getElementById('qmInterp');
     const ouEl = document.getElementById('qmOU');
     const fpEl = document.getElementById('qmFP');
@@ -2572,24 +2587,69 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       return Math.exp(-(x*x)/(2*variance)) / Math.sqrt(2*Math.PI*variance);
     }
     function clamp(x, lo, hi){ return Math.max(lo, Math.min(hi, x)); }
+    function factorial(n){
+      let acc = 1;
+      for(let k = 2; k <= n; k++) acc *= k;
+      return acc;
+    }
+    function hermite(n, y){
+      if(n === 0) return 1;
+      if(n === 1) return 2 * y;
+      if(n === 2) return 4 * y * y - 2;
+      if(n === 3) return 8 * y * y * y - 12 * y;
+      return 1;
+    }
+    function psiMode(x, variance, n){
+      if(!(variance > 0)) return 0;
+      const a = Math.sqrt(2 * variance);
+      const y = x / a;
+      const pref = 1 / Math.sqrt(Math.pow(2, n) * factorial(n) * Math.sqrt(Math.PI) * a);
+      return pref * hermite(n, y) * Math.exp(-0.5 * y * y);
+    }
+    function bornResidual(variance, n){
+      if(!(variance > 0)) return NaN;
+      let sum = 0;
+      const L = Math.max(4.8, 6 * Math.sqrt(variance));
+      const N = 360;
+      const dx = (2 * L) / N;
+      for(let i = 0; i <= N; i++){
+        const x = -L + i * dx;
+        const rho = gauss(x, variance);
+        const psi = psiMode(x, variance, n);
+        const diff = psi * psi - rho;
+        sum += diff * diff * dx;
+      }
+      return Math.sqrt(sum);
+    }
+    function modeLabel(n){
+      return n === 0 ? '0 · ground' : `${n} · excited`;
+    }
+    function formatResidual(x){
+      if(!Number.isFinite(x)) return '—';
+      return Math.abs(x) < 1e-10 ? '0.000e+0' : x.toExponential(2);
+    }
 
     function state(){
       const sigma1 = +s1El.value;
       const sigmaNoise = +noiseEl.value;
+      const mode = +modeEl.value;
       if(sigMode === 'lor'){
         const dc = 1 / sigma1;
         const kappa = 4 * dc;
         const Teff = sigmaNoise * sigmaNoise / (2 * dc);
         const variance = Teff;
-        return {sigma1, sigmaNoise, dc, kappa, Teff, variance, lorentzian:true};
+        const residual = bornResidual(variance, mode);
+        return {sigma1, sigmaNoise, mode, dc, kappa, Teff, variance, residual, lorentzian:true};
       }
       return {
         sigma1,
         sigmaNoise,
+        mode,
         dc: NaN,
         kappa: NaN,
         Teff: NaN,
         variance: NaN,
+        residual: NaN,
         lorentzian:false
       };
     }
@@ -2597,34 +2657,43 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
     function updateReadout(st){
       s1Lab.textContent = st.sigma1.toFixed(2);
       noiseLab.textContent = st.sigmaNoise.toFixed(3);
+      modeLab.textContent = String(st.mode);
 
       if(st.lorentzian){
         dcEl.textContent = fmt(st.dc, 3);
         kappaEl.textContent = fmt(st.kappa, 3);
         tempEl.textContent = fmt(st.Teff, 3);
         varEl.textContent = fmt(st.variance, 3);
+        modeRead.textContent = modeLabel(st.mode);
+        residEl.textContent = formatResidual(st.residual);
         dcBar.style.width = (clamp(st.dc / 2.4, 0, 1) * 100).toFixed(1) + '%';
         kappaBar.style.width = (clamp(st.kappa / 9.6, 0, 1) * 100).toFixed(1) + '%';
         tempBar.style.width = (clamp(st.Teff / 0.12, 0, 1) * 100).toFixed(1) + '%';
         varBar.style.width = (clamp(st.variance / 0.12, 0, 1) * 100).toFixed(1) + '%';
-        interp.textContent = 'Lorentzian branch: the OU process has a stationary density, the Schrödinger transform has a normalizable ground state, and |ψ₀|² matches ρ_eq pointwise.';
+        residBar.style.width = (clamp(st.residual / 2.0, 0, 1) * 100).toFixed(1) + '%';
+        interp.textContent = st.mode === 0
+          ? 'Lorentzian branch: the OU process has a stationary density, the Schrödinger transform has a normalizable ground state, and |ψ₀|² matches ρ_eq pointwise.'
+          : `Lorentzian branch: ψ_${st.mode} remains a normalizable Hermite mode, but only the ground state matches the stationary density. The nonzero Born residual makes the mismatch explicit.`;
         ouEl.textContent = 'active';
         fpEl.textContent = 'exists';
-        psiEl.textContent = 'normalizable';
-        bornEl.textContent = '|ψ₀|² = ρ_eq';
+        psiEl.textContent = st.mode === 0 ? 'ground, normalizable' : `ψ_${st.mode}, normalizable`;
+        bornEl.textContent = st.mode === 0 ? '|ψ₀|² = ρ_eq' : `|ψ_${st.mode}|² ≠ ρ_eq`;
       } else {
         dcEl.textContent = 'imaginary';
         kappaEl.textContent = 'no real rate';
         tempEl.textContent = '—';
         varEl.textContent = '—';
+        modeRead.textContent = '—';
+        residEl.textContent = '—';
         dcBar.style.width = '0%';
         kappaBar.style.width = '0%';
         tempBar.style.width = '0%';
         varBar.style.width = '0%';
+        residBar.style.width = '0%';
         interp.textContent = 'Euclidean branch: the real stability scale disappears, so the OU equilibrium and the normalizable ground-state ψ₀ both fail. The chain stops before the Born identification can be made.';
         ouEl.textContent = 'inactive';
         fpEl.textContent = 'no stationary ρ';
-        psiEl.textContent = 'non-normalizable';
+        psiEl.textContent = 'no bound spectrum';
         bornEl.textContent = 'unavailable';
       }
     }
@@ -2705,13 +2774,23 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       const right = {x: margin + panelW + gutter, y: 36, w: panelW, h: panelH, xmin: -2.4, xmax: 2.4};
 
       drawPanelLabel(left.x, 18, 'Potential and drift', 'OU restoring picture');
-      drawPanelLabel(right.x, 18, 'Stationary density and wavefunction', '|ψ₀|² tracks ρ_eq only on the Lorentz branch');
+      drawPanelLabel(right.x, 18, 'Stationary density and wavefunction', 'ground state matches ρ_eq; excited modes show the Born mismatch');
 
       const potentialScale = st.lorentzian ? Math.max(0.18, 0.75 / Math.max(st.variance, 0.015)) : 0.55;
       left.ymin = st.lorentzian ? -0.2 : -3.4;
       left.ymax = st.lorentzian ? 4.2 : 3.4;
-      right.ymin = 0;
-      right.ymax = st.lorentzian ? Math.max(1.35, 1.15 * gauss(0, st.variance)) : 1.25;
+      if(st.lorentzian){
+        let peak = gauss(0, st.variance);
+        for(let i = 0; i <= 220; i++){
+          const x = -2.4 + (4.8 * i / 220);
+          peak = Math.max(peak, Math.abs(psiMode(x, st.variance, st.mode)), psiMode(x, st.variance, st.mode) ** 2);
+        }
+        right.ymin = st.mode === 0 ? 0 : -1.08 * peak;
+        right.ymax = Math.max(1.35, 1.18 * peak);
+      } else {
+        right.ymin = 0;
+        right.ymax = 1.25;
+      }
 
       drawAxes(left.x, left.y, left.w, left.h, 'ε', 'V_eff');
       drawAxes(right.x, right.y, right.w, right.h, 'ε', 'amplitude');
@@ -2719,14 +2798,18 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       if(st.lorentzian){
         plotCurve(left, x => 0.5 * potentialScale * x * x, 'oklch(0.48 0.14 268)', 2.4);
         plotCurve(right, x => gauss(x, st.variance), 'oklch(0.55 0.13 150)', 2.2);
-        plotCurve(right, x => Math.sqrt(gauss(x, st.variance)), 'oklch(0.55 0.17 25)', 2.2);
-        plotCurve(right, x => gauss(x, st.variance), 'oklch(0.38 0.10 240)', 1.5, {dashed:true});
+        plotCurve(right, x => psiMode(x, st.variance, st.mode), 'oklch(0.55 0.17 25)', 2.2);
+        plotCurve(right, x => {
+          const psi = psiMode(x, st.variance, st.mode);
+          return psi * psi;
+        }, 'oklch(0.38 0.10 240)', 1.5, {dashed:true});
 
         ctx.fillStyle = 'rgba(92, 88, 80, 0.78)';
         ctx.font = "12px JetBrains Mono";
         ctx.fillText('real d_c > 0', left.x + 12, left.y + 20);
         ctx.fillText('Gaussian ρ_eq', right.x + 12, right.y + 20);
-        ctx.fillText('normalizable ψ₀', right.x + 12, right.y + 36);
+        ctx.fillText(st.mode === 0 ? 'ground-state ψ₀' : `Hermite ψ_${st.mode}`, right.x + 12, right.y + 36);
+        ctx.fillText(st.mode === 0 ? 'Born residual = 0' : 'Born mismatch visible', right.x + 12, right.y + 52);
       } else {
         plotCurve(left, x => -0.55 * x * x, 'oklch(0.55 0.17 25)', 2.4);
         plotCurve(right, x => 0.72 + 0.18 * Math.cos(2.2 * x), 'rgba(120, 116, 110, 0.42)', 2.0);
@@ -2749,7 +2832,7 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
         redraw();
       });
     });
-    [s1El, noiseEl].forEach(el => el.addEventListener('input', redraw));
+    [s1El, noiseEl, modeEl].forEach(el => el.addEventListener('input', redraw));
     window.addEventListener('resize', redraw, {passive:true});
     redraw();
   })();
