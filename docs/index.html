@@ -2702,13 +2702,27 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
         </div>
       </div>
       <div class="fs-side">
-        <h6 data-orig-html="Signature excursion">Signature excursion</h6>
+        <h6 data-orig-html="Primary control · signature branch">Primary control · signature branch</h6>
+        <div class="reading" style="margin:0 0 12px 0;padding:10px 12px;background:rgba(255,252,248,0.82)">
+          <b>Read this top-down.</b> Pick the signature branch first. The wavefunction panel below is only a downstream response: Lorentzian keeps the quantum scaffold alive, boundary thins its support, Euclidean opens the collapse window, and return re-locks the same scaffold after the branch comes back.
+        </div>
+        <div class="seg" id="qcBranch" style="margin-bottom:12px;flex-wrap:wrap">
+          <button data-qbranch="lor" class="on">Lorentzian</button>
+          <button data-qbranch="boundary">Boundary</button>
+          <button data-qbranch="euc">Euclidean</button>
+          <button data-qbranch="return">Return</button>
+        </div>
+        <div class="reading" style="margin:0 0 14px 0;padding:10px 12px;background:rgba(255,252,248,0.82)">
+          <b>Branch gate.</b> <span id="qcBranchExplain">Lorentzian is the wave-supporting branch: the real stability scale exists, so OU, FP, Schr, and Born all stay locked together.</span>
+        </div>
+
+        <h6 data-orig-html="Secondary tuning · excursion geometry">Secondary tuning · excursion geometry</h6>
         <label style="display:flex;flex-direction:column;gap:4px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-bottom:10px">
-          <span style="display:flex;justify-content:space-between">timeline τ <b id="qcTauLab" style="color:var(--accent-ink)">0.20</b></span>
+          <span style="display:flex;justify-content:space-between">branch position τ <b id="qcTauLab" style="color:var(--accent-ink)">0.20</b></span>
           <input id="qcTau" type="range" min="0" max="1" step="0.005" value="0.20">
         </label>
         <label style="display:flex;flex-direction:column;gap:4px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-bottom:12px">
-          <span style="display:flex;justify-content:space-between">Euclidean depth <b id="qcDepthLab" style="color:var(--accent-ink)">0.75</b></span>
+          <span style="display:flex;justify-content:space-between">excursion depth <b id="qcDepthLab" style="color:var(--accent-ink)">0.75</b></span>
           <input id="qcDepth" type="range" min="0.15" max="1.00" step="0.01" value="0.75">
         </label>
         <label style="display:flex;flex-direction:column;gap:4px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-bottom:12px">
@@ -4075,12 +4089,20 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
     const bornEl = document.getElementById('qcBorn');
     const stageButtons = document.querySelectorAll('#qcStage button');
     const snapButtons = document.querySelectorAll('#qcSnap button');
+    const branchButtons = document.querySelectorAll('#qcBranch button');
     const stateCards = document.querySelectorAll('#qcStateCards [data-qcard]');
+    const branchExplainEl = document.getElementById('qcBranchExplain');
     let stageFocus = 'ou';
     const snapshotDefs = {
       pre: {tau: 0.18, stage: 'ou'},
       exc: {tau: 0.50, stage: 'schr'},
       post: {tau: 0.84, stage: 'born'}
+    };
+    const branchDefs = {
+      lor: {tau: 0.18, text: 'Lorentzian is the wave-supporting branch: the real stability scale exists, so OU, FP, Schr, and Born all stay locked together.'},
+      boundary: {tau: 0.33, text: 'Boundary is the thinning rim of support: the real d_c is fading, so the quantum scaffold is still visible but structurally unstable.'},
+      euc: {tau: 0.50, text: 'Euclidean is the collapse window: the real stability scale is gone first, so the stationary density and normalizable ψ fail downstream.'},
+      return: {tau: 0.84, text: 'Return is the re-locking branch: once Lorentzian support comes back, the same OU → FP → Schr → Born chain reforms rather than being recreated from nothing.'}
     };
 
     function sizeCanvas(){
@@ -4176,6 +4198,13 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       if(s.phase === 'Euclidean excursion') currentState = 'collapse';
       else if(s.phase === 'boundary layer') currentState = 'boundary';
       else if(s.phase === 'return layer') currentState = 'return';
+
+      let currentBranch = 'lor';
+      if(s.phase === 'Euclidean excursion') currentBranch = 'euc';
+      else if(s.phase === 'boundary layer') currentBranch = 'boundary';
+      else if(s.phase === 'return layer') currentBranch = 'return';
+      branchButtons.forEach(btn => btn.classList.toggle('on', btn.dataset.qbranch === currentBranch));
+      if(branchExplainEl) branchExplainEl.textContent = branchDefs[currentBranch].text;
 
       const stateText = {
         wave: {
@@ -4345,6 +4374,12 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       tauLab.textContent = (+tauEl.value).toFixed(2);
       stageFocus = cfg.stage;
       stageButtons.forEach(x => x.classList.toggle('on', x.dataset.qs === stageFocus));
+      redraw();
+    }));
+    branchButtons.forEach(btn => btn.addEventListener('click', ()=>{
+      const cfg = branchDefs[btn.dataset.qbranch];
+      tauEl.value = cfg.tau.toFixed(3);
+      tauLab.textContent = (+tauEl.value).toFixed(2);
       redraw();
     }));
     window.addEventListener('resize', redraw, {passive:true});
