@@ -594,7 +594,7 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
     <div class="byline">
       <span><b>Y. Y. N. Li</b></span>
       <span data-en="· 9 sections · ~18 min read" data-zh="· 9 节 · 约 18 分钟" data-orig-html="· 9 sections · ~18 min read">· 9 sections · ~18 min read</span>
-      <span data-en="· interactive figures × 6" data-zh="· 互动图 × 6" data-orig-html="· interactive figures × 6">· interactive figures × 6</span>
+      <span data-en="· interactive figures × 7" data-zh="· 互动图 × 7" data-orig-html="· interactive figures × 7">· interactive figures × 7</span>
     </div>
   </div>
 </header>
@@ -1051,6 +1051,369 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       draw();
     }));
     presets.forEach(btn => btn.addEventListener('click', ()=> setPreset(btn.dataset.sig)));
+    setPreset('lor');
+  })();
+  </script>
+</section>
+
+<!-- HESSIAN + VARIATION -->
+<section class="block" id="hessianVar">
+  <div class="block-head">
+    <div class="block-num" data-orig-html="§1.6 · Interactive">§1.6 · Interactive</div>
+    <div>
+      <h2 data-orig-html="Hessian extraction and variational realizability">Hessian extraction and variational realizability</h2>
+      <p class="block-lead" data-orig-html="This panel separates the two logical layers of the realizability theorem. The Hessian side shows the quadratic leading form $Q$ extracted from the second-order part of the cost; the variational side tests whether a forward sequence can drive the cost-to-size ratio to zero.">This panel separates the two logical layers of the realizability theorem. The Hessian side shows the quadratic leading form <code>Q</code> extracted from the second-order part of the cost; the variational side tests whether a forward sequence can drive the cost-to-size ratio to zero.</p>
+    </div>
+  </div>
+
+  <figure class="card">
+    <div class="fc-head">
+      <span class="fc-title">Interactive Hessian + variational audit</span>
+      <span class="fc-tag">leading quadratic form · forward sequence test</span>
+    </div>
+    <div class="fc-body" style="padding:22px 24px;background:var(--card)">
+      <div class="hv-grid">
+        <div class="hv-vis">
+          <canvas id="hvCanvas" style="width:100%;height:370px;display:block"></canvas>
+          <div class="hv-legend">
+            <span><span class="hv-swatch hv-neg"></span>Q(u) ≤ 0: zero-threshold compatible</span>
+            <span><span class="hv-swatch hv-pos"></span>Q(u) > 0: positive quadratic cost</span>
+            <span><span class="hv-swatch hv-ray"></span>chosen forward variation</span>
+          </div>
+        </div>
+        <div class="hv-side">
+          <h6>Quadratic leading form</h6>
+          <label class="hv-row">
+            <span>a (temporal coefficient)</span>
+            <input id="hvA" type="range" min="-1.5" max="1.5" step="0.01" value="1.00">
+            <b id="hvAlab">1.00</b>
+          </label>
+          <label class="hv-row">
+            <span>κ (mixed term)</span>
+            <input id="hvK" type="range" min="-1.5" max="1.5" step="0.01" value="0.00">
+            <b id="hvKlab">0.00</b>
+          </label>
+          <label class="hv-row">
+            <span>b (spatial coefficient)</span>
+            <input id="hvB" type="range" min="-1.5" max="1.5" step="0.01" value="-1.00">
+            <b id="hvBlab">−1.00</b>
+          </label>
+          <div class="hv-presets">
+            <button data-hv="lor">Lorentz</button>
+            <button data-hv="mixed">tilted Lorentz</button>
+            <button data-hv="pos">positive-definite</button>
+            <button data-hv="neg">negative-definite</button>
+            <button data-hv="deg">degenerate</button>
+          </div>
+
+          <div class="hv-panel">
+            <div class="hv-eq"><span>Q(t,r)</span><b id="hvQeq">t² − r²</b></div>
+            <div class="hv-eq"><span>Hessian ∇²Q</span><b id="hvHess">[[2.00, 0.00], [0.00, −2.00]]</b></div>
+            <div class="hv-eq"><span>det Q</span><b id="hvDet">−1.000</b></div>
+            <div class="hv-eq"><span>eig(∇²Q)</span><b id="hvEig">2.000, −2.000</b></div>
+            <div class="hv-eq"><span>algebraic type</span><b id="hvType">Lorentzian</b></div>
+          </div>
+
+          <h6 style="margin-top:14px">Variational test</h6>
+          <label class="hv-row">
+            <span>forward angle φ</span>
+            <input id="hvPhi" type="range" min="-85" max="85" step="0.5" value="38">
+            <b id="hvPhilab">38.0°</b>
+          </label>
+          <label class="hv-row">
+            <span>scale ρ</span>
+            <input id="hvRho" type="range" min="0.05" max="1.00" step="0.01" value="0.35">
+            <b id="hvRholab">0.35</b>
+          </label>
+          <div class="hv-panel">
+            <div class="hv-eq"><span>u = (u_t, u_r)</span><b id="hvDir">(0.788, 0.616)</b></div>
+            <div class="hv-eq"><span>Q(u)</span><b id="hvQu">0.000</b></div>
+            <div class="hv-eq"><span>(Q(u))<sub>+</sub></span><b id="hvQplus">0.000</b></div>
+            <div class="hv-eq"><span>d(ρu)/ρ ≈ √(Q(u))<sub>+</sub></span><b id="hvRatio">0.000</b></div>
+            <div class="hv-eq"><span>min<sub>forward</sub> Q</span><b id="hvMinQ">−1.000</b></div>
+          </div>
+
+          <div class="hv-audit">
+            <div class="hv-ax" id="hvRbox"><span>R</span><b id="hvRtxt">PASS</b></div>
+            <div class="hv-ax" id="hvEbox"><span>E</span><b id="hvEtxt">PASS</b></div>
+            <div class="hv-ax" id="hvTbox"><span>T</span><b id="hvTtxt">PASS</b></div>
+          </div>
+
+          <p class="hv-note" id="hvExplain">A forward direction with nonzero spatial part already satisfies Q(u) ≤ 0, so the quadratic leading term contributes no positive cost there. This is the variational content of Assumption R once the Hessian-level form has been extracted.</p>
+          <div class="hv-convention"><b>Reading rule.</b> This panel uses the <i>cost-sign</i> convention of the realizability paper: temporal cost means <code>a &gt; 0</code>. The spacetime-sign convention used elsewhere on the page differs by an overall sign only.</div>
+        </div>
+      </div>
+    </div>
+    <figcaption>The Hessian panel corresponds to Assumption E: the second-order part of the cost determines a quadratic coefficient form <code>Q</code>. The variational panel corresponds to Assumption R: along a forward sequence with <code>Q(u) ≤ 0</code>, the ratio <code>d(ρu)/ρ</code> tends to zero because only <code>(Q)_+</code> contributes at leading order.</figcaption>
+  </figure>
+
+  <style>
+    .hv-grid{ display:grid; grid-template-columns: 1.1fr 1fr; gap:28px; align-items:start; }
+    @media (max-width: 980px){ .hv-grid{ grid-template-columns:1fr; } }
+    .hv-legend{ display:flex; gap:12px; flex-wrap:wrap; margin-top:10px; font:11px/1.35 'JetBrains Mono',monospace; color:var(--muted); }
+    .hv-swatch{ display:inline-block; width:12px; height:12px; border-radius:3px; margin-right:6px; vertical-align:-2px; }
+    .hv-neg{ background:oklch(0.89 0.05 252); border:1px solid oklch(0.7 0.08 252); }
+    .hv-pos{ background:oklch(0.93 0.05 55); border:1px solid oklch(0.76 0.08 55); }
+    .hv-ray{ background:oklch(0.52 0.15 25); }
+    .hv-side h6{ font-family:'Inter Tight',sans-serif; font-weight:600; font-size:11px; letter-spacing:0.09em; text-transform:uppercase; color:var(--muted); margin:0 0 10px; }
+    .hv-row{ display:grid; grid-template-columns: auto 1fr auto; gap:12px; align-items:center; font:11px/1.35 'JetBrains Mono',monospace; color:var(--muted); margin-bottom:10px; }
+    .hv-row input[type=range]{ -webkit-appearance:none; appearance:none; height:3px; background:var(--line); border-radius:2px; }
+    .hv-row input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; width:14px; height:14px; border-radius:50%; background:var(--accent); cursor:pointer; }
+    .hv-row b{ color:var(--accent-ink); min-width:66px; text-align:right; }
+    .hv-presets{ display:flex; flex-wrap:wrap; gap:6px; margin:2px 0 12px; }
+    .hv-presets button{ background:var(--card); border:1px solid var(--line); padding:6px 10px; border-radius:6px; font-family:'JetBrains Mono',monospace; font-size:10.5px; letter-spacing:0.04em; color:var(--ink-3); cursor:pointer; }
+    .hv-presets button.on{ background:var(--accent-soft); border-color:var(--accent); color:var(--accent-ink); }
+    .hv-panel{ padding:12px 14px; background:var(--paper-2); border:1px solid var(--line); border-radius:10px; display:grid; gap:6px; }
+    .hv-eq{ display:grid; grid-template-columns:auto 1fr; gap:10px; align-items:baseline; font:11px/1.35 'JetBrains Mono',monospace; color:var(--muted); }
+    .hv-eq b{ text-align:right; color:var(--ink); font-weight:600; }
+    .hv-audit{ display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:12px; }
+    .hv-ax{ display:flex; justify-content:space-between; align-items:center; padding:8px 10px; border:1px solid var(--line); border-radius:8px; background:var(--card); font:11px/1.2 'JetBrains Mono',monospace; }
+    .hv-ax.pass{ background:oklch(0.97 0.03 150); border-color:oklch(0.73 0.1 150); color:oklch(0.34 0.12 150); }
+    .hv-ax.fail{ background:oklch(0.97 0.04 25); border-color:oklch(0.74 0.11 25); color:oklch(0.38 0.14 25); }
+    .hv-note{ margin:12px 0 0; font-size:13px; line-height:1.58; color:var(--ink-3); }
+    .hv-convention{ margin-top:12px; padding:10px 14px; background:oklch(0.97 0.03 55); border:1px solid oklch(0.82 0.07 55); border-left:3px solid oklch(0.62 0.14 55); border-radius:6px; font-size:12px; line-height:1.55; color:oklch(0.35 0.08 55); font-family:'Newsreader',serif; }
+    .hv-convention b{ font-family:'Inter Tight',sans-serif; font-weight:600; font-size:10.5px; letter-spacing:0.08em; text-transform:uppercase; color:oklch(0.4 0.14 55); }
+    .hv-convention code{ font-family:'JetBrains Mono',monospace; font-size:11px; background:oklch(0.92 0.04 55); padding:1px 5px; border-radius:3px; }
+  </style>
+
+  <script>
+  (function(){
+    const canvas = document.getElementById('hvCanvas');
+    if(!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const DPR = Math.max(1, window.devicePixelRatio || 1);
+    const aEl = document.getElementById('hvA');
+    const kEl = document.getElementById('hvK');
+    const bEl = document.getElementById('hvB');
+    const phiEl = document.getElementById('hvPhi');
+    const rhoEl = document.getElementById('hvRho');
+    const presetBtns = document.querySelectorAll('#hessianVar .hv-presets button');
+
+    function fit(){
+      const w = Math.max(360, Math.floor(canvas.parentElement.getBoundingClientRect().width - 4));
+      const h = 370;
+      canvas.style.width = w + 'px';
+      canvas.style.height = h + 'px';
+      canvas.width = w * DPR;
+      canvas.height = h * DPR;
+      ctx.setTransform(DPR,0,0,DPR,0,0);
+      return {w,h};
+    }
+    let size = fit();
+    window.addEventListener('resize', ()=>{ size = fit(); redraw(); });
+
+    function clamp(x, lo, hi){ return Math.max(lo, Math.min(hi, x)); }
+    function fmt(x, d=3){
+      const s = Number(x).toFixed(d);
+      return s.replace('-', '−');
+    }
+    function signFmt(x, d=2){
+      const s = Math.abs(x).toFixed(d);
+      return (x < 0 ? '−' : '') + s;
+    }
+    function qVal(t, r, s){
+      return s.a*t*t + 2*s.k*t*r + s.b*r*r;
+    }
+    function state(){
+      const a = +aEl.value, k = +kEl.value, b = +bEl.value;
+      const phiDeg = +phiEl.value;
+      const phi = phiDeg * Math.PI / 180;
+      const rho = +rhoEl.value;
+      const ut = Math.cos(phi), ur = Math.sin(phi);
+      const q = qVal(ut, ur, {a,k,b});
+      const qPlus = Math.max(q, 0);
+      const ratio = Math.sqrt(qPlus);
+      const det = a*b - k*k;
+      const trH = 2*(a+b);
+      const disc = Math.sqrt((2*a - 2*b)*(2*a - 2*b) + 16*k*k);
+      const lam1 = (trH + disc) / 2;
+      const lam2 = (trH - disc) / 2;
+      let minQ = Infinity, minPhi = 0;
+      for(let deg=-89.5; deg<=89.5; deg+=0.25){
+        const ang = deg * Math.PI / 180;
+        const t = Math.cos(ang), r = Math.sin(ang);
+        const val = qVal(t,r,{a,k,b});
+        if(Math.abs(r) < 1e-4) continue;
+        if(val < minQ){ minQ = val; minPhi = deg; }
+      }
+      let type = 'indefinite';
+      if(Math.abs(det) < 1e-6) type = 'degenerate';
+      else if(det < 0) type = 'Lorentzian';
+      else if(a > 0 && b > 0) type = 'positive-definite';
+      else if(a < 0 && b < 0) type = 'negative-definite';
+      else type = 'same-sign rotated';
+      return {a,k,b,phiDeg,phi,rho,ut,ur,q,qPlus,ratio,det,lam1,lam2,minQ,minPhi,type};
+    }
+
+    function setPreset(name){
+      const presets = {
+        lor:[1,0,-1],
+        mixed:[1,0.42,-1],
+        pos:[1,0,1],
+        neg:[-1,0,-1],
+        deg:[1,1,1]
+      };
+      const p = presets[name] || presets.lor;
+      aEl.value = p[0];
+      kEl.value = p[1];
+      bEl.value = p[2];
+      presetBtns.forEach(btn=> btn.classList.toggle('on', btn.dataset.hv === name));
+      redraw();
+    }
+
+    function mark(id, pass, text){
+      const box = document.getElementById(id + 'box');
+      const txt = document.getElementById(id + 'txt');
+      box.classList.remove('pass','fail');
+      box.classList.add(pass ? 'pass' : 'fail');
+      txt.textContent = text;
+    }
+
+    function toScreen(x,y,w,h){
+      const padL=22, padR=22, padT=18, padB=18;
+      const xmin=-1.6, xmax=1.6, ymin=-1.6, ymax=1.6;
+      const px = padL + (x - xmin)/(xmax - xmin) * (w - padL - padR);
+      const py = padT + (1 - (y - ymin)/(ymax - ymin)) * (h - padT - padB);
+      return [px,py];
+    }
+
+    function redraw(){
+      const s = state();
+      document.getElementById('hvAlab').textContent = signFmt(s.a, 2);
+      document.getElementById('hvKlab').textContent = signFmt(s.k, 2);
+      document.getElementById('hvBlab').textContent = signFmt(s.b, 2);
+      document.getElementById('hvPhilab').textContent = s.phiDeg.toFixed(1) + '°';
+      document.getElementById('hvRholab').textContent = s.rho.toFixed(2);
+      document.getElementById('hvDir').textContent = '(' + fmt(s.ut,3) + ', ' + fmt(s.ur,3) + ')';
+      document.getElementById('hvQu').textContent = fmt(s.q, 4);
+      document.getElementById('hvQplus').innerHTML = fmt(s.qPlus, 4);
+      document.getElementById('hvRatio').textContent = fmt(s.ratio, 4);
+      document.getElementById('hvMinQ').textContent = fmt(s.minQ, 4) + ' @ ' + s.minPhi.toFixed(1) + '°';
+      document.getElementById('hvDet').textContent = fmt(s.det, 4);
+      document.getElementById('hvEig').textContent = fmt(s.lam1,3) + ', ' + fmt(s.lam2,3);
+      document.getElementById('hvType').textContent = s.type;
+      document.getElementById('hvQeq').textContent = fmt(s.a,2) + ' t² ' + (s.k >= 0 ? '+' : '−') + ' ' + fmt(Math.abs(2*s.k),2) + ' tr ' + (s.b >= 0 ? '+' : '−') + ' ' + fmt(Math.abs(s.b),2) + ' r²';
+      document.getElementById('hvHess').textContent = '[[' + fmt(2*s.a,2) + ', ' + fmt(2*s.k,2) + '], [' + fmt(2*s.k,2) + ', ' + fmt(2*s.b,2) + ']]';
+
+      const rPass = s.minQ <= 1e-6;
+      const ePass = Math.abs(s.det) > 1e-6;
+      const tPass = s.a > 1e-6;
+      mark('hvR', rPass, rPass ? 'PASS' : 'FAIL');
+      mark('hvE', ePass, ePass ? 'PASS' : 'FAIL');
+      mark('hvT', tPass, tPass ? 'PASS' : 'FAIL');
+
+      const explain = document.getElementById('hvExplain');
+      if(!tPass){
+        explain.textContent = 'The temporal axis itself no longer carries positive leading cost: Assumption T fails before any variational argument begins.';
+      } else if(!ePass){
+        explain.textContent = 'The Hessian-level quadratic form has collapsed onto a degenerate boundary. Assumption E can still extract a quadratic coefficient form, but the nondegeneracy clause needed for the Lorentz theorem is lost.';
+      } else if(rPass){
+        explain.textContent = 'A forward direction with nonzero spatial part already satisfies Q(u) ≤ 0, so the quadratic leading term contributes no positive cost there. This is the variational content of Assumption R once the Hessian-level form has been extracted.';
+      } else {
+        explain.textContent = 'Every forward direction carries strictly positive quadratic cost, so the ratio d(ρu)/ρ stays bounded away from zero. This is why positive-definite branches are eliminated by realizability.';
+      }
+
+      const activePreset =
+        Math.abs(s.a-1)<1e-6 && Math.abs(s.k)<1e-6 && Math.abs(s.b+1)<1e-6 ? 'lor' :
+        Math.abs(s.a-1)<1e-6 && Math.abs(s.k-0.42)<0.02 && Math.abs(s.b+1)<1e-6 ? 'mixed' :
+        Math.abs(s.a-1)<1e-6 && Math.abs(s.k)<1e-6 && Math.abs(s.b-1)<1e-6 ? 'pos' :
+        Math.abs(s.a+1)<1e-6 && Math.abs(s.k)<1e-6 && Math.abs(s.b+1)<1e-6 ? 'neg' :
+        Math.abs(s.a-1)<1e-6 && Math.abs(s.k-1)<1e-6 && Math.abs(s.b-1)<1e-6 ? 'deg' : null;
+      presetBtns.forEach(btn=> btn.classList.toggle('on', btn.dataset.hv === activePreset));
+
+      const {w,h} = size;
+      ctx.clearRect(0,0,w,h);
+      const img = ctx.createImageData(w,h);
+      const data = img.data;
+      for(let py=0; py<h; py++){
+        for(let px=0; px<w; px++){
+          const x = -1.6 + px / w * 3.2;
+          const y = 1.6 - py / h * 3.2;
+          const v = qVal(x,y,s);
+          const idx = (py*w + px)*4;
+          if(v <= 0){
+            data[idx] = 225; data[idx+1] = 229; data[idx+2] = 244; data[idx+3] = 180;
+          } else {
+            const tint = clamp(v / 2.5, 0, 1);
+            data[idx] = 246;
+            data[idx+1] = 238 - Math.round(18*tint);
+            data[idx+2] = 218 - Math.round(24*tint);
+            data[idx+3] = 165;
+          }
+        }
+      }
+      ctx.putImageData(img,0,0);
+
+      ctx.strokeStyle = 'rgba(92,88,80,0.22)';
+      ctx.lineWidth = 1;
+      const [x0,cy] = toScreen(-1.6,0,w,h);
+      const [x1,] = toScreen(1.6,0,w,h);
+      const [cx0,y0] = toScreen(0,-1.6,w,h);
+      const [,y1] = toScreen(0,1.6,w,h);
+      ctx.beginPath();
+      ctx.moveTo(x0,cy); ctx.lineTo(x1,cy);
+      ctx.moveTo(cx0,y0); ctx.lineTo(cx0,y1);
+      ctx.stroke();
+
+      ctx.font = "10.5px 'JetBrains Mono', monospace";
+      ctx.fillStyle = 'rgba(92,88,80,0.7)';
+      ctx.fillText('t', x1-10, cy-6);
+      ctx.fillText('r', cx0+6, 14);
+
+      for(let g=-1; g<=1; g+=0.5){
+        if(Math.abs(g) < 1e-6) continue;
+        const [gx0,gy0] = toScreen(g,-1.6,w,h);
+        const [gx1,gy1] = toScreen(g,1.6,w,h);
+        const [hx0,hy0] = toScreen(-1.6,g,w,h);
+        const [hx1,hy1] = toScreen(1.6,g,w,h);
+        ctx.strokeStyle = 'rgba(92,88,80,0.08)';
+        ctx.beginPath(); ctx.moveTo(gx0,gy0); ctx.lineTo(gx1,gy1); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(hx0,hy0); ctx.lineTo(hx1,hy1); ctx.stroke();
+      }
+
+      if(s.det < -1e-6){
+        ctx.strokeStyle = 'oklch(0.44 0.13 268)';
+        ctx.lineWidth = 1.6;
+        ctx.setLineDash([5,4]);
+        let first = true;
+        ctx.beginPath();
+        for(let deg=-89.5; deg<=89.5; deg+=0.2){
+          const ang = deg * Math.PI / 180;
+          const q = qVal(Math.cos(ang), Math.sin(ang), s);
+          if(Math.abs(q) < 0.02){
+            const [px,py] = toScreen(Math.cos(ang)*1.55, Math.sin(ang)*1.55, w,h);
+            if(first){ ctx.moveTo(px,py); first = false; } else ctx.lineTo(px,py);
+          }
+        }
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
+
+      const [sx,sy] = toScreen(0,0,w,h);
+      const [tx,ty] = toScreen(s.rho*s.ut, s.rho*s.ur, w,h);
+      ctx.strokeStyle = 'oklch(0.52 0.15 25)';
+      ctx.lineWidth = 2.2;
+      ctx.beginPath(); ctx.moveTo(sx,sy); ctx.lineTo(tx,ty); ctx.stroke();
+      const ang = Math.atan2(ty-sy, tx-sx);
+      ctx.fillStyle = 'oklch(0.52 0.15 25)';
+      ctx.beginPath();
+      ctx.moveTo(tx,ty);
+      ctx.lineTo(tx - 8*Math.cos(ang-0.45), ty - 8*Math.sin(ang-0.45));
+      ctx.lineTo(tx - 8*Math.cos(ang+0.45), ty - 8*Math.sin(ang+0.45));
+      ctx.closePath(); ctx.fill();
+      ctx.beginPath(); ctx.arc(tx,ty,4,0,Math.PI*2); ctx.fill();
+
+      ctx.fillStyle = 'oklch(0.32 0.11 25)';
+      ctx.font = "italic 12px Newsreader";
+      ctx.fillText('u', tx + 8, ty - 6);
+      ctx.fillText('ρu', tx + 8, ty + 12);
+    }
+
+    [aEl,kEl,bEl,phiEl,rhoEl].forEach(el => el.addEventListener('input', ()=>{
+      presetBtns.forEach(btn=> btn.classList.remove('on'));
+      redraw();
+    }));
+    presetBtns.forEach(btn => btn.addEventListener('click', ()=> setPreset(btn.dataset.hv)));
     setPreset('lor');
   })();
   </script>
