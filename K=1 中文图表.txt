@@ -340,7 +340,11 @@ $\det((J_{G}-dI)H_{*})=\det(J_{G}-dI)\det H_{*}$; 由于 $\det H_{*}\neq 0$, 故
 
 \section{唯一动力学(律 II)}\label{sec:lawII}
 
-\noindent\textbf{律 II.} \textit{动力学生成子作如下分解: $GA = \alpha J - GD$, 其中 $D\ge 0$(半正定耗散)。这种辛-耗散分解是律 II 的内容;它是一条结构性公理, 并非从律 I 或律 III 推出, 其动机来自物理演化按可逆(辛)与不可逆(耗散)两部分的普适 Helmholtz 型分裂~\cite{GENERIC}。在此公理之下, 任何光滑势 $V$ 下的唯一演化律为 $\dot{x}=(J_{G}-D)\nabla V$。$\{K=1\}$ 的局部恢复角色由律 III 另行规定。}
+\noindent\textbf{律 II.} \textit{动力学生成子作如下分解: $GA = \alpha J - GD$, 其中 $D\ge 0$(半正定耗散)。这种辛-耗散分解是律 II 的内容;它是一条结构性公理, 并非从律 I 或律 III 推出, 其动机来自物理演化按可逆(辛)与不可逆(耗散)两部分的普适 Helmholtz 型分裂~\cite{GENERIC}。在此公理之下, 生成子的形式被唯一约简为 $J_{G}-D$, 从而对任意光滑势 $V$, 演化律为
+\[
+\dot{x}=(J_{G}-D)\nabla V,
+\]
+其中耗散矩阵 $D$ 在半正定类内仍是自由的, 直至律 III 在各向同性临界阻尼诠释下将其进一步固定。$\{K=1\}$ 的局部恢复角色由律 III 另行规定。}
 
 分解 $GA=\alpha J-GD$ 是律 II 的公理性内容。结合定理~\ref{thm:unique}(它固定 $J_G$), 由此得到唯一的可接纳演化律(定理~\ref{thm:lawII})。
 
@@ -356,18 +360,42 @@ $A=G^{-1}(\alpha J-GD)=J_{G}-D$。\qed
 
 \section{临界阻尼与涨落结构(律 III)}\label{sec:lawIII}
 
-\noindent\textbf{律 III.} \textit{在 $\{K=1\}$ 上任何 $G$ 特征向量附近, 漂移项产生朝向 $K=1$ 的恢复分量(定理~\ref{thm:restoring}): $K=1$ 是一个\emph{局部}自洽轨迹。全局吸引性是否成立仍是悬而未决的问题(\S\ref{sec:discussion} 中未解问题 5)。}
+\noindent\textbf{律 III (耗散选择).}
+\emph{耗散矩阵 $D$ 经下述要求选定: $K{=}1$ 应为漂移
+$\dot x=(J_G-D)\nabla V$ ($V=\tfrac12(K{-}1)^2$) 的局部稳定平衡,
+且在所有满足该稳定性的选择中, 取最小的各向同性耗散.}
 
 \medskip
 
-\noindent\textit{从代数到动力学.} 代数条件 $K=1$ 是位形空间中的一个轨迹; 它并未规定 $K$ 偏离 1 时如何回到 1。完成该框架需要动力学结构: 律 II 指定唯一的辛-耗散演化律, 律 III (下文) 刻画其在临界阻尼处的恢复与涨落行为。只有在这一补全之下, $K=1$ 才成为具有局部恢复动力学的自洽轨迹, 而非仅仅是水平集。
+\noindent\textit{从开放动力学到具体物理模型.}
+律 II 固定了生成子的代数形式 $\dot x=(J_G-D)\nabla V$ ($D\ge 0$),
+但未指定 $D$. 要得到一个具体的物理模型, 因此必须选定一个特定的耗散矩阵.
+自然的判据是: 单位代价轨迹 $K{=}1$ —— 在本框架中扮演自洽性条件的角色 ——
+应当是动力学稳定的: 对 $K{=}1$ 的小偏离应被驱回. 在所有这样的稳定化选择
+中, 我们取拥有最小各向同性耗散的那一个.
+
+将选择限制于各向同性类 $D=dI$ ($d>0$), 法向恢复行为的强度由耗散
+水平 $d$ 控制, 而相关的稳定性尺度由 \S\ref{sec:stability} 中引入的
+谱量 $d_{c}$ 设定, 即双曲辛生成子 $J_{G}$ 的谱半径. 因此, 稳定性
+要求 $d\ge d_{c}$, 而边界选择 $d=d_{c}$ 给出临界阻尼. 这是各向同性
+族中以最小耗散稳定 $K{=}1$ 的唯一成员. 故律 III 选定
+\begin{equation}\label{eq:Dcritical}
+D = d_{c}I,
+\end{equation}
+其中
+\[
+d_{c}=\alpha\sqrt{-1/\det G},
+\]
+如 \S\ref{sec:symplectic} 所得.
+
+本节余下部分发展该选择的两项推论: 首先, $K{=}1$ 方向的局部有效恢复
+速率(定理~\ref{thm:restoring}); 其次, $\{K=1\}$ 上涨落自然分裂为
+热力学类与纯运动学类两支.
 
 \medskip
-
-辅助线性系统 $\dot{x}=(J_{G}-d_{c}I)x$ 在临界阻尼处有特征值 $0$ 与 $-2d_{c}$(由 $\mathrm{spec}(J_{G})=\{\pm d_{c}\}$ 在 $d=d_{c}$ 处得出)。定理~\ref{thm:restoring} 关注非线性系统 $\dot{x}=(J_{G}-d_{c}I)\nabla V$, $V=\tfrac{1}{2}(K{-}1)^2$, 其中对 $K=1$ 的偏离产生惩罚 $V$。$D=d_{c}I$ 的选择是唯一的临界稳定各向同性阻尼: 使 $K=1$ 稳定的最小各向同性耗散, 并给出最显式的恢复速率公式(式~\eqref{eq:kappa})。
 
 \begin{theorem}[局部有效恢复速率]\label{thm:restoring}
-设 $G$ 为 $2\times 2$ Lorentz 度规, $D=d_{c}I$, $J_{G}=\alpha G^{-1}J$(定理~\ref{thm:unique})。定义 $K(x)=x^{\top}Gx$, $V=\tfrac{1}{2}(K-1)^{2}$, 漂移项为 $\dot{x}=(J_{G}-d_{c}I)\nabla V$。则对任意 $x\in\mathbb{R}^{2}$:
+设 $G$ 为 $2\times 2$ Lorentz 度规, $D=d_{c}I$(律 III), $J_{G}=\alpha G^{-1}J$(定理~\ref{thm:unique})。定义 $K(x)=x^{\top}Gx$, $V=\tfrac{1}{2}(K-1)^{2}$, 漂移项为 $\dot{x}=(J_{G}-d_{c}I)\nabla V$。则对任意 $x\in\mathbb{R}^{2}$:
 \begin{equation}
 \dot{K} = 4(K-1)\bigl[\alpha\,x^{\top}(JG)\,x - d_{c}\,x^{\top}G^{2}x\bigr].\label{eq:Kdot}
 \end{equation}
@@ -391,7 +419,7 @@ $\dot{K}=2x^{\top}G\dot{x}=4(K-1)\,x^{\top}G(J_{G}-d_{c}I)Gx$。由 $GJ_{G}=\alp
 
 \subsection*{$\{K=1\}$ 上的两类涨落}
 
-将各向同性可加白噪声(伊藤约定)加入律 II 得 $dx=(J_{G}-D)\nabla V\,dt+\sigma\,dW_{t}$, 其中 $W_{t}$ 是标准 $\mathbb{R}^{2}$ 值 Wiener 过程, $\sigma>0$ 常数。在 $D=d_{c}I$(临界阻尼)处, 产生两类几何上不同的涨落:
+将各向同性可加白噪声(伊藤约定)加入律 II 得 $dx=(J_{G}-D)\nabla V\,dt+\sigma\,dW_{t}$, 其中 $W_{t}$ 是标准 $\mathbb{R}^{2}$ 值 Wiener 过程, $\sigma>0$ 常数。在 $D=d_{c}I$(临界阻尼, 律 III)处, 产生两类几何上不同的涨落:
 
 \medskip\noindent
 \textit{A 类}(热力学型): $K$ 垂直于 $\{K=1\}$ 的涨落——偏离度规自洽性——由恢复速率 $\kappa_{K}(x_{*})=4d_{c}\,x_{*}^{\top}G^{2}x_{*}$ 控制;在固定基点处, $K$-涨落的线性化稳态分布为高斯分布, 方差 $\sigma^{2}/(2d_{c})$, 由一维 OU 过程的标准稳态分布得出~\cite{Gardiner1985}。虽然恢复速率与 $K$ 空间噪声幅度都依赖 $x_{*}^{\top}G^{2}x_{*}$, 此因子在 OU 方差中相消。
@@ -438,6 +466,15 @@ $\dot{K}=2x^{\top}G\dot{x}=4(K-1)\,x^{\top}G(J_{G}-d_{c}I)Gx$。由 $GJ_{G}=\alp
 \caption{Rindler 度规 $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$ 下的 $\{K=1\}$ 流形. 双曲线的渐近线为光锥. 在基点 $x_{*}$ 处, A 类(红, 双向箭头): 沿 $\nabla K$ 法向偏离 $\{K=1\}$ 的热力学涨落; B 类(绿): 沿曲线的切向 boost, 热力学上惰性——在 $x_{*}=(0,1)$ 处 $dx_{2}/dx_{1}|_{x_{*}}=0$, 切向恰为水平方向. 图中取 $\kappa\ell=1$ 且 $x_{*}=(0,1)$, 满足归一化 $x_{*}^{\top}G^{2}x_{*}=1$, 此时恢复率简化为 $\kappa_{K}=4d_{c}$(一般基点的公式见 \S\ref{sec:lawIII}).}
 \label{fig:K1geometry}
 \end{figure}
+
+\medskip
+\noindent
+\textbf{逻辑状态总结.}
+律 III 通过最小各向同性耗散下的稳定性判据选定 $D=d_{c}I$, 由此闭合
+动力学层级. 在该选择下, 定理~\ref{thm:restoring} 表明 $K{=}1$ 是
+局部恢复的平衡, 而涨落分析将动力学分为热力学通道(A 类)与纯运动学
+通道(B 类). 热力学通道将在下一节供给局部 Clausius 关系; 运动学
+通道不携带热, 在该论证中是惰性的.
 
 \section{时空热力学(途径 A)}\label{sec:thermo}
 
