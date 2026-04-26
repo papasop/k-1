@@ -39,7 +39,7 @@
 
 \textit{The problem.} Riemann's 1854 Habilitation lecture observed that, for a continuous manifold, the basis of metric relations must be sought outside the manifold itself, in forces acting upon it~\cite{Riemann1854}.\footnote{Riemann's formulation: ``the basis of metric relations must be sought outside that actuality, in colligating forces that operate upon it.''} Most standard formulations of spacetime physics, however, assume a metric or a causal structure as input. The Jacobson argument~\cite{Jacobson} obtains the Einstein equations from thermodynamics on local Rindler horizons, but Lorentzian signature is universally assumed --- as in the approaches of Padmanabhan~\cite{Padmanabhan} and Verlinde~\cite{Verlinde}. The EPS axiomatisation~\cite{EPS} derives causal structure from free-fall and light propagation, but uses kinematic primitives. In each of these approaches to Riemann's open problem, either the signature is prescribed or the derivation presupposes kinematic primitives.
 
-\textit{The gap.} In the ``local cost-based leading quadratic form'' sense adopted here, existing approaches typically take Lorentzian signature or an equivalent causal structure as input; the present work addresses the prior question: when does the cost structure itself enforce a Lorentzian leading symbol?\footnote{Related but distinct questions include Born--Infeld signature issues, signature change in quantum cosmology, and the problem of time~\cite{Gibbons1995,Kiefer2012,Isham1993}. Entropic gravity approaches~\cite{Verlinde,Padmanabhan} presuppose Lorentzian spacetime and derive gravitational dynamics; the present work addresses the prior cost-based signature question.}
+\textit{The gap.} In the ``local cost-based leading quadratic form'' sense adopted here, existing approaches typically take Lorentzian signature or an equivalent causal structure as input; the present work addresses the prior question: when does the cost structure itself enforce a Lorentzian leading symbol?
 
 \textit{A local answer.} In the present modelling, time is neither a coordinate nor a metric primitive, but the cost of change. Information time is introduced as
 \[
@@ -220,7 +220,11 @@ in this section.
 \begin{theorem}[Signature-Stability Equivalence]\label{thm:equivalence}
 For non-degenerate symmetric $2\times 2$ real $G$, under the isotropic linearisation $H_{*}=I$, the following are equivalent:
 \begin{itemize}
-\item[\textup{(a)}] The metric admits a stability boundary $d_{c}>0$.
+\item[\textup{(a)}] The isotropic stability threshold
+\[
+d_{c}=\alpha\sqrt{-1/\det G}
+\]
+is a positive real quantity.
 \item[\textup{(b)}] $\mathrm{Sig}(G)=(1,1)$ \textup{(Lorentzian)}, equivalently $\det G<0$.
 \end{itemize}
 For general $H_{*}$, the zero-eigenvalue locus in $d$ is invariant under invertible right multiplication by $H_{*}$ (Proposition~\ref{prop:diag_inv}), but the full real-part stability interpretation may fail (Remark~\ref{rem:Hstar_dep}); thus $d_{c}$ is a signature invariant only within the isotropic stability interpretation.
@@ -292,8 +296,15 @@ with the dissipation matrix $D$ remaining free within the positive-semidefinite 
 The splitting $GA=\alpha J-GD$ is the axiomatic content of Law~II. Combined with Theorem~\ref{thm:unique} (which fixes $J_{G}$), this yields the unique admissible evolution law (Theorem~\ref{thm:lawII}).
 
 \begin{theorem}[Canonical Form of Law~II]\label{thm:lawII}
-Let $G$ be non-degenerate and let $J_{G}=\alpha G^{-1}J$ \textup{(Theorem~\ref{thm:unique})}. Within the class of generators satisfying the Law~II constraint $GA = \alpha J - GD$ with $D \ge 0$, the evolution law for any smooth potential $V$ is uniquely
-$\dot{x} = (J_{G}-D)\,\nabla V$. This class defines the physically admissible evolution laws in the present framework, in the spirit of the Helmholtz/GENERIC splitting~\cite{GENERIC}.
+Let $G$ be non-degenerate and let $J_{G}=\alpha G^{-1}J$ \textup{(Theorem~\ref{thm:unique})}. For any generator satisfying the Law~II constraint
+\[
+GA = \alpha J - GD,\qquad D \ge 0,
+\]
+the evolution law for any smooth potential $V$ takes the uniquely reduced form
+\[
+\dot{x} = (J_{G}-D)\,\nabla V.
+\]
+Thus the physically admissible evolution laws in the present framework are exactly those of the form $(J_G-D)\nabla V$ with $D\ge 0$, in the spirit of the Helmholtz/GENERIC splitting~\cite{GENERIC}.
 \end{theorem}
 
 \begin{proof}
@@ -327,8 +338,8 @@ isotropic dissipation.
 Restricting to the isotropic class $D=dI$ ($d>0$), the strength of the
 normal restoring behaviour is controlled by the dissipation level $d$,
 while the relevant stability scale is set by the spectral quantity
-$d_{c}$ introduced in \S\ref{sec:stability}, namely the spectral radius
-of the hyperbolic symplectic generator $J_{G}$.
+$d_{c}$ introduced in \S\ref{sec:stability}, namely the magnitude of the
+real eigenvalues of the hyperbolic symplectic generator $J_{G}$.
 Accordingly, stability requires $d\ge d_{c}$, and the boundary choice
 $d=d_{c}$ gives critical damping.
 It is therefore the unique member of the isotropic family that
@@ -356,7 +367,7 @@ Let $G$ be a $2\times 2$ Lorentzian metric, $D=d_{c}I$ (Law~III), and $J_{G}=\al
 \begin{equation}
 \dot{K} = 4(K-1)\bigl[\alpha\,x^{\top}(JG)\,x - d_{c}\,x^{\top}G^{2}x\bigr].\label{eq:Kdot}
 \end{equation}
-At any $x_{*}\in\{K=1\}$ with $Gx_{*}=\lambda x_{*}$, the term $x_{*}^{\top}JGx_{*}=0$, so linearising the coefficient in~\eqref{eq:Kdot} at such an $x_{*}$ gives
+At any $x_{*}\in\{K=1\}$ with $Gx_{*}=\lambda x_{*}$, the term $x_{*}^{\top}JGx_{*}=0$; freezing the coefficient in~\eqref{eq:Kdot} at such an $x_{*}$ and retaining the first-order term in $(K-1)$ gives
 \begin{equation}
 \dot{K} = -4\,d_{c}\,x_{*}^{\top}G^{2}x_{*}\cdot(K-1)+o(K-1).\label{eq:Kdot_eigen}
 \end{equation}
@@ -450,10 +461,11 @@ exhibiting exact $\kappa$-cancellation. Hence the internal algebraic identity $d
 
 In this subsection we work within the Sekimoto--Seifert stochastic thermodynamics framework~\cite{Sekimoto}; within that external framework, the key additional external input is the identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, which is assumed here and not derived from the present framework.
 
-Within Class~A (fixed inertial observer), the $K$-dynamics near $K=1$ is a one-dimensional Ornstein--Uhlenbeck process with stationary variance
+Within Class~A (fixed inertial observer), and at a fixed $G$-eigenvector base point on $\{K=1\}$, the normal $K$-dynamics near $K=1$ reduces to a one-dimensional Ornstein--Uhlenbeck process. Its stationary variance is
 \begin{equation}
-\mathrm{Var}(K)\approx\frac{\sigma^{2}}{2d_{c}}.\label{eq:var}
+\mathrm{Var}(K)\approx\frac{\sigma^{2}}{2d_{c}},\label{eq:var}
 \end{equation}
+where the base-point factor cancels between the effective restoring rate and the induced $K$-space noise amplitude.
 With this stationary variance, the FDT form $\sigma_{K}^{2}=2\kappa_{K}T_{\mathrm{eff}}$ defines an effective temperature
 \[
 T_{\mathrm{eff}}=\frac{\sigma^{2}}{2d_{c}},
@@ -689,9 +701,7 @@ independent eigenvalues. The matter row is schematic: the point-level entry uses
 The following results concern the \emph{domain} of the framework rather than the physical existence of singularities: where $\sigma_1=0$, the $K{=}1$ locus is empty and the framework is undefined, not incorrect.
 
 \begin{proposition}[Positivity from Axiom~T]\label{prop:sigma1}
-Among the three axioms, only Axiom~T is used here;
-Axioms~R and~E are needed only in \S~\ref{sec:lawI} to establish $\mathrm{Sig}(G)=(1,1)$.
-Axiom~T implies $\sigma_1>0$ wherever $K{=}1$ holds.
+Among the three axioms, only Axiom~T is used here; Axioms~R and~E are needed only in \S~\ref{sec:lawI} to establish $\mathrm{Sig}(G)=(1,1)$. In the $2\times 2$ wedge representation used here, Axiom~T implies $\sigma_1>0$ wherever $K{=}1$ holds.
 \end{proposition}
 
 \begin{proof}
@@ -918,24 +928,6 @@ K.~Sekimoto,
 Stochastic Energetics.
 Lecture Notes in Physics \textbf{799}, Springer (2010).
 \url{https://doi.org/10.1007/978-3-642-05411-2}
-
-\bibitem{Gibbons1995}
-G.\,W.~Gibbons, D.\,A.~Rasheed,
-Electric-magnetic duality rotations in non-linear electrodynamics.
-Nucl.\ Phys.\ B \textbf{454}, 185 (1995).
-\url{https://doi.org/10.1016/0550-3213(95)00409-L}
-
-\bibitem{Kiefer2012}
-C.~Kiefer,
-Quantum Gravity, 3rd ed.
-Oxford University Press (2012).
-
-\bibitem{Isham1993}
-C.\,J.~Isham,
-Canonical quantum gravity and the problem of time.
-In: \textit{Integrable Systems, Quantum Groups, and Quantum Field Theories},
-NATO ASI Series, Springer (1993).
-\url{https://doi.org/10.1007/978-94-011-1980-1_6}
 
 \bibitem{Wald1984}
 R.\,M.~Wald,
