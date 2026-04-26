@@ -122,7 +122,7 @@ K(x):=x^{\top}Gx
 \]
 measures local temporal cost, and the condition $K=1$ identifies the self-consistent locus. We adopt the normalisation $K=1$ by a choice of cost units, without loss of generality at the level of the present local theory. This condition is \emph{not} a conclusion of~\cite{Realizability}, but an additional self-consistency condition introduced in the present paper.
 
-\medskip\noindent\textit{Role of information time in the present paper.} In the present work, $dt_{\mathrm{info}}$ plays a motivating and structural role: it specifies the cost-time layer from which the local leading form $G$ is introduced. The later dynamical sections use an effective evolution parameter $t$; an explicit first-principles identification between that parameter and $dt_{\mathrm{info}}$ is not derived here. In this sense, Law~I establishes the local cost-geometric layer of the framework, while a full dynamical reconstruction from information time alone is left to future work. Throughout the paper, this $2\times 2$ construction is applied on distinguished local two-planes, such as the $(t,r)$ wedge of a local Rindler horizon in Route~A and the radial-time plane in spherical symmetry for Route~B. These are not arbitrary two-planes: they are the physically distinguished local planes selected by the problem under consideration.
+\medskip\noindent\textit{Role of information time in the present paper.} In the present work, $dt_{\mathrm{info}}$ plays a motivating and structural role: it specifies the cost-time layer from which the local leading form $G$ is introduced. The later dynamical sections use an effective evolution parameter $t$; an explicit first-principles identification between that parameter and $dt_{\mathrm{info}}$ is not derived here. Throughout this paper, the dynamical evolution parameter $t$ is an effective evolution time independent of $dt_{\mathrm{info}}$; establishing their relation is left to future work. In this sense, Law~I establishes the local cost-geometric layer of the framework, while a full dynamical reconstruction from information time alone is left to future work. Throughout the paper, this $2\times 2$ construction is applied on distinguished local two-planes, such as the $(t,r)$ wedge of a local Rindler horizon in Route~A and the radial-time plane in spherical symmetry for Route~B. These are not arbitrary two-planes: they are the physically distinguished local planes selected by the problem under consideration.
 
 \medskip\noindent\textit{Sign conventions.} In this section, $G$ is written in the cost-sign convention, so that the temporal direction carries positive cost. In later sections, especially in the Rindler realisation of Route~A, we switch to the spacetime-sign convention
 \[
@@ -490,7 +490,7 @@ for that argument.
 
 This section develops Route~A as a thermodynamic and conditional bridge to the Einstein equations. Every external identification used in Route~A is marked explicitly; the full input list is summarised at the end of the section.
 
-\medskip\noindent\textit{Sign convention.} In Route~A we use the spacetime-sign convention
+\medskip\noindent\textit{Sign convention and object split.} In Route~A we use the spacetime-sign convention
 \[
 g=\mathrm{diag}(-(\kappa\ell)^{2},1)
 \]
@@ -499,6 +499,12 @@ for direct comparison with Rindler geometry. Statements depending only on $\det 
 G_{\mathrm{cost}}=-g=\mathrm{diag}((\kappa\ell)^{2},-1),
 \]
 used explicitly in \S~\ref{sec:singularity}. Both conventions have determinant $-(\kappa\ell)^{2}$ and give the same $d_{c}$.
+
+In this section, $g_{\mu\nu}$ denotes the physical Rindler metric used as the external spacetime background. By contrast, the quadratic form $G$ entering
+\[
+K=x^{\top}Gx,\qquad J_G=\alpha G^{-1}J,
+\]
+and the OU reduction is the cost-form used by the framework. In the Rindler realisation, these are related by the sign convention discussed in \S~\ref{sec:lawI}, but they should not be conflated notationally: $g$ denotes the physical spacetime metric, whereas $G$ denotes the dynamical cost-form.
 
 As a concrete realisation, we apply the framework to the Rindler metric
 \[
@@ -889,6 +895,7 @@ The first three problems concern structural completion and empirical distinctnes
 \item Complete Route~B for general metrics (Gauss--Codazzi relations for null hypersurfaces).
 \item Extend Route~B to non-vacuum matter. In particular, determine whether $\rho=(1-K_2)/(8\pi r^2)$ is an intrinsic consequence of the cost framework, rather than a GR rewriting, whether matter can thereby be understood as the failure of angular eigenvalue self-consistency per unit area, and whether this extends to the full stress-energy tensor~$T_{\mu\nu}$.
 \item Identify testable strong-field predictions. Within the present spherical-vacuum analysis, since in the weak-field regime $K_2=1$ already reproduces the Newtonian potential while $K_1=1$ is automatic at linear order, any observational distinction between the eigenvalue principle and standard GR must arise from the nonlinear strong-field sector, i.e.\ from the term $B/r^2$ in the $K_1$-only family that distinguishes $K_1$-equivalence from pure Schwarzschild (Lemma~\ref{lem:rigidity}). Possible windows include high-precision black-hole shadow data, strong-field gravitational-wave signals, and near-horizon quantum effects.
+\item Establish a first-principles relation between the motivating information time $dt_{\mathrm{info}}$ and the effective dynamical evolution parameter $t$ used in Laws~II--III and Route~A.
 \item Prove $\sigma_{1,\min}\geq\hbar/(4\pi)$ as a hard bound from $K$--$\varphi$ canonical conjugacy \emph{without} invoking the Route~A identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, where $\varphi$ is the boost angle along $\{K{=}1\}$.
 \item Prove global attractivity of $K=1$: show that for any $x_0\in\mathbb{R}^{2}$,
 the trajectory of $\dot{x}=(J_G-d_{c}I)\nabla V$ with $V=\tfrac{1}{2}(K-1)^2$
