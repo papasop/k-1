@@ -1226,6 +1226,11 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
               <input id="vcG" type="range" min="0.3" max="2.0" step="0.01" value="1.00">
               <b id="vcGLab">1.00</b>
             </label>
+            <div class="vc-race">
+              <button id="vcStartRace" type="button">Start race</button>
+              <button id="vcResetRace" type="button">Reset</button>
+              <b id="vcRaceState">idle</b>
+            </div>
           </div>
           <div class="vc-table" id="vcTable"></div>
           <div class="reading vc-proof-note">
@@ -1288,6 +1293,10 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
     .vc-row input[type=range]{ -webkit-appearance:none; appearance:none; height:3px; background:var(--line); border-radius:2px; }
     .vc-row input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; width:14px; height:14px; border-radius:50%; background:var(--accent); cursor:pointer; }
     .vc-row b{ color:var(--accent-ink); min-width:66px; text-align:right; }
+    .vc-race{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+    .vc-race button{ background:var(--card); border:1px solid var(--line); padding:7px 11px; border-radius:6px; font-family:'JetBrains Mono',monospace; font-size:10.5px; letter-spacing:0.04em; color:var(--ink-3); cursor:pointer; }
+    .vc-race button:hover{ color:var(--ink); }
+    .vc-race b{ color:var(--accent-ink); min-width:56px; text-align:right; font:11px/1.2 'JetBrains Mono',monospace; }
     .vc-info{ margin-top:10px; padding:12px 14px; background:var(--paper-2); border:1px solid var(--line); border-radius:10px; display:grid; gap:6px; }
     .vc-eq{ display:grid; grid-template-columns:auto 1fr; gap:10px; align-items:baseline; font:11px/1.35 'JetBrains Mono',monospace; color:var(--muted); }
     .vc-eq b{ text-align:right; color:var(--ink); font-weight:600; }
@@ -1555,6 +1564,13 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
     const endYEl = document.getElementById('vcEndY');
     const gEl = document.getElementById('vcG');
     const tableEl = document.getElementById('vcTable');
+    const startBtn = document.getElementById('vcStartRace');
+    const resetBtn = document.getElementById('vcResetRace');
+    const raceStateEl = document.getElementById('vcRaceState');
+    let raceRunning = false;
+    let raceStart = 0;
+    let raceDur = 1;
+    let raceFrame = null;
 
     function fit(el, ctx, h){
       const w = Math.max(320, Math.floor(el.parentElement.getBoundingClientRect().width - 4));
@@ -1662,6 +1678,11 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       return {s, guideDeg, guide, X, Y, g, paths, minForwardQ, coneWidth};
     }
 
+    function raceProgress(now){
+      if(!raceRunning) return 0;
+      return clamp((now - raceStart) / raceDur, 0, 1);
+    }
+
     function drawCone(st){
       const {w,h} = coneSize;
       cctx.clearRect(0,0,w,h);
@@ -1712,7 +1733,7 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       cctx.fillText('forward admissibility cone', 18, 20);
     }
 
-    function drawPaths(st){
+    function drawPaths(st, now=performance.now()){
       const {w,h} = pathSize;
       pctx.clearRect(0,0,w,h);
       const padL=28, padR=16, padT=18, padB=22;
@@ -1743,6 +1764,19 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
         pctx.stroke();
       });
 
+      const prog = raceProgress(now);
+      const activePaths = st.paths.filter(p => p.admissible);
+      activePaths.forEach(path => {
+        const rel = raceRunning ? clamp((prog * raceDur) / Math.max(path.time, 1e-6), 0, 1) : 0;
+        const idx = Math.min(path.pts.length - 1, Math.round(rel * (path.pts.length - 1)));
+        const ball = toScreen(path.pts[idx]);
+        pctx.fillStyle = path.color;
+        pctx.beginPath(); pctx.arc(ball.x, ball.y, path.key === 'cycloid' ? 5 : 4.3, 0, Math.PI*2); pctx.fill();
+        pctx.strokeStyle = 'rgba(255,255,255,0.9)';
+        pctx.lineWidth = 1.2;
+        pctx.stroke();
+      });
+
       const end = toScreen({x:st.X, y:st.Y});
       pctx.fillStyle = 'rgba(32,30,26,0.92)';
       pctx.beginPath(); pctx.arc(end.x,end.y,4,0,Math.PI*2); pctx.fill();
@@ -1754,15 +1788,19 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
     }
 
     function redrawTable(st){
-      const fastest = Math.min(...st.paths.map(p=>p.time));
+      const admissible = st.paths.filter(p => p.admissible);
+      const fastest = admissible.length ? Math.min(...admissible.map(p=>p.time)) : Infinity;
       tableEl.innerHTML = st.paths.map(p => {
         const adm = p.admissible ? 'admissible' : 'blocked';
         const lag = p.time - fastest;
-        return `<div class="vc-tr"><b style="color:${p.color}">${p.label}</b><span>${adm}</span><span>time ${fmt(p.time,3)}${lag > 1e-3 ? ` · +${fmt(lag,3)}` : ' · fastest'}</span></div>`;
+        const tail = p.admissible
+          ? `time ${fmt(p.time,3)}${lag > 1e-3 ? ` · +${fmt(lag,3)}` : ' · fastest'}`
+          : 'blocked at launch';
+        return `<div class="vc-tr"><b style="color:${p.color}">${p.label}</b><span>${adm}</span><span>${tail}</span></div>`;
       }).join('');
     }
 
-    function redraw(){
+    function redraw(now=performance.now()){
       const st = state();
       document.getElementById('vcAlab').textContent = fmt(st.s.a,2);
       document.getElementById('vcKlab').textContent = fmt(st.s.k,2);
@@ -1774,12 +1812,42 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       document.getElementById('vcGuideQ').textContent = fmt(qVal(st.guide.x, st.guide.y, st.s), 4);
       document.getElementById('vcConeWidth').textContent = fmt(st.coneWidth,1) + '°';
       document.getElementById('vcMinQ2').textContent = fmt(st.minForwardQ,4);
+      const admissibleTimes = st.paths.filter(p => p.admissible).map(p => p.time);
+      raceDur = (admissibleTimes.length ? Math.max(...admissibleTimes) : 1) * 1000;
+      raceStateEl.textContent = raceRunning ? (raceProgress(now) >= 1 ? 'finished' : 'racing') : 'idle';
       drawCone(st);
-      drawPaths(st);
+      drawPaths(st, now);
       redrawTable(st);
     }
 
-    [aEl,kEl,bEl,guideEl,endXEl,endYEl,gEl].forEach(el => el.addEventListener('input', redraw));
+    function tick(now){
+      redraw(now);
+      if(raceRunning && raceProgress(now) < 1){
+        raceFrame = requestAnimationFrame(tick);
+      } else {
+        raceRunning = false;
+        raceFrame = null;
+        redraw(now);
+      }
+    }
+
+    [aEl,kEl,bEl,guideEl,endXEl,endYEl,gEl].forEach(el => el.addEventListener('input', ()=>{
+      raceRunning = false;
+      if(raceFrame){ cancelAnimationFrame(raceFrame); raceFrame = null; }
+      redraw();
+    }));
+    startBtn.addEventListener('click', ()=>{
+      raceRunning = true;
+      raceStart = performance.now();
+      if(raceFrame) cancelAnimationFrame(raceFrame);
+      raceFrame = requestAnimationFrame(tick);
+    });
+    resetBtn.addEventListener('click', ()=>{
+      raceRunning = false;
+      raceStart = 0;
+      if(raceFrame){ cancelAnimationFrame(raceFrame); raceFrame = null; }
+      redraw();
+    });
     redraw();
   })();
   </script>
