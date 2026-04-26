@@ -90,7 +90,7 @@
 \[
 dt_{\mathrm{info}}:=\frac{d\Phi}{H},
 \]
-其中 $\Phi$ 表示结构变化, $H>0$ 为单位变化的局部代价。本文所约束的对象不是 $dt_{\mathrm{info}}$ 本身, 而是与 $dt_{\mathrm{info}}^{2}$ 的局部二阶展开关联的符号化主二次型 $G$, 建模为~\cite{Realizability} 的主二次型 $Q$。\textbf{本文的第一个结果是局部的、点级的: 在 $2\times 2$ 可实现性框架中, 代价结构强制 Lorentz 类型}---公理 R, E, T 连同非退化性蕴含 $\det G<0$, 等价于 $\mathrm{Sig}(G)=(1,1)$ (\S\ref{sec:lawI})。此阶段所获得的是主导形式的代数类型, 而非对所有度规数据的完整重构。诱导生成子 $J_G$、阈值 $d_c>0$、单位代价轨迹 $K(x)=x^{\top}Gx=1$ 随后都是此符号结构的代数推论; 使 $K=1$ 成为局部自洽轨迹需要律 II--III 的动力学补全。\emph{故本文采用结构性而非完全重构的框架: $\Phi$ 与 $H$ 不被指定为特定物理量, 下面的结果约束主导二次型的代数类型, 而非从第一性原理推导出全部度规数据。}
+其中 $\Phi$ 表示结构变化, $H>0$ 为单位变化的局部代价。本文所约束的对象不是 $dt_{\mathrm{info}}$ 本身, 而是与 $dt_{\mathrm{info}}^{2}$ 的局部二阶展开关联的符号化主二次型 $G$, 建模为~\cite{Realizability} 的主二次型 $Q$。\textbf{本文的第一个结果是局部的、点级的: 在 $2\times 2$ 可实现性框架中, 代价结构强制 Lorentz 类型}---公理 R, E, T 连同非退化性蕴含 $\det G<0$, 等价于 $\mathrm{Sig}(G)=(1,1)$ (\S\ref{sec:lawI})。此阶段所获得的是主导形式的代数类型, 而非对所有度规数据的完整重构。诱导生成子 $J_G$、阈值 $d_c>0$、单位代价轨迹 $K(x)=x^{\top}Gx=1$ 随后都是此符号结构的代数推论; 使 $K=1$ 成为局部自洽轨迹需要律 II--III 的动力学补全。\emph{故本文采用结构性而非完全重构的框架: $\Phi$ 与 $H$ 不被指定为特定物理量, 下面的结果约束主导二次型的代数类型, 而非从第一性原理推导出全部度规数据。}将这一点级结果连接到完整的 Einstein 方程, 在热力学途径(途径 A)中需要两个外部输入: 等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 与熵-面积律 $S\propto A$。
 
 \smallskip\noindent\textbf{与爱因斯坦方程相连的两条路径.}
 \begin{itemize}[leftmargin=2em, itemsep=0.4ex, parsep=0pt, topsep=0.3ex]
@@ -99,7 +99,7 @@ dt_{\mathrm{info}}:=\frac{d\Phi}{H},
 \end{itemize}
 两条途径互补: 途径 A 局部地适用于 Rindler 视界, 但需要外部热力学输入; 途径 B 热力学上独立, 但目前仅限球对称。两条途径的对比见图~\ref{fig:routes}。
 
-\medskip\noindent\textit{主要结果.} \emph{点级结果}: 在各向同性线性化之下, Lorentz 号差、$G$ 诱导生成子 $J_{G}$ 的实谱与正稳定阈值 $d_{c}>0$ 等价(定理~\ref{thm:equivalence})。\emph{场级结果}: 在 $f>0$ 区间上的静态球对称真空度规中, 所猜想的特征值自洽条件 $\sigma_2^2\,\Box\ln\sigma_i=1$ 在代数上等价于 $R_{\mu\nu}=0$(定理~\ref{thm:field})。完整表述见 \S\S\ref{sec:symplectic}--\ref{sec:singularity}。
+\medskip\noindent\textit{主要结果.} \emph{点级结果}: 在各向同性线性化之下, Lorentz 号差、$G$ 诱导生成子 $J_{G}$ 的实谱与正稳定阈值 $d_{c}>0$ 等价(定理~\ref{thm:equivalence})。\emph{途径 A}: 在两个外部输入 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 与 $S\propto A$ 被供给时, 有条件地恢复 $G_{\mu\nu}=8\pi T_{\mu\nu}$(对一般度规)。\emph{途径 B(场级结果)}: 在 $f>0$ 区间上的静态球对称真空度规中, 所猜想的特征值自洽条件 $\sigma_2^2\,\Box\ln\sigma_i=1$ 在代数上等价于 $R_{\mu\nu}=0$(定理~\ref{thm:field})。完整表述见 \S\S\ref{sec:symplectic}--\ref{sec:singularity}。
 
 \smallskip\noindent\textbf{记号.\ }
 \begin{itemize}[leftmargin=1.5em, itemsep=0.15ex, parsep=0pt, topsep=0.2ex, label={$\triangleright$}]
