@@ -2115,14 +2115,14 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       const mode = raceRunning ? (raceProgress(now) >= 1 ? 'compared' : 'accumulating') : 'ready';
       raceStateEl.textContent = `${mode} · ${runnerCount} path${runnerCount === 1 ? '' : 's'}`;
       raceBarEl.style.width = (raceRunning ? (raceProgress(now) * 100) : 0).toFixed(1) + '%';
-      document.getElementById('vcDeltaPhi').textContent = fmt(deltaPhi,3);
+      document.getElementById('vcDeltaPhi').textContent = fmt(st.deltaPhi,3);
       if(raceRunning){
         raceNoteEl.textContent = runnerCount
-          ? `Info-time comparison in progress: ${runnerCount} admissible path${runnerCount === 1 ? '' : 's'} accumulating cost toward the same endpoint variation ΔΦ ≈ ${fmt(deltaPhi,3)} with local impedance H = ${fmt(st.H,2)}; blocked paths remain pinned at launch.`
+          ? `Info-time comparison in progress: ${runnerCount} admissible path${runnerCount === 1 ? '' : 's'} accumulating cost toward the same endpoint variation ΔΦ ≈ ${fmt(st.deltaPhi,3)} with local impedance H = ${fmt(st.H,2)}; blocked paths remain pinned at launch.`
           : 'No admissible path is available for launch under the current local filter.';
       } else if(lastWinner){
         const winner = st.paths.find(p => p.label === lastWinner);
-        const rate = winner ? deltaPhi / Math.max(winner.time, 1e-6) : 0;
+        const rate = winner ? st.deltaPhi / Math.max(winner.time, 1e-6) : 0;
         raceNoteEl.textContent = `Compared: ${lastWinner} achieved the same endpoint variation ΔΦ with the lowest dt_info cost, giving ΔΦ/t_info ≈ ${fmt(rate,3)}.`;
       } else {
         raceNoteEl.textContent = 'Run the dt_info comparison at fixed endpoint variation ΔΦ: the preferred path is the one with the lowest accumulated dt_info, equivalently the largest average dΦ/dt_info under the chosen impedance H.';
