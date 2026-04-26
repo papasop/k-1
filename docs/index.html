@@ -2034,6 +2034,8 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
         <div class="eq-val"><span class="lbl">K = \u03a3 \u00b7 \u25a1_null ln\u221a\u03a3</span><b id="kK">1.000000</b></div>
         <div class="eq-bar"><div class="fill" id="kKBar" style="width:50%"></div><div class="mark" style="left:50%"></div></div>
         <div class="eq-val"><span class="lbl">residual K - 1</span><b id="kRes">0.0e+0</b></div>
+        <div class="eq-val"><span class="lbl">\u00bd\u03b8_exp\u00b2 + \u03c9\u00b2</span><b id="kKinLhs">0.124</b></div>
+        <div class="eq-val"><span class="lbl">2/\u03a3</span><b id="kKinRhs">0.124</b></div>
 
         <div class="reading" style="margin-top:12px">
           <b>Cancellation.</b> <span id="kExplain">The numerator combines as $(a^2\cos^2\theta-r^2)+2r^2 = r^2+a^2\cos^2\theta = \Sigma$, so $\Box_{\mathrm{null}}\ln\sqrt{\Sigma}=1/\Sigma$ and therefore $K=1$ exactly.</span>
@@ -2043,6 +2045,7 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
           <div style="display:grid;grid-template-columns:auto 1fr;gap:6px 10px;margin-top:8px;font:11px/1.35 'JetBrains Mono',monospace;color:var(--muted)">
             <span>Raychaudhuri side</span><b id="kRay">K = 1</b>
             <span>R_{\u03bc\u03bd}\u2113^\u03bc\u2113^\u03bd</span><b id="kRicci">0.0e+0</b>
+            <span>Kinematic identity</span><b id="kKin">matched</b>
             <span>Mass dependence</span><b id="kMassDep">drops out</b>
           </div>
         </div>
@@ -2058,6 +2061,46 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       <p data-orig-html="Setting $a=0$ recovers the Schwarzschild limit $\Sigma \to r^2$ and the identity collapses to the spherical $K_2=1$ branch. Turning on $a$ restores the $\theta$-dependence and makes visible why no function of $r$ alone can satisfy the Kerr condition.">Setting $a=0$ recovers the Schwarzschild limit $\Sigma \to r^2$ and the identity collapses to the spherical $K_2=1$ branch. Turning on $a$ restores the $\theta$-dependence and makes visible why no function of $r$ alone can satisfy the Kerr condition.</p>
     </div>
   </div>
+
+  <figure class="card" style="margin-top:18px">
+    <div class="fc-head">
+      <span class="fc-title">Figure 9 · Kerr surrogate challenge</span>
+      <span class="fc-tag">favorite test · only \u221a\u03a3 survives the \u03b8 sweep</span>
+    </div>
+    <div class="fig-split" style="grid-template-columns:1.05fr 0.95fr">
+      <div class="fs-vis" style="padding:18px 22px">
+        <canvas id="kerrSurCanvas" width="960" height="760" style="width:480px;height:380px"></canvas>
+        <div style="display:flex;gap:12px;margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:11px;flex-wrap:wrap">
+          <span><span style="display:inline-block;width:12px;height:2px;background:var(--accent);vertical-align:middle;margin-right:4px"></span>K(\u03b8) for chosen \u03c3</span>
+          <span><span style="display:inline-block;width:12px;height:2px;background:oklch(0.48 0.14 268);vertical-align:middle;margin-right:4px;border-top:1px dashed"></span>target = 1</span>
+        </div>
+      </div>
+      <div class="fs-side">
+        <h6 data-orig-html="Candidate eigenvalue">Candidate eigenvalue</h6>
+        <div class="seg" id="kSigFamily" style="margin-bottom:14px">
+          <button data-sf="sigma" class="on">\u221a\u03a3</button>
+          <button data-sf="r">r</button>
+          <button data-sf="obl">\u221a(r\u00b2+a\u00b2)</button>
+        </div>
+
+        <div class="reading" style="margin-top:6px">
+          <b>Favorite check.</b> Sweep the same Kerr point through all polar angles. The correct eigenvalue stays pinned to <code>K(\u03b8)=1</code>; radial surrogates peel away as soon as <code>a \ne 0</code>.
+        </div>
+
+        <h6 style="margin-top:14px" data-orig-html="\u03b8-sweep readout">\u03b8-sweep readout</h6>
+        <div class="eq-val"><span class="lbl">selected \u03c3</span><b id="kFamCurrent">\u221a\u03a3</b></div>
+        <div class="eq-val"><span class="lbl">K at probe \u03b8</span><b id="kFamK">1.000000</b></div>
+        <div class="eq-val"><span class="lbl">residual K - 1</span><b id="kFamResidual">0.0e+0</b></div>
+        <div class="eq-bar"><div class="fill" id="kFamBar" style="width:0%"></div></div>
+        <div class="eq-val"><span class="lbl">status</span><b id="kFamStatus">unique match</b></div>
+
+        <div class="reading" style="margin-top:12px">
+          <b>Why it matters.</b> <span id="kThetaSweepExplain">Because \u03b8_exp = 2r/\u03a3 is fixed by the principal null congruence, the only way to satisfy the self-consistency equation at every polar angle is to let \u03c3 carry the full \u03a3 dependence.</span>
+        </div>
+      </div>
+    </div>
+    <figcaption>This is the uniqueness test from the paper in interactive form. At fixed $(M,a,r)$, the panel sweeps polar angle and asks whether the chosen candidate eigenvalue keeps $K=\Sigma\,\Box_{\mathrm{null}}\ln\sigma$ locked to $1$. Only $\sigma=\sqrt{\Sigma}$ passes; purely radial surrogates fail once the spin is turned on.</figcaption>
+  </figure>
 </section>
 
 <!-- CLOSING -->
@@ -3401,7 +3444,10 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
     const canvas = document.getElementById('kerrCanvas');
     if(!canvas) return;
     const ctx = canvas.getContext('2d');
+    const surCanvas = document.getElementById('kerrSurCanvas');
+    const surCtx = surCanvas ? surCanvas.getContext('2d') : null;
     const DPR = window.devicePixelRatio || 1;
+    const sigButtons = document.querySelectorAll('#kSigFamily button');
     const Mel = document.getElementById('kM');
     const ael = document.getElementById('ka');
     const thel = document.getElementById('kth');
@@ -3410,20 +3456,26 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
     const alab = document.getElementById('kaLab');
     const thlab = document.getElementById('kthLab');
     const rlab = document.getElementById('krLab');
+    let sigFamily = 'sigma';
 
-    function fit(){
-      const rect = canvas.parentElement.getBoundingClientRect();
+    function fitCanvas(el, context){
+      const rect = el.parentElement.getBoundingClientRect();
       const w = Math.max(360, Math.floor(rect.width - 10));
       const h = 380;
-      canvas.style.width = w + 'px';
-      canvas.style.height = h + 'px';
-      canvas.width = w * DPR;
-      canvas.height = h * DPR;
-      ctx.setTransform(DPR,0,0,DPR,0,0);
+      el.style.width = w + 'px';
+      el.style.height = h + 'px';
+      el.width = w * DPR;
+      el.height = h * DPR;
+      context.setTransform(DPR,0,0,DPR,0,0);
       return {w,h};
     }
-    let sz = fit();
-    window.addEventListener('resize', ()=>{ sz = fit(); redraw(); });
+    let sz = fitCanvas(canvas, ctx);
+    let szSur = surCanvas && surCtx ? fitCanvas(surCanvas, surCtx) : null;
+    window.addEventListener('resize', ()=>{
+      sz = fitCanvas(canvas, ctx);
+      if(surCanvas && surCtx) szSur = fitCanvas(surCanvas, surCtx);
+      redraw();
+    });
 
     function state(){
       const M = +Mel.value;
@@ -3441,12 +3493,36 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       const K = Sigma * box;
       const residual = K - 1;
       const ricciNull = 2 * (1 - K) / Sigma;
-      return {M,a,thetaDeg,theta,c2,r,Sigma,thetaExp,drLn,d2Ln,box,K,residual,ricciNull};
+      const kinLhs = 2 * r * r / (Sigma * Sigma) + 2 * a * a * c2 / (Sigma * Sigma);
+      const kinRhs = 2 / Sigma;
+      return {M,a,thetaDeg,theta,c2,r,Sigma,thetaExp,drLn,d2Ln,box,K,residual,ricciNull,kinLhs,kinRhs};
     }
 
     function fmt(x,d=3){ return Number.isFinite(x) ? x.toFixed(d) : '—'; }
     function expfmt(x){ return Number.isFinite(x) ? x.toExponential(1) : '—'; }
     function clamp(x,lo,hi){ return Math.max(lo, Math.min(hi, x)); }
+    function sigLabel(mode){
+      if(mode === 'sigma') return '√Σ';
+      if(mode === 'r') return 'r';
+      return '√(r²+a²)';
+    }
+    function familyK(mode, r, a, c2){
+      const Sigma = r*r + a*a*c2;
+      if(mode === 'sigma'){
+        const drLn = r / Sigma;
+        const d2Ln = (a*a*c2 - r*r) / (Sigma*Sigma);
+        return Sigma * (d2Ln + (2*r/Sigma) * drLn);
+      }
+      if(mode === 'r'){
+        const drLn = 1 / r;
+        const d2Ln = -1 / (r*r);
+        return Sigma * (d2Ln + (2*r/Sigma) * drLn);
+      }
+      const s2 = r*r + a*a;
+      const drLn = r / s2;
+      const d2Ln = (a*a - r*r) / (s2*s2);
+      return Sigma * (d2Ln + (2*r/Sigma) * drLn);
+    }
 
     function updateReadout(s){
       Mlab.textContent = s.M.toFixed(2);
@@ -3462,12 +3538,31 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       document.getElementById('kK').textContent = fmt(s.K, 6);
       document.getElementById('kRes').textContent = expfmt(s.residual);
       document.getElementById('kRicci').textContent = expfmt(s.ricciNull);
+      document.getElementById('kKinLhs').textContent = fmt(s.kinLhs, 6);
+      document.getElementById('kKinRhs').textContent = fmt(s.kinRhs, 6);
       document.getElementById('kRay').textContent = Math.abs(s.residual) < 1e-12 ? 'K = 1' : 'K ≠ 1';
+      document.getElementById('kKin').textContent = Math.abs(s.kinLhs - s.kinRhs) < 1e-12 ? 'matched' : 'mismatch';
       document.getElementById('kMassDep').textContent = 'M sets Δ, not K';
       document.getElementById('kBoxBar').style.width = (clamp(s.box / 0.25, 0, 1) * 100).toFixed(1) + '%';
       document.getElementById('kKBar').style.width = (clamp(s.K / 2, 0, 1) * 100).toFixed(1) + '%';
       document.getElementById('kExplain').textContent =
         'The numerator combines as (a²cos²θ − r²) + 2r² = r² + a²cos²θ = Σ, so □null ln√Σ = 1/Σ and therefore K = 1 exactly.';
+      const famK = familyK(sigFamily, s.r, s.a, s.c2);
+      const famRes = famK - 1;
+      document.getElementById('kFamCurrent').textContent = sigLabel(sigFamily);
+      document.getElementById('kFamK').textContent = fmt(famK, 6);
+      document.getElementById('kFamResidual').textContent = expfmt(famRes);
+      document.getElementById('kFamBar').style.width = (clamp(Math.abs(famRes) / 1.2, 0, 1) * 100).toFixed(1) + '%';
+      if(sigFamily === 'sigma'){
+        document.getElementById('kFamStatus').textContent = 'unique match';
+        document.getElementById('kThetaSweepExplain').textContent = 'Because θ_exp = 2r/Σ is fixed by the principal null congruence, the only way to satisfy the self-consistency equation at every polar angle is to let σ carry the full Σ dependence.';
+      } else if(sigFamily === 'r'){
+        document.getElementById('kFamStatus').textContent = 'radial surrogate fails';
+        document.getElementById('kThetaSweepExplain').textContent = 'The purely radial choice σ = r drops the a²cos²θ piece. As soon as spin is turned on, the θ sweep exposes the missing Kerr oblateness.';
+      } else {
+        document.getElementById('kFamStatus').textContent = 'oblateness only is insufficient';
+        document.getElementById('kThetaSweepExplain').textContent = 'Even √(r²+a²) builds in spin, but not the correct angular weighting. The principal-null expansion still forces the full Σ = r²+a²cos²θ structure.';
+      }
     }
 
     function toScreen(x, y, rect){
@@ -3476,49 +3571,50 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       return [px, py];
     }
 
-    function plot(rect, fn, color, width, dash){
-      ctx.save();
-      ctx.strokeStyle = color;
-      ctx.lineWidth = width;
-      if(dash) ctx.setLineDash(dash);
-      ctx.beginPath();
+    function plot(context, rect, fn, color, width, dash){
+      context.save();
+      context.strokeStyle = color;
+      context.lineWidth = width;
+      if(dash) context.setLineDash(dash);
+      context.beginPath();
       let first = true;
       for(let i=0;i<=240;i++){
         const t = i / 240;
         const x = rect.xmin + t * (rect.xmax - rect.xmin);
         const y = fn(x);
         const [px, py] = toScreen(x, y, rect);
-        if(first){ ctx.moveTo(px,py); first = false; }
-        else ctx.lineTo(px,py);
+        if(first){ context.moveTo(px,py); first = false; }
+        else context.lineTo(px,py);
       }
-      ctx.stroke();
-      ctx.restore();
+      context.stroke();
+      context.restore();
     }
 
-    function drawAxes(rect, xLabel, yLabel){
-      ctx.save();
-      ctx.strokeStyle = 'rgba(93,88,80,0.20)';
-      ctx.lineWidth = 1;
-      ctx.strokeRect(rect.x, rect.y, rect.w, rect.h);
-      ctx.font = '10px JetBrains Mono';
-      ctx.fillStyle = 'rgba(92,88,80,0.70)';
+    function drawAxes(context, rect, xLabel, yLabel, xTicks){
+      context.save();
+      context.strokeStyle = 'rgba(93,88,80,0.20)';
+      context.lineWidth = 1;
+      context.strokeRect(rect.x, rect.y, rect.w, rect.h);
+      context.font = '10px JetBrains Mono';
+      context.fillStyle = 'rgba(92,88,80,0.70)';
       [rect.ymin, (rect.ymin+rect.ymax)/2, rect.ymax].forEach(v=>{
         const [, py] = toScreen(rect.xmin, v, rect);
-        ctx.beginPath(); ctx.moveTo(rect.x, py); ctx.lineTo(rect.x + rect.w, py); ctx.stroke();
-        ctx.fillText(v.toFixed(1), rect.x - 28, py + 3);
+        context.beginPath(); context.moveTo(rect.x, py); context.lineTo(rect.x + rect.w, py); context.stroke();
+        context.fillText(v.toFixed(1), rect.x - 28, py + 3);
       });
-      [2,4,6,8,10].forEach(rv=>{
+      xTicks.forEach(rv=>{
         if(rv < rect.xmin || rv > rect.xmax) return;
         const [px] = toScreen(rv, rect.ymin, rect);
-        ctx.fillText('r=' + rv, px - 10, rect.y + rect.h + 14);
+        const lab = xLabel === 'θ' ? `${rv}°` : 'r=' + rv;
+        context.fillText(lab, px - 10, rect.y + rect.h + 14);
       });
-      ctx.fillText(xLabel, rect.x + rect.w - 18, rect.y + rect.h + 14);
-      ctx.save();
-      ctx.translate(rect.x - 18, rect.y + 16);
-      ctx.rotate(-Math.PI/2);
-      ctx.fillText(yLabel, 0, 0);
-      ctx.restore();
-      ctx.restore();
+      context.fillText(xLabel, rect.x + rect.w - 18, rect.y + rect.h + 14);
+      context.save();
+      context.translate(rect.x - 18, rect.y + 16);
+      context.rotate(-Math.PI/2);
+      context.fillText(yLabel, 0, 0);
+      context.restore();
+      context.restore();
     }
 
     function redraw(){
@@ -3530,16 +3626,16 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       const top = {x:44, y:24, w:w-64, h:150, xmin:0.6, xmax:10, ymin:0.94, ymax:1.06};
       const bot = {x:44, y:214, w:w-64, h:126, xmin:0.6, xmax:10, ymin:0, ymax:Math.max(2, (10*10 + s.a*s.a*s.c2) / 4)};
 
-      drawAxes(top, 'r', 'K');
-      drawAxes(bot, 'r', 'Σ');
+      drawAxes(ctx, top, 'r', 'K', [2,4,6,8,10]);
+      drawAxes(ctx, bot, 'r', 'Σ', [2,4,6,8,10]);
 
-      plot(top, () => 1, 'oklch(0.55 0.17 25)', 1.4, [5,4]);
-      plot(top, (r) => {
+      plot(ctx, top, () => 1, 'oklch(0.55 0.17 25)', 1.4, [5,4]);
+      plot(ctx, top, (r) => {
         const Sigma = r*r + s.a*s.a*s.c2;
         const box = ((s.a*s.a*s.c2 - r*r) / (Sigma*Sigma)) + (2*r/Sigma)*(r/Sigma);
         return Sigma * box;
       }, 'oklch(0.48 0.14 268)', 2.4);
-      plot(bot, (r) => r*r + s.a*s.a*s.c2, 'oklch(0.55 0.13 150)', 2.0);
+      plot(ctx, bot, (r) => r*r + s.a*s.a*s.c2, 'oklch(0.55 0.13 150)', 2.0);
 
       const [pxTop, pyTop] = toScreen(s.r, s.K, top);
       const [pxBot, pyBot] = toScreen(s.r, s.Sigma, bot);
@@ -3573,9 +3669,38 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
         ctx.fillText('r+', hx + 4, bot.y + bot.h - 6);
         ctx.restore();
       }
+
+      if(surCanvas && surCtx && szSur){
+        const {w:sw, h:sh} = szSur;
+        surCtx.clearRect(0,0,sw,sh);
+        const rect = {x:44, y:28, w:sw-64, h:286, xmin:0, xmax:90, ymin: sigFamily === 'sigma' ? 0.94 : -0.6, ymax: sigFamily === 'sigma' ? 1.06 : 1.26};
+        drawAxes(surCtx, rect, 'θ', 'K', [0,30,60,90]);
+        plot(surCtx, rect, () => 1, 'oklch(0.48 0.14 268)', 1.4, [5,4]);
+        plot(surCtx, rect, (thetaDeg)=>{
+          const c2 = Math.cos(thetaDeg * Math.PI / 180) ** 2;
+          return familyK(sigFamily, s.r, s.a, c2);
+        }, 'oklch(0.56 0.16 65)', 2.6);
+        const [spx, spy] = toScreen(s.thetaDeg, familyK(sigFamily, s.r, s.a, s.c2), rect);
+        surCtx.save();
+        surCtx.setLineDash([3,3]);
+        surCtx.strokeStyle = 'rgba(0,0,0,0.28)';
+        surCtx.beginPath(); surCtx.moveTo(spx, rect.y); surCtx.lineTo(spx, rect.y + rect.h); surCtx.stroke();
+        surCtx.setLineDash([]);
+        surCtx.fillStyle = 'oklch(0.56 0.16 65)';
+        surCtx.beginPath(); surCtx.arc(spx, spy, 4, 0, Math.PI * 2); surCtx.fill();
+        surCtx.restore();
+        surCtx.fillStyle = 'rgba(92,88,80,0.72)';
+        surCtx.font = 'italic 13px Newsreader';
+        surCtx.fillText(sigFamily === 'sigma' ? 'θ sweep stays pinned to 1' : 'θ sweep exposes the wrong surrogate', rect.x + 8, rect.y + 16);
+      }
     }
 
     [Mel, ael, thel, rel].forEach(el=> el.addEventListener('input', redraw));
+    sigButtons.forEach(btn => btn.addEventListener('click', ()=>{
+      sigFamily = btn.dataset.sf;
+      sigButtons.forEach(x => x.classList.toggle('on', x === btn));
+      redraw();
+    }));
     canvas.addEventListener('click', (e)=>{
       const rect = canvas.getBoundingClientRect();
       const x = e.clientX - rect.left;
