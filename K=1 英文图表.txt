@@ -432,7 +432,7 @@ for that argument.
 
 \section{Spacetime thermodynamics (Route~A)}\label{sec:thermo}
 
-Every external identification is marked explicitly.
+Every external identification used in Route~A is marked explicitly; the full input list is summarised at the end of the section.
 
 \medskip\noindent\textit{Sign convention.} In Route~A we use the spacetime-sign convention $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$ for direct comparison with Rindler geometry. Statements depending only on $\det G$, $d_{c}$, or the hyperbolic spectrum are invariant under the overall sign change. Statements invoking Axiom~T as positive temporal cost are to be read in the cost-sign convention $G_{\mathrm{cost}}=-G=\mathrm{diag}((\kappa\ell)^{2},-1)$, used explicitly in \S~\ref{sec:singularity}. Both conventions have $\det G=-(\kappa\ell)^{2}$ and give the same $d_{c}$.
 
@@ -444,25 +444,28 @@ from the horizon. The Rindler expressions are understood for a non-extremal loca
 \begin{equation}
 d_{c}\cdot T_{H} = \frac{\alpha}{\kappa\ell}\cdot\frac{\hbar\kappa}{2\pi} = \frac{\alpha\hbar}{2\pi\ell},\label{eq:nearhorizon}
 \end{equation}
-exhibiting exact $\kappa$-cancellation. Hence the result $d_{c}\cdot T_{H}=\alpha\hbar/(2\pi\ell)$ recovers the Tolman temperature~\cite{Tolman} $T_{\mathrm{tol}}=\alpha\hbar/(2\pi\ell)$, depending only on the proper distance $\ell$ from the horizon, not on the surface gravity $\kappa$.
+exhibiting exact $\kappa$-cancellation. Hence the internal algebraic identity $d_{c}\cdot T_{H}=\alpha\hbar/(2\pi\ell)$ matches the Tolman temperature~\cite{Tolman} $T_{\mathrm{tol}}=\alpha\hbar/(2\pi\ell)$, depending only on the proper distance $\ell$ from the horizon, not on the surface gravity $\kappa$. This is an internal algebraic identity; it does not independently derive the Tolman temperature, but establishes a bridge between the framework's scale $d_{c}$ and the known thermal scale of the horizon.
 
 \subsection*{Clausius relation (from OU dynamics) within Class~A}
 
-In this subsection we work within the Sekimoto--Seifert stochastic thermodynamics framework~\cite{Sekimoto}; within that external framework, the only additional external identification is $T_{\mathrm{eff}}=T_{\mathrm{tol}}$.
+In this subsection we work within the Sekimoto--Seifert stochastic thermodynamics framework~\cite{Sekimoto}; within that external framework, the key additional external input is the identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, which is assumed here and not derived from the present framework.
 
 Within Class~A (fixed inertial observer), the $K$-dynamics near $K=1$ is a one-dimensional Ornstein--Uhlenbeck process with stationary variance
 \begin{equation}
 \mathrm{Var}(K)\approx\frac{\sigma^{2}}{2d_{c}}.\label{eq:var}
 \end{equation}
-With this stationary variance, the FDT form $\sigma_{K}^{2}=2\kappa_{K}T_{\mathrm{eff}}$ defines the effective temperature $T_{\mathrm{eff}}=\sigma^{2}/(2d_{c})$, consistent with Law~II and Theorem~\ref{thm:restoring}. The Fokker--Planck equation yields a Boltzmann stationary distribution $\rho\propto\exp(-V/T_{\mathrm{eff}})$; the Clausius relation $\delta Q=T_{\mathrm{eff}}\,dS$ then follows from detailed balance for the OU process, with
+With this stationary variance, the FDT form $\sigma_{K}^{2}=2\kappa_{K}T_{\mathrm{eff}}$ defines an effective temperature
+\[
+T_{\mathrm{eff}}=\frac{\sigma^{2}}{2d_{c}},
+\]
+consistent with Law~II and Theorem~\ref{thm:restoring}. This is, at this stage, a formal effective-temperature definition: its identification with a physical horizon temperature requires the external input $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ introduced above. The Fokker--Planck equation then yields a Boltzmann stationary distribution $\rho\propto\exp(-V/T_{\mathrm{eff}})$; assuming the external identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, the Clausius relation $\delta Q=T_{\mathrm{tol}}\,dS$ follows from local detailed balance for the OU process, with
 \[
 \delta Q := dV + \tfrac{1}{2}\sigma_{K}^{2}\,dt,\qquad \sigma_{K}=2\sigma\|Gx_{*}\|.
 \]
-(The heat definition follows the Sekimoto--Seifert stochastic thermodynamics convention~\cite{Sekimoto}.)
-A derivation of the identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, possibly from a KMS condition~\cite{Haag,Connes1994}, remains open.
+(The heat definition follows the Sekimoto--Seifert stochastic thermodynamics convention~\cite{Sekimoto}.) A derivation of the identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ from a more fundamental principle (e.g.\ a KMS condition~\cite{Haag,Connes1994}) remains an open problem.
 
 \begin{proposition}[Local Clausius Equivalence]\label{prop:clausius}
-Assume (i) the OU approximation near $K=1$, (ii) the Sekimoto--Seifert heat convention, (iii) local detailed balance for the OU process, and (iv) the external identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, together with the Tolman identity $T_{\mathrm{tol}}=d_{c}T_{H}$ (precise forms in Remark below). Then the Clausius relation $\delta Q=T_{\mathrm{tol}}\,dS$ is equivalent to
+Assume (i) the OU approximation near $K=1$, (ii) the Sekimoto--Seifert heat convention, (iii) local detailed balance for the OU process, and (iv) the \emph{external} identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, together with the Tolman identity $T_{\mathrm{tol}}=d_{c}T_{H}$ (precise forms in the Remark below). Then the Clausius relation $\delta Q=T_{\mathrm{tol}}\,dS$ is equivalent to
 \begin{equation}
 \sigma^{2} = 2\,d_{c}\cdot T_{\mathrm{tol}} = 2\,d_{c}^{2}\cdot T_{H}.\label{eq:noise}
 \end{equation}
@@ -496,8 +499,12 @@ This position dependence should not be read as a Class~B heat fluctuation: varia
 For macroscopic black holes, $T_{\mathrm{tol}}\ll d_{c}$; setting $D=T_{\mathrm{tol}}I$ renders $K=1$ unstable. Stability requires $D\ge d_{c}I$; critical damping $D=d_{c}I$ is the unique marginally stable choice.
 \end{remark}
 
-Since every local Rindler horizon admits the standard Rindler approximation~\cite{Jacobson} with $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$ (where $\kappa$ and $\ell$ vary by location), Proposition~\ref{prop:clausius} applies to each such horizon, yielding the Clausius relation locally.
-Together with Jacobson's argument~\cite{Jacobson}, this supplies the local Clausius input needed for the Einstein equations. Once $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ has been given (and thus local Clausius obtained), the remaining external input required to invoke Jacobson's argument is $S\propto A$.
+Since every local Rindler horizon admits the standard Rindler approximation~\cite{Jacobson} with $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$ (where $\kappa$ and $\ell$ vary by location), Proposition~\ref{prop:clausius} applies to each such horizon, yielding the Clausius relation locally. Together with Jacobson's argument~\cite{Jacobson}, this supplies the local Clausius input needed for the Einstein equations. Once the external identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ has been given, the remaining external input required to invoke Jacobson's argument is $S\propto A$.
+
+\medskip
+\noindent
+\textbf{Summary of logical status.}
+Route~A is a thermodynamic bridge rather than an autonomous derivation of the Einstein equations. Its internal inputs are the Lorentzian structure supplied by Law~I, the isotropic stability scale $d_{c}$, and the OU dynamics of Class~A near $K=1$. To connect these ingredients to Jacobson's argument, two external inputs are required: (i) the identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, and (ii) the entropy--area law $S\propto A$. With these added, the framework supplies a local Clausius relation on each local Rindler horizon, thereby providing the local Clausius input used in Jacobson's route to $G_{\mu\nu}=8\pi T_{\mu\nu}$.
 
 %===================================================================
 \section{Eigenvalue self-consistency (Route~B: direct algebraic)}\label{sec:field}
