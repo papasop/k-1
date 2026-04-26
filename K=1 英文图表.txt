@@ -729,7 +729,7 @@ The adjective ``soft'' emphasises that the bound follows from the validity regim
 
 \subsection*{Two routes: one derivation, one equivalence theorem}
 
-Route~A reaches $G_{\mu\nu}=8\pi T_{\mu\nu}$ via stochastic dynamics and the Jacobson argument (\S\ref{sec:thermo}); Route~B establishes $R_{\mu\nu}=0$ algebraically, with no thermodynamic input, in the spherically symmetric sector (\S\ref{sec:field}).
+Within Route~A, the Einstein equations are reached via stochastic dynamics and the Jacobson argument (\S\ref{sec:thermo}), once the required external identifications are supplied; Route~B establishes a strict algebraic equivalence between the conjectured eigenvalue condition and $R_{\mu\nu}=0$ in spherical vacuum, with no thermodynamic input.
 
 The input structure of both routes --- including the Jacobson inputs and the external identifications $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ and $S\propto A$ --- is summarised in Fig.~\ref{fig:routes} and detailed in \S\ref{sec:thermo}. The novelty here is that Lorentzian signature, normally an external assumption in entropic-gravity arguments, is supplied internally by realizability (Theorem~\ref{thm:equivalence}, under isotropic linearisation).
 
@@ -787,29 +787,35 @@ The two routes meet in the vacuum sector: Route~B establishes $R_{\mu\nu}=0$ dir
 
 \subsection*{Scope of claims}
 
-Where Route~A applies, the Einstein equations $G_{\mu\nu}=8\pi T_{\mu\nu}$ are recovered; where Route~B applies, the vacuum equations $R_{\mu\nu}=0$ are reformulated in an equivalent cost-structural language. The contribution of the present paper is therefore conceptual and structural: Lorentzian signature is supplied internally rather than assumed (Theorem~\ref{thm:equivalence}, under isotropic linearisation), and the spherically symmetric vacuum equations admit an equivalent formulation in the $K{=}1$ framework (Theorem~\ref{thm:field}). The matter content $\rho=(1{-}K_2)/(8\pi r^2)$, the cosmological constant $\Lambda$, and the entropy--area law $S\propto A$ enter here through GR input or rewriting rather than as quantities fixed by the present framework.
+Within Route~A, given the external identifications $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ and $S\propto A$, the Einstein equations $G_{\mu\nu}=8\pi T_{\mu\nu}$ are recovered through the Jacobson argument; Route~B establishes a strict algebraic equivalence between the conjectured eigenvalue condition and $R_{\mu\nu}=0$ in spherical vacuum, with no thermodynamic input. Thus, in the spherical vacuum sector, the vacuum equations admit an equivalent cost-structural formulation (Theorem~\ref{thm:field}).
+
+The contribution of the present paper is therefore conceptual and structural: Lorentzian signature is supplied internally by the cost-realizability bridge (Theorem~\ref{thm:equivalence}, under isotropic linearisation) rather than assumed as a kinematic primitive. Neither the matter sector of the Einstein equations nor the thermal inputs needed for the Jacobson route are derived autonomously within the present framework; in particular, the entropy--area law remains external, and the matter sector is recovered via Route~A only when the two external identifications are supplied.
+
+Accordingly, the matter density $\rho=(1-K_2)/(8\pi r^2)$ and the interpretation of matter are GR rewritings; $\Lambda$ is not predicted by the framework; $S\propto A$ remains an external input borrowed from black-hole thermodynamics. Route~B in its current form is an equivalence theorem conditional on a conjectured field-level uplift; a first-principles justification of why each symplectic eigenvalue satisfies the same d'Alembertian equation remains an open task (cf.\ Open Problem~1 below).
 
 \subsection*{Extension to $(1{+}3)$ dimensions}
 
-In $(1{+}3)$ dimensions, $\{K{=}1\}\cong H^3$ carries $S^2$ cross-sections with area $4\pi\sigma_1^2$ when $\alpha=1$ and $\sigma_1=\kappa\ell$, linking the symplectic invariant to the Bekenstein--Hawking area~\cite{Bekenstein}; the $1/4$ coefficient still requires the usual Hawking/first-law input. Two structural changes remain: Lorentzian signature is no longer sufficient for $d_c>0$, and $J_G$ requires a symplectic pairing choice.
+The following remarks are heuristic and should be read as an outlook rather than a partial extension theorem. In $(1{+}3)$ dimensions, $\{K{=}1\}\cong H^3$ carries $S^2$ cross-sections with area $4\pi\sigma_1^2$ when $\alpha=1$ and $\sigma_1=\kappa\ell$, linking the symplectic invariant to the Bekenstein--Hawking area~\cite{Bekenstein}; the $1/4$ coefficient still requires the usual Hawking/first-law input. Two structural changes remain: Lorentzian signature alone is no longer sufficient to guarantee $d_c>0$, and $J_G$ requires a symplectic pairing choice. Whether the cost-realizability mechanism that forces $\mathrm{Sig}(G)=(1,1)$ in two dimensions admits a natural extension that constrains the full $(1{+}3)$-dimensional metric signature without assuming it, is an open conceptual question not addressed in this paper.
 
 \subsection*{Limitations}
 
 \begin{enumerate}
 \item Route~B is currently confined to spherical symmetry. \textit{(scope)}
-\item Route~A still depends on the external inputs $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ and $S\propto A$. \textit{(external input)}
+\item Route~A still depends on the external inputs $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ and $S\propto A$. In particular, the identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ is a phenomenological assumption and is not explained by the internal structure of Laws~I--III. \textit{(external input)}
 \item No observational deviation from GR is obtained in the present analysis. \textit{(predictive gap)}
-\item The $\sigma_1$ threshold derived here is a soft consistency bound only. \textit{(strength)}
+\item The $\sigma_1$ threshold derived in \S\ref{sec:singularity} is a soft consistency bound only, not a hard quantum-gravitational cutoff. \textit{(strength)}
 \item The scalar $H$ (information-time layer) and the matrix weight $H_{*}$ (stability layer) are not unified in the present framework. \textit{(notation and layering)}
 \end{enumerate}
 
 \subsection*{Open problems}
 
+The first three problems concern structural completion and empirical distinctness; the last two concern internal dynamical and quantum consistency.
+
 \begin{enumerate}
-\item Complete Route~B for general metrics (Gauss--Codazzi).
+\item Complete Route~B for general metrics (Gauss--Codazzi relations for null hypersurfaces).
 \item Extend Route~B to non-vacuum matter. In particular, determine whether $\rho=(1-K_2)/(8\pi r^2)$ is an intrinsic consequence of the cost framework, rather than a GR rewriting, whether matter can thereby be understood as the failure of angular eigenvalue self-consistency per unit area, and whether this extends to the full stress-energy tensor~$T_{\mu\nu}$.
-\item Identify testable strong-field predictions. Within the present spherical-vacuum analysis, since in the weak-field regime $K_2=1$ already reproduces the Newtonian potential while $K_1=1$ is automatic at linear order, any observational distinction between the eigenvalue principle and standard GR must arise from the nonlinear strong-field sector, i.e.\ from the independent content of $K_1$. Possible windows include high-precision black-hole shadow data, strong-field gravitational-wave signals, and near-horizon quantum effects.
-\item Prove $\sigma_{1,\min}\geq\hbar/(4\pi)$ (hard bound) from $K$--$\varphi$ canonical conjugacy, where $\varphi$ is the boost angle along $\{K{=}1\}$.
+\item Identify testable strong-field predictions. Within the present spherical-vacuum analysis, since in the weak-field regime $K_2=1$ already reproduces the Newtonian potential while $K_1=1$ is automatic at linear order, any observational distinction between the eigenvalue principle and standard GR must arise from the nonlinear strong-field sector, i.e.\ from the term $B/r^2$ in the $K_1$-only family that distinguishes $K_1$-equivalence from pure Schwarzschild (Lemma~\ref{lem:rigidity}). Possible windows include high-precision black-hole shadow data, strong-field gravitational-wave signals, and near-horizon quantum effects.
+\item Prove $\sigma_{1,\min}\geq\hbar/(4\pi)$ as a hard bound from $K$--$\varphi$ canonical conjugacy \emph{without} invoking the Route~A identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, where $\varphi$ is the boost angle along $\{K{=}1\}$.
 \item Prove global attractivity of $K=1$: show that for any $x_0\in\mathbb{R}^{2}$,
 the trajectory of $\dot{x}=(J_G-d_{c}I)\nabla V$ with $V=\tfrac{1}{2}(K-1)^2$
 satisfies $K(x(t))\to 1$ as $t\to\infty$.
