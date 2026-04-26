@@ -50,7 +50,7 @@ where $\Phi$ parametrises structural variation and $H>0$ is the local cost per u
 \textit{Two routes connecting to the Einstein equations.}
 \begin{itemize}
 \item[\textbf{A.}] \emph{Thermodynamic bridge} (\S\S\ref{sec:lawI}--\ref{sec:thermo}): on local Rindler horizons, $K{=}1\xrightarrow{\mathrm{lin.}}\mathrm{OU}\to\mathrm{Clausius}$; under the two external inputs $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ and $S\propto A$, and through the Jacobson argument~\cite{Jacobson}, this recovers $G_{\mu\nu}=8\pi T_{\mu\nu}$ for general metrics.
-\item[\textbf{B.}] \emph{Equivalence theorem} (\S~\ref{sec:field}): in the spherically symmetric sector, the eigenvalue self-consistency condition $\sigma_2^2\Box\ln\sigma_i=1$ --- a motivated field-level analogue of $K{=}1$, introduced as a conjecture --- is algebraically equivalent to $R_{\mu\nu}=0$, with \emph{no thermodynamic input}. This is not a derivation of the Einstein equations from the framework axioms, but a new equivalent formulation of the vacuum equations in the language of the $K{=}1$ framework.
+\item[\textbf{B.}] \emph{Equivalence theorem} (\S~\ref{sec:field}): in the spherical vacuum sector, the eigenvalue self-consistency condition $\sigma_2^2\Box\ln\sigma_i=1$ --- a conjectured field-level uplift of $K{=}1$, introduced as a conjecture --- stands in strict algebraic equivalence to $R_{\mu\nu}=0$, with \emph{no thermodynamic input}. This is not a derivation of the Einstein equations from the framework axioms, but a new equivalent formulation of the vacuum equations in the language of the $K{=}1$ framework.
 \end{itemize}
 The two routes are complementary: Route~A applies locally on Rindler horizons but requires external thermodynamic input, whereas Route~B is thermodynamically independent but presently limited to spherical symmetry. They are summarised in Fig.~\ref{fig:routes}.
 
@@ -432,7 +432,7 @@ for that argument.
 
 \section{Spacetime thermodynamics (Route~A)}\label{sec:thermo}
 
-Every external identification used in Route~A is marked explicitly; the full input list is summarised at the end of the section.
+This section develops Route~A as a thermodynamic and conditional bridge to the Einstein equations. Every external identification used in Route~A is marked explicitly; the full input list is summarised at the end of the section.
 
 \medskip\noindent\textit{Sign convention.} In Route~A we use the spacetime-sign convention $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$ for direct comparison with Rindler geometry. Statements depending only on $\det G$, $d_{c}$, or the hyperbolic spectrum are invariant under the overall sign change. Statements invoking Axiom~T as positive temporal cost are to be read in the cost-sign convention $G_{\mathrm{cost}}=-G=\mathrm{diag}((\kappa\ell)^{2},-1)$, used explicitly in \S~\ref{sec:singularity}. Both conventions have $\det G=-(\kappa\ell)^{2}$ and give the same $d_{c}$.
 
@@ -463,6 +463,9 @@ consistent with Law~II and Theorem~\ref{thm:restoring}. This is, at this stage, 
 \delta Q := dV + \tfrac{1}{2}\sigma_{K}^{2}\,dt,\qquad \sigma_{K}=2\sigma\|Gx_{*}\|.
 \]
 (The heat definition follows the Sekimoto--Seifert stochastic thermodynamics convention~\cite{Sekimoto}.) A derivation of the identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ from a more fundamental principle (e.g.\ a KMS condition~\cite{Haag,Connes1994}) remains an open problem.
+
+\medskip\noindent
+The following statement is conditional on the external identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$; it is not an autonomous derivation of the Clausius relation, but the equivalence theorem establishing what $\sigma^{2}$ must be when that identification is given.
 
 \begin{proposition}[Local Clausius Equivalence]\label{prop:clausius}
 Assume (i) the OU approximation near $K=1$, (ii) the Sekimoto--Seifert heat convention, (iii) local detailed balance for the OU process, and (iv) the \emph{external} identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, together with the Tolman identity $T_{\mathrm{tol}}=d_{c}T_{H}$ (precise forms in the Remark below). Then the Clausius relation $\delta Q=T_{\mathrm{tol}}\,dS$ is equivalent to
@@ -509,7 +512,7 @@ Route~A is a thermodynamic bridge rather than an autonomous derivation of the Ei
 %===================================================================
 \section{Eigenvalue self-consistency (Route~B: direct algebraic)}\label{sec:field}
 
-The eigenvalue self-consistency condition $\sigma_2^2\,\Box\ln\sigma_i=1$ is a motivated field-level analogue of $K{=}1$, introduced as a conjecture rather than derived from the framework's axioms; Theorem~\ref{thm:field} establishes its algebraic equivalence to $R_{\mu\nu}=0$ in the spherically symmetric sector, with no thermodynamic input.
+The eigenvalue self-consistency condition $\sigma_2^2\,\Box\ln\sigma_i=1$ is a conjectured field-level uplift of $K{=}1$, introduced as a conjecture rather than derived from the framework's axioms; Theorem~\ref{thm:field} establishes a strict algebraic equivalence to $R_{\mu\nu}=0$ in the spherical vacuum sector, with no thermodynamic input.
 
 All statements below are local on intervals where $f>0$, so that $\sigma_1=r\sqrt{f}$ and $\ln\sigma_1$ are real. Consider the static spherically symmetric metric
 \begin{equation}\label{eq:metric}
@@ -528,7 +531,7 @@ $\Box\phi=r^{-2}\partial_r(r^2f\,\partial_r\phi)$ (the radial d'Alembertian, exa
 \end{definition}
 
 \noindent
-The eigenvalue self-consistency condition $\sigma_2^2\,\Box\ln\sigma=1$, imposed on each eigenvalue ($K_1=1$, eq.~\eqref{eq:K1def}, and $K_2=1$, eq.~\eqref{eq:K2def}), states that the d'Alembertian of each log-eigenvalue equals the angular curvature cost $1/\sigma_2^2$. This is a motivated field-level analogue of the point-level balance $K{=}1$: each eigenvalue must propagate at the rate set by the angular sector, in the same way that $K=1$ requires the quadratic cost form $K$ to reproduce its own normalisation.
+The eigenvalue self-consistency condition $\sigma_2^2\,\Box\ln\sigma=1$, imposed on each eigenvalue ($K_1=1$, eq.~\eqref{eq:K1def}, and $K_2=1$, eq.~\eqref{eq:K2def}), states that the d'Alembertian of each log-eigenvalue equals the angular curvature cost $1/\sigma_2^2$. This is a conjectured field-level uplift of the point-level balance $K{=}1$: each eigenvalue must propagate at the rate set by the angular sector, in the same way that $K=1$ requires the quadratic cost form $K$ to reproduce its own normalisation.
 
 Expanding (direct computation using $\Box\ln\sigma_1=\Box\ln r+\tfrac{1}{2}\Box\ln f$):
 \begin{equation}\label{eq:K1exp}
@@ -555,6 +558,9 @@ $K_2{=}1\Leftrightarrow R_{\theta\theta}{=}0$
 (since $R_{\theta\theta}=1{-}f{-}rf'=1{-}K_2$).
 Equivalently, $K_2{=}1$ states that the Misner--Sharp mass
 $m=\frac{r}{2}(1{-}f)$ is constant: $dm/dr=(1{-}K_2)/2=0$.
+
+\medskip\noindent
+The following is an equivalence theorem in the spherical vacuum sector, not an autonomous derivation: it asserts that the conjectured eigenvalue condition (introduced as an external input) is algebraically equivalent to $R_{\mu\nu}=0$.
 
 \begin{theorem}[Field-Level Equivalence]\label{thm:field}
 For~\eqref{eq:metric} with $f\in C^{2}(I)$ and $f>0$ on an interval $I\subset(0,\infty)$ (so that $\sigma_{1}=r\sqrt{f}$ and $\ln\sigma_{1}$ are real), and $K_1,K_2$ as in Definition~\ref{def:esc}:
@@ -694,6 +700,9 @@ For the $(t,r)$ wedge (and by the same argument for any $2\times 2$ Lorentzian $
 
 \noindent
 A direct consequence: when $\sigma_1=0$, $K=-x_2^2\le 0$ and $K{=}1$ has no solutions. The Schwarzschild interior, including the singular limit $r\to 0$, therefore lies outside the domain of the framework: $\sigma_1=r\sqrt{f}$ is defined on the real branch $f>0$, so the interior $r<2M$ (where $f<0$) and the limit $r\to 0$ fall outside this domain --- the framework is undefined there, not incorrect.
+
+\medskip\noindent
+The following is a soft consistency bound from the OU validity regime, not a hard quantum-gravity cutoff.
 
 \begin{proposition}[Self-consistency resolution scale]\label{prop:domain}
 In Planck units ($\hbar=\ell_P=1$), under the Tolman-temperature identification, the OU approximation, and Schwarzschild near-horizon normalisation, thermal self-consistency of the $K{=}1$ framework requires $\sigma_1>\sigma_{1,c}:=\hbar/(4\pi)=\ell_P/(4\pi)$.
