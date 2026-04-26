@@ -478,7 +478,7 @@ $\dot{K}=2x^{\top}G\dot{x}=4(K-1)\,x^{\top}G(J_{G}-d_{c}I)Gx$。由 $GJ_{G}=\alp
 
 \section{时空热力学(途径 A)}\label{sec:thermo}
 
-本节推导 Rindler 视界上的 Clausius 关系。每一个外部等同都被显式标出。
+本节推导 Rindler 视界上的 Clausius 关系。途径 A 中所用的每一个外部等同都被显式标出; 完整输入清单于本节末尾汇总.
 
 \medskip\noindent\textit{符号约定.} 途径 A 中我们使用时空符号约定 $G=\mathrm{diag}(-(\kappa\ell)^{2},1)$, 以便与 Rindler 几何直接比较。仅依赖 $\det G$、$d_{c}$ 或双曲谱的命题, 在整体变号下不变。以公理 T(正时间代价)为基础的命题应在代价符号约定 $G_{\mathrm{cost}}=-G=\mathrm{diag}((\kappa\ell)^{2},-1)$ 下理解(于 \S~\ref{sec:singularity} 中显式使用)。两种约定都满足 $\det G=-(\kappa\ell)^{2}$, 给出相同的 $d_{c}$。
 
@@ -490,22 +490,25 @@ ds^{2}=-(\kappa\ell)^{2}d\tau^{2}+d\ell^{2},\label{eq:rindler_metric}
 \begin{equation}
 d_{c}\cdot T_{H} = \frac{\alpha}{\kappa\ell}\cdot\frac{\hbar\kappa}{2\pi} = \frac{\alpha\hbar}{2\pi\ell},\label{eq:nearhorizon}
 \end{equation}
-显示 $\kappa$ 的精确相消。故结果 $d_{c}\cdot T_{H}=\alpha\hbar/(2\pi\ell)$ 复现 Tolman 温度~\cite{Tolman} $T_{\mathrm{tol}}=\alpha\hbar/(2\pi\ell)$, 仅依赖于距视界的固有距离 $\ell$, 而与表面引力 $\kappa$ 无关。
+显示 $\kappa$ 的精确相消。故内部代数恒等式 $d_{c}\cdot T_{H}=\alpha\hbar/(2\pi\ell)$ 与 Tolman 温度~\cite{Tolman} $T_{\mathrm{tol}}=\alpha\hbar/(2\pi\ell)$ 相符, 仅依赖于距视界的固有距离 $\ell$, 而与表面引力 $\kappa$ 无关。这是一项内部代数恒等式; 它本身并不独立地推导出 Tolman 温度, 而是在框架的尺度 $d_{c}$ 与视界的已知热尺度之间建立了一座桥梁。
 
 \subsection*{A 类内(由 OU 动力学推导的) Clausius 关系}
 
-本小节中我们在 Sekimoto--Seifert 随机热力学框架~\cite{Sekimoto} 内工作; 在该外部框架中, 唯一附加的外部等同是 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$。
+本小节中我们在 Sekimoto--Seifert 随机热力学框架~\cite{Sekimoto} 内工作; 在该外部框架中, 关键的附加外部输入是等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, 此处为假设而非由本框架导出。
 
 在 A 类中(固定惯性观察者), $K=1$ 附近的 $K$ 动力学为一维 Ornstein--Uhlenbeck 过程, 稳态方差
 \begin{equation}
 \mathrm{Var}(K)\approx\frac{\sigma^{2}}{2d_{c}}.\label{eq:var}
 \end{equation}
-该稳态方差下, FDT 形式 $\sigma_{K}^{2}=2\kappa_{K}T_{\mathrm{eff}}$ 定义有效温度 $T_{\mathrm{eff}}=\sigma^{2}/(2d_{c})$, 与律 II 及定理~\ref{thm:restoring} 一致。Fokker--Planck 方程给出 Boltzmann 稳态分布 $\rho\propto\exp(-V/T_{\mathrm{eff}})$; 由 OU 过程的细致平衡, 随即得到 Clausius 关系 $\delta Q=T_{\mathrm{eff}}\,dS$, 其中
+该稳态方差下, FDT 形式 $\sigma_{K}^{2}=2\kappa_{K}T_{\mathrm{eff}}$ 定义有效温度
+\[
+T_{\mathrm{eff}}=\frac{\sigma^{2}}{2d_{c}},
+\]
+与律 II 及定理~\ref{thm:restoring} 一致。在此阶段这是一个形式上的有效温度定义: 它与视界物理温度的等同需要上述外部输入 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$。Fokker--Planck 方程随即给出 Boltzmann 稳态分布 $\rho\propto\exp(-V/T_{\mathrm{eff}})$; 假定外部等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, 由 OU 过程的局部细致平衡, 得到 Clausius 关系 $\delta Q=T_{\mathrm{tol}}\,dS$, 其中
 \[
 \delta Q := dV + \tfrac{1}{2}\sigma_{K}^{2}\,dt,\qquad \sigma_{K}=2\sigma\|Gx_{*}\|.
 \]
-(热的定义遵循 Sekimoto--Seifert 随机热力学约定~\cite{Sekimoto}。) 
-关于等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 的推导, 可能从 KMS 条件~\cite{Haag,Connes1994} 出发, 仍是未解问题。
+(热的定义遵循 Sekimoto--Seifert 随机热力学约定~\cite{Sekimoto}。) 关于等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 的推导, 是否可以从更基本的原理(例如 KMS 条件~\cite{Haag,Connes1994})出发, 仍是一个未解问题。
 
 \begin{proposition}[局部 Clausius 等价]\label{prop:clausius}
 设 (i) $K=1$ 附近的 OU 近似, (ii) Sekimoto--Seifert 热约定, (iii) OU 过程的局部细致平衡, (iv) 外部等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, 连同 Tolman 恒等式 $T_{\mathrm{tol}}=d_{c}T_{H}$ (精确形式见下方 Remark)。则 Clausius 关系 $\delta Q=T_{\mathrm{tol}}\,dS$ 等价于
@@ -543,6 +546,11 @@ T_{\mathrm{loc}}(x) := \frac{\sigma_{K}(x)^{2}}{2\kappa_{K}(x_{*})} = \frac{\sig
 该位置依赖不应读作 B 类的热涨落: 沿 boost 轨道的变化改变观察者/位置指派, 而 B 类仍热力学惰性, 不携带热。
 
 伊藤修正: 对 $K=x^{\top}Gx$ 应用伊藤公式, 产生附加漂移项 $\sigma^{2}\,\mathrm{tr}(G)\,dt$; 这一项改变 $K$ 的平均值但不改变其方差。在任何 $G$-特征向量基点处, FDT 比 $\sigma_{K}^{2}/(2\kappa_{K})$ 归结为 $\sigma^{2}/(2d_{c})$, 独立于 $x_{*}^{\top}G^{2}x_{*}$。因此式~\eqref{eq:var} 与 $T_{\mathrm{eff}}=\sigma^{2}/(2d_{c})$ 对任意 Lorentz $G$ 成立。
+
+\medskip
+\noindent
+\textbf{逻辑状态总结.}
+途径 A 是一座热力学桥梁, 而非 Einstein 方程的自主推导. 其内部输入是律 I 给出的 Lorentz 结构、各向同性稳定性尺度 $d_{c}$、以及 $K=1$ 附近的 A 类 OU 动力学. 要将这些要素与 Jacobson 论证连接, 需要两项外部输入: (i) 等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, 以及 (ii) 熵-面积律 $S\propto A$. 加入这两项外部输入后, 本框架在每个局部 Rindler 视界上供给一个局部 Clausius 关系, 由此提供 Jacobson 路径中所用的局部 Clausius 输入, 通向 $G_{\mu\nu}=8\pi T_{\mu\nu}$.
 
 \section{特征值自洽(途径 B:直接代数)}\label{sec:field}
 
