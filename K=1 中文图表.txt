@@ -702,7 +702,15 @@ $\mathrm{Var}(K)\approx T_{\mathrm{eff}}$(由式~\eqref{eq:var} 与 $T_{\mathrm{
 \end{proof}
 
 \noindent
-于 $\sigma_{1,c}$ 之下, $K$ 的热涨落超过其平均值, 半经典度规失去其经典意义。此为\emph{软}界——类比于经典力学在作用量 $\sim\hbar$ 的情形: OU 近似要求 $\mathrm{Var}(K)<1$, 这强制 $\sigma_1>\sigma_{1,c}$;而在此区域 $\mathrm{Var}(K)<1$ 自然满足。故该界是 OU/半经典区域的自洽性条件, 而非独立推导出的硬截断。
+于 $\sigma_{1,c}$ 之下, $K$ 的热涨落变为 $O(1)$, $K{=}1$ 轨迹的经典描述消解为噪声; 这一界本身并不暗示时空的基本离散性。
+
+\medskip\noindent
+\textit{本界的适用范围.}
+$\sigma_{1,c}$ 的推导显式地使用了外部等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, 此等同属于途径 A (\S\ref{sec:thermo})。在途径 B 之内, 由于不引入此种热力学等同, 是否存在类似的自洽尺度仍是一个未解问题。将该软自洽界提升为\emph{独立}于途径 A 之外部等同的硬不确定性界, 是 \S\ref{sec:discussion} 中未解问题 4 的内容。
+
+\medskip\noindent
+\textit{术语说明.}
+形容词``软''强调该界来自 OU 近似的有效性区域 ($\mathrm{Var}(K)<1$), 而非独立的量子化原理。
 
 在 Planck 单位($\hbar=\ell_P=1$)下, 该界为 $\sigma_{1}>1/(4\pi)$, 即量级上为 $O(\ell_P)$ 的软分辨率尺度。
 
@@ -710,7 +718,7 @@ $\mathrm{Var}(K)\approx T_{\mathrm{eff}}$(由式~\eqref{eq:var} 与 $T_{\mathrm{
 
 \subsection*{两条途径:一次推导与一个等价定理}
 
-途径 A 通过随机动力学与 Jacobson 论证达到 $G_{\mu\nu}=8\pi T_{\mu\nu}$(\S\ref{sec:thermo}); 途径 B 在球对称部分用代数方法建立 $R_{\mu\nu}=0$, 不引入任何热力学输入(\S\ref{sec:field})。
+途径 A 中, 一旦提供了所需的外部等同, 就通过随机动力学与 Jacobson 论证达到 $G_{\mu\nu}=8\pi T_{\mu\nu}$(\S\ref{sec:thermo}); 途径 B 在球对称真空中建立了所猜想的特征值条件与 $R_{\mu\nu}=0$ 之间的严格代数等价性, 不引入任何热力学输入。
 
 两条途径在真空部分相会: 途径 B 直接建立 $R_{\mu\nu}=0$, 而途径 A 通过 $G_{\mu\nu}=8\pi T_{\mu\nu}$ 在 $T_{\mu\nu}=0$ 时得到同样结论。
 
@@ -787,29 +795,35 @@ $\mathrm{Var}(K)\approx T_{\mathrm{eff}}$(由式~\eqref{eq:var} 与 $T_{\mathrm{
 
 \subsection*{主张范围}
 
-在途径 A 所适用之处, Einstein 方程 $G_{\mu\nu}=8\pi T_{\mu\nu}$ 被恢复; 在途径 B 所适用之处, 真空方程 $R_{\mu\nu}=0$ 在等价的代价结构语言中得以重新表述。本文的贡献因此是概念性与结构性的: Lorentz 号差是内部供应而非假设的(定理~\ref{thm:equivalence}, 在各向同性线性化下), 且球对称真空方程在 $K{=}1$ 框架中接纳等价表述(定理~\ref{thm:field})。物质内容 $\rho=(1{-}K_2)/(8\pi r^2)$、宇宙学常数 $\Lambda$ 与熵-面积律 $S\propto A$ 通过 GR 输入或重写在此进入, 而非作为本框架所固定的量。
+在途径 A 之内, 给定外部等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 与 $S\propto A$, Einstein 方程 $G_{\mu\nu}=8\pi T_{\mu\nu}$ 通过 Jacobson 论证得以恢复; 途径 B 在球对称真空中建立了所猜想的特征值条件与 $R_{\mu\nu}=0$ 之间的严格代数等价性, 不引入任何热力学输入。因此, 在球对称真空部分, 真空方程接纳一个等价的代价结构表述(定理~\ref{thm:field})。
+
+本文的贡献因此是概念性与结构性的: Lorentz 号差由代价-可实现性桥梁内部供应(定理~\ref{thm:equivalence}, 在各向同性线性化下), 而非作为运动学的原始假定。本框架既不自主导出 Einstein 方程的物质部分, 也不自主导出 Jacobson 路径所需的热力学输入; 特别地, 熵-面积律仍是外部的, 而物质部分仅当两个外部等同被给定时才能经由途径 A 恢复。
+
+相应地, 物质密度 $\rho=(1-K_2)/(8\pi r^2)$ 与物质的诠释是 GR 重新表述; $\Lambda$ 不为本框架所预言; $S\propto A$ 仍是从黑洞热力学借入的外部输入。途径 B 在其当前形式下是依赖于一个猜想的场级提升的等价定理; 关于为何每个辛特征值满足同一 d'Alembert 方程的第一原理性证成仍是未完成的任务(参见下方未解问题 1)。
 
 \subsection*{$(1{+}3)$-维扩展}
 
-在 $(1{+}3)$ 维中, $\{K{=}1\}\cong H^3$ 承载面积为 $4\pi\sigma_1^2$ 的 $S^2$ 截面(当 $\alpha=1$, $\sigma_1=\kappa\ell$ 时), 将辛不变量与 Bekenstein--Hawking 面积~\cite{Bekenstein} 相联系; 但系数 $1/4$ 仍依赖于通常的 Hawking/第一定律输入。两项结构性变化留存: Lorentz 号差不再足以确保 $d_c>0$, 且 $J_G$ 需要辛配对的选择。
+以下论述为启发性的, 应作为展望而非部分扩展定理来阅读。在 $(1{+}3)$ 维中, $\{K{=}1\}\cong H^3$ 承载面积为 $4\pi\sigma_1^2$ 的 $S^2$ 截面(当 $\alpha=1$, $\sigma_1=\kappa\ell$ 时), 将辛不变量与 Bekenstein--Hawking 面积~\cite{Bekenstein} 相联系; 但系数 $1/4$ 仍依赖于通常的 Hawking/第一定律输入。两项结构性变化留存: 仅 Lorentz 号差不再足以保证 $d_c>0$, 且 $J_G$ 需要辛配对的选择。在二维强制 $\mathrm{Sig}(G)=(1,1)$ 的代价-可实现性机制, 是否接纳一个不假定 $(1+3)$-维度规号差而约束之的自然扩展, 是本文未予处理的一个开放性概念问题。
 
 \subsection*{局限}
 
 \begin{enumerate}
 \item 途径 B 目前仅限于球对称情形。\textit{(范围)}
-\item 途径 A 仍依赖 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 与 $S\propto A$ 两个外部输入。\textit{(外部输入)}
+\item 途径 A 仍依赖 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 与 $S\propto A$ 两个外部输入。特别地, 等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 是一项现象学假设, 不为律 I--III 的内部结构所解释。\textit{(外部输入)}
 \item 本文分析中未获得相对 GR 的可观测偏差。\textit{(预测缺口)}
-\item 本文得到的 $\sigma_1$ 阈值仅为软自洽下界。\textit{(强度)}
+\item 在 \S\ref{sec:singularity} 中得到的 $\sigma_1$ 阈值仅为软自洽下界, 而非硬量子重力截断。\textit{(强度)}
 \item 标量 $H$ (信息时间层) 与矩阵权重 $H_{*}$ (稳定性层) 在本框架中尚未被统一。\textit{(符号与分层)}
 \end{enumerate}
 
 \subsection*{未解问题}
 
+前三个问题涉及结构完成与经验区分性; 后两个问题涉及内部动力学与量子自洽性。
+
 \begin{enumerate}
-\item 完成一般度规的途径 B (Gauss--Codazzi)。
+\item 完成一般度规的途径 B (用于零超曲面的 Gauss--Codazzi 关系)。
 \item 将途径 B 扩展至非真空物质。特别地, 确定 $\rho=(1-K_2)/(8\pi r^2)$ 是否为代价框架的内在推论而非 GR 的重新表述, 物质能否由此被理解为角向特征值自洽性在单位面积上的失效, 以及此式能否推广至完整的能动张量~$T_{\mu\nu}$。
-\item 识别可检验的强场预言。在本文球对称真空分析的范围内, 由于在弱场区 $K_2=1$ 已给出牛顿势, 而 $K_1=1$ 在线性阶自动满足, 故特征值原理与标准 GR 的任何可观测差异必源于非线性强场部分, 即 $K_1$ 的独立内容。可能的窗口包括高精度黑洞阴影数据、强场引力波信号, 以及近视界量子效应。
-\item 证明 $\sigma_{1,\min}\geq\hbar/(4\pi)$ (硬下界), 基于 $K$--$\varphi$ 典范共轭, 其中 $\varphi$ 为沿 $\{K{=}1\}$ 的 boost 角。
+\item 识别可检验的强场预言。在本文球对称真空分析的范围内, 由于在弱场区 $K_2=1$ 已给出牛顿势, 而 $K_1=1$ 在线性阶自动满足, 故特征值原理与标准 GR 的任何可观测差异必源于非线性强场部分, 即源自 $K_1$-唯一族中将 $K_1$-等价与纯 Schwarzschild 区分开的 $B/r^2$ 项(引理~\ref{lem:rigidity})。可能的窗口包括高精度黑洞阴影数据、强场引力波信号, 以及近视界量子效应。
+\item 证明 $\sigma_{1,\min}\geq\hbar/(4\pi)$ 作为硬下界, 基于 $K$--$\varphi$ 典范共轭, \emph{不}援引途径 A 的等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, 其中 $\varphi$ 为沿 $\{K{=}1\}$ 的 boost 角。
 \item 证明 $K=1$ 的全局吸引性: 证明对任意 $x_0\in\mathbb{R}^{2}$, $\dot{x}=(J_G-d_{c}I)\nabla V$ (其中 $V=\tfrac{1}{2}(K-1)^2$) 的轨迹满足 $K(x(t))\to 1$ 当 $t\to\infty$ 时。
 \end{enumerate}
 
