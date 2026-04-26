@@ -1299,7 +1299,7 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
 
   <figure class="card" style="margin-top:22px">
     <div class="fc-head">
-      <span class="fc-title">Figure 4 · Where the routes meet</span>
+      <span class="fc-title">Figure 5 · Where the routes meet</span>
       <span class="fc-tag">flowchart</span>
     </div>
     <div class="fc-body" style="padding:24px 20px;background:var(--card)">
@@ -1466,6 +1466,10 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
         <button data-p="tls">Two shells</button>
         <button data-p="cosmo">Cosmological</button>
       </div>
+      <div class="seg" id="eMode">
+        <button data-m="paint" class="on">Paint</button>
+        <button data-m="erase">Erase</button>
+      </div>
       <button id="eClear" class="seg" style="padding:6px 12px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink-3);background:var(--card)">Clear</button>
       <label style="flex:1;min-width:180px">
         <span>Brush size <b id="eBrushLab">0.6</b></span>
@@ -1520,7 +1524,7 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
 
   <figure class="card">
     <div class="fc-head">
-      <span class="fc-title">Figure 5 · Eigenvalue explorer</span>
+      <span class="fc-title">Figure 7 · Eigenvalue explorer</span>
       <span class="fc-tag">vary the profile · read off the Ricci components</span>
     </div>
     <div class="fig-split" style="grid-template-columns:1fr 1fr">
@@ -1557,6 +1561,12 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
         <label style="display:flex;flex-direction:column;gap:4px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-bottom:14px">
           <span style="display:flex;justify-content:space-between"><mjx-container class="MathJax CtxtMenu_Attached_0" jax="SVG" tabindex="0" ctxtmenu_counter="173" style="position: relative;"><svg xmlns="http://www.w3.org/2000/svg" width="1.57ex" height="1.62ex" role="img" focusable="false" viewBox="0 -716 694 716" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" style="vertical-align: 0px;"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="39B" xlink:href="#MJX-TEX-N-39B"></use></g></g></g></svg><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi mathvariant="normal">Λ</mi></math></mjx-assistive-mml></mjx-container> (cosm.) <b id="Lval" style="color:var(--accent-ink)">0.000</b></span>
           <input type="range" id="Lparam" min="-0.3" max="0.3" step="0.005" value="0">
+        </label>
+
+        <h6 data-orig-html="Probe radius">Probe radius</h6>
+        <label style="display:flex;flex-direction:column;gap:4px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-bottom:14px">
+          <span style="display:flex;justify-content:space-between">sample at <b id="fProbeLab" style="color:var(--accent-ink)">4.00</b></span>
+          <input type="range" id="fProbe" min="1.2" max="9.5" step="0.05" value="4.00">
         </label>
 
         <h6 data-orig-html="At $r = $ &lt;span id=&quot;rAt&quot; style=&quot;color:var(--accent-ink);font-family:'JetBrains Mono',monospace&quot;&gt;4.00&lt;/span&gt;">At <mjx-container class="MathJax CtxtMenu_Attached_0" jax="SVG" tabindex="0" ctxtmenu_counter="174" style="position: relative;"><svg xmlns="http://www.w3.org/2000/svg" width="3.409ex" height="1.505ex" role="img" focusable="false" viewBox="0 -583 1506.8 665" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" style="vertical-align: -0.186ex;"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D45F" xlink:href="#MJX-TEX-I-1D45F"></use></g><g data-mml-node="mo" transform="translate(728.8,0)"><use data-c="3D" xlink:href="#MJX-TEX-N-3D"></use></g></g></g></svg><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>r</mi><mo>=</mo></math></mjx-assistive-mml></mjx-container> <span id="rAt" style="color:var(--accent-ink);font-family:'JetBrains Mono',monospace">4.00</span></h6>
@@ -2622,9 +2632,16 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
     const Mp = document.getElementById('Mparam');
     const Qp = document.getElementById('Qparam');
     const Lp = document.getElementById('Lparam');
+    const fProbe = document.getElementById('fProbe');
+    const fProbeLab = document.getElementById('fProbeLab');
     const Mv = document.getElementById('Mval');
     const Qv = document.getElementById('Qval');
     const Lv = document.getElementById('Lval');
+    const profileButtons = document.querySelectorAll('#profileSel button');
+
+    function syncProfileButtons(){
+      profileButtons.forEach(b=> b.classList.toggle('on', b.dataset.p === profile));
+    }
 
     function f_and_derivs(r){
       const M = +Mp.value, Q2 = +Qp.value, L = +Lp.value;
@@ -2745,7 +2762,7 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       plotFn('K1', 'oklch(0.52 0.15 268)');
 
       // sampled r=4 marker
-      const rAt = 4;
+      const rAt = +fProbe.value;
       const {f,K1,K2} = K1K2(rAt);
       const [mx] = toScreen(rAt, 0, w, h);
       ctx.strokeStyle = 'rgba(0,0,0,0.35)';
@@ -2763,6 +2780,8 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       Mv.textContent = (+Mp.value).toFixed(2);
       Qv.textContent = (+Qp.value).toFixed(2);
       Lv.textContent = (+Lp.value).toFixed(3);
+      fProbeLab.textContent = rAt.toFixed(2);
+      document.getElementById('rAt').textContent = rAt.toFixed(2);
       document.getElementById('fv').textContent = isFinite(f) ? f.toFixed(3) : '—';
       document.getElementById('k1v').textContent = isFinite(K1) ? K1.toFixed(3) : '—';
       document.getElementById('k2v').textContent = isFinite(K2) ? K2.toFixed(3) : '—';
@@ -2816,19 +2835,36 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       }
     }
 
-    [Mp, Qp, Lp].forEach(el=> el.addEventListener('input', redraw));
+    [Mp, Qp, Lp].forEach(el=> el.addEventListener('input', ()=>{
+      if(profile !== 'custom'){
+        profile = 'custom';
+        syncProfileButtons();
+      }
+      redraw();
+    }));
+    fProbe.addEventListener('input', redraw);
 
-    document.querySelectorAll('#profileSel button').forEach(b=>{
+    profileButtons.forEach(b=>{
       b.onclick = ()=>{
-        document.querySelectorAll('#profileSel button').forEach(x=>x.classList.remove('on'));
-        b.classList.add('on');
         profile = b.dataset.p;
+        syncProfileButtons();
         // preset params
         if(profile==='schwarz'){ Mp.value=1; Qp.value=0; Lp.value=0; }
         if(profile==='rn'){ Mp.value=1; Qp.value=0.5; Lp.value=0; }
         if(profile==='sds'){ Mp.value=1; Qp.value=0; Lp.value=0.05; }
         redraw();
       };
+    });
+
+    canvas.addEventListener('click', (e)=>{
+      const rect = canvas.getBoundingClientRect();
+      const px = e.clientX - rect.left;
+      const padL = 40, padR = 12;
+      const plotW = rect.width - padL - padR;
+      const localX = Math.max(0, Math.min(plotW, px - padL));
+      const r = rMin + (localX / plotW) * (rMax - rMin);
+      fProbe.value = r.toFixed(2);
+      redraw();
     });
 
     redraw();
@@ -3107,7 +3143,12 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
     }
 
     // ------- painting interaction -------
-    let painting = false, paintVal = 0.15;
+    let painting = false;
+    let editMode = 'paint';
+    const eModeButtons = document.querySelectorAll('#eMode button');
+    function syncEditMode(){
+      eModeButtons.forEach(b=> b.classList.toggle('on', b.dataset.m === editMode));
+    }
     function paintAt(e, erase=false){
       const rect = pCan.getBoundingClientRect();
       const px = (e.clientX ?? e.touches?.[0]?.clientX) - rect.left;
@@ -3131,14 +3172,21 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       drawAll();
     }
 
-    pCan.addEventListener('mousedown', (e)=>{ painting = true; paintAt(e, e.shiftKey || e.button===2); });
-    pCan.addEventListener('mousemove', (e)=>{ if(painting) paintAt(e, e.shiftKey); });
+    pCan.addEventListener('mousedown', (e)=>{ painting = true; paintAt(e, editMode === 'erase' || e.shiftKey || e.button===2); });
+    pCan.addEventListener('mousemove', (e)=>{ if(painting) paintAt(e, editMode === 'erase' || e.shiftKey); });
     pCan.addEventListener('mouseup', ()=> painting=false);
     pCan.addEventListener('mouseleave', ()=> painting=false);
     pCan.addEventListener('contextmenu', e=> e.preventDefault());
-    pCan.addEventListener('touchstart', (e)=>{ painting=true; paintAt(e); e.preventDefault(); }, {passive:false});
-    pCan.addEventListener('touchmove', (e)=>{ if(painting) paintAt(e); e.preventDefault(); }, {passive:false});
+    pCan.addEventListener('touchstart', (e)=>{ painting=true; paintAt(e, editMode === 'erase'); e.preventDefault(); }, {passive:false});
+    pCan.addEventListener('touchmove', (e)=>{ if(painting) paintAt(e, editMode === 'erase'); e.preventDefault(); }, {passive:false});
     pCan.addEventListener('touchend', ()=> painting=false);
+
+    eModeButtons.forEach(b=>{
+      b.onclick = ()=>{
+        editMode = b.dataset.m;
+        syncEditMode();
+      };
+    });
 
     document.getElementById('eProbe').addEventListener('input', drawAll);
     document.getElementById('eBrush').addEventListener('input', e=>{
@@ -3161,6 +3209,7 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
     });
 
     // init: vacuum
+    syncEditMode();
     drawAll();
   })();
 </script>
