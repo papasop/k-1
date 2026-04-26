@@ -2790,13 +2790,17 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
         <div class="reading" style="margin-top:10px">
           <b>Focused step.</b> <span id="qcStepExplain">OU is the first gate: once the real stability scale disappears, the whole downstream chain loses support.</span>
         </div>
+        <div class="reading" style="margin-top:10px;padding:10px 12px;background:rgba(255,247,228,0.78);border-left:3px solid oklch(0.62 0.14 55)">
+          <b>First break.</b> The first failure is the <i>signature gate</i>: once the real <code>d_c</code> is lost, OU fails first. The FP density, Schrödinger wavefunction, and Born identification fail only downstream.
+        </div>
         <div class="reading" style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(100,100,110,0.16)">
           <b>Chain status.</b>
           <div style="display:grid;grid-template-columns:auto 1fr;gap:6px 10px;margin-top:8px;font:11px/1.35 'JetBrains Mono',monospace;color:var(--muted)">
-            <span>OU drift</span><b id="qcOU" style="color:var(--ink)">active</b>
+            <span style="font-weight:700;color:var(--ink)">real d<sub>c</sub> gate</span><b id="qcGate" style="color:var(--accent-ink);font-weight:700">open</b>
+            <span style="font-weight:700;color:var(--ink)">OU drift</span><b id="qcOU" style="color:var(--accent-ink);font-weight:700">active</b>
             <span>FP stationary ρ</span><b id="qcFP" style="color:var(--ink)">exists</b>
             <span>Schr ψ</span><b id="qcPsi" style="color:var(--ink)">normalizable</b>
-            <span>Born link</span><b id="qcBorn" style="color:var(--ink)">tracks |ψ|² = ρ_eq</b>
+            <span style="opacity:.72">Born link</span><b id="qcBorn" style="color:rgba(32,30,26,0.72)">tracks |ψ|² = ρ_eq</b>
           </div>
         </div>
       </div>
@@ -4083,6 +4087,7 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
     const snapExplainEl = document.getElementById('qcSnapExplain');
     const stateNameEl = document.getElementById('qcStateName');
     const stateExplainEl = document.getElementById('qcStateExplain');
+    const gateEl = document.getElementById('qcGate');
     const ouEl = document.getElementById('qcOU');
     const fpEl = document.getElementById('qcFP');
     const psiEl = document.getElementById('qcPsi');
@@ -4156,6 +4161,7 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
       collapseBar.style.width = (clamp(s.collapse, 0, 1) * 100).toFixed(1) + '%';
 
       if(s.phase === 'Lorentzian' || s.phase === 'return layer'){
+        gateEl.textContent = s.phase === 'Lorentzian' ? 'open' : 're-opening';
         ouEl.textContent = 'active';
         fpEl.textContent = 'exists';
         psiEl.textContent = s.amp > 0.92 ? 'normalizable' : 're-forming';
@@ -4164,12 +4170,14 @@ mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
           ? 'Stable Lorentzian leg: the wavefunction is normalizable, |ψ₀|² agrees with ρ_eq, and no collapse channel is active.'
           : 'Return leg: the signature has come back to the Lorentzian side, so the OU equilibrium, stationary density, and normalizable wavefunction re-form together.';
       } else if(s.phase === 'Euclidean excursion'){
+        gateEl.textContent = 'lost';
         ouEl.textContent = 'broken';
         fpEl.textContent = 'no stationary ρ';
         psiEl.textContent = 'collapsed / non-normalizable';
         bornEl.textContent = 'suspended';
         interpEl.textContent = 'Euclidean excursion: the real stability scale is gone, so the OU picture and the normalizable Schrödinger ground state both fail. This is the proposed collapse window.';
       } else {
+        gateEl.textContent = 'thinning';
         ouEl.textContent = 'marginal';
         fpEl.textContent = 'fading';
         psiEl.textContent = 'edge of support';
