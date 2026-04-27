@@ -49,12 +49,12 @@ where $\Phi$ parametrises structural variation and $H>0$ is the local cost per u
 
 \textit{Two routes connecting to the Einstein equations.}
 \begin{itemize}
-\item[\textbf{A.}] \emph{Thermodynamic bridge} (\S\S\ref{sec:lawI}--\ref{sec:thermo}): on local Rindler horizons, $K{=}1\xrightarrow{\mathrm{lin.}}\mathrm{OU}\to\mathrm{Clausius}$; under the two external inputs $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ and $S\propto A$, and through the Jacobson argument~\cite{Jacobson}, this supplies the thermodynamic input for the Jacobson route to $G_{\mu\nu}=8\pi T_{\mu\nu}$ for general metrics.
+\item[\textbf{A.}] \emph{Thermodynamic bridge} (\S\S\ref{sec:lawI}--\ref{sec:thermo}): on local Rindler horizons, $K{=}1\xrightarrow{\mathrm{lin.}}\mathrm{OU}\to\mathrm{Clausius}$; under the two external inputs $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ and $S\propto A$, and through the Jacobson argument~\cite{Jacobson}, this supplies the thermodynamic input for the Jacobson route to $R_{\mu\nu}-\tfrac12 R\,g_{\mu\nu}=8\pi T_{\mu\nu}$ for general metrics.
 \item[\textbf{B.}] \emph{Equivalence theorem} (\S~\ref{sec:field}): in the spherical vacuum sector, the eigenvalue self-consistency condition $\sigma_2^2\Box\ln\sigma_i=1$ --- a conjectured field-level uplift of $K{=}1$, introduced as a conjecture --- stands in strict algebraic equivalence to $R_{\mu\nu}=0$, with \emph{no thermodynamic input}. This is not a derivation of the Einstein equations from the framework axioms, but a new equivalent formulation of the vacuum equations in the language of the $K{=}1$ framework.
 \end{itemize}
 The two routes are complementary: Route~A applies locally on Rindler horizons but requires external thermodynamic input, whereas Route~B is thermodynamically independent but presently limited to spherical symmetry. They are summarised in Fig.~\ref{fig:routes}.
 
-\medskip\noindent\textit{Main results.} \emph{Point-level}: under isotropic linearisation, Lorentzian signature, real spectrum of the induced generator $J_G$, and the positive stability threshold $d_{c}>0$ are equivalent (Theorem~\ref{thm:equivalence}). \emph{Route~A}: conditionally recovers $G_{\mu\nu}=8\pi T_{\mu\nu}$ for general metrics, given the two external inputs $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ and $S\propto A$. \emph{Route~B (field-level)}: in static, spherically symmetric vacuum metrics on intervals where $f>0$, the conjectured eigenvalue self-consistency condition $\sigma_2^2\,\Box\ln\sigma_i=1$ is algebraically equivalent to $R_{\mu\nu}=0$ (Theorem~\ref{thm:field}). Full statements follow in \S\S\ref{sec:symplectic}--\ref{sec:singularity}.
+\medskip\noindent\textit{Main results.} \emph{Point-level}: under isotropic linearisation, Lorentzian signature, real spectrum of the induced generator $J_G$, and the positive stability threshold $d_{c}>0$ are equivalent (Theorem~\ref{thm:equivalence}). \emph{Route~A}: conditionally recovers $R_{\mu\nu}-\tfrac12 R\,g_{\mu\nu}=8\pi T_{\mu\nu}$ for general metrics, given the two external inputs $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ and $S\propto A$. \emph{Route~B (field-level)}: in static, spherically symmetric vacuum metrics on intervals where $f>0$, the conjectured eigenvalue self-consistency condition $\sigma_2^2\,\Box\ln\sigma_i=1$ is algebraically equivalent to $R_{\mu\nu}=0$ (Theorem~\ref{thm:field}). Full statements follow in \S\S\ref{sec:symplectic}--\ref{sec:singularity}.
 
 \medskip\noindent\textbf{Notation.}
 $\mathrm{spec}(A)$: spectrum of $A$.
@@ -160,7 +160,6 @@ determines a local causal structure. In general relativity, the Lorentzian metri
     arr/.style={-{Stealth[length=2.6mm]}, thick, draw=black!60},
     darr/.style={-{Stealth[length=2.4mm]}, thick, dashed, draw=black!50}
 ]
-%--- top row
 \node[graybox] (info)
   {{\footnotesize\bfseries\scshape Layer 1 $\cdot$ Information Time}\\[4pt]
    {\normalsize$\Phi,\;H \to dt_{\mathrm{info}}$}\\[4pt]
@@ -173,7 +172,7 @@ determines a local causal structure. In general relativity, the Lorentzian metri
   {{\footnotesize\bfseries\scshape Conclusion}\\[4pt]
    {\normalsize$\mathrm{Sig}(G)=(1,1)$}\\[4pt]
    {\footnotesize equivalently $\det G<0$}};
-%--- bottom row
+
 \node[graybox, below=1.0cm of info] (kobj)
   {{\footnotesize\bfseries\scshape Layer 2 $\cdot$ Point Objects}\\[4pt]
    {\normalsize$K(x)=x^{\top}Gx$}\\[4pt]
@@ -186,7 +185,7 @@ determines a local causal structure. In general relativity, the Lorentzian metri
   {{\footnotesize\bfseries\scshape Local Completion (Law III)}\\[4pt]
    {\normalsize$\kappa_K=4d_c$}\\[4pt]
    {\footnotesize critical damping; normalized eigenvector base}};
-%--- arrows
+
 \draw[arr] (ret.east) -- (sig.west);
 \draw[arr] (kobj.east) -- (dyn.west);
 \draw[arr] (dyn.east) -- (comp.west);
@@ -504,7 +503,7 @@ In this section, $g_{\mu\nu}$ denotes the physical Rindler metric used as the ex
 \[
 K=x^{\top}Gx,\qquad J_G=\alpha G^{-1}J,
 \]
-and the OU reduction is the cost-form used by the framework. In the Rindler realisation, these are related by the sign convention discussed in \S~\ref{sec:lawI}, but they should not be conflated notationally: $g$ denotes the physical spacetime metric, whereas $G$ denotes the dynamical cost-form.
+and the OU reduction is the cost-form used by the framework. In the Rindler realisation, these are related by the sign convention discussed in \S~\ref{sec:lawI}, but they should not be conflated notationally: $g$ denotes the physical spacetime metric, whereas $G$ denotes the dynamical cost-form. In all OU and thermodynamic formulas below, $G$ denotes the dynamical cost-form, whereas $g$ denotes the external spacetime metric.
 
 As a concrete realisation, we apply the framework to the Rindler metric
 \[
@@ -580,7 +579,7 @@ Since every local Rindler horizon admits the standard Rindler approximation~\cit
 \medskip
 \noindent
 \textbf{Summary of logical status.}
-Route~A is a thermodynamic bridge rather than an autonomous derivation of the Einstein equations. Its internal inputs are the Lorentzian structure supplied by Law~I, the isotropic stability scale $d_{c}$, and the OU dynamics of Class~A near $K=1$. To connect these ingredients to Jacobson's argument, two external inputs are required: (i) the identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, and (ii) the entropy--area law $S\propto A$. With these added, the framework supplies a local Clausius relation on each local Rindler horizon, thereby providing the local Clausius input used in Jacobson's route to $G_{\mu\nu}=8\pi T_{\mu\nu}$.
+Route~A is a thermodynamic bridge rather than an autonomous derivation of the Einstein equations. Its internal inputs are the Lorentzian structure supplied by Law~I, the isotropic stability scale $d_{c}$, and the OU dynamics of Class~A near $K=1$. To connect these ingredients to Jacobson's argument, two external inputs are required: (i) the identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, and (ii) the entropy--area law $S\propto A$. With these added, the framework supplies a local Clausius relation on each local Rindler horizon, thereby providing the local Clausius input used in Jacobson's route to $R_{\mu\nu}-\tfrac12 R\,g_{\mu\nu}=8\pi T_{\mu\nu}$.
 
 %===================================================================
 \section{Eigenvalue self-consistency (Route~B: direct algebraic)}\label{sec:field}
@@ -709,7 +708,7 @@ $R_{\theta\theta}=\Lambda g_{\theta\theta}=\Lambda r^{2}$ gives $K_{2}=1-\Lambda
 \end{proof}
 
 \begin{remark}[Matter and the role of $\Lambda$]
-From the Einstein $G_{tt}$ component,
+From the $tt$ component of the Einstein equations,
 $\rho = (1{-}K_2)/(8\pi r^2) = (1-\sigma_2^2\,\Box\ln\sigma_2)/(8\pi\sigma_2^2)$:
 matter may be read as the angular eigenvalue's failure to self-consistently
 propagate, measured per unit area.
@@ -813,7 +812,7 @@ Within Route~A, once the required external identifications are supplied, the Ein
 
 The input structure of both routes --- including the Jacobson inputs and the external identifications $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ and $S\propto A$ --- is summarised in Fig.~\ref{fig:routes} and detailed in \S\ref{sec:thermo}. The novelty here is that Lorentzian signature, normally an external assumption in entropic-gravity arguments, is supplied internally by the realizability bridge of Law~I; Theorem~\ref{thm:equivalence} gives its isotropic stability reading.
 
-The two routes meet in the vacuum sector: Route~B establishes $R_{\mu\nu}=0$ directly, while Route~A recovers the same conclusion via $G_{\mu\nu}=8\pi T_{\mu\nu}$ with $T_{\mu\nu}=0$.
+The two routes meet in the vacuum sector: Route~B establishes $R_{\mu\nu}=0$ directly, while Route~A recovers the same conclusion via $R_{\mu\nu}-\tfrac12 R\,g_{\mu\nu}=8\pi T_{\mu\nu}$ with $T_{\mu\nu}=0$.
 
 \begin{figure}[ht]
 \centering
@@ -838,7 +837,7 @@ The two routes meet in the vacuum sector: Route~B establishes $R_{\mu\nu}=0$ dir
 \node[thermo, below left=0.9cm and 1.6cm of K1] (OU) {OU dynamics\\[-1pt]\scriptsize (near $K{=}1$, Class A)};
 \node[thermo, below=of OU] (Clau) {local Clausius};
 \node[jacbox, below=0.9cm of Clau] (jac) {Jacobson argument\\[-1pt]\scriptsize \cite{Jacobson}};
-\node[endbox, below=of jac] (Ein) {$G_{\mu\nu}=8\pi T_{\mu\nu}$};
+\node[endbox, below=of jac] (Ein) {$R_{\mu\nu}-\tfrac12 R\,g_{\mu\nu}=8\pi T_{\mu\nu}$};
 \draw[arr] (K1) to[bend right=10] node[left=1pt, font=\tiny\itshape, text=black!60, align=right] {near $K{=}1$\\ Class A/OU} (OU);
 \draw[arr] (OU) -- (Clau);
 \draw[arr] (Clau) -- (jac);
@@ -867,7 +866,7 @@ The two routes meet in the vacuum sector: Route~B establishes $R_{\mu\nu}=0$ dir
 
 \subsection*{Scope of claims}
 
-Within Route~A, given the external identifications $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ and $S\propto A$, the Einstein equations $G_{\mu\nu}=8\pi T_{\mu\nu}$ are recovered through the Jacobson argument; Route~B establishes a strict algebraic equivalence between the conjectured eigenvalue condition and $R_{\mu\nu}=0$ in the spherical vacuum sector, with no thermodynamic input. Thus, in the spherical vacuum sector, the vacuum equations admit an equivalent cost-structural formulation (Theorem~\ref{thm:field}).
+Within Route~A, given the external identifications $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ and $S\propto A$, the Einstein equations $R_{\mu\nu}-\tfrac12 R\,g_{\mu\nu}=8\pi T_{\mu\nu}$ are recovered through the Jacobson argument; Route~B establishes a strict algebraic equivalence between the conjectured eigenvalue condition and $R_{\mu\nu}=0$ in the spherical vacuum sector, with no thermodynamic input. Thus, in the spherical vacuum sector, the vacuum equations admit an equivalent cost-structural formulation (Theorem~\ref{thm:field}).
 
 The contribution of the present paper is therefore conceptual and structural: Lorentzian signature is supplied internally by the cost-realizability bridge of Law~I, rather than assumed as a kinematic primitive; Theorem~\ref{thm:equivalence} provides its isotropic stability reading. Neither the matter sector of the Einstein equations nor the thermal inputs needed for the Jacobson route are derived autonomously within the present framework; in particular, the entropy--area law remains external, and the matter sector is recovered via Route~A only when the two external identifications are supplied.
 
