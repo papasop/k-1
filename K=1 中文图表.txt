@@ -94,12 +94,12 @@ dt_{\mathrm{info}}:=\frac{d\Phi}{H},
 
 \smallskip\noindent\textbf{与爱因斯坦方程相连的两条路径.}
 \begin{itemize}[leftmargin=2em, itemsep=0.4ex, parsep=0pt, topsep=0.3ex]
-\item[\textbf{A.}] \textbf{热力学桥} (\S\S\ref{sec:lawI}--\ref{sec:thermo}):\ 在局部 Rindler 视界上, $K{=}1\xrightarrow{\mathrm{lin.}}\mathrm{OU}\to\mathrm{Clausius}$; 在 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 与 $S\propto A$ 两个外部输入下, 经由 Jacobson 论证~\cite{Jacobson}, 这为 Jacobson 路径提供通向 $G_{\mu\nu}=8\pi T_{\mu\nu}$ 的热力学输入(对一般度规)。
+\item[\textbf{A.}] \textbf{热力学桥} (\S\S\ref{sec:lawI}--\ref{sec:thermo}):\ 在局部 Rindler 视界上, $K{=}1\xrightarrow{\mathrm{lin.}}\mathrm{OU}\to\mathrm{Clausius}$; 在 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 与 $S\propto A$ 两个外部输入下, 经由 Jacobson 论证~\cite{Jacobson}, 这为 Jacobson 路径提供通向 $R_{\mu\nu}-\tfrac12 R\,g_{\mu\nu}=8\pi T_{\mu\nu}$ 的热力学输入(对一般度规)。
 \item[\textbf{B.}] \textbf{等价定理} (\S~\ref{sec:field}):\ 在球对称真空部分, 特征值自洽条件 $\sigma_2^2\Box\ln\sigma_i=1$——$K{=}1$ 的猜想性场级提升, 作为一个猜想提出——与 $R_{\mu\nu}=0$ 处于严格代数等价, \emph{不引入任何热力学输入}。这不是从框架公理推导出爱因斯坦方程, 而是用 $K{=}1$ 的语言重新表述真空方程的等价形式。
 \end{itemize}
 两条途径互补: 途径 A 局部地适用于 Rindler 视界, 但需要外部热力学输入; 途径 B 热力学上独立, 但目前仅限球对称。两条途径的对比见图~\ref{fig:routes}。
 
-\medskip\noindent\textit{主要结果.} \emph{点级结果}: 在各向同性线性化之下, Lorentz 号差、$G$ 诱导生成子 $J_{G}$ 的实谱与正稳定阈值 $d_{c}>0$ 等价(定理~\ref{thm:equivalence})。\emph{途径 A}: 在两个外部输入 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 与 $S\propto A$ 被供给时, 有条件地恢复 $G_{\mu\nu}=8\pi T_{\mu\nu}$(对一般度规)。\emph{途径 B(场级结果)}: 在 $f>0$ 区间上的静态球对称真空度规中, 所猜想的特征值自洽条件 $\sigma_2^2\,\Box\ln\sigma_i=1$ 在代数上等价于 $R_{\mu\nu}=0$(定理~\ref{thm:field})。完整表述见 \S\S\ref{sec:symplectic}--\ref{sec:singularity}。
+\medskip\noindent\textit{主要结果.} \emph{点级结果}: 在各向同性线性化之下, Lorentz 号差、$G$ 诱导生成子 $J_{G}$ 的实谱与正稳定阈值 $d_{c}>0$ 等价(定理~\ref{thm:equivalence})。\emph{途径 A}: 在两个外部输入 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 与 $S\propto A$ 被供给时, 有条件地恢复 $R_{\mu\nu}-\tfrac12 R\,g_{\mu\nu}=8\pi T_{\mu\nu}$(对一般度规)。\emph{途径 B(场级结果)}: 在 $f>0$ 区间上的静态球对称真空度规中, 所猜想的特征值自洽条件 $\sigma_2^2\,\Box\ln\sigma_i=1$ 在代数上等价于 $R_{\mu\nu}=0$(定理~\ref{thm:field})。完整表述见 \S\S\ref{sec:symplectic}--\ref{sec:singularity}。
 
 \smallskip\noindent\textbf{记号.\ }
 \begin{itemize}[leftmargin=1.5em, itemsep=0.15ex, parsep=0pt, topsep=0.2ex, label={$\triangleright$}]
@@ -522,7 +522,7 @@ G_{\mathrm{cost}}=-g=\mathrm{diag}((\kappa\ell)^{2},-1)
 \[
 K=x^{\top}Gx,\qquad J_G=\alpha G^{-1}J,
 \]
-以及 OU 约简的二次型 $G$ 是本框架使用的代价形式。在 Rindler 实现中, 二者通过 \S~\ref{sec:lawI} 讨论的符号约定相联系, 但记号上不应混淆: $g$ 表示物理时空度规, 而 $G$ 表示动力学代价形式。
+以及 OU 约简的二次型 $G$ 是本框架使用的代价形式。在 Rindler 实现中, 二者通过 \S~\ref{sec:lawI} 讨论的符号约定相联系, 但记号上不应混淆: $g$ 表示物理时空度规, 而 $G$ 表示动力学代价形式。在以下所有 OU 与热力学公式中, $G$ 表示动力学代价形式, 而 $g$ 表示外部时空度规。
 
 作为具体实现, 我们把框架应用于 Rindler 度规
 \begin{equation}
@@ -596,7 +596,7 @@ T_{\mathrm{loc}}(x) := \frac{\sigma_{K}(x)^{2}}{2\kappa_{K}(x_{*})} = \frac{\sig
 \medskip
 \noindent
 \textbf{逻辑状态总结.}
-途径 A 是一座热力学桥梁, 而非 Einstein 方程的自主推导. 其内部输入是律 I 给出的 Lorentz 结构、各向同性稳定性尺度 $d_{c}$、以及 $K=1$ 附近的 A 类 OU 动力学. 要将这些要素与 Jacobson 论证连接, 需要两项外部输入: (i) 等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, 以及 (ii) 熵-面积律 $S\propto A$. 加入这两项外部输入后, 本框架在每个局部 Rindler 视界上供给一个局部 Clausius 关系, 由此提供 Jacobson 路径中所用的局部 Clausius 输入, 通向 $G_{\mu\nu}=8\pi T_{\mu\nu}$.
+途径 A 是一座热力学桥梁, 而非 Einstein 方程的自主推导. 其内部输入是律 I 给出的 Lorentz 结构、各向同性稳定性尺度 $d_{c}$、以及 $K=1$ 附近的 A 类 OU 动力学. 要将这些要素与 Jacobson 论证连接, 需要两项外部输入: (i) 等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, 以及 (ii) 熵-面积律 $S\propto A$. 加入这两项外部输入后, 本框架在每个局部 Rindler 视界上供给一个局部 Clausius 关系, 由此提供 Jacobson 路径中所用的局部 Clausius 输入, 通向 $R_{\mu\nu}-\tfrac12 R\,g_{\mu\nu}=8\pi T_{\mu\nu}$.
 
 \section{特征值自洽(途径 B:直接代数)}\label{sec:field}
 
@@ -773,9 +773,9 @@ $\sigma_{1,c}$ 的推导显式地使用了外部等同 $T_{\mathrm{eff}}=T_{\mat
 
 \subsection*{两条途径:一次推导与一个等价定理}
 
-途径 A 中, 一旦提供了所需的外部等同, $G_{\mu\nu}=8\pi T_{\mu\nu}$ 就有条件地通过随机动力学与 Jacobson 论证得以恢复(\S\ref{sec:thermo}); 途径 B 在球对称真空部分中建立了所猜想的特征值条件与 $R_{\mu\nu}=0$ 之间的严格代数等价性, 不引入任何热力学输入。
+途径 A 中, 一旦提供了所需的外部等同, $R_{\mu\nu}-\tfrac12 R\,g_{\mu\nu}=8\pi T_{\mu\nu}$ 就有条件地通过随机动力学与 Jacobson 论证得以恢复(\S\ref{sec:thermo}); 途径 B 在球对称真空部分中建立了所猜想的特征值条件与 $R_{\mu\nu}=0$ 之间的严格代数等价性, 不引入任何热力学输入。
 
-两条途径在真空部分相会: 途径 B 直接建立 $R_{\mu\nu}=0$, 而途径 A 通过 $G_{\mu\nu}=8\pi T_{\mu\nu}$ 在 $T_{\mu\nu}=0$ 时得到同样结论。
+两条途径在真空部分相会: 途径 B 直接建立 $R_{\mu\nu}=0$, 而途径 A 通过 $R_{\mu\nu}-\tfrac12 R\,g_{\mu\nu}=8\pi T_{\mu\nu}$ 在 $T_{\mu\nu}=0$ 时得到同样结论。
 
 \begin{figure}[ht]
 \centering
@@ -807,7 +807,7 @@ $\sigma_{1,c}$ 的推导显式地使用了外部等同 $T_{\mathrm{eff}}=T_{\mat
 \node[thermo, below=of OU] (Clau) {局部 Clausius};
 % Jacobson junction box
 \node[jacbox, below=0.9cm of Clau] (jac) {Jacobson 论证\\[-1pt]\scriptsize \cite{Jacobson}};
-\node[endbox, below=of jac] (Ein) {$G_{\mu\nu}=8\pi T_{\mu\nu}$};
+\node[endbox, below=of jac] (Ein) {$R_{\mu\nu}-\tfrac12 R\,g_{\mu\nu}=8\pi T_{\mu\nu}$};
 % Route A arrows
 \draw[arr] (K1) to[bend right=10] node[left=1pt, font=\tiny\itshape, text=black!60, align=right] {近 $K{=}1$\\ A 类/OU 近似} (OU);
 \draw[arr] (OU) -- (Clau);
@@ -850,7 +850,7 @@ $\sigma_{1,c}$ 的推导显式地使用了外部等同 $T_{\mathrm{eff}}=T_{\mat
 
 \subsection*{主张范围}
 
-在途径 A 之内, 给定外部等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 与 $S\propto A$, Einstein 方程 $G_{\mu\nu}=8\pi T_{\mu\nu}$ 通过 Jacobson 论证得以恢复; 途径 B 在球对称真空部分中建立了所猜想的特征值条件与 $R_{\mu\nu}=0$ 之间的严格代数等价性, 不引入任何热力学输入。因此, 在球对称真空部分, 真空方程接纳一个等价的代价结构表述(定理~\ref{thm:field})。
+在途径 A 之内, 给定外部等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 与 $S\propto A$, Einstein 方程 $R_{\mu\nu}-\tfrac12 R\,g_{\mu\nu}=8\pi T_{\mu\nu}$ 通过 Jacobson 论证得以恢复; 途径 B 在球对称真空部分中建立了所猜想的特征值条件与 $R_{\mu\nu}=0$ 之间的严格代数等价性, 不引入任何热力学输入。因此, 在球对称真空部分, 真空方程接纳一个等价的代价结构表述(定理~\ref{thm:field})。
 
 本文的贡献因此是概念性与结构性的: Lorentz 号差由律 I 的代价-可实现性桥梁内部供应, 而非作为运动学的原始假定; 定理~\ref{thm:equivalence} 给出其各向同性稳定性读法。本框架既不自主导出 Einstein 方程的物质部分, 也不自主导出 Jacobson 路径所需的热力学输入; 特别地, 熵-面积律仍是外部的, 而物质部分仅当两个外部等同被给定时才能经由途径 A 恢复。
 
