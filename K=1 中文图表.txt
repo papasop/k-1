@@ -217,7 +217,7 @@ g_{\mu\nu}=-G_{\mu\nu}.
 \draw[darr] (info.south) -- node[right=2pt, font=\footnotesize] {经由主导形式 $G$} (kobj.north);
 \draw[arr] (ret.south) -- (dyn.north);
 \end{tikzpicture}
-\caption{$K{=}1$ 框架的逻辑结构. \emph{上行}: 符号化主二次型 $G\equiv Q$ 与 $dt_{\mathrm{info}}^{2}$ 的局部二阶展开关联(启发式桥梁), 而公理 R, E, T 连同非退化性约束 $G$ 的代数类型, 强制 $\mathrm{Sig}(G)=(1,1)$(等价于 $\det G<0$). \emph{下行}: $G$ 定义 $K(x)=x^{\top}Gx$, 本文为之额外引入条件 $K=1$; $G$ 也导出辛生成子 $J_G$, 此处由其给出的演化律 $\dot x=(J_G-D)\nabla V$ 表示; 结构性约束 $GA=\alpha J-GD$ ($D\ge 0$) 见正文. 律 III 在临界阻尼与归一化特征向量基下成立, 给出 $\kappa_K=4d_c$. 虚线箭头表示启发式或非推导性关系; 实箭头表示定义、已引用定理或代数推论. 此图仅总结依赖关系: 公理约束 $G$ 所满足的条件, 而非由 $dt_{\mathrm{info}}$ 完全推导. 在更深的动机层面上, 这些公理可视为对与 $dt_{\mathrm{info}}^{2}$ 的局部二阶代价形式相关的 Hessian 层退化结构的编码.}
+\caption{$K{=}1$ 框架的逻辑结构. \emph{上行}: 符号化主二次型 $G$(在结构层面与主导形式 $Q$ 等同)与 $dt_{\mathrm{info}}^{2}$ 的局部二阶展开关联(启发式桥梁), 而公理 R, E, T 连同非退化性约束 $G$ 的代数类型, 强制 $\mathrm{Sig}(G)=(1,1)$(等价于 $\det G<0$). \emph{下行}: $G$ 定义 $K(x)=x^{\top}Gx$, 本文为之额外引入条件 $K=1$; $G$ 也导出辛生成子 $J_G$, 此处由其给出的演化律 $\dot x=(J_G-D)\nabla V$ 表示; 结构性约束 $GA=\alpha J-GD$ ($D\ge 0$) 见正文. 律 III 在临界阻尼与归一化特征向量基下成立, 给出 $\kappa_K=4d_c$. 虚线箭头表示启发式或非推导性关系; 实箭头表示定义、已引用定理或代数推论. 此图仅总结依赖关系: 公理约束 $G$ 所满足的条件, 而非由 $dt_{\mathrm{info}}$ 完全推导. 在更深的动机层面上, 这些公理可视为对与 $dt_{\mathrm{info}}^{2}$ 的局部二阶代价形式相关的 Hessian 层退化结构的编码.}
 \label{fig:framework}
 \end{figure}
 
