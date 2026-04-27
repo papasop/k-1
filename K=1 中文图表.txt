@@ -491,7 +491,7 @@ $\dot{K}=2x^{\top}G\dot{x}=4(K-1)\,x^{\top}G(J_{G}-d_{c}I)Gx$。由 $GJ_{G}=\alp
 \node[label, green!50!black, right] at (1.05, 1.0) {B 类 (运动学)};
 \node[label, green!50!black, left] at (-1.05, 1.0) {boost};
 \end{tikzpicture}
-\caption{Rindler 度规 $g=\mathrm{diag}(-(\kappa\ell)^{2},1)$ 下的 $\{K=1\}$ 流形. 双曲线的渐近线为光锥. 在基点 $x_{*}$ 处, A 类(红, 双向箭头): 沿 $\nabla K$ 法向偏离 $\{K=1\}$ 的热力学涨落; B 类(绿): 沿曲线的切向 boost, 热力学上惰性——在 $x_{*}=(0,1)$ 处 $dx_{2}/dx_{1}|_{x_{*}}=0$, 切向恰为水平方向. 图中取 $\kappa\ell=1$ 且 $x_{*}=(0,1)$, 满足归一化 $x_{*}^{\top}g^{2}x_{*}=1$, 此时恢复率简化为 $\kappa_{K}=4d_{c}$(一般基点的公式将在本节中讨论).}
+\caption{Rindler 度规 $g=\mathrm{diag}(-(\kappa\ell)^{2},1)$ 下的 $\{K=1\}$ 流形. 双曲线的渐近线为光锥. 在基点 $x_{*}$ 处, A 类(红, 双向箭头): 沿 $\nabla K$ 法向偏离 $\{K=1\}$ 的热力学涨落; B 类(绿): 沿曲线的切向 boost, 热力学上惰性——在 $x_{*}=(0,1)$ 处 $dx_{2}/dx_{1}|_{x_{*}}=0$, 切向恰为水平方向. 图中取 $\kappa\ell=1$ 且 $x_{*}=(0,1)$, 满足归一化 $x_{*}^{\top}G^{2}x_{*}=1$, 此时恢复率简化为 $\kappa_{K}=4d_{c}$(一般基点的公式将在本节中讨论).}
 \label{fig:K1geometry}
 \end{figure}
 
