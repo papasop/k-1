@@ -1,22 +1,67 @@
 \documentclass[11pt]{article}
-\usepackage[T1]{fontenc}
 \usepackage[margin=1in]{geometry}
 \setlength{\emergencystretch}{1.5em}
 \usepackage{amsmath,amssymb,amsthm}
-\usepackage{hyperref}
+\usepackage{mathtools}
 \usepackage{booktabs}
-\usepackage{tikz}
 \usepackage{enumitem}
+\usepackage{tikz}
 \usetikzlibrary{arrows.meta, positioning, decorations.pathmorphing, shapes.geometric}
+\usepackage{hyperref}
 \hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue}
-\newtheorem{theorem}{Theorem}
-\newtheorem{proposition}[theorem]{Proposition}
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{definition}[theorem]{Definition}
-\newtheorem{corollary}[theorem]{Corollary}
-\newtheorem{remark}{Remark}
 
-\title{\textbf{$K=1$ Chronogeometrodynamics}\\[4pt]\large Lorentzian Geometry from Information Time}
+% CJK support: fontspec + XeTeX native CJK linebreak
+\usepackage{fontspec}
+\setmainfont{Noto Serif CJK SC}
+\setsansfont{Noto Sans CJK SC}
+% Enable breaking between CJK characters (native XeTeX feature)
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+
+% 行距与段落
+\linespread{1.35}               % 中文文档常用 1.3--1.4 行距
+\setlength{\parindent}{2em}     % 中文段落首行缩进 2 汉字宽度
+\setlength{\parskip}{0.3ex plus 0.1ex minus 0.05ex}  % 适度段落间距
+
+% 列表环境紧凑化(中文下默认列表过松)
+\setlist{itemsep=0.3ex, parsep=0.3ex, topsep=0.5ex}
+
+% 表格行距
+\renewcommand{\arraystretch}{1.25}
+
+% 定理环境:中文下斜体不美观,改用正体(plain style 的形状)
+\makeatletter
+\def\th@plain{%
+  \thm@notefont{}%
+  \itshape % number and name
+}
+\def\th@definition{%
+  \thm@notefont{}%
+  \normalfont % 定义/定理内容用正体
+}
+\makeatother
+\theoremstyle{definition}  % 用 definition 风格,body 为正体
+\newtheorem{theorem}{定理}
+\newtheorem{proposition}[theorem]{命题}
+\newtheorem{lemma}[theorem]{引理}
+\newtheorem{corollary}[theorem]{推论}
+\newtheorem{definition}[theorem]{定义}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{注}
+
+% Section font adjustment(中文 section 稍加间距)
+\usepackage{titlesec}
+\titleformat*{\section}{\Large\bfseries}
+\titleformat*{\subsection}{\large\bfseries}
+\titlespacing*{\section}{0pt}{1.8ex plus 0.5ex minus 0.3ex}{1ex plus 0.3ex}
+\titlespacing*{\subsection}{0pt}{1.4ex plus 0.4ex minus 0.2ex}{0.8ex plus 0.2ex}
+
+\renewcommand{\proofname}{\bfseries 证明}
+\renewcommand{\abstractname}{摘要}
+\renewcommand{\figurename}{图}
+\renewcommand{\tablename}{表}
+
+\title{\textbf{$K=1$ 时空几何动力学}\\[4pt]\large 源自信息时间的 Lorentz 几何}
 \author{Y.\,Y.\,N.\ Li}
 \date{}
 
@@ -24,119 +69,98 @@
 \maketitle
 
 \begin{abstract}
-\textit{Background.} Time has invariably entered physics as a primitive --- an underived input.
+\noindent\textbf{背景.\ } 时间一向作为元始概念进入物理学 --- 一种未被推导的输入。
 
-\textit{Framework.} Here the cost of change is modelled through an information time $dt_{\mathrm{info}}:=d\Phi/H$. The object constrained is not $dt_{\mathrm{info}}$ itself, but the signed leading quadratic form $G$ associated with the local second-order expansion of $dt_{\mathrm{info}}^{2}$. Modelling this form as satisfying Axioms~R, E, T of~\cite{Realizability} yields, under nondegeneracy, $\mathrm{Sig}(G)=(1,1)$, equivalently $\det G<0$; the unit-cost locus is $K(x)=x^{\top}Gx=1$.
+\smallskip\noindent\textbf{框架.\ } 此处通过信息时间 $dt_{\mathrm{info}}:=d\Phi/H$ 建模变化的代价。所约束的对象不是 $dt_{\mathrm{info}}$ 本身, 而是与 $dt_{\mathrm{info}}^{2}$ 的局部二阶展开关联的符号化主二次型 $G$。将此二次型建模为满足~\cite{Realizability} 的公理 R, E, T, 在非退化性下, 给出 $\mathrm{Sig}(G)=(1,1)$, 等价于 $\det G<0$; 单位代价轨迹为 $K(x)=x^{\top}Gx=1$。
 
-\textit{Dynamics and thermodynamics.} Within the symplectic--dissipative class $GA=\alpha J-GD$, the evolution law takes the uniquely reduced form $\dot x=(J_G-D)\nabla V$. Near $K=1$, the framework supplies the ingredients for a local Clausius relation, thereby providing Route~A's thermodynamic bridge to the Jacobson argument once the two external inputs $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ and $S\propto A$ are supplied.
+\smallskip\noindent\textbf{动力学与热力学.\ } 在辛-耗散类 $GA=\alpha J-GD$ 内, 演化律取唯一约简的形式 $\dot x=(J_G-D)\nabla V$。在 $K=1$ 附近, 本框架供给局部 Clausius 关系所需的素材, 由此提供途径 A 通向 Jacobson 论证的热力学桥梁, 在两个外部输入 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 与 $S\propto A$ 被供给时成立。
 
-\textit{Gravitational content.} In Route~B, for static, spherically symmetric metrics with $f>0$, the conjectured field-level condition $\sigma_2^2\Box\ln\sigma_i=1$ is shown to be algebraically equivalent to the vacuum Einstein equations $R_{\mu\nu}=0$ in the spherical vacuum sector (Theorem~\ref{thm:field}). Thus Lorentzian type is supplied internally at the point level, while the vacuum Einstein equations admit an equivalent reformulation in that sector.
+\smallskip\noindent\textbf{引力内容.\ } 在途径 B 中, 对于 $f>0$ 的静态、球对称度规, 所猜想的场级条件 $\sigma_2^2\Box\ln\sigma_i=1$ 被证明在球对称真空部分中代数等价于真空 Einstein 方程 $R_{\mu\nu}=0$(定理~\ref{thm:field})。因此 Lorentz 类型在点级被内部供应, 而真空 Einstein 方程在该部分中接纳等价的重新表述。
 \end{abstract}
 
-\noindent\textbf{Keywords:} Lorentzian signature; Information time; Symplectic-dissipative dynamics; Jacobson argument; Rindler horizon
+\noindent\textbf{关键词:} Lorentz 号差; 信息时间; 辛-耗散动力学; Jacobson 论证; Rindler 视界
 
-\section{Introduction: time as consequence}
+\section{引言: 时间作为推论}
 
-\textit{The problem.} Riemann's 1854 Habilitation lecture observed that, for a continuous manifold, the basis of metric relations must be sought outside the manifold itself, in forces acting upon it~\cite{Riemann1854}.\footnote{Riemann's formulation: ``the basis of metric relations must be sought outside that actuality, in colligating forces that operate upon it.''} Most standard formulations of spacetime physics, however, assume a metric or a causal structure as input. The Jacobson argument~\cite{Jacobson} obtains the Einstein equations from thermodynamics on local Rindler horizons, but Lorentzian signature is universally assumed --- as in the approaches of Padmanabhan~\cite{Padmanabhan} and Verlinde~\cite{Verlinde}. The EPS axiomatisation~\cite{EPS} derives causal structure from free-fall and light propagation, but uses kinematic primitives. In each of these approaches to Riemann's open problem, either the signature is prescribed or the derivation presupposes kinematic primitives.
+\noindent\textbf{问题.\ } 黎曼 1854 年就职演讲指出, 对于连续流形, 度规关系的基础必须在流形本身之外、在作用于其上的力中寻求~\cite{Riemann1854}\footnote{黎曼原文表述为:``the basis of metric relations must be sought outside that actuality, in colligating forces that operate upon it.''}。然而时空物理的多数标准表述都把度规或因果结构作为输入假设。Jacobson 论证~\cite{Jacobson} 从局部 Rindler 视界上的热力学推得爱因斯坦方程, 但 Lorentz 号差被普遍地预设——正如 Padmanabhan~\cite{Padmanabhan} 与 Verlinde~\cite{Verlinde} 的方法中那样。EPS 公理化~\cite{EPS} 从自由下落与光传播推导因果结构, 但使用了运动学原语。在对 Riemann 遗留问题的这几条路径中, 要么号差被预先规定, 要么推导以运动学原语为前提。
 
-\textit{The gap.} In the ``local cost-based leading quadratic form'' sense adopted here, existing approaches typically take Lorentzian signature or an equivalent causal structure as input; the present work addresses the prior question: when does the cost structure itself enforce a Lorentzian leading symbol?
+\smallskip\noindent\textbf{缺口.\ } 在本文采用的``局部代价主二次型''意义下, 现有方法通常把 Lorentz 号差或等价的因果结构作为输入; 本文关注的是位于此前一层的问题: 代价结构本身何时强制 Lorentz 型主符号。
 
-\textit{A local answer.} In the present modelling, time is neither a coordinate nor a metric primitive, but the cost layer associated with change. Information time is introduced as
+\smallskip\noindent\textbf{局部回答.\ } 在本文的建模中, 时间既非坐标, 也非度规原语, 而是与变化关联的代价层。信息时间引入为
 \[
 dt_{\mathrm{info}}:=\frac{d\Phi}{H},
 \]
-where $\Phi$ parametrises structural variation and $H>0$ is the local cost per unit variation. The object constrained in the present paper is not $dt_{\mathrm{info}}$ itself, but the signed leading quadratic form $G$ associated with the local second-order expansion of $dt_{\mathrm{info}}^{2}$, modelled as the leading form $Q$ of~\cite{Realizability}. \textbf{The paper's first result is local and point-level: in a $2\times 2$ realizability setting, the cost structure forces Lorentzian type} --- Axioms~R, E, T together with nondegeneracy imply $\det G<0$, equivalently $\mathrm{Sig}(G)=(1,1)$ (\S\ref{sec:lawI}). What is obtained at this stage is the algebraic type of the leading form, not a full reconstruction of all metric data. The induced generator $J_G$, the threshold $d_c>0$, and the unit-cost locus $K(x)=x^{\top}Gx=1$ are then algebraic consequences of this sign structure; making $K=1$ a locally self-consistent locus requires the dynamical completion of Laws~II--III. \emph{Thus the present work adopts a structural rather than fully reconstructive framework: $\Phi$ and $H$ are not fixed to specific physical quantities, and the results below constrain the algebraic type of the leading quadratic form rather than derive all metric data from first principles.} Connecting this point-level result to the full Einstein equations requires, in the thermodynamic route (Route~A), two external inputs: the identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ and the entropy--area law $S\propto A$. The further identification of the motivating information time $dt_{\mathrm{info}}$ with the later dynamical evolution parameter is not completed here and is left as an open problem.
+其中 $\Phi$ 表示结构变化, $H>0$ 为单位变化的局部代价。本文所约束的对象不是 $dt_{\mathrm{info}}$ 本身, 而是与 $dt_{\mathrm{info}}^{2}$ 的局部二阶展开关联的符号化主二次型 $G$, 建模为~\cite{Realizability} 的主二次型 $Q$。\textbf{本文的第一个结果是局部的、点级的: 在 $2\times 2$ 可实现性框架中, 代价结构强制 Lorentz 类型}---公理 R, E, T 连同非退化性蕴含 $\det G<0$, 等价于 $\mathrm{Sig}(G)=(1,1)$ (\S\ref{sec:lawI})。此阶段所获得的是主导形式的代数类型, 而非对所有度规数据的完整重构。诱导生成子 $J_G$、阈值 $d_c>0$、单位代价轨迹 $K(x)=x^{\top}Gx=1$ 随后都是此符号结构的代数推论; 使 $K=1$ 成为局部自洽轨迹需要律 II--III 的动力学补全。\emph{故本文采用结构性而非完全重构的框架: $\Phi$ 与 $H$ 不被指定为特定物理量, 下面的结果约束主导二次型的代数类型, 而非从第一性原理推导出全部度规数据。}将这一点级结果连接到完整的 Einstein 方程, 在热力学途径(途径 A)中需要两个外部输入: 等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 与熵-面积律 $S\propto A$。作为动机的信息时间 $dt_{\mathrm{info}}$ 与后续动力学演化参数之间的进一步等同, 此处不予完成, 留作开放问题。
 
-\textit{Two routes connecting to the Einstein equations.}
-\begin{itemize}
-\item[\textbf{A.}] \emph{Thermodynamic bridge} (\S\S\ref{sec:lawI}--\ref{sec:thermo}): on local Rindler horizons, $K{=}1\xrightarrow{\mathrm{lin.}}\mathrm{OU}\to\mathrm{Clausius}$; under the two external inputs $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ and $S\propto A$, and through the Jacobson argument~\cite{Jacobson}, this supplies the thermodynamic input for the Jacobson route to $G_{\mu\nu}=8\pi T_{\mu\nu}$ for general metrics.
-\item[\textbf{B.}] \emph{Equivalence theorem} (\S~\ref{sec:field}): in the spherical vacuum sector, the eigenvalue self-consistency condition $\sigma_2^2\Box\ln\sigma_i=1$ --- a conjectured field-level uplift of $K{=}1$, introduced as a conjecture --- stands in strict algebraic equivalence to $R_{\mu\nu}=0$, with \emph{no thermodynamic input}. This is not a derivation of the Einstein equations from the framework axioms, but a new equivalent formulation of the vacuum equations in the language of the $K{=}1$ framework.
+\smallskip\noindent\textbf{与爱因斯坦方程相连的两条路径.}
+\begin{itemize}[leftmargin=2em, itemsep=0.4ex, parsep=0pt, topsep=0.3ex]
+\item[\textbf{A.}] \textbf{热力学桥} (\S\S\ref{sec:lawI}--\ref{sec:thermo}):\ 在局部 Rindler 视界上, $K{=}1\xrightarrow{\mathrm{lin.}}\mathrm{OU}\to\mathrm{Clausius}$; 在 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 与 $S\propto A$ 两个外部输入下, 经由 Jacobson 论证~\cite{Jacobson}, 这为 Jacobson 路径提供通向 $G_{\mu\nu}=8\pi T_{\mu\nu}$ 的热力学输入(对一般度规)。
+\item[\textbf{B.}] \textbf{等价定理} (\S~\ref{sec:field}):\ 在球对称真空部分, 特征值自洽条件 $\sigma_2^2\Box\ln\sigma_i=1$——$K{=}1$ 的猜想性场级提升, 作为一个猜想提出——与 $R_{\mu\nu}=0$ 处于严格代数等价, \emph{不引入任何热力学输入}。这不是从框架公理推导出爱因斯坦方程, 而是用 $K{=}1$ 的语言重新表述真空方程的等价形式。
 \end{itemize}
-The two routes are complementary: Route~A applies locally on Rindler horizons but requires external thermodynamic input, whereas Route~B is thermodynamically independent but presently limited to spherical symmetry. They are summarised in Fig.~\ref{fig:routes}.
+两条途径互补: 途径 A 局部地适用于 Rindler 视界, 但需要外部热力学输入; 途径 B 热力学上独立, 但目前仅限球对称。两条途径的对比见图~\ref{fig:routes}。
 
-\medskip\noindent\textit{Main results.} \emph{Point-level}: under isotropic linearisation, Lorentzian signature, real spectrum of the induced generator $J_G$, and the positive stability threshold $d_{c}>0$ are equivalent (Theorem~\ref{thm:equivalence}). \emph{Route~A}: conditionally recovers $G_{\mu\nu}=8\pi T_{\mu\nu}$ for general metrics, given the two external inputs $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ and $S\propto A$. \emph{Route~B (field-level)}: in static, spherically symmetric vacuum metrics on intervals where $f>0$, the conjectured eigenvalue self-consistency condition $\sigma_2^2\,\Box\ln\sigma_i=1$ is algebraically equivalent to $R_{\mu\nu}=0$ (Theorem~\ref{thm:field}). Full statements follow in \S\S\ref{sec:symplectic}--\ref{sec:singularity}.
+\medskip\noindent\textit{主要结果.} \emph{点级结果}: 在各向同性线性化之下, Lorentz 号差、$G$ 诱导生成子 $J_{G}$ 的实谱与正稳定阈值 $d_{c}>0$ 等价(定理~\ref{thm:equivalence})。\emph{途径 A}: 在两个外部输入 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 与 $S\propto A$ 被供给时, 有条件地恢复 $G_{\mu\nu}=8\pi T_{\mu\nu}$(对一般度规)。\emph{途径 B(场级结果)}: 在 $f>0$ 区间上的静态球对称真空度规中, 所猜想的特征值自洽条件 $\sigma_2^2\,\Box\ln\sigma_i=1$ 在代数上等价于 $R_{\mu\nu}=0$(定理~\ref{thm:field})。完整表述见 \S\S\ref{sec:symplectic}--\ref{sec:singularity}。
 
-\medskip\noindent\textbf{Notation.}
-$\mathrm{spec}(A)$: spectrum of $A$.
-$\mathrm{Sig}(G)=(p,q)$: inertia ($p$ positive, $q$ negative eigenvalues).
-$J=\bigl(\begin{smallmatrix}0&1\\-1&0\end{smallmatrix}\bigr)$:
-canonical symplectic matrix.
-$\|\cdot\|$: Euclidean norm on~$\mathbb{R}^{2}$.
-$\nabla$: Euclidean gradient on~$\mathbb{R}^{2}$; it acts on the potential $V$, and the metric $G$ is encoded in the potential itself
-(for $V=\tfrac12(K-1)^2$, $\nabla V=2(K-1)Gx$),
-so no metric-compatible gradient is required.
-$\alpha>0$: normalisation constant
-($\alpha=1$ when compared with thermal quantities).
-$\kappa$: surface gravity of the horizon
-(distinct from the restoring rate $\kappa_{K}$).
-$\ell$: proper distance from the horizon.
-$\sigma>0$: noise amplitude in the stochastic dynamics.
-$\sigma_{1}:=r\sqrt{f}$ (on the real branch $f>0$, Route~B),
-$\sigma_{2}:=r$: symplectic eigenvalues of the metric,
-not to be confused with the noise amplitude $\sigma$.
-The $K$-space noise amplitude
-$\sigma_{K}(x)=2\sigma\|Gx\|$
-is introduced separately in \S\ref{sec:thermo}.
-$D\ge 0$: $2\times 2$ positive-semidefinite dissipation matrix.
-$H$ (scalar, \S\ref{sec:lawI}) and
-$H_{*}$ (matrix, \S\ref{sec:stability})
-are distinct mathematical objects;
-the explicit relation is left to future work.
-$\Box\phi := r^{-2}\partial_{r}(r^{2}f\,\partial_{r}\phi)$:
-\emph{radial} d'Alembertian,
-exact for $r$-dependent $\phi$
-(not the full $4$-dimensional wave operator).
+\smallskip\noindent\textbf{记号.\ }
+\begin{itemize}[leftmargin=1.5em, itemsep=0.15ex, parsep=0pt, topsep=0.2ex, label={$\triangleright$}]
+\item $\mathrm{spec}(A)$: $A$ 的谱; $\mathrm{Sig}(G)=(p,q)$: 惯性指数($p$ 个正、$q$ 个负特征值); $J=\bigl(\begin{smallmatrix}0&1\\-1&0\end{smallmatrix}\bigr)$: 标准辛矩阵。
+\item $\|\cdot\|$: $\mathbb{R}^{2}$ 上的欧氏范数; $\nabla$: $\mathbb{R}^{2}$ 上的欧氏梯度; 它作用于势 $V$, 度规 $G$ 已编码在势本身之中(对 $V=\tfrac12(K-1)^2$, $\nabla V=2(K-1)Gx$), 故无需度规相容的梯度。
+\item $\alpha>0$: 归一化常数(与热力学量比较时取 $\alpha=1$); $\kappa$: 视界的表面引力(与恢复速率 $\kappa_{K}$ 区别); $\ell$: 距视界的固有距离。
+\item $\sigma>0$: 随机动力学中的噪声幅度; $\sigma_{1}:=r\sqrt{f}$(在 $f>0$ 的实分支上, 途径 B), $\sigma_{2}:=r$: 度规的辛特征值, 不要与噪声幅度 $\sigma$ 混淆; $K$ 空间噪声幅度 $\sigma_{K}(x)=2\sigma\|Gx\|$ 在 \S\ref{sec:thermo} 中单独引入; $D\ge 0$: $2\times 2$ 半正定耗散矩阵。
+\item $H$(标量, \S\ref{sec:lawI})与 $H_{*}$(矩阵, \S\ref{sec:stability})是不同的数学对象; 二者的显式关系留待未来工作。
+\item $\Box\phi := r^{-2}\partial_{r}(r^{2}f\,\partial_{r}\phi)$: \emph{径向}达朗贝尔算子, 对仅依赖 $r$ 的 $\phi$ 精确(非完整四维波算子)。
+\end{itemize}
 
-\section{Metric from information time (Law~I)}\label{sec:lawI}
+\section{信息时间导出度规(律 I)}\label{sec:lawI}
 
 \medskip
-\noindent\textbf{Law~I.} \textit{The metric $G$ is a non-degenerate symmetric bilinear form measuring local displacement cost, and the temporal direction is singled out as that of positive cost \textup{(Axiom~T of~\cite{Realizability})}.}
+\noindent\textbf{律 I.} \textit{度规 $G$ 是量度局部位移代价的非退化对称双线性型, 时间方向被特别标定为正代价方向\textup{(\cite{Realizability} 的公理 T)}。}
 
-\medskip\noindent\textit{Framework definition.} The present paper is organised around the following layers. \emph{Input layer}: a structural parameter $\Phi$ and a positive scalar cost $H$, defining the information time $dt_{\mathrm{info}}:=d\Phi/H$. \emph{Axiom layer}: a signed leading quadratic form $G$ associated with $dt_{\mathrm{info}}^{2}$, modelled as satisfying Axioms~R, E, T of~\cite{Realizability} together with nondegeneracy. \emph{Additional condition}: the unit-cost locus $K(x):=x^{\top}Gx=1$, imposed as a point-level self-consistency condition. \emph{Dynamical completion}: Law~II gives the unique evolution $\dot x=(J_G-D)\nabla V$ within the symplectic--dissipative class $GA=\alpha J-GD$ (Theorem~\ref{thm:lawII}), and Law~III yields the restoring and fluctuation structure at critical damping (Theorem~\ref{thm:restoring}). \emph{Internal conclusions}: at the point level one obtains Lorentzian signature $\mathrm{Sig}(G)=(1,1)$, the threefold equivalence of Theorem~\ref{thm:equivalence}, and the local restoring law $\kappa_K=4d_c$ at a normalised eigenvector base point; conditionally, under the conjectured Route~B uplift, one obtains algebraic equivalence to the Einstein vacuum equations in the spherical vacuum sector (Theorem~\ref{thm:field}). \emph{External inputs}: only for Route~A, the thermal identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ and the entropy--area law $S\propto A$ are required.
+\medskip\noindent\textit{框架定义.} 本文围绕以下层次展开。\emph{输入层}: 结构参数 $\Phi$ 与正标量代价 $H$, 定义信息时间 $dt_{\mathrm{info}}:=d\Phi/H$。\emph{公理层}: 与 $dt_{\mathrm{info}}^{2}$ 相关的符号化主二次型 $G$, 建模为满足~\cite{Realizability} 的公理 R, E, T 连同非退化性。\emph{附加条件}: 单位代价轨迹 $K(x):=x^{\top}Gx=1$, 作为点级自洽性条件被施加。\emph{动力学补全}: 律 II 在辛-耗散类 $GA=\alpha J-GD$ 中给出唯一演化 $\dot x=(J_G-D)\nabla V$(定理~\ref{thm:lawII}); 律 III 在临界阻尼处给出恢复与涨落结构(定理~\ref{thm:restoring})。\emph{内部结论}: 在点级得到 Lorentz 号差 $\mathrm{Sig}(G)=(1,1)$、定理~\ref{thm:equivalence} 的三重等价、以及在归一化特征向量基点上的局部恢复律 $\kappa_K=4d_c$; 在依赖于所猜想的途径 B 提升的情况下, 在球对称真空部分中得到与 Einstein 真空方程的代数等价(定理~\ref{thm:field})。\emph{外部输入}: 仅对于途径 A 才需要热力学等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 与熵-面积律 $S\propto A$。
 
-\medskip\noindent\textit{Main bridge.} The information time is defined by
+\medskip\noindent\textit{主桥接.} 信息时间定义为
 \[
 dt_{\mathrm{info}}:=\frac{d\Phi}{H},
 \]
-where $\Phi$ parametrises structural variation and $H>0$ is the local \emph{scalar} cost per unit variation of $\Phi$ (an entropic resistance, unrelated to the matrix weight $H_{*}$ of~\S\ref{sec:stability}). Associated with the local second-order part of $dt_{\mathrm{info}}^{2}$, we introduce a signed leading quadratic form $G$, heuristically written as $G:=\nabla^{2}(dt_{\mathrm{info}}^{2})$. Strictly speaking, this is shorthand: $G$ denotes the \emph{signed leading quadratic coefficient form} associated with $dt_{\mathrm{info}}^{2}$, not a full coordinate-level reconstruction obtained from an explicit expansion of $dt_{\mathrm{info}}$ in a specified chart. More precisely, the present framework models this signed leading coefficient form as the leading quadratic form $Q$ of~\cite{Realizability}. Thus the step from $G$ to the realizability theorem is a \emph{structural identification at the level of the signed leading form}, not an independent re-derivation of Axioms~R, E, T from the information-time construction itself.
+其中 $\Phi$ 参数化结构变化, $H>0$ 是 $\Phi$ 单位变化的局部\emph{标量}代价(熵阻抗, 与 \S\ref{sec:stability} 中的矩阵权重 $H_{*}$ 无关)。与 $dt_{\mathrm{info}}^{2}$ 的局部二阶部分相关, 我们引入符号化主二次型 $G$, 启发式地记为 $G:=\nabla^{2}(dt_{\mathrm{info}}^{2})$\footnote{此处 $\nabla^{2}$ 表示关于变化参数的 Hessian 矩阵。}。严格地说, 此记号是简写: $G$ 表示与 $dt_{\mathrm{info}}^{2}$ 相关的\emph{符号化主二次系数形式}, 而非从某个特定坐标卡中 $dt_{\mathrm{info}}$ 的显式展开获得的完整坐标层面重构。更精确地说, 本框架将此符号化主二次系数形式建模为~\cite{Realizability} 的主二次型 $Q$。由此, 从 $G$ 到可实现性定理这一步是\emph{符号化主导形式层面上的结构性等同}, 而非由信息时间构造本身对公理 R, E, T 的独立再推导。
 
-At the motivating level, the nonnegative cost is represented by the positive-part construction $(x^{\top}Gx)_{+}$, exactly as in the realizability framework of~\cite{Realizability}. Once the signature conclusion has been obtained, the later algebra and dynamics work directly with the underlying signed leading form $G$ itself, and no longer require the positive-part construction. The positive-part cost belongs to the realizability layer that constrains the signature of the leading form. The later potential
+在动机层面, 非负代价由正部构造 $(x^{\top}Gx)_{+}$ 表示, 与~\cite{Realizability} 的可实现性框架完全一致。一旦号差结论已被获得, 后续的代数与动力学直接以下面的符号化主导形式 $G$ 本身工作, 不再需要正部构造。正部代价属于约束主导形式号差的可实现性层。后续势
 \[
 V=\tfrac12(K-1)^2
 \]
-is not the primitive cost functional of the realizability layer, but an additional dynamical choice introduced after the Lorentzian type of $G$ has been established, in order to study local restoring behaviour near $K=1$. Hence the main theorem of~\cite{Realizability} applies directly: Axioms~R, E, T together with nondegeneracy imply
+并非可实现性层的原始代价泛函, 而是在 $G$ 的 Lorentz 类型已建立之后引入的附加动力学选择, 用以研究 $K=1$ 附近的局部恢复行为。因此~\cite{Realizability} 的主要定理直接适用: 公理 R, E, T 连同非退化性意味着
 \[
 \mathrm{Sig}(G)=(1,1),
-\qquad\text{equivalently}\qquad
+\qquad\text{等价于}\qquad
 \det G<0.
 \]
-Axiom~R may be read intuitively as saying that there exist arbitrarily small forward displacements whose information cost vanishes relative to their size; this is the ingredient that rules out a positive-definite leading form. Thus, in the present modelling, the cost structure forces Lorentzian signature at the level of the signed leading form.
+公理 R 在直觉上可读作: 存在任意小的前向位移, 其信息代价相对于其大小趋于零; 这正是排除正定主导形式的关键成分。故在本文的建模中, 代价结构在符号化主导形式层面强制 Lorentz 号差。
 
-\medskip\noindent\textit{Deeper motivation.} Axioms~R, E, T of~\cite{Realizability} may be viewed as a realizability encoding of the Hessian-level degeneracy structure associated with the local second-order cost form of $dt_{\mathrm{info}}^{2}$, motivated by the requirement that nontrivial variational motion remain realizable rather than collapse to trivial displacement. The present paper does not carry out a full reverse reconstruction of Axioms~R, E, T from that structure; rather, it uses the associated signed leading form $G$ together with the realizability theorem of~\cite{Realizability} as the operative bridge. For relative self-containment, \S\ref{sec:lawI} recalls only the minimal mechanism needed from~\cite{Realizability}, rather than reproducing the full proof.
+\medskip\noindent\textit{更深动机.} \cite{Realizability} 的公理 R, E, T 可被视为对与 $dt_{\mathrm{info}}^{2}$ 的局部二阶代价形式相关的 Hessian 层退化结构的可实现性编码, 其动机在于要求非平凡的变分运动保持可实现的性质, 而非塌缩为平凡位移。本文不进行从该结构对公理 R, E, T 的完整反向重构; 而是使用所相关的符号化主导形式 $G$ 连同~\cite{Realizability} 的可实现性定理, 作为操作性桥梁。为求相对自足, \S\ref{sec:lawI} 仅复述 \cite{Realizability} 所需的最小机制, 而非重复完整证明。
 
-\medskip\noindent\textit{Scope of the claim.} What is constrained here is the \emph{algebraic type} of $G$ (its signature), not all of its specific values. Accordingly, $G$ should be read as a local cost-form forced by realizability, rather than as a complete reconstruction of the spacetime metric $g_{\mu\nu}$. The present work is therefore structural rather than fully reconstructive: $\Phi$ and $H$ are not fixed to specific physical quantities, and $dt_{\mathrm{info}}$ serves as the motivating cost-time layer from which the local leading form $G$ is introduced, rather than as a complete first-principles derivation of all metric data.
+\medskip\noindent\textit{结论的范围.} 这里受约束的是 $G$ 的\emph{代数类型}(其号差), 而非其全部具体值。相应地, $G$ 应被理解为由可实现性强制的局部代价形式, 而非时空度规 $g_{\mu\nu}$ 的完整重构。本文因此是结构性而非完全重构的: $\Phi$ 与 $H$ 不被指定为特定物理量, 而 $dt_{\mathrm{info}}$ 作为动机性的代价-时间层, 由此引入局部主导形式 $G$, 而非对所有度规数据的完整第一性原理推导。
 
-The quadratic form
+二次型
 \[
 K(x):=x^{\top}Gx
 \]
-measures local temporal cost, and the condition $K=1$ identifies the self-consistent locus. We adopt the normalisation $K=1$ by a choice of cost units, without loss of generality at the level of the present local theory. This condition is \emph{not} a conclusion of~\cite{Realizability}, but an additional self-consistency condition introduced in the present paper.
+量度局部时间代价, 而条件 $K=1$ 标识自洽轨迹。我们通过代价单位的选择采用归一化 $K=1$, 在本文当前局部理论的层面这不失一般性。此条件\emph{不是}~\cite{Realizability} 的结论, 而是本文引入的附加自洽条件。
 
-\medskip\noindent\textit{Role of information time in the present paper.} In the present work, $dt_{\mathrm{info}}$ plays a motivating and structural role: it specifies the cost-time layer from which the local leading form $G$ is introduced. The later dynamical sections use an effective evolution parameter $t$; an explicit first-principles identification between that parameter and $dt_{\mathrm{info}}$ is not derived here. Throughout this paper, the dynamical evolution parameter $t$ is an effective evolution time independent of $dt_{\mathrm{info}}$; establishing their relation is left to future work. In this sense, Law~I establishes the local cost-geometric layer of the framework, while a full dynamical reconstruction from information time alone is left to future work. Throughout the paper, this $2\times 2$ construction is applied on distinguished local two-planes, such as the $(t,r)$ wedge of a local Rindler horizon in Route~A and the radial-time plane in spherical symmetry for Route~B. These are not arbitrary two-planes: they are the physically distinguished local planes selected by the problem under consideration.
+\medskip\noindent\textit{信息时间在本文中的角色.} 在本文中, $dt_{\mathrm{info}}$ 起启发式与结构性作用: 它指定代价-时间层, 由此引入局部主导形式 $G$。后续动力学章节使用一个有效演化参数 $t$; 该参数与 $dt_{\mathrm{info}}$ 之间的显式第一性原理等同此处不予导出。在全文中, 动力学演化参数 $t$ 是独立于 $dt_{\mathrm{info}}$ 的有效演化时间; 建立两者之间的关系留待未来工作。在此意义上, 律 I 建立框架的局部代价-几何层, 而仅从信息时间出发的完整动力学重构留待未来工作。在全文中, 此 $2\times 2$ 构造应用于特异的局部二平面, 例如途径 A 中局部 Rindler 视界的 $(t,r)$ 楔形, 以及途径 B 中球对称下的径向-时间平面。这些并非任意的二平面: 它们是由所考虑的问题选出的、物理上特异的局部平面。
 
-\medskip\noindent\textit{Sign conventions.} In this section, $G$ is written in the cost-sign convention, so that the temporal direction carries positive cost. In later sections, especially in the Rindler realisation of Route~A, we switch to the spacetime-sign convention
+\medskip\noindent\textit{符号约定.} 在本节中, $G$ 以代价符号约定书写, 故时间方向带正代价。在后续章节, 特别是途径 A 的 Rindler 实现中, 我们切换到时空符号约定
 \[
 g_{\mu\nu}=-G_{\mu\nu}.
 \]
-This overall sign reversal does not affect the Lorentzian signature statement $\det G<0$; it changes only the convention used when the quadratic form is presented in spacetime language. In later sections, when the physical spacetime metric is used directly, we switch notation explicitly to $g_{\mu\nu}$ to avoid conflating it with the cost-sign form of \S\ref{sec:lawI}.
+此整体符号反转不影响 Lorentz 号差陈述 $\det G<0$; 它仅改变把二次型以时空语言呈现时所用的约定。在后续章节中, 当直接使用物理时空度规时, 我们显式切换记号为 $g_{\mu\nu}$, 以避免与 \S\ref{sec:lawI} 的代价符号形式相混淆。
 
-\medskip\noindent\textit{Minimal content used from~\cite{Realizability}.} For relative self-containment, the mechanism used here is the following. Axiom~E reduces the leading-order displacement cost to a non-degenerate quadratic type $Q$. Axiom~T supplies a distinguished temporal direction with strictly positive cost, thereby excluding a purely negative-definite leading form. Axiom~R, via the limiting argument proved in~\cite{Realizability}, requires spatially nontrivial forward displacements whose cost-to-size ratio tends to zero, thereby excluding a positive-definite leading form. In two dimensions, once both definite signatures are excluded and nondegeneracy is imposed, the only remaining inertia is $(1,1)$. Identifying the present $G$ with this signed leading form $Q$, one obtains $\mathrm{Sig}(G)=(1,1)$, equivalently $\det G<0$. The full statement, including the precise cost functional and the limiting argument in Axiom~R, is proved in~\cite{Realizability}.
+\medskip\noindent\textit{从~\cite{Realizability} 借用的最小内容.} 为求相对自足, 此处所用机制如下。公理 E 将位移代价的主导阶化约为非退化二次型 $Q$。公理 T 给出一个具有严格正代价的特异时间方向, 由此排除纯负定的主导形式。公理 R 通过~\cite{Realizability} 中证明的极限论证, 要求空间上非平凡的前向位移使代价与大小之比趋于零, 由此排除正定的主导形式。在二维情形下, 一旦正定与负定两种号差都被排除且非退化性被施加, 所剩的唯一惯性指数即为 $(1,1)$。将本文的 $G$ 等同于此符号化主导形式 $Q$, 即得 $\mathrm{Sig}(G)=(1,1)$, 等价于 $\det G<0$。完整的陈述, 包括精确的代价泛函与公理 R 中的极限论证, 均在~\cite{Realizability} 中证明。
 
-\medskip\noindent\textit{Consequence.} Lorentzian signature is therefore derived from the cost structure at the level of the leading form: $G$ is indefinite, and its null set
+\medskip\noindent\textit{推论.} Lorentz 号差因此从代价结构在主导形式层面被推出: $G$ 不定, 其零集
 \[
 \{x:x^{\top}Gx=0\}
 \]
-determines a local causal structure. In general relativity, the Lorentzian metric is prescribed on a pre-existing differentiable manifold; here the Lorentzian algebraic type of the leading cost form is derived rather than postulated.
+确定一个局部因果结构。在广义相对论中, Lorentz 度规是在预先存在的可微流形上给出的; 此处主导代价形式的 Lorentz 代数类型是推出的, 而非假设的。
 
 \begin{figure}[ht]
 \centering
@@ -162,144 +186,120 @@ determines a local causal structure. In general relativity, the Lorentzian metri
 ]
 %--- top row
 \node[graybox] (info)
-  {{\footnotesize\bfseries\scshape Layer 1 $\cdot$ Information Time}\\[4pt]
+  {{\footnotesize\bfseries 第 1 层 $\cdot$ 信息时间}\\[4pt]
    {\normalsize$\Phi,\;H \to dt_{\mathrm{info}}$}\\[4pt]
-   {\footnotesize motivates $G$ via local 2nd-order expansion of $dt_{\mathrm{info}}^{2}$}};
+   {\footnotesize 激发 $G$, 经由 $dt_{\mathrm{info}}^{2}$ 的局部二阶展开}};
 \node[graybox, right=of info] (ret)
-  {{\footnotesize\bfseries\scshape Realizability Axioms}\\[4pt]
+  {{\footnotesize\bfseries 可实现性公理}\\[4pt]
    {\normalsize$R,\;E,\;T + \mathrm{nondeg.}$}\\[4pt]
-   {\footnotesize constraints on the leading form}};
+   {\footnotesize 对主导形式的约束}};
 \node[bluebox, right=of ret] (sig)
-  {{\footnotesize\bfseries\scshape Conclusion}\\[4pt]
+  {{\footnotesize\bfseries 结论}\\[4pt]
    {\normalsize$\mathrm{Sig}(G)=(1,1)$}\\[4pt]
-   {\footnotesize equivalently $\det G<0$}};
+   {\footnotesize 等价于 $\det G<0$}};
 %--- bottom row
 \node[graybox, below=1.0cm of info] (kobj)
-  {{\footnotesize\bfseries\scshape Layer 2 $\cdot$ Point Objects}\\[4pt]
+  {{\footnotesize\bfseries 第 2 层 $\cdot$ 点级对象}\\[4pt]
    {\normalsize$K(x)=x^{\top}Gx$}\\[4pt]
-   {\footnotesize paper adds extra condition $K=1$}};
+   {\footnotesize 本文额外引入条件 $K=1$}};
 \node[graybox, below=1.0cm of ret] (dyn)
-  {{\footnotesize\bfseries\scshape Layer 3 $\cdot$ Dynamics}\\[4pt]
+  {{\footnotesize\bfseries 第 3 层 $\cdot$ 动力学}\\[4pt]
    {\normalsize$J_G=\alpha G^{-1}J$}\\[4pt]
-   {\footnotesize Law II: $\dot x=(J_G-D)\nabla V$}};
+   {\footnotesize 律 II: $\dot x=(J_G-D)\nabla V$}};
 \node[greenbox, below=1.0cm of sig] (comp)
-  {{\footnotesize\bfseries\scshape Local Completion (Law III)}\\[4pt]
+  {{\footnotesize\bfseries 局部完成 (律 III)}\\[4pt]
    {\normalsize$\kappa_K=4d_c$}\\[4pt]
-   {\footnotesize critical damping; normalized eigenvector base}};
+   {\footnotesize 临界阻尼; 归一化特征向量基}};
 %--- arrows
 \draw[arr] (ret.east) -- (sig.west);
 \draw[arr] (kobj.east) -- (dyn.west);
 \draw[arr] (dyn.east) -- (comp.west);
-\draw[darr] (info.south) -- node[right=2pt, font=\footnotesize] {via the leading form $G$} (kobj.north);
+\draw[darr] (info.south) -- node[right=2pt, font=\footnotesize] {经由主导形式 $G$} (kobj.north);
 \draw[arr] (ret.south) -- (dyn.north);
 \end{tikzpicture}
-\caption{Logical structure of the $K{=}1$ framework. \emph{Top row}: the signed leading quadratic form $G$, identified structurally with the leading form $Q$, is associated with the local second-order expansion of $dt_{\mathrm{info}}^{2}$ (heuristic bridge), while Axioms~R, E, T together with nondegeneracy constrain its algebraic type, forcing $\mathrm{Sig}(G)=(1,1)$ (equivalently $\det G<0$). \emph{Bottom row}: $G$ defines $K(x)=x^{\top}Gx$, to which the paper adds the extra condition $K=1$; $G$ also induces the symplectic generator $J_G$, here represented by its resulting evolution law $\dot x=(J_G-D)\nabla V$; the structural constraint $GA=\alpha J-GD$ with $D\ge 0$ is stated in the text. Law~III follows under critical damping with a normalised eigenvector base, giving $\kappa_K=4d_c$. Dashed arrows indicate heuristic or non-derivational relations; solid arrows indicate definitions, cited theorems, or algebraic consequences. The figure summarises dependence relations only: the axioms constrain the conditions satisfied by $G$, rather than being fully derived from $dt_{\mathrm{info}}$. At a deeper motivational level, the axioms may be viewed as encoding the Hessian-level degeneracy structure associated with the local second-order cost form of $dt_{\mathrm{info}}^{2}$.}
+\caption{$K{=}1$ 框架的逻辑结构. \emph{上行}: 符号化主二次型 $G$(在结构层面与主导形式 $Q$ 等同)与 $dt_{\mathrm{info}}^{2}$ 的局部二阶展开关联(启发式桥梁), 而公理 R, E, T 连同非退化性约束 $G$ 的代数类型, 强制 $\mathrm{Sig}(G)=(1,1)$(等价于 $\det G<0$). \emph{下行}: $G$ 定义 $K(x)=x^{\top}Gx$, 本文为之额外引入条件 $K=1$; $G$ 也导出辛生成子 $J_G$, 此处由其给出的演化律 $\dot x=(J_G-D)\nabla V$ 表示; 结构性约束 $GA=\alpha J-GD$ ($D\ge 0$) 见正文. 律 III 在临界阻尼与归一化特征向量基下成立, 给出 $\kappa_K=4d_c$. 虚线箭头表示启发式或非推导性关系; 实箭头表示定义、已引用定理或代数推论. 此图仅总结依赖关系: 公理约束 $G$ 所满足的条件, 而非由 $dt_{\mathrm{info}}$ 完全推导. 在更深的动机层面上, 这些公理可视为对与 $dt_{\mathrm{info}}^{2}$ 的局部二阶代价形式相关的 Hessian 层退化结构的编码.}
 \label{fig:framework}
 \end{figure}
 
-\section{Symplectic structure from \texorpdfstring{$G$}{G}}\label{sec:symplectic}
+\section{由 \texorpdfstring{$G$}{G} 导出的辛结构}\label{sec:symplectic}
 
-\noindent\textit{From geometry to dynamics.} Law~I specifies the algebraic type of $G$, but not how the system evolves. The next step is to obtain from $G$, together with a conservative compatibility condition and a Euclidean normalisation convention, a canonical generator usable for Laws~II--III and stability analysis. The conservative compatibility condition is that the free drift preserve the cost structure encoded by $K(x)=x^{\top}Gx$; at the linear level, this requires $GM$ to be skew-symmetric. The construction below (Theorem~\ref{thm:unique}) requires only nondegeneracy; the Lorentzian reading --- spectral reality and the stability threshold $d_c>0$ --- enters subsequently, through Theorem~\ref{thm:spectral} and the isotropic interpretation of \S\ref{sec:stability}.
+\noindent\textit{从几何到动力学.} 律 I 确定了 $G$ 的代数类型, 但未指定系统如何演化。下一步是从 $G$ 出发, 连同一个保守相容条件与一个 Euclidean 规范化约定, 得到可供律 II--III 与稳定性分析使用的规范生成子。保守相容条件是: 自由漂移保持由 $K(x)=x^{\top}Gx$ 编码的代价结构; 在线性层面, 这要求 $GM$ 斜对称。下文的构造(定理~\ref{thm:unique})仅需非退化性; Lorentz 读出---谱的实数性与稳定性阈值 $d_c>0$---稍后通过定理~\ref{thm:spectral} 与 \S\ref{sec:stability} 的各向同性诠释进入。
 
 \medskip
 
-\begin{theorem}[Structural Uniqueness]\label{thm:unique}
-Let $G$ be a non-degenerate symmetric $2\times 2$ real matrix. Among all matrices $M$ such that
-\textup{(i)}~$GM$ is skew-symmetric and
-\textup{(ii)}~$M=\alpha J$ when $G=I$ \textup{(Euclidean normalisation)},
-the unique solution is $J_G=\alpha G^{-1}J$.
+\begin{theorem}[结构唯一性]\label{thm:unique}
+设 $G$ 是 $2\times 2$ 非退化对称实矩阵。在所有满足
+\textup{(i)}~$GM$ 斜对称 与
+\textup{(ii)}~当 $G=I$ 时 $M=\alpha J$ \textup{(Euclidean 规范化)}
+的矩阵 $M$ 中, 唯一解为 $J_G=\alpha G^{-1}J$。
 \end{theorem}
 
 \begin{proof}
-Since $\dim(\mathrm{Skew}_2)=1$ and $J$ spans $\mathrm{Skew}_2$, condition~\textup{(i)} forces $GM=\beta J$ for some $\beta\in\mathbb{R}$, hence $M=\beta G^{-1}J$; condition~\textup{(ii)} fixes $\beta=\alpha$.\qed
+由 $\dim(\mathrm{Skew}_2)=1$ 且 $J$ 张成 $\mathrm{Skew}_2$, 条件~\textup{(i)} 强制 $GM=\beta J$ 对某个 $\beta\in\mathbb{R}$, 故 $M=\beta G^{-1}J$; 条件~\textup{(ii)} 固定 $\beta=\alpha$。\qed
 \end{proof}
 
-\begin{remark}[Non-degeneracy vs.\ signature]
-Theorem~\ref{thm:unique} requires only $\det G\neq 0$; it holds for any signature. Theorem~\ref{thm:spectral} provides the spectral computation; the Lorentzian condition becomes a stability criterion in Theorem~\ref{thm:equivalence}, under isotropic linearisation. Since $GJ_G=\alpha J$ is skew-symmetric, $J_G$ is $G$-antisymmetric by construction; the Lorentzian condition forces $J_G$ to be a hyperbolic element with real eigenvalues, yielding $d_c>0$.
+\begin{remark}[非退化性与号差]
+定理~\ref{thm:unique} 仅需要 $\det G\neq 0$; 对任何号差都成立。定理~\ref{thm:spectral} 给出谱的计算; 在各向同性线性化之下, Lorentz 条件在定理~\ref{thm:equivalence} 中成为稳定性判据。由于 $GJ_G=\alpha J$ 斜对称, 按构造 $J_G$ 是 $G$-反对称; Lorentz 条件强制 $J_G$ 为双曲元具实特征值, 给出 $d_c>0$。
 \end{remark}
 
-\begin{theorem}[Spectral Reality]\label{thm:spectral}
-Let $\mathrm{Sig}(G)=(1,1)$. The characteristic polynomial of $G^{-1}J$ is $\lambda^2+1/\det G=0$. Since $\det G<0$, the roots are real: $\lambda=\pm\sqrt{-1/\det G}$. In the isotropic reading, the corresponding stability boundary is
+\begin{theorem}[谱实性]\label{thm:spectral}
+设 $\mathrm{Sig}(G)=(1,1)$。$G^{-1}J$ 的特征多项式为 $\lambda^2+1/\det G=0$。由 $\det G<0$, 根为实数: $\lambda=\pm\sqrt{-1/\det G}$。在各向同性读出中, 相应的稳定性边界为
 \begin{equation}
 d_c(\alpha)=\alpha\sqrt{-1/\det G}>0.\label{eq:dc}
 \end{equation}
 \end{theorem}
 
 \begin{proof}
-$\mathrm{tr}(G^{-1}J)=0$ and $\det(G^{-1}J)=1/\det G$; the characteristic polynomial $\lambda^2+1/\det G=0$ then gives $\mathrm{spec}(J_G)=\{\pm d_c\}$. For the isotropic case $H_*=I$, $\max \mathrm{Re}\,\mathrm{spec}(J_G-dI)=d_c-d$, which vanishes at $d=d_c$.\qed
+$\mathrm{tr}(G^{-1}J)=0$, $\det(G^{-1}J)=1/\det G$; 特征多项式 $\lambda^2+1/\det G=0$ 给出 $\mathrm{spec}(J_G)=\{\pm d_c\}$。在各向同性情形 $H_*=I$, $\max\mathrm{Re}\,\mathrm{spec}(J_G-dI)=d_c-d$, 于 $d=d_c$ 处消失。\qed
 \end{proof}
 
-\begin{theorem}[Necessity of Lorentzian Signature]\label{thm:necessity}
-If $\mathrm{Sig}(G)=(2,0)$ or $(0,2)$, then $\det G>0$, so $\lambda^2+1/\det G=0$ has purely imaginary roots; no positive real $d_c>0$ exists in the sense of Theorem~\ref{thm:equivalence}.
+\begin{theorem}[Lorentz 号差的必要性]\label{thm:necessity}
+若 $\mathrm{Sig}(G)=(2,0)$ 或 $(0,2)$, 则 $\det G>0$, 故 $\lambda^2+1/\det G=0$ 有纯虚根; 在定理~\ref{thm:equivalence} 的意义下不存在正实数 $d_c>0$。
 \end{theorem}
 
 \begin{proof}
-$\det G>0$ gives $1/\det G>0$, so $\lambda^2=-1/\det G<0$ and both roots are purely imaginary; no positive real eigenvalue $d_c>0$ exists.\qed
+$\det G>0$ 给出 $1/\det G>0$, 故 $\lambda^2=-1/\det G<0$ 且两根均为纯虚; 不存在正实特征值 $d_c>0$。\qed
 \end{proof}
 
-\section{The isotropic stability boundary}\label{sec:stability}
+\section{各向同性稳定性边界}\label{sec:stability}
 
-\noindent\textit{From algebraic identity to dynamical threshold.}
-Section~\ref{sec:symplectic} established the purely algebraic identity
-$d_{c}=\alpha\sqrt{-1/\det G}$ for any $2\times2$ Lorentzian $G$:
-$d_{c}$ is simply the magnitude of the real eigenvalues of $J_{G}$.
-No dynamics has been invoked so far.
-The purpose of the present section is to give this algebraic quantity
-a \emph{stability interpretation} under one additional specification:
-the linearisation weight matrix is taken as $H_{*}=I$ (isotropic).
-When $H_{*}=I$, the auxiliary linear system $d(\delta x)/dt=(J_{G}-dI)\delta x$
-has $\max\mathrm{Re}\,\mathrm{spec}(J_{G}-dI)=d_{c}-d$; hence $d>d_{c}$
-guarantees exponential decay of all modes, $d=d_{c}$ is critical damping,
-and $d_{c}>0$ becomes a positive stability threshold.
-This interprets the signature--spectrum triple of Fig.~\ref{fig:triangle}
-in dynamical terms.  For general positive-definite $H_{*}\neq I$,
-the zero-eigenvalue locus of $(J_{G}-dI)H_{*}$ is unchanged
-(Proposition~\ref{prop:diag_inv}), but the full Lyapunov stability
-threshold may shift (Remark~\ref{rem:Hstar_dep}); the equivalence
-stated in Theorem~\ref{thm:equivalence} therefore holds \emph{within
-the isotropic reading}.  No new algebraic derivation is introduced
-in this section.
+\noindent\textit{从代数恒等式到动力学阈值.}
+\S\ref{sec:symplectic} 建立了纯代数恒等式 $d_{c}=\alpha\sqrt{-1/\det G}$,
+适用于任何 $2\times 2$ 的 Lorentz $G$: $d_{c}$ 即 $J_{G}$ 实特征值的模. 
+迄今尚未涉及任何动力学.
+本节的目的是, 在一项额外的指定下, 给这一代数量赋予一个\emph{稳定性诠释}: 
+线性化权重矩阵取为 $H_{*}=I$ (各向同性).
+当 $H_{*}=I$ 时, 辅助线性系统 $d(\delta x)/dt=(J_{G}-dI)\delta x$ 
+满足 $\max\mathrm{Re}\,\mathrm{spec}(J_{G}-dI)=d_{c}-d$;
+故 $d>d_{c}$ 保证所有模的指数衰减, $d=d_{c}$ 为临界阻尼,
+而 $d_{c}>0$ 成为一个正稳定性阈值.
+此即图~\ref{fig:triangle} 的号差-辛谱三元组在动力学层面上的诠释.
+对于一般正定的 $H_{*}\neq I$, $(J_{G}-dI)H_{*}$ 的零特征值位置不变
+(命题~\ref{prop:diag_inv}), 但完整 Lyapunov 稳定性阈值可能偏移
+(注~\ref{rem:Hstar_dep}); 故定理~\ref{thm:equivalence} 所述等价性
+仅\emph{在各向同性诠释之内}成立. 本节不引入新的代数推导.
 
 \medskip
 
-\begin{theorem}[Signature-Stability Equivalence]\label{thm:equivalence}
-For non-degenerate symmetric $2\times 2$ real $G$, under the isotropic linearisation $H_{*}=I$, the following are equivalent:
-\begin{itemize}
-\item[\textup{(a)}] The isotropic stability threshold
+\begin{theorem}[号差-稳定性等价]\label{thm:equivalence}
+对于非退化对称 $2\times 2$ 实 $G$, 在各向同性线性化 $H_{*}=I$ 之下, 下列等价:
+\begin{enumerate}[label=(\alph*)]
+\item 各向同性稳定性阈值
 \[
 d_{c}=\alpha\sqrt{-1/\det G}
 \]
-is a positive real quantity.
-\item[\textup{(b)}] $\mathrm{Sig}(G)=(1,1)$ \textup{(Lorentzian)}, equivalently $\det G<0$.
-\end{itemize}
-For general $H_{*}$, the zero-eigenvalue locus in $d$ is invariant under invertible right multiplication by $H_{*}$ (Proposition~\ref{prop:diag_inv}), but the full real-part stability interpretation may fail (Remark~\ref{rem:Hstar_dep}); thus $d_{c}$ is a signature invariant only within the isotropic stability interpretation.
+是正实数;
+\item $\mathrm{Sig}(G)=(1,1)$: $G$ 是 Lorentz 的;
+\item $\det G<0$。
+\end{enumerate}
+对一般的 $H_{*}$, 在 $d$ 中的零特征值位置在 $H_{*}$ 可逆的右乘下保持不变(命题~\ref{prop:diag_inv}), 但完整实部稳定性解释可能失效(注~\ref{rem:Hstar_dep}); 故 $d_{c}$ 仅在各向同性稳定性解释之内才是号差不变量。
 \end{theorem}
 
 \begin{proof}
-$d_{c}>0 \Leftrightarrow -1/\det G>0$ (eq.~\eqref{eq:dc}) $\Leftrightarrow \det G<0 \Leftrightarrow \mathrm{Sig}(G)=(1,1)$, via Theorems~\ref{thm:spectral} and~\ref{thm:necessity}.\qed
+$d_{c}>0 \Leftrightarrow -1/\det G>0$ (式~\eqref{eq:dc}) $\Leftrightarrow \det G<0 \Leftrightarrow \mathrm{Sig}(G)=(1,1)$, 由定理~\ref{thm:spectral} 与~\ref{thm:necessity} 得证。\qed
 \end{proof}
 
-\noindent The signature--spectrum--stability triple correspondence established by Theorems~\ref{thm:spectral}--\ref{thm:equivalence} is summarised in Fig.~\ref{fig:triangle}.
-
-\medskip\noindent\textbf{Scope.} The closed-form $d_{c}=\alpha\sqrt{-1/\det G}$ relies on $\dim(\mathrm{Skew}_{2})=1$; higher-dimensional extensions require additional structure and are not fully developed in the present paper.
-
-\begin{remark}[Isotropic scaling]
-$H$ (scalar, \S\ref{sec:lawI}) is the local cost per unit variation of $\Phi$ (an entropic resistance), appearing in $dt_{\mathrm{info}}=d\Phi/H$; $H_{*}$ (matrix) denotes the cost-function weight matrix in $d(\delta x)/dt=(J_{G}-dI)H_{*}\,\delta x$ (in the linearised stability analysis of the present section). The two are distinct mathematical objects and are not identified in the present paper; establishing an explicit relation between them from a single deeper cost principle is left to future work. $H_{*}=I$ is the default. For $H_{*}=cI$ ($c>0$), the zero-real-part threshold in $d$ remains $d_{c}$, although rates are rescaled by $c$. For general positive-definite $H_{*}$, the full stability threshold may shift.
-\end{remark}
-
-\begin{remark}[Dependence on $H_{*}$]\label{rem:Hstar_dep}
-With $G=\mathrm{diag}(0.1,-10)$ and $H_{*}=\bigl(\begin{smallmatrix}1&0.9\\0.9&1\end{smallmatrix}\bigr)$, $d_{c}^{\mathrm{iso}}=1$ while $d_{c}(H_{*})=4.55$, confirming that $d_{c}$ may depend on $H_{*}$ outside the isotropic class. Here $d_{c}(H_{*})$ refers to the full real-part stability threshold, not the zero-eigenvalue locus (which remains at $d_{c}=1$ by Proposition~\ref{prop:diag_inv}).
-\end{remark}
-
-\begin{proposition}[$H_{*}$-invariance of the zero-eigenvalue locus]\label{prop:diag_inv}
-For any invertible $H_{*}$, the zero-eigenvalue values of $(J_{G}-dI)H_{*}$ coincide with those of $J_{G}-dI$.
-\end{proposition}
-\begin{proof}
-$\det((J_{G}-dI)H_{*})=\det(J_{G}-dI)\det H_{*}$; since $\det H_{*}\neq 0$, the determinant vanishes exactly when $\det(J_{G}-dI)=0$.\qed
-\end{proof}
-\begin{remark}
-For the Rindler metric with diagonal $H_{*}>0$, the zero-eigenvalue threshold in $d$ remains $d_{c}=\alpha/(\kappa\ell)$. The thermodynamic applications of \S~\ref{sec:thermo} use this threshold directly, without requiring the full isotropic equivalence of Theorem~\ref{thm:equivalence}.
-\end{remark}
+\noindent 定理~\ref{thm:spectral}--\ref{thm:equivalence} 所建立的号差-辛谱-稳定性三重对应由图~\ref{fig:triangle} 概括。
 
 \begin{figure}[ht]
 \centering
@@ -310,135 +310,150 @@ For the Rindler metric with diagonal $H_{*}>0$, the zero-eigenvalue threshold in
     equiv/.style={{Stealth[length=2mm]}-{Stealth[length=2mm]}, thick, draw=black!65},
     label/.style={font=\scriptsize\itshape, text=black!55}
 ]
-\node[corebox] (core) {$\det G<0$\\[1pt]\scriptsize (2D nondegenerate)};
-\node[eqbox, above=1.6cm of core] (sig) {$\mathrm{Sig}(G)=(1,1)$\\[1pt]\scriptsize (Lorentzian signature)};
-\node[eqbox, below left=1.3cm and 0.8cm of core] (spec) {$\lambda_{\pm}{=}\pm\alpha\sqrt{-1/\det G}\in\mathbb{R}$\\[1pt]\scriptsize (real $J_G$-spectrum)};
-\node[eqbox, below right=1.3cm and 0.8cm of core] (dc) {$d_{c}>0$\\[1pt]\scriptsize (positive stability threshold)};
-\draw[equiv] (core) -- node[label, right] {2D inertia} (sig);
-\draw[equiv] (core) -- node[label, above left=-2pt, sloped] {spectral} (spec);
-\draw[equiv] (core) -- node[label, above right=-2pt, sloped] {$d_{c}$ definition} (dc);
+% Central core: det G < 0
+\node[corebox] (core) {$\det G<0$\\[1pt]\scriptsize (2D 非退化)};
+% Three equivalent expressions arranged around the core
+\node[eqbox, above=1.6cm of core] (sig) {$\mathrm{Sig}(G)=(1,1)$\\[1pt]\scriptsize (Lorentz 号差)};
+\node[eqbox, below left=1.3cm and 0.8cm of core] (spec) {$\lambda_{\pm}{=}\pm\alpha\sqrt{-1/\det G}\in\mathbb{R}$\\[1pt]\scriptsize (实 $J_G$ 谱)};
+\node[eqbox, below right=1.3cm and 0.8cm of core] (dc) {$d_{c}>0$\\[1pt]\scriptsize (正稳定阈值)};
+% Double-headed arrows (equivalences)
+\draw[equiv] (core) -- node[label, right] {二维惯性分类} (sig);
+\draw[equiv] (core) -- node[label, above left=-2pt, sloped] {谱计算} (spec);
+\draw[equiv] (core) -- node[label, above right=-2pt, sloped] {$d_{c}$ 定义} (dc);
+% Peripheral triangle arrows REMOVED for conservative mathematical expression:
+% the three outer edges would suggest independent pairwise equivalences, but
+% spec <-> d_c is essentially a definition (d_c is the positive real eigenvalue),
+% not a separate theorem. The central radiating structure suffices.
+% H_*=I badge positioned near the d_c>0 box (the only expression whose stability interpretation requires it)
 \node[rectangle, draw=black!60, fill=yellow!15, rounded corners=2pt, font=\footnotesize\bfseries, right=0.35cm of dc, inner sep=3pt] (isoflag) {$H_{*}=I$};
-\node[font=\scriptsize\itshape, text=black!60, below=0.02cm of isoflag, align=center] {required for\\ stability reading};
+\node[font=\scriptsize\itshape, text=black!60, below=0.02cm of isoflag, align=center] {稳定性解释所需\\ (各向同性线性化)};
+% Annotation below
 \node[font=\footnotesize, text=black!60, below=2.6cm of core, text width=10cm, align=center] {
-   One sign $\det G<0$, three corresponding expressions.\\
-   (General $H_{*}$ may shift the threshold formula; see Remark~\ref{rem:Hstar_dep})
+   一个符号 $\det G<0$, 三种对应表述.\\
+   (一般 $H_{*}$ 会改变稳定阈值公式, 见注~\ref{rem:Hstar_dep})
 };
 \end{tikzpicture}
-\caption{Signature-spectrum-stability triple correspondence. The core algebraic sign $\det G<0$ corresponds, under 2D nondegeneracy, to three expressions: Lorentzian signature $\mathrm{Sig}(G)=(1,1)$ (geometric, by Sylvester's inertia law); the symplectic generator $J_{G}$ having real eigenvalues $\lambda_{\pm}=\pm\alpha\sqrt{-1/\det G}$ (spectral, by direct computation); and a positive stability threshold $d_{c}>0$ (dynamical, \emph{whose stability interpretation requires isotropic linearisation $H_{*}=I$}). The algebraic formula $d_{c}=\alpha\sqrt{-1/\det G}$ itself does not depend on $H_{*}$; only its reading as a Lyapunov stability boundary invokes the isotropic specification. Theorems~\ref{thm:spectral}--\ref{thm:equivalence} together with Eq.~\eqref{eq:dc} establish these correspondences. General $H_{*}$ may shift the full real-part stability threshold away from the isotropic formula, while the zero-eigenvalue locus remains invariant under invertible right multiplication by $H_{*}$; see Proposition~\ref{prop:diag_inv} and Remark~\ref{rem:Hstar_dep}.}
+\caption{号差-辛谱-稳定性三重对应. 核心代数符号 $\det G<0$ 在二维非退化情形下对应三种表述: Lorentz 号差 $\mathrm{Sig}(G)=(1,1)$(几何表述, 由 Sylvester 惯性律), 辛生成子 $J_{G}$ 具有实特征值 $\lambda_{\pm}=\pm\alpha\sqrt{-1/\det G}$(谱表述, 由直接谱计算), 以及存在正稳定阈值 $d_{c}>0$(动力学表述, \emph{其稳定性解释需各向同性线性化 $H_{*}=I$}). 代数公式 $d_{c}=\alpha\sqrt{-1/\det G}$ 本身不依赖 $H_{*}$; 仅其作为 Lyapunov 稳定性边界的解读才引入各向同性指定. 定理~\ref{thm:spectral}--\ref{thm:equivalence} 连同式~\eqref{eq:dc} 建立这些对应关系. 一般 $H_{*}$ 可使完整实部稳定阈值偏离各向同性公式 $\alpha\sqrt{-1/\det G}$, 而零特征值位置在 $H_{*}$ 可逆的右乘下保持不变; 见命题~\ref{prop:diag_inv} 与注~\ref{rem:Hstar_dep}.}
 \label{fig:triangle}
 \end{figure}
 
-\medskip\noindent\textit{Scope.} This section concerns the $2\times 2$ case, fixed by a single local Rindler horizon. Extension to $(1{+}3)$ dimensions requires additional structural choices (see the $(1{+}3)$-dimensional extension in \S\ref{sec:discussion}).
+\medskip\noindent\textit{范围.} 本节关注 $2\times 2$ 情形, 由单一局部 Rindler 视界所决定。向 $(1+3)$ 维的扩展需要额外的结构选择(见 \S\ref{sec:discussion} 中 $(1+3)$-维扩展一节)。
 
-\section{Unique dynamics (Law~II)}\label{sec:lawII}
+\begin{remark}[各向同性缩放]
+$H$(标量, \S\ref{sec:lawI})是 $\Phi$ 单位变化的局部代价(熵阻抗), 出现于 $dt_{\mathrm{info}}=d\Phi/H$; $H_{*}$(矩阵)表示代价函数的权重矩阵, 出现于 $d(\delta x)/dt=(J_{G}-dI)H_{*}\,\delta x$ 中(在本节的线性化稳定性分析中)。二者是不同的数学对象, 本文不予等同; 若存在从同一深层代价原理同时导出二者的关系, 留待未来工作。$H_{*}=I$ 为默认。对 $H_{*}=cI$($c>0$), 在 $d$ 中的零实部阈值仍为 $d_{c}$, 但速率按 $c$ 整体缩放; 对一般正定的 $H_{*}$, 完整稳定性阈值可能偏移。
+\end{remark}
 
-\noindent\textbf{Law~II.} \textit{The generator of the dynamics splits as $GA = \alpha J - GD$ with $D\ge 0$ (positive-semidefinite dissipation). This symplectic-dissipative decomposition is the content of Law~II; it is a structural axiom, not derived from Laws~I or~III, motivated by the universal Helmholtz-type splitting of physical evolution into reversible (symplectic) and irreversible (dissipative) parts~\cite{GENERIC}. Under this axiom, the generator is uniquely reduced to the form $J_{G}-D$, so that the evolution law for any smooth potential $V$ is
+\begin{remark}[对 $H_{*}$ 的依赖性]\label{rem:Hstar_dep}
+$d_{c}$ 的数值与号差等价性仅在 $H_{*}$ 的各向同性类内成立。对于一般的 $H_{*}>0$, $d_{c}$ 可偏离 $\alpha\sqrt{-1/\det G}$。举例: 取 $G=\mathrm{diag}(0.1,-10)$ 与 $H_{*}=\bigl(\begin{smallmatrix}1&0.9\\0.9&1\end{smallmatrix}\bigr)$, 则 $d_{c}^{\mathrm{iso}}=1$ 而 $d_{c}(H_{*})=4.55$, 证实在非各向同性类下 $d_{c}$ 依赖于 $H_{*}$. 此处 $d_{c}(H_{*})$ 指完整实部稳定阈值, 而非零特征值位置(后者由命题~\ref{prop:diag_inv} 保持为 $d_{c}=1$). 非各向同性类的号差-稳定性等价留作未解问题。
+\end{remark}
+
+\begin{proposition}[$H_{*}$ 下零特征值位置的不变性]\label{prop:diag_inv}
+对任何可逆的 $H_{*}$, $(J_{G}-dI)H_{*}$ 的零特征值取值与 $J_{G}-dI$ 的零特征值取值相同。
+\end{proposition}
+\begin{proof}
+$\det((J_{G}-dI)H_{*})=\det(J_{G}-dI)\det H_{*}$; 由于 $\det H_{*}\neq 0$, 故行列式为零当且仅当 $\det(J_{G}-dI)=0$。\qed
+\end{proof}
+
+\begin{remark}
+对于 Rindler 度规且 $H_{*}>0$ 对角, 在 $d$ 中的零特征值阈值仍为 $d_{c}=\alpha/(\kappa\ell)$。\S~\ref{sec:thermo} 的热力学应用直接使用该阈值, 无需定理~\ref{thm:equivalence} 的完整各向同性等价。
+\end{remark}
+
+\section{唯一动力学(律 II)}\label{sec:lawII}
+
+\noindent\textbf{律 II.} \textit{动力学生成子作如下分解: $GA = \alpha J - GD$, 其中 $D\ge 0$(半正定耗散)。这种辛-耗散分解是律 II 的内容;它是一条结构性公理, 并非从律 I 或律 III 推出, 其动机来自物理演化按可逆(辛)与不可逆(耗散)两部分的普适 Helmholtz 型分裂~\cite{GENERIC}。在此公理之下, 生成子的形式被唯一约简为 $J_{G}-D$, 从而对任意光滑势 $V$, 演化律为
 \[
 \dot{x}=(J_{G}-D)\nabla V,
 \]
-with the dissipation matrix $D$ remaining free within the positive-semidefinite class until it is fixed further, in the isotropic critical-damping reading, by Law~III. The local restoring role of $\{K=1\}$ is specified separately by Law~III.}
+其中耗散矩阵 $D$ 在半正定类内仍是自由的, 直至律 III 在各向同性临界阻尼诠释下将其进一步固定。$\{K=1\}$ 的局部恢复角色由律 III 另行规定。}
 
-The splitting $GA=\alpha J-GD$ is the axiomatic content of Law~II. Combined with Theorem~\ref{thm:unique} (which fixes $J_{G}$), this yields the unique admissible evolution law (Theorem~\ref{thm:lawII}).
+分解 $GA=\alpha J-GD$ 是律 II 的公理性内容。结合定理~\ref{thm:unique}(它固定 $J_G$), 由此得到唯一的可接纳演化律(定理~\ref{thm:lawII})。
 
-\begin{theorem}[Canonical Form of Law~II]\label{thm:lawII}
-Let $G$ be non-degenerate and let $J_{G}=\alpha G^{-1}J$ \textup{(Theorem~\ref{thm:unique})}. For any generator satisfying the Law~II constraint
+\begin{theorem}[律 II 的正则形式]\label{thm:lawII}
+设 $G$ 非退化, $J_{G}=\alpha G^{-1}J$ \textup{(定理~\ref{thm:unique})}。对任何满足律 II 约束
 \[
-GA = \alpha J - GD,\qquad D \ge 0,
+GA = \alpha J - GD,\qquad D \ge 0
 \]
-the evolution law for any smooth potential $V$ takes the uniquely reduced form
+的生成子, 对任意光滑势 $V$, 演化律取唯一约简的形式
 \[
 \dot{x} = (J_{G}-D)\,\nabla V.
 \]
-Thus the physically admissible evolution laws in the present framework are exactly those of the form $(J_G-D)\nabla V$ with $D\ge 0$, in the spirit of the Helmholtz/GENERIC splitting~\cite{GENERIC}.
+故本框架中物理上可接纳的演化律, 恰为 $(J_G-D)\nabla V$ 形式且 $D\ge 0$, 符合 Helmholtz/GENERIC 分裂的精神~\cite{GENERIC}。
 \end{theorem}
 
 \begin{proof}
-$A=G^{-1}(\alpha J-GD)=J_{G}-D$.\qed
+$A=G^{-1}(\alpha J-GD)=J_{G}-D$。\qed
 \end{proof}
 
-For Lorentzian $G$, $J_G$ has symmetric part $S=(J_{G}+J_{G}^{\top})/2\neq 0$, departing from the GENERIC requirement of Euclidean antisymmetry.
+对于 Lorentz 的 $G$, $J_G$ 有非零对称部分 $S=(J_{G}+J_{G}^{\top})/2\neq 0$, 偏离了 GENERIC 对欧氏反对称性的要求。
 
-\section{Critical damping and fluctuation structure (Law~III)}\label{sec:lawIII}
+\section{临界阻尼与涨落结构(律 III)}\label{sec:lawIII}
 
-\noindent\textbf{Law~III (Dissipation selection).}
-\emph{The dissipation matrix $D$ is selected by requiring that
-$K{=}1$ be a locally stable equilibrium of the drift
-$\dot x=(J_G-D)\nabla V$ with $V=\tfrac12(K{-}1)^2$, and by choosing
-the smallest isotropic dissipation compatible with that stability.}
+\noindent\textbf{律 III (耗散选择).}
+\emph{耗散矩阵 $D$ 经下述要求选定: $K{=}1$ 应为漂移
+$\dot x=(J_G-D)\nabla V$ ($V=\tfrac12(K{-}1)^2$) 的局部稳定平衡,
+且在所有满足该稳定性的选择中, 取最小的各向同性耗散.}
 
 \medskip
 
-\noindent\textit{From open dynamics to a concrete physical model.}
-Law~II fixes the algebraic form of the generator,
-$\dot x=(J_G-D)\nabla V$ with $D\ge 0$, but leaves $D$ unspecified.
-To obtain a concrete physical model, one must therefore select a
-particular dissipation matrix.
-The natural criterion is that the unit-cost locus $K{=}1$, which
-plays the role of a self-consistency condition in the framework,
-should be dynamically stable: small departures from $K{=}1$ should be
-driven back toward it.
-Among such stabilising choices, we select the one with the smallest
-isotropic dissipation.
+\noindent\textit{从开放动力学到具体物理模型.}
+律 II 固定了生成子的代数形式 $\dot x=(J_G-D)\nabla V$ ($D\ge 0$),
+但未指定 $D$. 要得到一个具体的物理模型, 因此必须选定一个特定的耗散矩阵.
+自然的判据是: 单位代价轨迹 $K{=}1$ —— 在本框架中扮演自洽性条件的角色 ——
+应当是动力学稳定的: 对 $K{=}1$ 的小偏离应被驱回. 在所有这样的稳定化选择
+中, 我们取拥有最小各向同性耗散的那一个.
 
-Restricting to the isotropic class $D=dI$ ($d>0$), the strength of the
-normal restoring behaviour is controlled by the dissipation level $d$,
-while the relevant stability scale is set by the spectral quantity
-$d_{c}$ introduced in \S\ref{sec:stability}, namely the magnitude of the
-real eigenvalues of the hyperbolic symplectic generator $J_{G}$.
-Accordingly, stability requires $d\ge d_{c}$, and the boundary choice
-$d=d_{c}$ gives critical damping.
-It is therefore the unique member of the isotropic family that
-stabilises $K{=}1$ with minimal dissipation.
-Thus Law~III selects
+将选择限制于各向同性类 $D=dI$ ($d>0$), 法向恢复行为的强度由耗散
+水平 $d$ 控制, 而相关的稳定性尺度由 \S\ref{sec:stability} 中引入的
+谱量 $d_{c}$ 设定, 即双曲辛生成子 $J_{G}$ 实特征值的大小. 因此, 稳定性
+要求 $d\ge d_{c}$, 而边界选择 $d=d_{c}$ 给出临界阻尼. 这是各向同性
+族中以最小耗散稳定 $K{=}1$ 的唯一成员. 故律 III 选定
 \begin{equation}\label{eq:Dcritical}
 D = d_{c}I,
 \end{equation}
-with
+其中
 \[
 d_{c}=\alpha\sqrt{-1/\det G},
 \]
-as obtained in \S\ref{sec:symplectic}.
+如 \S\ref{sec:symplectic} 所得.
 
-The remainder of this section develops the consequences of this
-selection: first, the local effective restoring rate toward $K{=}1$
-(Theorem~\ref{thm:restoring}); and second, the natural separation of
-fluctuations on $\{K=1\}$ into a thermodynamic class and a purely
-kinematic class.
+本节余下部分发展该选择的两项推论: 首先, $K{=}1$ 方向的局部有效恢复
+速率(定理~\ref{thm:restoring}); 其次, $\{K=1\}$ 上涨落自然分裂为
+热力学类与纯运动学类两支.
 
 \medskip
 
-\begin{theorem}[Local Effective Restoring Rate]\label{thm:restoring}
-Let $G$ be a $2\times 2$ Lorentzian metric, $D=d_{c}I$ (Law~III), and $J_{G}=\alpha G^{-1}J$ (Theorem~\ref{thm:unique}). Define $K(x)=x^{\top}Gx$, $V=\tfrac{1}{2}(K-1)^{2}$, with drift $\dot{x}=(J_{G}-d_{c}I)\nabla V$. Then for all $x\in\mathbb{R}^{2}$:
+\begin{theorem}[局部有效恢复速率]\label{thm:restoring}
+设 $G$ 为 $2\times 2$ Lorentz 度规, $D=d_{c}I$(律 III), $J_{G}=\alpha G^{-1}J$(定理~\ref{thm:unique})。定义 $K(x)=x^{\top}Gx$, $V=\tfrac{1}{2}(K-1)^{2}$, 漂移项为 $\dot{x}=(J_{G}-d_{c}I)\nabla V$。则对任意 $x\in\mathbb{R}^{2}$:
 \begin{equation}
 \dot{K} = 4(K-1)\bigl[\alpha\,x^{\top}(JG)\,x - d_{c}\,x^{\top}G^{2}x\bigr].\label{eq:Kdot}
 \end{equation}
-At any $x_{*}\in\{K=1\}$ with $Gx_{*}=\lambda x_{*}$, the term $x_{*}^{\top}JGx_{*}=0$; freezing the coefficient in~\eqref{eq:Kdot} at such an $x_{*}$ and retaining the first-order term in $(K-1)$ gives
+在任一 $x_{*}\in\{K=1\}$ 且 $Gx_{*}=\lambda x_{*}$ 处, $x_{*}^{\top}JGx_{*}=0$; 在 $x_{*}$ 处冻结~\eqref{eq:Kdot} 的系数, 保留 $(K-1)$ 的一阶项, 得
 \begin{equation}
 \dot{K} = -4\,d_{c}\,x_{*}^{\top}G^{2}x_{*}\cdot(K-1)+o(K-1).\label{eq:Kdot_eigen}
 \end{equation}
-If, in addition, the base point is normalised by $x_{*}^{\top}G^{2}x_{*}=1$ (i.e., $x_*$ is a unit-eigenvalue $G$-eigenvector), then
+若此外基点按 $x_{*}^{\top}G^{2}x_{*}=1$ 归一化(即 $x_*$ 是单位特征值的 $G$-特征向量), 则
 \begin{equation}
 \dot{K} = -\kappa_{K}(K-1)+o(K-1),\qquad \kappa_{K}=4\,d_{c}.\label{eq:kappa}
 \end{equation}
 \end{theorem}
 
 \begin{proof}
-$\dot{K}=2x^{\top}G\dot{x}=4(K-1)\,x^{\top}G(J_{G}-d_{c}I)Gx$. Since $GJ_{G}=\alpha J$, right-multiplying by $G$ gives $GJ_{G}G=\alpha(JG)$, yielding~\eqref{eq:Kdot}. At a $G$-eigenvector, $x_{*}^{\top}JGx_{*}=\lambda\,x_{*}^{\top}Jx_{*}=0$ by skew-symmetry.\qed
+$\dot{K}=2x^{\top}G\dot{x}=4(K-1)\,x^{\top}G(J_{G}-d_{c}I)Gx$。由 $GJ_{G}=\alpha J$, 右乘 $G$ 得 $GJ_{G}G=\alpha(JG)$, 从而~\eqref{eq:Kdot}。在 $G$ 特征向量处, $x_{*}^{\top}JGx_{*}=\lambda\,x_{*}^{\top}Jx_{*}=0$(由斜对称性)。\qed
 \end{proof}
 
-\begin{remark}[Base-point dependence]
-The local effective restoring rate is $\kappa_{K}(x_{*})=4d_{c}\cdot x_{*}^{\top}G^{2}x_{*}$; it depends on the base point. For the Rindler metric, $x_{*}=(0,1)$ is the unique $G$-eigenvector on $\{K{=}1\}$ with $x_{*}^{\top}G^{2}x_{*}=1$. The factor~$4=2\times 2$ reflects two sources: the quadratic form~$K$ and the quadratic penalty~$V$; each contributes a factor of~$2$ upon differentiation.
+\begin{remark}[对基点的依赖]
+局部有效恢复速率为 $\kappa_{K}(x_{*})=4d_{c}\cdot x_{*}^{\top}G^{2}x_{*}$, 依赖于基点。对于 Rindler 度规, $x_{*}=(0,1)$ 是 $\{K{=}1\}$ 上唯一的 $G$-特征向量且 $x_{*}^{\top}G^{2}x_{*}=1$。因子 $4=2\times 2$ 反映了两个来源: 二次型 $K$ 与二次惩罚 $V$;各自在求导时贡献因子 $2$。
 \end{remark}
 
-\subsection*{Two classes of fluctuation on $\{K=1\}$}
+\subsection*{$\{K=1\}$ 上的两类涨落}
 
-Adding isotropic additive white noise (It\^{o} convention) to Law~II gives $dx=(J_{G}-D)\nabla V\,dt+\sigma\,dW_{t}$, where $W_{t}$ is a standard $\mathbb{R}^{2}$-valued Wiener process and $\sigma>0$ is constant. At $D=d_{c}I$ (critical damping, Law~III), two geometrically distinct classes arise:
-
-\medskip\noindent
-\textit{Class~A} (thermodynamic): fluctuations of $K$ perpendicular to $\{K=1\}$ --- departures from metric self-consistency --- governed by restoring rate $\kappa_{K}(x_{*})=4d_{c}\,x_{*}^{\top}G^{2}x_{*}$; the linearised stationary distribution of the $K$-fluctuation at a fixed base point is Gaussian with variance $\sigma^{2}/(2d_{c})$, as follows from the standard stationary distribution of the one-dimensional OU process~\cite{Gardiner1985}. Although both the restoring rate and the $K$-space noise amplitude depend on $x_{*}^{\top}G^{2}x_{*}$, this factor cancels in the OU variance.
+将各向同性可加白噪声(伊藤约定)加入律 II 得 $dx=(J_{G}-D)\nabla V\,dt+\sigma\,dW_{t}$, 其中 $W_{t}$ 是标准 $\mathbb{R}^{2}$ 值 Wiener 过程, $\sigma>0$ 常数。在 $D=d_{c}I$(临界阻尼, 律 III)处, 产生两类几何上不同的涨落:
 
 \medskip\noindent
-\textit{Class~B} (kinematic; thermodynamically inert here): the tangential component of the fluctuation along $\{K=1\}$ in the boost direction. For the Rindler metric $g=\mathrm{diag}(-(\kappa\ell)^{2},1)$, $\{K=1\}$ is the hyperbola $-(\kappa\ell)^{2}x_{1}^{2}+x_{2}^{2}=1$; motion along it generates Lorentz boosts, changing the inertial observer but not the thermodynamic state. The Hessian of $V$ restricted to $\{K=1\}$ is rank-one with null space containing this tangent, confirming that Class~B carries no restoring force and no heat. The geometric picture of the two classes on the $\{K=1\}$ hyperbola is shown in Fig.~\ref{fig:K1geometry}.
+\textit{A 类}(热力学型): $K$ 垂直于 $\{K=1\}$ 的涨落——偏离度规自洽性——由恢复速率 $\kappa_{K}(x_{*})=4d_{c}\,x_{*}^{\top}G^{2}x_{*}$ 控制;在固定基点处, $K$-涨落的线性化稳态分布为高斯分布, 方差 $\sigma^{2}/(2d_{c})$, 由一维 OU 过程的标准稳态分布得出~\cite{Gardiner1985}。虽然恢复速率与 $K$ 空间噪声幅度都依赖 $x_{*}^{\top}G^{2}x_{*}$, 此因子在 OU 方差中相消。
+
+\medskip\noindent
+\textit{B 类}(运动学型; 此处热力学上惰性): 涨落沿 $\{K=1\}$ 在 boost 方向上的切向分量。对于 Rindler 度规 $g=\mathrm{diag}(-(\kappa\ell)^{2},1)$, $\{K=1\}$ 是双曲线 $-(\kappa\ell)^{2}x_{1}^{2}+x_{2}^{2}=1$;沿其运动生成 Lorentz boost, 改变惯性观察者, 但不改变热力学状态。$V$ 限制在 $\{K=1\}$ 上的 Hessian 为秩一, 零空间含此切向, 确认 B 类不携带恢复力和热。双曲线 $\{K=1\}$ 上两类涨落的几何图像见图~\ref{fig:K1geometry}。
 
 \begin{figure}[ht]
 \centering
@@ -450,370 +465,317 @@ Adding isotropic additive white noise (It\^{o} convention) to Law~II gives $dx=(
     tangent/.style={-{Stealth[length=2.2mm]}, very thick, draw=green!50!black},
     label/.style={font=\footnotesize}
 ]
-\draw[axis] (-3, 0) -- (3, 0) node[right, label] {$x_{1}$ (time-like direction)};
-\draw[axis] (0, -2.2) -- (0, 2.5) node[above, label] {$x_{2}$ (space-like direction)};
+% axes
+\draw[axis] (-3, 0) -- (3, 0) node[right, label] {$x_{1}$ (时间型方向)};
+\draw[axis] (0, -2.2) -- (0, 2.5) node[above, label] {$x_{2}$ (空间型方向)};
+% light cone (asymptotes): for kappa*ell=1, {K=1} is x_2^2 - x_1^2 = 1
+% asymptotes x_2 = ±x_1
 \draw[lightcone] (-2.5, -2.5) -- (2.5, 2.5);
 \draw[lightcone] (-2.5, 2.5) -- (2.5, -2.5);
-\node[label, gray, rotate=45] at (2.2, 2.0) {light cone};
+\node[label, gray, rotate=45] at (2.2, 2.0) {光锥};
+% upper hyperbola: x_2 = sqrt(1 + x_1^2)
 \draw[hyp, domain=-2.3:2.3, smooth, variable=\x] plot ({\x}, {sqrt(1 + \x*\x)});
 \draw[hyp, domain=-2.3:2.3, smooth, variable=\x] plot ({\x}, {-sqrt(1 + \x*\x)});
 \node[label, blue!70!black] at (2.0, 2.7) {$\{K=1\}$};
+% base point x_*
 \fill[black] (0, 1) circle (1.8pt) node[left=2pt, label] {$x_{*}$};
+% Class A: perpendicular (radial) arrow from x_* outward (normal)
 \draw[normal] (0, 1) -- (0, 1.8);
 \draw[normal] (0, 1) -- (0, 0.3);
-\node[label, red!70!black, right] at (0.05, 1.9) {Class A (thermal)};
-\node[label, red!70!black, right] at (0.05, 0.2) {$K\neq 1$ fluct.};
+\node[label, red!70!black, right] at (0.05, 1.9) {A 类 (热力学)};
+\node[label, red!70!black, right] at (0.05, 0.2) {$K \neq 1$ 涨落};
+% Class B: tangential (along hyperbola) - at x_*=(0,1), the tangent is HORIZONTAL
+% since dx_2/dx_1 = x_1/sqrt(1+x_1^2) = 0 at x_1=0
 \draw[tangent] (0, 1) -- (1.0, 1);
 \draw[tangent] (0, 1) -- (-1.0, 1);
-\node[label, green!50!black, right] at (1.05, 1.0) {Class B (kinematic)};
+\node[label, green!50!black, right] at (1.05, 1.0) {B 类 (运动学)};
 \node[label, green!50!black, left] at (-1.05, 1.0) {boost};
 \end{tikzpicture}
-\caption{The $\{K=1\}$ manifold for the Rindler metric $g=\mathrm{diag}(-(\kappa\ell)^{2},1)$. The hyperbola's asymptotes are the light cone. At the base point $x_{*}$: Class A (red, two-way arrows) — thermodynamic fluctuations \emph{along the $\nabla K$ normal} to $\{K=1\}$; Class B (green) — tangential boost along the curve, thermodynamically inert — at $x_{*}=(0,1)$, $dx_{2}/dx_{1}|_{x_{*}}=0$, so the tangent is exactly horizontal. The figure is drawn with $\kappa\ell=1$ and $x_{*}=(0,1)$, satisfying the normalisation $x_{*}^{\top}g^{2}x_{*}=1$; the restoring rate then reduces to $\kappa_{K}=4d_{c}$ (the general-base-point formula is discussed in the present section).}
+\caption{Rindler 度规 $g=\mathrm{diag}(-(\kappa\ell)^{2},1)$ 下的 $\{K=1\}$ 流形. 双曲线的渐近线为光锥. 在基点 $x_{*}$ 处, A 类(红, 双向箭头): 沿 $\nabla K$ 法向偏离 $\{K=1\}$ 的热力学涨落; B 类(绿): 沿曲线的切向 boost, 热力学上惰性——在 $x_{*}=(0,1)$ 处 $dx_{2}/dx_{1}|_{x_{*}}=0$, 切向恰为水平方向. 图中取 $\kappa\ell=1$ 且 $x_{*}=(0,1)$, 满足归一化 $x_{*}^{\top}g^{2}x_{*}=1$, 此时恢复率简化为 $\kappa_{K}=4d_{c}$(一般基点的公式将在本节中讨论).}
 \label{fig:K1geometry}
 \end{figure}
 
 \medskip
 \noindent
-\textbf{Summary of logical status.}
-Law~III closes the dynamical sector by selecting $D=d_{c}I$ through a
-stability criterion with minimal isotropic dissipation.
-With this choice, Theorem~\ref{thm:restoring} shows that $K{=}1$ is a
-locally restoring equilibrium, while the fluctuation analysis separates
-the dynamics into a thermodynamic channel (Class~A) and a purely
-kinematic channel (Class~B).
-The thermodynamic channel will supply the local Clausius relation in
-the next section; the kinematic channel carries no heat and is inert
-for that argument.
+\textbf{逻辑状态总结.}
+律 III 通过最小各向同性耗散下的稳定性判据选定 $D=d_{c}I$, 由此闭合
+动力学层级. 在该选择下, 定理~\ref{thm:restoring} 表明 $K{=}1$ 是
+局部恢复的平衡, 而涨落分析将动力学分为热力学通道(A 类)与纯运动学
+通道(B 类). 热力学通道将在下一节供给局部 Clausius 关系; 运动学
+通道不携带热, 在该论证中是惰性的.
 
+\section{时空热力学(途径 A)}\label{sec:thermo}
 
-\section{Spacetime thermodynamics (Route~A)}\label{sec:thermo}
+本节将途径 A 作为通向 Einstein 方程的热力学且条件性桥梁加以阐发。途径 A 中所用的每一个外部等同都被显式标出; 完整输入清单于本节末尾汇总。
 
-This section develops Route~A as a thermodynamic and conditional bridge to the Einstein equations. Every external identification used in Route~A is marked explicitly; the full input list is summarised at the end of the section.
-
-\medskip\noindent\textit{Sign convention and object split.} In Route~A we use the spacetime-sign convention
+\medskip\noindent\textit{符号约定与对象分离.} 途径 A 中我们使用时空符号约定
 \[
-g=\mathrm{diag}(-(\kappa\ell)^{2},1)
+g=\mathrm{diag}(-(\kappa\ell)^{2},1),
 \]
-for direct comparison with Rindler geometry. Statements depending only on $\det g$, $d_{c}$, or the hyperbolic spectrum are invariant under the overall sign change. Statements invoking Axiom~T as positive temporal cost are to be read in the cost-sign convention
+以便与 Rindler 几何直接比较。仅依赖 $\det g$、$d_{c}$ 或双曲谱的命题, 在整体变号下不变。以公理 T(正时间代价)为基础的命题应在代价符号约定
 \[
-G_{\mathrm{cost}}=-g=\mathrm{diag}((\kappa\ell)^{2},-1),
+G_{\mathrm{cost}}=-g=\mathrm{diag}((\kappa\ell)^{2},-1)
 \]
-used explicitly in \S~\ref{sec:singularity}. Both conventions have determinant $-(\kappa\ell)^{2}$ and give the same $d_{c}$.
+下理解(于 \S~\ref{sec:singularity} 中显式使用)。两种约定的行列式均为 $-(\kappa\ell)^{2}$, 给出相同的 $d_{c}$。
 
-In this section, $g_{\mu\nu}$ denotes the physical Rindler metric used as the external spacetime background. By contrast, the quadratic form $G$ entering
+在本节中, $g_{\mu\nu}$ 表示作为外部时空背景的物理 Rindler 度规。相对地, 进入
 \[
 K=x^{\top}Gx,\qquad J_G=\alpha G^{-1}J,
 \]
-and the OU reduction is the cost-form used by the framework. In the Rindler realisation, these are related by the sign convention discussed in \S~\ref{sec:lawI}, but they should not be conflated notationally: $g$ denotes the physical spacetime metric, whereas $G$ denotes the dynamical cost-form.
+以及 OU 约简的二次型 $G$ 是本框架使用的代价形式。在 Rindler 实现中, 二者通过 \S~\ref{sec:lawI} 讨论的符号约定相联系, 但记号上不应混淆: $g$ 表示物理时空度规, 而 $G$ 表示动力学代价形式。
 
-As a concrete realisation, we apply the framework to the Rindler metric
-\[
-g=\mathrm{diag}(-(\kappa\ell)^{2},1)
-\]
-\textup{[external: $g$ is the standard Rindler metric from GR, not derived from Law~I]},
-where $\kappa$ is the surface gravity and $\ell$ the proper distance
-from the horizon. The Rindler expressions are understood for a non-extremal local horizon, $\kappa>0$, and for $\ell>0$. Equation~\eqref{eq:dc} gives $d_{c}=\alpha/(\kappa\ell)$ (i.e., $\alpha/\sqrt{|g_{00}|}$ with $g_{00}=-(\kappa\ell)^{2}$ the temporal component of the Rindler metric). The expression for $d_{c}$ uses the diagonal/isotropic threshold described in \S~\ref{sec:stability}; for general $H_{*}$, the threshold may shift. With $T_{H}=\hbar\kappa/(2\pi)$~\cite{Hawking},
+作为具体实现, 我们把框架应用于 Rindler 度规
+\begin{equation}
+ds^{2}=-(\kappa\ell)^{2}d\tau^{2}+d\ell^{2},\label{eq:rindler_metric}
+\end{equation}
+其中 $\kappa$ 为表面引力, $\ell$ 为距视界的固有距离。Rindler 表达式适用于非极端局部视界($\kappa>0$)与视界外区($\ell>0$)。式~\eqref{eq:dc} 给出 $d_{c}=\alpha/(\kappa\ell)$(即 $\alpha/\sqrt{|g_{00}|}$, 其中 $g_{00}=-(\kappa\ell)^{2}$ 为 Rindler 度规的时间分量)。$d_{c}$ 的表达式使用 \S~\ref{sec:stability} 中描述的对角/各向同性阈值; 对一般的 $H_{*}$, 阈值可能偏移。以 $T_{H}=\hbar\kappa/(2\pi)$~\cite{Hawking} 为外部输入, 有
 \begin{equation}
 d_{c}\cdot T_{H} = \frac{\alpha}{\kappa\ell}\cdot\frac{\hbar\kappa}{2\pi} = \frac{\alpha\hbar}{2\pi\ell},\label{eq:nearhorizon}
 \end{equation}
-exhibiting exact $\kappa$-cancellation. Hence the internal algebraic identity $d_{c}\cdot T_{H}=\alpha\hbar/(2\pi\ell)$ matches the Tolman temperature~\cite{Tolman} $T_{\mathrm{tol}}=\alpha\hbar/(2\pi\ell)$, depending only on the proper distance $\ell$ from the horizon, not on the surface gravity $\kappa$. This is an internal algebraic identity; it does not independently derive the Tolman temperature, but establishes a bridge between the framework's scale $d_{c}$ and the known thermal scale of the horizon.
+显示 $\kappa$ 的精确相消。故内部代数恒等式 $d_{c}\cdot T_{H}=\alpha\hbar/(2\pi\ell)$ 与 Tolman 温度~\cite{Tolman} $T_{\mathrm{tol}}=\alpha\hbar/(2\pi\ell)$ 相符, 仅依赖于距视界的固有距离 $\ell$, 而与表面引力 $\kappa$ 无关。这是一项内部代数恒等式; 它本身并不独立地推导出 Tolman 温度, 而是在框架的尺度 $d_{c}$ 与视界的已知热尺度之间建立了一座桥梁。
 
-\subsection*{Clausius relation (from OU dynamics) within Class~A}
+\subsection*{A 类内(由 OU 动力学推导的) Clausius 关系}
 
-In this subsection we work within the Sekimoto--Seifert stochastic thermodynamics framework~\cite{Sekimoto}; within that external framework, the key additional external input is the identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, which is assumed here and not derived from the present framework.
+本小节中我们在 Sekimoto--Seifert 随机热力学框架~\cite{Sekimoto} 内工作; 在该外部框架中, 关键的附加外部输入是等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, 此处为假设而非由本框架导出。
 
-Within Class~A (fixed inertial observer), and at a fixed $G$-eigenvector base point on $\{K=1\}$, the normal $K$-dynamics near $K=1$ reduces to a one-dimensional Ornstein--Uhlenbeck process. Its stationary variance is
+在 A 类中(固定惯性观察者), 且在 $\{K=1\}$ 上一固定 $G$-特征向量基点处, $K=1$ 附近的法向 $K$ 动力学约化为一维 Ornstein--Uhlenbeck 过程。其稳态方差为
 \begin{equation}
 \mathrm{Var}(K)\approx\frac{\sigma^{2}}{2d_{c}},\label{eq:var}
 \end{equation}
-where the base-point factor cancels between the effective restoring rate and the induced $K$-space noise amplitude.
-With this stationary variance, the FDT form $\sigma_{K}^{2}=2\kappa_{K}T_{\mathrm{eff}}$ defines an effective temperature
+其中基点因子在有效恢复速率与诱导 $K$ 空间噪声幅度之间相消。
+该稳态方差下, FDT 形式 $\sigma_{K}^{2}=2\kappa_{K}T_{\mathrm{eff}}$ 定义有效温度
 \[
 T_{\mathrm{eff}}=\frac{\sigma^{2}}{2d_{c}},
 \]
-consistent with Law~II and Theorem~\ref{thm:restoring}. This is, at this stage, a formal effective-temperature definition: its identification with a physical horizon temperature requires the external input $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ introduced above. The Fokker--Planck equation then yields a Boltzmann stationary distribution $\rho\propto\exp(-V/T_{\mathrm{eff}})$; assuming the external identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, the Clausius relation $\delta Q=T_{\mathrm{tol}}\,dS$ follows from local detailed balance for the OU process, with
+与律 II 及定理~\ref{thm:restoring} 一致。在此阶段这是一个形式上的有效温度定义: 它与视界物理温度的等同需要上述外部输入 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$。Fokker--Planck 方程随即给出 Boltzmann 稳态分布 $\rho\propto\exp(-V/T_{\mathrm{eff}})$; 假定外部等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, 由 OU 过程的局部细致平衡, 得到 Clausius 关系 $\delta Q=T_{\mathrm{tol}}\,dS$, 其中
 \[
 \delta Q := dV + \tfrac{1}{2}\sigma_{K}^{2}\,dt,\qquad \sigma_{K}=2\sigma\|Gx_{*}\|.
 \]
-(The heat definition follows the Sekimoto--Seifert stochastic thermodynamics convention~\cite{Sekimoto}.) A derivation of the identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ from a more fundamental principle (e.g.\ a KMS condition~\cite{Haag,Connes1994}) remains an open problem.
+(热的定义遵循 Sekimoto--Seifert 随机热力学约定~\cite{Sekimoto}。) 关于等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 的推导, 是否可以从更基本的原理(例如 KMS 条件~\cite{Haag,Connes1994})出发, 仍是一个未解问题。
 
 \medskip\noindent
-The following statement is conditional on the external identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$; it is not an autonomous derivation of the Clausius relation, but the equivalence theorem establishing what $\sigma^{2}$ must be when that identification is given.
+以下命题以外部等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 为条件; 它不是 Clausius 关系的自主推导, 而是一项等价定理: 在该等同被给定的前提下, 它确立 $\sigma^{2}$ 必须取何形式。
 
-\begin{proposition}[Local Clausius Equivalence]\label{prop:clausius}
-Assume (i) the OU approximation near $K=1$, (ii) the Sekimoto--Seifert heat convention, (iii) local detailed balance for the OU process, and (iv) the \emph{external} identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, together with the Tolman identity $T_{\mathrm{tol}}=d_{c}T_{H}$ (precise forms in the Remark below). Then the Clausius relation $\delta Q=T_{\mathrm{tol}}\,dS$ is equivalent to
+\begin{proposition}[局部 Clausius 等价]\label{prop:clausius}
+设 (i) $K=1$ 附近的 OU 近似, (ii) Sekimoto--Seifert 热约定, (iii) OU 过程的局部细致平衡, (iv) 外部等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, 连同 Tolman 恒等式 $T_{\mathrm{tol}}=d_{c}T_{H}$ (精确形式见下方 Remark)。则 Clausius 关系 $\delta Q=T_{\mathrm{tol}}\,dS$ 等价于
 \begin{equation}
 \sigma^{2} = 2\,d_{c}\cdot T_{\mathrm{tol}} = 2\,d_{c}^{2}\cdot T_{H}.\label{eq:noise}
 \end{equation}
 \end{proposition}
 
 \begin{proof}
-$(\Rightarrow)$: Setting $T_{\mathrm{eff}}=T_{\mathrm{tol}}=d_{c}T_{H}$ gives $\sigma^{2}/(2d_{c})=d_{c}\cdot T_{H}$, hence $\sigma^{2}=2d_{c}^{2}\cdot T_{H}$.
-$(\Leftarrow)$: $\sigma^{2}=2d_{c}\cdot T_{\mathrm{tol}}$ gives $T_{\mathrm{eff}}=\sigma^{2}/(2d_{c})=T_{\mathrm{tol}}$, hence Clausius holds.\qed
+$(\Rightarrow)$: 令 $T_{\mathrm{eff}}=T_{\mathrm{tol}}=d_{c}T_{H}$ 得 $\sigma^{2}/(2d_{c})=d_{c}\cdot T_{H}$, 故 $\sigma^{2}=2d_{c}^{2}\cdot T_{H}$。
+$(\Leftarrow)$: $\sigma^{2}=2d_{c}\cdot T_{\mathrm{tol}}$ 给 $T_{\mathrm{eff}}=\sigma^{2}/(2d_{c})=T_{\mathrm{tol}}$, 故 Clausius 成立。\qed
 \end{proof}
 
-\begin{remark}[Assumptions of Proposition~\ref{prop:clausius}]
-The assumptions entering Proposition~\ref{prop:clausius} are:
-(i)~the OU approximation near $K=1$ ($|K-1|\ll 1$, equivalently $T_{\mathrm{eff}}\ll 1$);
-(ii)~the Sekimoto--Seifert heat convention $\delta Q := dV + \tfrac{1}{2}\sigma_{K}^{2}\,dt$;
-(iii)~local detailed balance for the OU process;
-(iv)~the external identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$;
-together with the algebraic Tolman identity $T_{\mathrm{tol}}=d_{c}T_{H}$ ($\kappa$-factors cancel in eq.~\eqref{eq:nearhorizon}).
+\begin{remark}[命题~\ref{prop:clausius} 的假设]
+进入命题~\ref{prop:clausius} 的假设为:
+(i) $K=1$ 附近的 OU 近似($|K-1|\ll 1$, 等价于 $T_{\mathrm{eff}}\ll 1$);
+(ii) Sekimoto--Seifert 的热约定 $\delta Q := dV + \tfrac{1}{2}\sigma_{K}^{2}\,dt$;
+(iii) OU 过程的局部细致平衡;
+(iv) 外部等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$;
+连同代数的 Tolman 恒等式 $T_{\mathrm{tol}}=d_{c}T_{H}$($\kappa$ 因子在式~\eqref{eq:nearhorizon} 中相消)。
 \end{remark}
 
-\subsection*{Position-dependent temperature and It\^{o} corrections}
+\begin{remark}[稳定性约束]
+对宏观黑洞, $T_{\mathrm{tol}}\ll d_{c}$; 设 $D=T_{\mathrm{tol}}I$ 将使 $K=1$ 不稳定。稳定性要求 $D\ge d_{c}I$; 临界阻尼 $D=d_{c}I$ 是唯一的边际稳定选择。
+\end{remark}
 
-Applying It\^{o}'s formula to $K=x^{\top}Gx$ gives an additional drift $\sigma^{2}\,\mathrm{tr}(G)\,dt$. This shifts the mean of $K$ but not its variance: at any $G$-eigenvector base point, the FDT ratio $\sigma_{K}^{2}/(2\kappa_{K})$ reduces to $\sigma^{2}/(2d_{c})$ regardless of $x_{*}^{\top}G^{2}x_{*}$. Hence~\eqref{eq:var} and $T_{\mathrm{eff}}=\sigma^{2}/(2d_{c})$ hold for any Lorentzian $G$.
+\subsection*{位置依赖温度与伊藤修正}
 
-The $K$-space noise amplitude $\sigma_{K}(x)=2\sigma\|Gx\|$ varies along $\{K=1\}$, yielding a position-dependent temperature (eq.~\eqref{eq:Tloc}):
+方程~\eqref{eq:noise} 在局部成立: $\sigma$ 与 $T_{\mathrm{tol}}$ 都是 $\ell$ 的函数。沿世界线, 基点 $x_{*}(t)$ 可以移动; $K$ 空间噪声幅度 $\sigma_K(x)=2\sigma\|Gx\|$ 沿 $\{K=1\}$ 变化, 给出位置依赖温度(式~\eqref{eq:Tloc}):
 \begin{equation}
 T_{\mathrm{loc}}(x) := \frac{\sigma_{K}(x)^{2}}{2\kappa_{K}(x_{*})} = \frac{\sigma^{2}\,x^{\top}G^{2}x}{2d_{c}\,x_{*}^{\top}G^{2}x_{*}}.\label{eq:Tloc}
 \end{equation}
-This position dependence should not be read as a Class~B heat fluctuation: variation along the boost orbit changes the observer/position assignment, while Class~B remains thermodynamically inert and carries no heat.
+反映了 $K$ 空间噪声按 $x^{\top}G^{2}x$ 因子重标, 并通过基点归一化 $x_{*}^{\top}G^{2}x_{*}$ 消去基点依赖。
 
-\begin{remark}[Stability constraint]
-For macroscopic black holes, $T_{\mathrm{tol}}\ll d_{c}$; setting $D=T_{\mathrm{tol}}I$ renders $K=1$ unstable. Stability requires $D\ge d_{c}I$; critical damping $D=d_{c}I$ is the unique marginally stable choice.
-\end{remark}
+该位置依赖不应读作 B 类的热涨落: 沿 boost 轨道的变化改变观察者/位置指派, 而 B 类仍热力学惰性, 不携带热。
 
-Since every local Rindler horizon admits the standard Rindler approximation~\cite{Jacobson} with $g=\mathrm{diag}(-(\kappa\ell)^{2},1)$ (where $\kappa$ and $\ell$ vary by location), Proposition~\ref{prop:clausius} applies to each such horizon, yielding the Clausius relation locally. Together with Jacobson's argument~\cite{Jacobson}, this supplies the local Clausius input needed for the Einstein equations. Once the external identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ has been given, the remaining external input required to invoke Jacobson's argument is $S\propto A$.
+伊藤修正: 对 $K=x^{\top}Gx$ 应用伊藤公式, 产生附加漂移项 $\sigma^{2}\,\mathrm{tr}(G)\,dt$; 这一项改变 $K$ 的平均值但不改变其方差。在任何 $G$-特征向量基点处, FDT 比 $\sigma_{K}^{2}/(2\kappa_{K})$ 归结为 $\sigma^{2}/(2d_{c})$, 独立于 $x_{*}^{\top}G^{2}x_{*}$。因此式~\eqref{eq:var} 与 $T_{\mathrm{eff}}=\sigma^{2}/(2d_{c})$ 对任意 Lorentz $G$ 成立。
 
 \medskip
 \noindent
-\textbf{Summary of logical status.}
-Route~A is a thermodynamic bridge rather than an autonomous derivation of the Einstein equations. Its internal inputs are the Lorentzian structure supplied by Law~I, the isotropic stability scale $d_{c}$, and the OU dynamics of Class~A near $K=1$. To connect these ingredients to Jacobson's argument, two external inputs are required: (i) the identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, and (ii) the entropy--area law $S\propto A$. With these added, the framework supplies a local Clausius relation on each local Rindler horizon, thereby providing the local Clausius input used in Jacobson's route to $G_{\mu\nu}=8\pi T_{\mu\nu}$.
+\textbf{逻辑状态总结.}
+途径 A 是一座热力学桥梁, 而非 Einstein 方程的自主推导. 其内部输入是律 I 给出的 Lorentz 结构、各向同性稳定性尺度 $d_{c}$、以及 $K=1$ 附近的 A 类 OU 动力学. 要将这些要素与 Jacobson 论证连接, 需要两项外部输入: (i) 等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, 以及 (ii) 熵-面积律 $S\propto A$. 加入这两项外部输入后, 本框架在每个局部 Rindler 视界上供给一个局部 Clausius 关系, 由此提供 Jacobson 路径中所用的局部 Clausius 输入, 通向 $G_{\mu\nu}=8\pi T_{\mu\nu}$.
 
-%===================================================================
-\section{Eigenvalue self-consistency (Route~B: direct algebraic)}\label{sec:field}
+\section{特征值自洽(途径 B:直接代数)}\label{sec:field}
 
-The eigenvalue self-consistency condition $\sigma_2^2\,\Box\ln\sigma_i=1$ is a conjectured field-level uplift of $K{=}1$, introduced as a conjecture rather than derived from the framework's axioms; Theorem~\ref{thm:field} establishes a strict algebraic equivalence to $R_{\mu\nu}=0$ in the spherical vacuum sector, with no thermodynamic input.
+特征值自洽条件 $\sigma_2^2\,\Box\ln\sigma_i=1$ 是 $K=1$ 的猜想性场级提升, 作为猜想提出, 并非从框架公理推出; 定理~\ref{thm:field} 建立它与 $R_{\mu\nu}=0$ 在球对称真空部分的严格代数等价性, 不引入任何热力学输入。
 
-All statements below are local on intervals where $f>0$, so that $\sigma_1=r\sqrt{f}$ and $\ln\sigma_1$ are real. Consider the static spherically symmetric metric
+本节以下陈述均是局部的, 限于 $f>0$ 的区间, 使得 $\sigma_1=r\sqrt{f}$ 与 $\ln\sigma_1$ 为实数。考虑静态球对称度规
 \begin{equation}\label{eq:metric}
-  ds^2=-f(r)\,dt^2+f(r)^{-1}dr^2+r^2\,d\Omega^2,
+ds^2=-f(r)\,dt^2+f(r)^{-1}dr^2+r^2\,d\Omega^2,
 \end{equation}
-with symplectic eigenvalues $\sigma_1:=r\sqrt{f}$, $\sigma_2:=r$
-(on each local Rindler wedge, $d_{c}\sigma_1=\alpha$, connecting $\sigma_1$ to the $2\times 2$ symplectic eigenvalue of~\S\ref{sec:symplectic}),
-and d'Alembertian
-$\Box\phi=r^{-2}\partial_r(r^2f\,\partial_r\phi)$ (the radial d'Alembertian, exact for $r$-dependent $\phi$; primes denote $d/dr$).
+其中 $d\Omega^{2}=d\theta^{2}+\sin^{2}\theta\,d\varphi^{2}$。定义辛特征值 $\sigma_{1}:=r\sqrt{f}$, $\sigma_{2}:=r$。
 
-\begin{definition}[Eigenvalue self-consistency functionals]\label{def:esc}
+\begin{definition}[特征值自洽]\label{def:esc}
+对 $i=1,2$, 定义
 \begin{align}
-  K_1 &:= \sigma_2^2\,\Box\ln\sigma_1,\label{eq:K1def}\\
-  K_2 &:= \sigma_2^2\,\Box\ln\sigma_2.\label{eq:K2def}
+K_{1} &:= \sigma_{2}^{2}\cdot\Box\ln\sigma_{1},\label{eq:K1def}\\
+K_{2} &:= \sigma_{2}^{2}\cdot\Box\ln\sigma_{2}.\label{eq:K2def}
 \end{align}
 \end{definition}
 
+显式地,
+\begin{align}
+K_{1} &= f+2rf'+\tfrac{r^{2}}{2}f'',\label{eq:K1exp}\\
+K_{2} &= f+rf'.\label{eq:K2exp}
+\end{align}
+
 \noindent
-The eigenvalue self-consistency condition $\sigma_2^2\,\Box\ln\sigma=1$, imposed on each eigenvalue ($K_1=1$, eq.~\eqref{eq:K1def}, and $K_2=1$, eq.~\eqref{eq:K2def}), states that the d'Alembertian of each log-eigenvalue equals the angular curvature cost $1/\sigma_2^2$. This is a conjectured field-level uplift of the point-level balance $K{=}1$: each eigenvalue must propagate at the rate set by the angular sector, in the same way that $K=1$ requires the quadratic cost form $K$ to reproduce its own normalisation.
+特征值自洽条件 $\sigma_2^2\,\Box\ln\sigma=1$, 施于每个特征值($K_1=1$, 式~\eqref{eq:K1def}, 与 $K_2=1$, 式~\eqref{eq:K2def}), 表明每个对数特征值的 d'Alembert 量等于角向曲率代价 $1/\sigma_2^2$。这是点级均衡 $K{=}1$ 的猜想性场级提升: 每个特征值必须以角向部分设定的速率传播, 正如 $K=1$ 要求二次代价形式 $K$ 再现其自身归一化。
 
-Expanding (direct computation using $\Box\ln\sigma_1=\Box\ln r+\tfrac{1}{2}\Box\ln f$):
-\begin{equation}\label{eq:K1exp}
-  K_1 = f+2rf'+\tfrac{r^2}{2}f'',
-\end{equation}
-\begin{equation}\label{eq:K2exp}
-  K_2 = rf'+f = \frac{d(rf)}{dr}.
-\end{equation}
-(For $K_2$: $\Box\ln r = (1/r^2)d/dr[r^2f/r]=(rf'+f)/r^2$,
-so $r^2\Box\ln r = rf'+f$.)
-
-\begin{lemma}[Scalar Curvature Formula]\label{lem:R}
-$R=-2\,\Box\ln\sigma_1+2/r^2$ for~\eqref{eq:metric}.
+\begin{lemma}[Ricci 分量公式]\label{lem:R}
+对上述度规, 有
+\[
+R_{tt}=\tfrac{f}{r^{2}}(K_{1}-K_{2}),\qquad R_{\theta\theta}=1-K_{2}.
+\]
 \end{lemma}
-\begin{proof}
-$R=-f''-4f'/r+2(1{-}f)/r^2$.
-$\Box\ln\sigma_1=f/r^2+2f'/r+f''/2$ (from $K_1=r^2\Box\ln\sigma_1$ and eq.~\eqref{eq:K1exp}).
-Then $-2\Box\ln\sigma_1+2/r^2=R$.\qed
-\end{proof}
-
-\noindent
-An immediate computation gives $R_{tt}=\tfrac{f}{r^2}(K_1-K_2)$, so $K_1=K_2$ implies $R_{tt}=0$. Substituting $K_1=r^2\Box\ln\sigma_1$ into Lemma~\ref{lem:R} gives $R=2(1-K_1)/r^2$; hence $K_1{=}1\Leftrightarrow R{=}0$ and
-$K_2{=}1\Leftrightarrow R_{\theta\theta}{=}0$
-(since $R_{\theta\theta}=1{-}f{-}rf'=1{-}K_2$).
-Equivalently, $K_2{=}1$ states that the Misner--Sharp mass
-$m=\frac{r}{2}(1{-}f)$ is constant: $dm/dr=(1{-}K_2)/2=0$.
 
 \medskip\noindent
-The following is an equivalence theorem in the spherical vacuum sector, not an autonomous derivation: it asserts that the conjectured eigenvalue condition, introduced as a field-level assumption rather than derived from the framework's axioms, is algebraically equivalent to $R_{\mu\nu}=0$.
+以下命题是球对称真空部分的一个等价定理, 而非自主推导: 它断言所猜想的特征值条件, 作为场级假设引入而非由框架公理推出, 与 $R_{\mu\nu}=0$ 在代数上等价。
 
-\begin{theorem}[Field-Level Equivalence]\label{thm:field}
-For~\eqref{eq:metric} with $f\in C^{2}(I)$ and $f>0$ on an interval $I\subset(0,\infty)$ (so that $\sigma_{1}=r\sqrt{f}$ and $\ln\sigma_{1}$ are real), and $K_1,K_2$ as in Definition~\ref{def:esc}:
-\begin{equation}\label{eq:equiv}
-  \sigma_2^2\,\Box\ln\sigma_i=1\;\;\text{for }i=1,2
-  \quad\Longleftrightarrow\quad R_{\mu\nu}=0,
+\begin{theorem}[场级等价性]\label{thm:field}
+对于度规~\eqref{eq:metric}, 设 $f\in C^{2}(I)$ 且 $f>0$ 于某区间 $I\subset(0,\infty)$(使得 $\sigma_{1}=r\sqrt{f}$ 与 $\ln\sigma_{1}$ 为实数), 则下列等价:
+\begin{equation}
+K_{1}=K_{2}=1 \Leftrightarrow R_{\mu\nu}=0.\label{eq:equiv}
 \end{equation}
-where $R_{\mu\nu}=0$ are the vacuum Einstein field equations~\cite{Einstein1915,Hilbert1915}.
 \end{theorem}
 
 \begin{proof}
 $(\Rightarrow)$\;
-$K_2{=}1$ gives $R_{\theta\theta}{=}0$.
-$K_1{-}K_2=rf'+\frac{r^2}{2}f''=0$ (from eqs.~\eqref{eq:K1exp}--\eqref{eq:K2exp}) gives $f''=-2f'/r$; hence $R_{tt}{=}0$ (by the observation $R_{tt}=\tfrac{f}{r^2}(K_1-K_2)$ above). (For this metric $R_{tt}=-f^{2}R_{rr}$~\cite{Wald1984}, so $R_{tt}=0\Leftrightarrow R_{rr}=0$.)
+$K_2{=}1$ 给 $R_{\theta\theta}{=}0$。
+$K_1{-}K_2=rf'+\frac{r^2}{2}f''=0$(由式~\eqref{eq:K1exp}--\eqref{eq:K2exp})给 $f''=-2f'/r$; 故 $R_{tt}{=}0$(由上述观察 $R_{tt}=\tfrac{f}{r^2}(K_1-K_2)$)。(对此度规 $R_{tt}=-f^{2}R_{rr}$~\cite{Wald1984}, 故 $R_{tt}=0\Leftrightarrow R_{rr}=0$。)
 
 $(\Leftarrow)$\;
-$R_{\theta\theta}{=}0$ gives $K_2{=}1$.
-$R_{tt}{=}0$ gives $f''=-2f'/r$; substituting:
-$K_1=f+2rf'-rf'=f+rf'=K_2=1$.\qed
+$R_{\theta\theta}{=}0$ 给 $K_2{=}1$。
+$R_{tt}{=}0$ 给 $f''=-2f'/r$;代入得:
+$K_1=f+2rf'-rf'=f+rf'=K_2=1$。\qed
 \end{proof}
 
 \begin{corollary}
-The condition $K_1{=}1$ is the second-order linear ODE
-$f+2rf'+\frac{r^2}{2}f''=1$, equivalent to $R{=}0$, with general solution
-$f=1-C_1/r-C_2/r^2$; $K_2{=}1$ forces $C_2{=}0$,
-recovering the Schwarzschild solution uniquely, in agreement with Birkhoff's theorem.
-In the weak field ($f=1+\varepsilon\varphi$),
-$K_2{=}1$ gives $\varphi=C/r$ (Newton) in one step;
-$K_1{=}1$ is automatically satisfied at linear order,
-so its independent content is purely nonlinear (strong-field).
+条件 $K_{1}{=}1$ 是二阶线性 ODE
+\[
+f+2rf'+\tfrac{r^{2}}{2}f''=1,
+\]
+等价于 $R{=}0$, 其通解为 $f=1-C_{1}/r-C_{2}/r^{2}$; 进一步施加 $K_{2}{=}1$ 强制 $C_{2}{=}0$, 从而唯一地复现 Schwarzschild 解, 与 Birkhoff 定理一致。在弱场($f=1+\varepsilon\varphi$)下, $K_{2}{=}1$ 一步给出 $\varphi=C/r$(牛顿); $K_{1}{=}1$ 在线性阶自动满足, 故其独立内容纯为非线性(强场)。
 \end{corollary}
 
-\begin{lemma}[Asymmetric rigidity]\label{lem:rigidity}
-For metric~\eqref{eq:metric} with $f\in C^{2}(I)$ on an interval $I\subset(0,\infty)$:
+\begin{lemma}[非对称刚性]\label{lem:rigidity}
+对度规~\eqref{eq:metric}, 设 $f\in C^{2}(I)$ 于区间 $I\subset(0,\infty)$:
 \begin{enumerate}
-\item[\textup{(a)}] $K_{2}\equiv 1$ on $I$ if and only if $f=1+C/r$ for some constant $C$, in which case $K_{1}\equiv 1$ on $I$ as well.
-\item[\textup{(b)}] $K_{1}\equiv 1$ on $I$ if and only if $f=1+A/r+B/r^{2}$ for some constants $A,B$. Substituting into the definition of $K_{2}$ gives
+\item[\textup{(a)}] $K_{2}\equiv 1$ 在 $I$ 上当且仅当 $f=1+C/r$(对某常数 $C$), 此时 $K_{1}\equiv 1$ 也在 $I$ 上自动成立。
+\item[\textup{(b)}] $K_{1}\equiv 1$ 在 $I$ 上当且仅当 $f=1+A/r+B/r^{2}$(对某常数 $A,B$)。代入 $K_{2}$ 的定义得
 \[
 K_{2}=1-B/r^{2},
 \]
-so the converse of (a) fails when $B\neq 0$: $K_{1}\equiv 1$ does not imply $K_{2}\equiv 1$.
+故 (a) 的逆不成立: 当 $B\neq 0$, $K_{1}\equiv 1$ 不蕴含 $K_{2}\equiv 1$。
 \end{enumerate}
-Thus $K_{2}\equiv 1$ is the strictly stronger condition; the two-parameter family $f=1+A/r+B/r^{2}$ satisfies $K_{1}\equiv 1$ but generically violates $K_{2}\equiv 1$. Reissner--Nordstr\"{o}m is one such non-vacuum example.
+因此 $K_{2}\equiv 1$ 是严格更强的条件; 双参数族 $f=1+A/r+B/r^{2}$ 满足 $K_{1}\equiv 1$ 但一般违反 $K_{2}\equiv 1$。Reissner--Nordstr\"{o}m 即此类非真空例子之一。
 \end{lemma}
 
 \begin{proof}
-$(a)$\;$K_{2}=f+rf'=d(rf)/dr$, so $K_{2}\equiv 1$ is the first-order ODE $d(rf)/dr=1$ with general solution $rf=r+C$, i.e.\ $f=1+C/r$. Direct substitution then gives $K_{1}=(1+C/r)+2r(-C/r^{2})+(r^{2}/2)(2C/r^{3})=1+C/r-2C/r+C/r=1$.\;
-$(b)$\;$K_{1}\equiv 1$ is the second-order linear ODE $f+2rf'+(r^{2}/2)f''=1$, which is the Euler-type equation having Schwarzschild--Reissner-Nordstr\"{o}m form general solution $f=1+A/r+B/r^{2}$. Substituting into $K_{2}=f+rf'$ gives $K_{2}=(1+A/r+B/r^{2})+r(-A/r^{2}-2B/r^{3})=1-B/r^{2}$. Hence $K_{2}\equiv 1$ requires $B=0$.\qed
+$(a)$\;$K_{2}=f+rf'=d(rf)/dr$, 故 $K_{2}\equiv 1$ 即一阶 ODE $d(rf)/dr=1$, 通解 $rf=r+C$, 即 $f=1+C/r$。直接代入得 $K_{1}=(1+C/r)+2r(-C/r^{2})+(r^{2}/2)(2C/r^{3})=1+C/r-2C/r+C/r=1$。\;
+$(b)$\;$K_{1}\equiv 1$ 即二阶线性 ODE $f+2rf'+(r^{2}/2)f''=1$, 这是 Euler 型方程, 具 Schwarzschild--Reissner-Nordstr\"{o}m 形式通解 $f=1+A/r+B/r^{2}$。代入 $K_{2}=f+rf'$ 得 $K_{2}=(1+A/r+B/r^{2})+r(-A/r^{2}-2B/r^{3})=1-B/r^{2}$。故 $K_{2}\equiv 1$ 要求 $B=0$。\qed
 \end{proof}
 
-\begin{remark}[Asymmetric roles of $K_1$ and $K_2$]
-Lemma~\ref{lem:rigidity} formalises the asymmetry: $K_{2}\equiv 1$ is rigid (forces $K_{1}\equiv 1$ via $f=1+C/r$), whereas $K_{1}\equiv 1$ is flexible (admits a one-parameter family of $K_{2}$-violating solutions). This asymmetry underlies the testability discussion of Open Problem~3.
+\begin{remark}[$K_{1}$ 与 $K_{2}$ 的不对称作用]
+引理~\ref{lem:rigidity} 形式化了不对称: $K_{2}\equiv 1$ 是刚性的(经 $f=1+C/r$ 强制 $K_{1}\equiv 1$), 而 $K_{1}\equiv 1$ 是柔性的(承认违反 $K_{2}$ 的单参数族解)。这种不对称是开放问题 3 中可检验性讨论的根据。
 \end{remark}
 
-\begin{remark}[Observational implications]
-Within the present spherical-vacuum analysis, any observational distinction between the eigenvalue principle and standard GR must therefore arise from strong-gravity data.
+\begin{remark}[观测含义]
+在本文球对称真空分析的范围内, 特征值原理与标准广义相对论的观测差异必然来自强引力数据。
 \end{remark}
 
-\begin{corollary}[$\Lambda$-extension of Theorem~\ref{thm:field}]\label{cor:SdS}
-For metric~\eqref{eq:metric} with $f\in C^{2}(I)$ and $f>0$ on $I\subset(0,\infty)$, and $K_{1},K_{2}$ as in Definition~\ref{def:esc}:
+\begin{corollary}[定理~\ref{thm:field} 的 $\Lambda$ 扩展]\label{cor:SdS}
+对度规~\eqref{eq:metric}, 设 $f\in C^{2}(I)$ 且 $f>0$ 于 $I\subset(0,\infty)$, $K_{1},K_{2}$ 依定义~\ref{def:esc}:
 \begin{equation}\label{eq:Lambda-equiv}
-K_{1}=1-2\Lambda r^{2}\;\;\text{and}\;\;K_{2}=1-\Lambda r^{2}
+K_{1}=1-2\Lambda r^{2}\;\;\text{且}\;\;K_{2}=1-\Lambda r^{2}
 \quad\Longleftrightarrow\quad R_{\mu\nu}=\Lambda g_{\mu\nu}.
 \end{equation}
-The general solution is the Schwarzschild--de~Sitter family $f=1-2M/r-\Lambda r^{2}/3$.
+通解为 Schwarzschild--de~Sitter 族 $f=1-2M/r-\Lambda r^{2}/3$。
 \end{corollary}
 
 \begin{proof}
 $(\Rightarrow)$\;
-$K_{2}=1-\Lambda r^{2}$ rewrites as $f+rf'=1-\Lambda r^{2}$, i.e.\ $d(rf)/dr=1-\Lambda r^{2}$, with general solution $rf=r-\Lambda r^{3}/3+\text{const}$, so $f=1-2M/r-\Lambda r^{2}/3$ for some constant $M$. Direct substitution then gives $K_{1}=1-2\Lambda r^{2}$ automatically. For this $f$, $R_{\theta\theta}=1-K_{2}=\Lambda r^{2}=\Lambda g_{\theta\theta}$ and $R_{tt}=(f/r^{2})(K_{1}-K_{2})=-\Lambda f=\Lambda g_{tt}$. For this metric $R_{tt}=-f^{2}R_{rr}$~\cite{Wald1984}, so $R_{tt}=\Lambda g_{tt}$ is equivalent to $R_{rr}=\Lambda g_{rr}$; the angular components are fixed by $R_{\theta\theta}=\Lambda g_{\theta\theta}$ and spherical symmetry ($R_{\phi\phi}=\sin^{2}\!\theta\,R_{\theta\theta}=\Lambda g_{\phi\phi}$), closing all four nontrivial Ricci components.\;
+$K_{2}=1-\Lambda r^{2}$ 即 $f+rf'=1-\Lambda r^{2}$, 即 $d(rf)/dr=1-\Lambda r^{2}$, 通解 $rf=r-\Lambda r^{3}/3+\text{常数}$, 故 $f=1-2M/r-\Lambda r^{2}/3$ (对某常数 $M$)。直接代入得 $K_{1}=1-2\Lambda r^{2}$ 自动成立。对此 $f$, $R_{\theta\theta}=1-K_{2}=\Lambda r^{2}=\Lambda g_{\theta\theta}$ 且 $R_{tt}=(f/r^{2})(K_{1}-K_{2})=-\Lambda f=\Lambda g_{tt}$。对此规形 $R_{tt}=-f^{2}R_{rr}$~\cite{Wald1984}, 故 $R_{tt}=\Lambda g_{tt}$ 等价于 $R_{rr}=\Lambda g_{rr}$; 角向分量由 $R_{\theta\theta}=\Lambda g_{\theta\theta}$ 与球对称性 ($R_{\phi\phi}=\sin^{2}\!\theta\,R_{\theta\theta}=\Lambda g_{\phi\phi}$) 固定, 从而四个非平凡 Ricci 分量全部闭合。\;
 $(\Leftarrow)$\;
-$R_{\theta\theta}=\Lambda g_{\theta\theta}=\Lambda r^{2}$ gives $K_{2}=1-\Lambda r^{2}$. $R_{tt}=\Lambda g_{tt}=-\Lambda f$ combined with $R_{tt}=(f/r^{2})(K_{1}-K_{2})$ gives $K_{1}-K_{2}=-\Lambda r^{2}$, hence $K_{1}=1-2\Lambda r^{2}$.\qed
+$R_{\theta\theta}=\Lambda g_{\theta\theta}=\Lambda r^{2}$ 给出 $K_{2}=1-\Lambda r^{2}$。$R_{tt}=\Lambda g_{tt}=-\Lambda f$ 与 $R_{tt}=(f/r^{2})(K_{1}-K_{2})$ 结合给出 $K_{1}-K_{2}=-\Lambda r^{2}$, 故 $K_{1}=1-2\Lambda r^{2}$。\qed
 \end{proof}
 
-\begin{remark}[Matter and the role of $\Lambda$]
-From the Einstein $G_{tt}$ component,
-$\rho = (1{-}K_2)/(8\pi r^2) = (1-\sigma_2^2\,\Box\ln\sigma_2)/(8\pi\sigma_2^2)$:
-matter may be read as the angular eigenvalue's failure to self-consistently
-propagate, measured per unit area.
-This relation \emph{uses} the Einstein equations;
-it is a cost rewriting, not an independent derivation
-(in particular, $8\pi$ is inherited from GR).
-The value of $\Lambda$ is not predicted by the present framework.
+\begin{remark}[物质与 $\Lambda$ 的角色]
+对非真空球对称度规, 假设 $\rho$ 静态, 则 $K_{2}=1-8\pi r^{2}\rho$, 即 $\rho=(1-K_{2})/(8\pi r^{2})$: 物质可读作角向特征值自洽性的缺损, 按单位面积测度。此关系\emph{使用了}爱因斯坦方程, 是代价重写而非独立推导(因子 $8\pi$ 继承自 GR)。$\Lambda$ 的值不被本框架预言。
 \end{remark}
 
-\begin{remark}[General metrics and polarization]
-The extension to general metrics is not yet complete: the step connecting the eigenvalue condition to $R_{\mu\nu}v^\mu v^\nu=0$ on each null plane requires the Gauss--Codazzi relations for null hypersurfaces, and remains open.
-A possible generalisation would apply an analogue of $\sigma_2^2\Box\ln\sigma_i=1$ on each null direction.
-The \emph{polarization identity} guarantees that if
-$R_{\mu\nu}v^\mu v^\nu=0$ for every null~$v^\mu$ and $R=0$,
-then $R_{\mu\nu}=0$.
-(Proof: in an orthonormal frame, taking $v=e_0\pm e_k$ gives
-$R_{0k}=0$, $R_{00}+R_{kk}=0$; mixed spatial components vanish
-by comparing $v=(e_0\pm\frac{e_i+e_j}{\sqrt{2}})$ and $v=(e_0\pm\frac{e_i-e_j}{\sqrt{2}})$, giving $R_{ij}=0$ for $i\neq j$; the trace $R=0$ then
-forces $R_{00}=0$.)
+\begin{remark}[更一般度规]
+向一般度规的扩展尚未完成: 将特征值条件连接到每个零平面上的 $R_{\mu\nu}v^\mu v^\nu=0$ 需要零超曲面的 Gauss--Codazzi 关系, 留作未解问题。一种可能的推广是在每个零方向上应用 $\sigma_2^2\Box\ln\sigma_i=1$ 的类似物。\emph{极化恒等式}保证若 $R_{\mu\nu}v^\mu v^\nu=0$ 对每个零向量 $v^\mu$ 都成立且 $R=0$, 则 $R_{\mu\nu}=0$。
 \end{remark}
 
+表~\ref{tab:corr} 汇总本节所确立的点-场对应。
 
-
-Table~\ref{tab:corr} summarises the point-field correspondence established in this section.
-
-\begin{table}[h]
+\begin{table}[ht]
 \centering
 \begin{tabular}{@{}lll@{}}
 \toprule
-& \textbf{Point level (2D)} & \textbf{Field level (spherical 4D)} \\
+& \textbf{点级 (2D)} & \textbf{场级 (球对称 4D)} \\
 \midrule
-Principle & $K = x^{\top}G\,x = 1$
-  & $\sigma_2^2\,\Box\ln\sigma_i = 1\;\;\forall\,i$ \\[3pt]
-Balance & unit temporal cost ($K{=}1$) & $\Box\ln\sigma_i = 1/\sigma_2^2$ \\[3pt]
-Vacuum & $K{=}1$ & $K_1{=}K_2{=}1\;\Leftrightarrow\;R_{\mu\nu}{=}0$ \\[3pt]
-Response & $K \neq 1 \to \text{dynamical penalty } V>0$ & $K_2 \neq 1\;\to\;
-  \rho = (1{-}K_2)/(8\pi r^2)$ \\[3pt]
-Conditions & 1 (2D wedge) & 2 (4D: one per eigenvalue) \\
+原理 & $K=x^{\top}Gx=1$ & $\sigma_{2}^{2}\Box\ln\sigma_{i}=1\;\;\forall\,i$ \\[3pt]
+平衡 & 单位时间代价 ($K{=}1$) & $\Box\ln\sigma_{i}=1/\sigma_{2}^{2}$ \\[3pt]
+真空 & $K{=}1$ & $K_{1}{=}K_{2}{=}1\;\Leftrightarrow\;R_{\mu\nu}{=}0$ \\[3pt]
+响应 & $K\neq 1\to \text{动力学惩罚 } V>0$ & $K_{2}\neq 1\to \rho=(1{-}K_{2})/(8\pi r^{2})$ \\[3pt]
+条件数 & 1 (2D 楔) & 2 (4D: 每个特征值一个) \\
 \bottomrule
 \end{tabular}
-\caption{Point-level $K{=}1$ and field-level eigenvalue self-consistency.
-At each level, the number of conditions equals the number of
-independent eigenvalues. The response row is schematic: the point-level entry uses the internal dynamical penalty $V$, whereas the field-level density $\rho$ is a GR rewriting and inherits the factor $8\pi$.}
+\caption{点级 $K{=}1$ 与场级特征值自洽性的结构对应。在每级, 条件数与独立特征值数相等。响应行展示偏离结构: 点级偏离 $K{=}1$ 产生内部动力学惩罚 $V$, 场级偏离 $K_{2}{=}1$ 产生密度 $\rho$(GR 重写, 因子 $8\pi$ 自 GR 继承)。}
 \label{tab:corr}
 \end{table}
 
-%===================================================================
-\section{Domain of validity and self-consistency resolution scale}\label{sec:singularity}
+\section{理论适用域与自洽分辨率尺度}\label{sec:singularity}
 
-The following results concern the \emph{domain} of the framework rather than the physical existence of singularities: where $\sigma_1=0$, the $K{=}1$ locus is empty and the framework is undefined, not incorrect.
+本节使用代价符号约定 $G_{\mathrm{cost}}=\mathrm{diag}((\kappa\ell)^{2},-1)$, 以与公理 T 的正时间代价表述保持一致。
 
-\begin{proposition}[Positivity from Axiom~T]\label{prop:sigma1}
-Among the three axioms, only Axiom~T is used here; Axioms~R and~E are needed only in \S~\ref{sec:lawI} to establish $\mathrm{Sig}(G)=(1,1)$. In the $2\times 2$ wedge representation used here, Axiom~T implies $\sigma_1>0$ wherever $K{=}1$ holds.
+\begin{proposition}[由公理 T 得 $\sigma_{1}>0$]\label{prop:sigma1}
+公理 T 的正时间代价要求 $G_{\mathrm{cost}}(e_{t},e_{t})>0$, 即 $\sigma_{1}^{2}>0$; 在此处所采用的 $2\times 2$ 楔形表示中, 若将 $\sigma_{1}$ 取作正尺度因子(例如, 途径 B 中 $\sigma_{1}=r\sqrt{f}$ 于实分支), 则得 $\sigma_{1}>0$。Schwarzschild 内部, 包括奇点极限 $r\to 0$, 因此位于框架定义域之外: $\sigma_1=r\sqrt{f}$ 仅在实分支 $f>0$ 上定义, 故内区 $r<2M$(其中 $f<0$) 与极限 $r\to 0$ 都落在该定义域之外——框架在那里是\emph{未定义}, 而非错误。
+\end{proposition}
+
+\medskip\noindent
+以下命题是来自 OU 有效性区域的软自洽界, 而非硬量子重力截断。
+
+\begin{proposition}[自洽分辨率尺度]\label{prop:domain}
+在 Planck 单位($\hbar=\ell_P=1$)下, 在 Tolman 温度等同、OU 近似与 Schwarzschild 近视界归一化下, $K{=}1$ 框架的热涨落自洽性要求
+$\sigma_1>\sigma_{1,c}:=\hbar/(4\pi)=\ell_P/(4\pi)$.
 \end{proposition}
 
 \begin{proof}
-For the $(t,r)$ wedge (and by the same argument for any $2\times 2$ Lorentzian $G$), $G=\mathrm{diag}(\sigma_1^2,-1)$: Axiom~T gives $G_{00}=\sigma_1^2>0$; contrast: $g_{00}=-f<0$ for the spacetime metric; the sign convention here differs from \S\ref{sec:thermo} but gives the same $d_{c}$, since $\det G=-\sigma_1^2$ in both cases (only $|\det G|$ and the positive-cost temporal direction enter the argument). If $\sigma_1=0$ then $G_{00}=0$, violating Axiom~T; with $\sigma_1$ taken as the positive scale factor (e.g., $\sigma_1=r\sqrt{f}$ on the real branch in Route~B), this yields $\sigma_1>0$.\qed
+\textup{[外部等同: $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, 如 \S~\ref{sec:thermo}; 其余步骤均为内部推理。]}
+近视界处, $T_{\mathrm{eff}}=T_{\mathrm{tol}}=\hbar\kappa/(2\pi\sqrt{f})$(Tolman 红移因子; 参见~\eqref{eq:nearhorizon}, 取 $\alpha=1$)。以 $\sigma_1=r\sqrt{f}$, 近 Schwarzschild 视界处 $r\approx 2M$, $\kappa=1/(4M)$:
+\begin{equation}
+T_{\mathrm{eff}}\approx\frac{\hbar\cdot(1/(4M))}{2\pi\cdot\sigma_1/(2M)}=\frac{\hbar}{4\pi\sigma_1}.\label{eq:domain}
+\end{equation}
+等价地, 由于近 Schwarzschild 视界 $\ell\approx 2\sigma_1$, 这与式~\eqref{eq:nearhorizon} (取 $\alpha=1$) 给出的 $T_{\mathrm{tol}}=\hbar/(2\pi\ell)$ 一致。
+$\mathrm{Var}(K)\approx T_{\mathrm{eff}}$(由式~\eqref{eq:var} 与 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, 在 OU 近似下); 为使 $K{=}1$ 成为良定义的平衡, 要求 $\mathrm{Var}(K)<1$, 故 $\sigma_1>\hbar/(4\pi)$。此为自洽性界: OU 近似须有效, 即 $\mathrm{Var}(K)<1$。\qed
 \end{proof}
 
 \noindent
-A direct consequence: when $\sigma_1=0$, $K=-x_2^2\le 0$ and $K{=}1$ has no solutions. The Schwarzschild interior, including the singular limit $r\to 0$, therefore lies outside the domain of the framework: $\sigma_1=r\sqrt{f}$ is defined on the real branch $f>0$, so the interior $r<2M$ (where $f<0$) and the limit $r\to 0$ fall outside this domain --- the framework is undefined there, not incorrect.
+于 $\sigma_{1,c}$ 之下, $K$ 的热涨落变为 $O(1)$, $K{=}1$ 轨迹的经典描述消解为噪声; 这一界本身并不暗示时空的基本离散性。
 
 \medskip\noindent
-The following is a soft consistency bound from the OU validity regime, not a hard quantum-gravity cutoff.
-
-\begin{proposition}[Self-consistency resolution scale]\label{prop:domain}
-In Planck units ($\hbar=\ell_P=1$), under the Tolman-temperature identification, the OU approximation, and Schwarzschild near-horizon normalisation, thermal self-consistency of the $K{=}1$ framework requires $\sigma_1>\sigma_{1,c}:=\hbar/(4\pi)=\ell_P/(4\pi)$.
-\end{proposition}
-
-\begin{proof}
-\textup{[External identification: $T_{\mathrm{eff}}=T_{\mathrm{tol}}$,
-as in \S~\ref{sec:thermo}; all other steps are internal.]}
-Near the horizon, $T_{\mathrm{eff}}=T_{\mathrm{tol}}=\hbar\kappa/(2\pi\sqrt{f})$
-(Tolman redshift factor; cf.~\eqref{eq:nearhorizon} with $\alpha=1$). With $\sigma_1=r\sqrt{f}$ and $r\approx 2M$, $\kappa=1/(4M)$ near the Schwarzschild horizon:
-\begin{equation*}
-T_{\mathrm{eff}}\approx\frac{\hbar\cdot(1/(4M))}{2\pi\cdot\sigma_1/(2M)}=\frac{\hbar}{4\pi\sigma_1}.
-\end{equation*}
-Equivalently, since $\ell\approx 2\sigma_1$ near the Schwarzschild horizon, this agrees with $T_{\mathrm{tol}}=\hbar/(2\pi\ell)$ from~\eqref{eq:nearhorizon} (with $\alpha=1$).
-$\mathrm{Var}(K)\approx T_{\mathrm{eff}}$ (from eq.~\eqref{eq:var} and $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, in the OU approximation); for $K{=}1$ to be a
-well-defined equilibrium, $\mathrm{Var}(K)<1$, hence
-$\sigma_1>\hbar/(4\pi)$. This is a self-consistent bound: the OU approximation must be valid, i.e., $\mathrm{Var}(K)<1$.\qed
-\end{proof}
-
-\noindent
-Below $\sigma_{1,c}$, thermal fluctuations of $K$ become of order one, and the classical description of the $K{=}1$ locus dissolves into noise; this bound does not, by itself, imply a fundamental spacetime discreteness.
+\textit{本界的适用范围.}
+$\sigma_{1,c}$ 的推导显式地使用了外部等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, 此等同属于途径 A (\S\ref{sec:thermo})。在途径 B 之内, 由于不引入此种热力学等同, 是否存在类似的自洽尺度仍是一个未解问题。将该软自洽界提升为\emph{独立}于途径 A 之外部等同的硬不确定性界, 是 \S\ref{sec:discussion} 中未解问题 4 的内容。
 
 \medskip\noindent
-\textit{Scope of the bound.}
-The derivation of $\sigma_{1,c}$ makes explicit use of the external identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, which belongs to Route~A (\S\ref{sec:thermo}). Within Route~B, where no such thermal identification is invoked, whether an analogous self-consistency scale exists remains an open question. Turning the soft consistency bound into a hard uncertainty bound \emph{independent} of the Route~A identification is the subject of Open Problem~4 in \S\ref{sec:discussion}.
+\textit{术语说明.}
+形容词``软''强调该界来自 OU 近似的有效性区域 ($\mathrm{Var}(K)<1$), 而非独立的量子化原理。
 
-\medskip\noindent
-\textit{Terminology.}
-The adjective ``soft'' emphasises that the bound follows from the validity regime of the OU approximation ($\mathrm{Var}(K)<1$), not from an independent quantisation principle.
+在 Planck 单位($\hbar=\ell_P=1$)下, 该界为 $\sigma_{1}>1/(4\pi)$, 即量级上为 $O(\ell_P)$ 的软分辨率尺度。
 
-%===================================================================
-\section{Discussion}\label{sec:discussion}
+\section{讨论}\label{sec:discussion}
 
-\subsection*{Two routes: one derivation, one equivalence theorem}
+\subsection*{两条途径:一次推导与一个等价定理}
 
-Within Route~A, once the required external identifications are supplied, the Einstein equations are conditionally recovered via stochastic dynamics and the Jacobson argument (\S\ref{sec:thermo}); Route~B establishes a strict algebraic equivalence between the conjectured eigenvalue condition and $R_{\mu\nu}=0$ in the spherical vacuum sector, with no thermodynamic input.
+途径 A 中, 一旦提供了所需的外部等同, $G_{\mu\nu}=8\pi T_{\mu\nu}$ 就有条件地通过随机动力学与 Jacobson 论证得以恢复(\S\ref{sec:thermo}); 途径 B 在球对称真空部分中建立了所猜想的特征值条件与 $R_{\mu\nu}=0$ 之间的严格代数等价性, 不引入任何热力学输入。
 
-The input structure of both routes --- including the Jacobson inputs and the external identifications $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ and $S\propto A$ --- is summarised in Fig.~\ref{fig:routes} and detailed in \S\ref{sec:thermo}. The novelty here is that Lorentzian signature, normally an external assumption in entropic-gravity arguments, is supplied internally by the realizability bridge of Law~I; Theorem~\ref{thm:equivalence} gives its isotropic stability reading.
-
-The two routes meet in the vacuum sector: Route~B establishes $R_{\mu\nu}=0$ directly, while Route~A recovers the same conclusion via $G_{\mu\nu}=8\pi T_{\mu\nu}$ with $T_{\mu\nu}=0$.
+两条途径在真空部分相会: 途径 B 直接建立 $R_{\mu\nu}=0$, 而途径 A 通过 $G_{\mu\nu}=8\pi T_{\mu\nu}$ 在 $T_{\mu\nu}=0$ 时得到同样结论。
 
 \begin{figure}[ht]
 \centering
@@ -832,86 +794,106 @@ The two routes meet in the vacuum sector: Route~B establishes $R_{\mu\nu}=0$ dir
     extarr/.style={-{Stealth[length=1.5mm]}, draw=gray!50, dashed},
     title/.style={font=\small\bfseries}
 ]
-\node[startbox] (K1) {$\{K=1\}$\\[-1pt]\scriptsize extra condition};
+% =========================================================
+% Shared top: K=1
+% =========================================================
+\node[startbox] (K1) {$\{K=1\}$\\[-1pt]\scriptsize 本文额外引入};
 
-% Route A (LEFT)
-\node[thermo, below left=0.9cm and 1.6cm of K1] (OU) {OU dynamics\\[-1pt]\scriptsize (near $K{=}1$, Class A)};
-\node[thermo, below=of OU] (Clau) {local Clausius};
-\node[jacbox, below=0.9cm of Clau] (jac) {Jacobson argument\\[-1pt]\scriptsize \cite{Jacobson}};
+% =========================================================
+% Route A (LEFT): K=1 -> OU -> Clausius -> [Jacobson] -> Einstein
+% Jacobson takes THREE inputs: Sig(G), local Clausius, S propto A
+% =========================================================
+\node[thermo, below left=0.9cm and 1.6cm of K1] (OU) {OU 动力学\\[-1pt]\scriptsize (近 $K{=}1$, A 类)};
+\node[thermo, below=of OU] (Clau) {局部 Clausius};
+% Jacobson junction box
+\node[jacbox, below=0.9cm of Clau] (jac) {Jacobson 论证\\[-1pt]\scriptsize \cite{Jacobson}};
 \node[endbox, below=of jac] (Ein) {$G_{\mu\nu}=8\pi T_{\mu\nu}$};
-\draw[arr] (K1) to[bend right=10] node[left=1pt, font=\tiny\itshape, text=black!60, align=right] {near $K{=}1$\\ Class A/OU} (OU);
+% Route A arrows
+\draw[arr] (K1) to[bend right=10] node[left=1pt, font=\tiny\itshape, text=black!60, align=right] {近 $K{=}1$\\ A 类/OU 近似} (OU);
 \draw[arr] (OU) -- (Clau);
 \draw[arr] (Clau) -- (jac);
 \draw[arr] (jac) -- (Ein);
-% External inputs
+% Jacobson's THREE inputs
 \node[extinp, left=0.4cm of OU] (Teff) {$T_{\mathrm{eff}}=T_{\mathrm{tol}}$};
 \draw[extarr] (Teff) -- (Clau);
-\node[extinp, left=0.4cm of jac, yshift=4pt] (sigin) {local Lorentzian signature\\ $\mathrm{Sig}(G){=}(1,1)$};
+% The three Jacobson inputs: Sig(G) comes from left; S propto A external
+\node[extinp, left=0.4cm of jac, yshift=4pt] (sigin) {局部 Lorentz 号差\\ $\mathrm{Sig}(G){=}(1,1)$};
 \node[extinp, left=0.4cm of jac, yshift=-14pt] (SAin) {$S\propto A$};
 \draw[extarr] (sigin) -- (jac.west);
 \draw[extarr] (SAin) -- (jac.west);
 
-% Route B (RIGHT)
+% =========================================================
+% Route B (RIGHT): K=1 --dashed--> sigma^2 box ln sigma = 1 <=> R=0
+% =========================================================
 \node[algebra, below right=0.9cm and 1.6cm of K1] (sigma) {$\sigma_2^2\,\Box\ln\sigma_i = 1$};
-\node[endbox, below=1.5cm of sigma] (vac) {$R_{\mu\nu}=0$\\[-1pt]\scriptsize (spherical vacuum)};
-\draw[conjarr] (K1) to[bend left=10] node[right=1pt, font=\tiny\itshape, text=black!60] {field-level analogue/conjecture} (sigma);
-\draw[biarr] (sigma) -- node[right, font=\tiny\itshape, text=black!60, align=left] {strict algebraic\\equivalence\\(spherical vacuum)} (vac);
+\node[endbox, below=1.5cm of sigma] (vac) {$R_{\mu\nu}=0$\\[-1pt]\scriptsize (球对称真空)};
+% Route B dashed (conjectural lift)
+\draw[conjarr] (K1) to[bend left=10] node[right=1pt, font=\tiny\itshape, text=black!60] {场级类似物/猜想} (sigma);
+% Bidirectional strict equivalence
+\draw[biarr] (sigma) -- node[right, font=\tiny\itshape, text=black!60, align=left] {严格代数等价\\(球对称真空)} (vac);
 
-\node[font=\scriptsize, text=black!55, below=0.3cm of Ein, text width=3.2cm, align=center] {meets right side at $T_{\mu\nu}{=}0$};
-\node[title, above=0.1cm of OU] {Route A: thermodynamic bridge};
-\node[title, above=0.1cm of sigma] {Route B: equivalence theorem};
+% =========================================================
+% Vacuum meeting point annotation
+% =========================================================
+\node[font=\scriptsize, text=black!55, below=0.3cm of Ein, text width=3.2cm, align=center] {$T_{\mu\nu}{=}0$ 时与右侧相会};
+
+% Route titles
+\node[title, above=0.1cm of OU] {途径 A: 热力学桥};
+\node[title, above=0.1cm of sigma] {途径 B: 等价定理};
+
 \end{tikzpicture}
-\caption{Two routes connecting to the Einstein equations. \emph{Route A} (left, thermodynamic bridge): Class A fluctuations near $\{K=1\}$ $\to$ OU dynamics $\to$ local Clausius $\to$ Jacobson argument $\to$ Einstein equations. Jacobson requires three inputs (grey dashed): Lorentzian signature $\mathrm{Sig}(G)=(1,1)$ (supplied internally by Law~I via realizability; Theorem~\ref{thm:equivalence} provides its isotropic stability reading); local Clausius (requires the external $T_{\mathrm{eff}}=T_{\mathrm{tol}}$); and the entropy-area law $S\propto A$ (external). Hence two external inputs overall: $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ and $S\propto A$. \emph{Route B} (right, equivalence theorem): $K{=}1\!\to\!\sigma_2^2\Box\ln\sigma_i=1$ is dashed (conjectured field-level uplift); $\sigma_2^2\Box\ln\sigma_i=1\Leftrightarrow R_{\mu\nu}=0$ is a \emph{strict algebraic equivalence} in the spherical vacuum sector (Theorem~\ref{thm:field}).}
+\caption{与爱因斯坦方程相连的两条途径. \emph{途径 A}(左, 热力学桥): $\{K=1\}$ 附近 A 类涨落 → OU 动力学 → 局部 Clausius → Jacobson 论证 → 爱因斯坦方程. Jacobson 需要三个输入(灰色虚线): Lorentz 号差 $\mathrm{Sig}(G)=(1,1)$(由律 I 经由可实现性内部给出; 定理~\ref{thm:equivalence} 给出其各向同性稳定性读法)、局部 Clausius(需外部 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$)、熵-面积律 $S\propto A$(外部输入). 故总体有两个外部输入: $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 与 $S\propto A$. \emph{途径 B}(右, 等价定理): $K{=}1\!\to\!\sigma_2^2\Box\ln\sigma_i=1$ 为虚线(猜想性场级提升); $\sigma_2^2\Box\ln\sigma_i=1\Leftrightarrow R_{\mu\nu}=0$ 在球对称真空部分中为\emph{严格代数等价}(定理~\ref{thm:field}).}
 \label{fig:routes}
 \end{figure}
 
-\subsection*{Scope of claims}
+两条途径的输入结构——包括 Jacobson 输入和外部等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 与 $S\propto A$——已总结于图~\ref{fig:routes} 并在 \S\ref{sec:thermo} 中详述。本文的新意在于:Lorentz 号差通常在熵引力论证中是外部假设, 在此则由律 I 的可实现性桥梁内部给出; 定理~\ref{thm:equivalence} 给出其各向同性稳定性读法。
 
-Within Route~A, given the external identifications $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ and $S\propto A$, the Einstein equations $G_{\mu\nu}=8\pi T_{\mu\nu}$ are recovered through the Jacobson argument; Route~B establishes a strict algebraic equivalence between the conjectured eigenvalue condition and $R_{\mu\nu}=0$ in the spherical vacuum sector, with no thermodynamic input. Thus, in the spherical vacuum sector, the vacuum equations admit an equivalent cost-structural formulation (Theorem~\ref{thm:field}).
+\subsection*{主张范围}
 
-The contribution of the present paper is therefore conceptual and structural: Lorentzian signature is supplied internally by the cost-realizability bridge of Law~I, rather than assumed as a kinematic primitive; Theorem~\ref{thm:equivalence} provides its isotropic stability reading. Neither the matter sector of the Einstein equations nor the thermal inputs needed for the Jacobson route are derived autonomously within the present framework; in particular, the entropy--area law remains external, and the matter sector is recovered via Route~A only when the two external identifications are supplied.
+在途径 A 之内, 给定外部等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 与 $S\propto A$, Einstein 方程 $G_{\mu\nu}=8\pi T_{\mu\nu}$ 通过 Jacobson 论证得以恢复; 途径 B 在球对称真空部分中建立了所猜想的特征值条件与 $R_{\mu\nu}=0$ 之间的严格代数等价性, 不引入任何热力学输入。因此, 在球对称真空部分, 真空方程接纳一个等价的代价结构表述(定理~\ref{thm:field})。
 
-Accordingly, the matter density $\rho=(1-K_2)/(8\pi r^2)$ and the interpretation of matter are GR rewritings; $\Lambda$ is not predicted by the framework; $S\propto A$ remains an external input borrowed from black-hole thermodynamics. Route~B in its current form is an equivalence theorem conditional on a conjectured field-level uplift; a first-principles justification of why each symplectic eigenvalue satisfies the same d'Alembertian equation remains an open task (cf.\ Open Problem~1 below).
+本文的贡献因此是概念性与结构性的: Lorentz 号差由律 I 的代价-可实现性桥梁内部供应, 而非作为运动学的原始假定; 定理~\ref{thm:equivalence} 给出其各向同性稳定性读法。本框架既不自主导出 Einstein 方程的物质部分, 也不自主导出 Jacobson 路径所需的热力学输入; 特别地, 熵-面积律仍是外部的, 而物质部分仅当两个外部等同被给定时才能经由途径 A 恢复。
 
-\subsection*{Extension to $(1{+}3)$ dimensions}
+相应地, 物质密度 $\rho=(1-K_2)/(8\pi r^2)$ 与物质的诠释是 GR 重新表述; $\Lambda$ 不为本框架所预言; $S\propto A$ 仍是从黑洞热力学借入的外部输入。途径 B 在其当前形式下是依赖于一个猜想性场级提升的等价定理; 关于为何每个辛特征值满足同一 d'Alembert 方程的第一原理性证成仍是未完成的任务(参见下方未解问题 1)。
 
-The following remarks are heuristic and should be read as an outlook rather than a partial extension theorem. In $(1{+}3)$ dimensions, $\{K{=}1\}\cong H^3$ carries $S^2$ cross-sections with area $4\pi\sigma_1^2$ when $\alpha=1$ and $\sigma_1=\kappa\ell$, linking the symplectic invariant to the Bekenstein--Hawking area~\cite{Bekenstein}; the $1/4$ coefficient still requires the usual Hawking/first-law input. Two structural changes remain: Lorentzian signature alone is no longer sufficient to guarantee $d_c>0$, and $J_G$ requires a symplectic pairing choice. Whether the cost-realizability mechanism that forces $\mathrm{Sig}(G)=(1,1)$ in two dimensions admits a natural extension that constrains the full $(1{+}3)$-dimensional metric signature without assuming it, is an open conceptual question not addressed in this paper.
+\subsection*{$(1{+}3)$-维扩展}
 
-\subsection*{Limitations}
+以下论述为启发性的, 应作为展望而非部分扩展定理来阅读。在 $(1{+}3)$ 维中, $\{K{=}1\}\cong H^3$ 承载面积为 $4\pi\sigma_1^2$ 的 $S^2$ 截面(当 $\alpha=1$, $\sigma_1=\kappa\ell$ 时), 将辛不变量与 Bekenstein--Hawking 面积~\cite{Bekenstein} 相联系; 但系数 $1/4$ 仍依赖于通常的 Hawking/第一定律输入。两项结构性变化留存: 仅 Lorentz 号差不再足以保证 $d_c>0$, 且 $J_G$ 需要辛配对的选择。在二维强制 $\mathrm{Sig}(G)=(1,1)$ 的代价-可实现性机制, 是否接纳一个不假定 $(1+3)$-维度规号差而约束之的自然扩展, 是本文未予处理的一个开放性概念问题。
+
+\subsection*{局限}
 
 \begin{enumerate}
-\item Route~B is currently confined to spherical symmetry. \textit{(scope)}
-\item Route~A still depends on the external inputs $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ and $S\propto A$. In particular, the identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ is a phenomenological assumption and is not explained by the internal structure of Laws~I--III. \textit{(external input)}
-\item No observational deviation from GR is obtained in the present analysis. \textit{(predictive gap)}
-\item The $\sigma_1$ threshold derived in \S\ref{sec:singularity} is a soft consistency bound only, not a hard quantum-gravitational cutoff. \textit{(strength)}
-\item The scalar $H$ (information-time layer) and the matrix weight $H_{*}$ (stability layer) are not unified in the present framework. \textit{(notation and layering)}
+\item 途径 B 目前仅限于球对称情形。\textit{(范围)}
+\item 途径 A 仍依赖 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 与 $S\propto A$ 两个外部输入。特别地, 等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 是一项现象学假设, 不为律 I--III 的内部结构所解释。\textit{(外部输入)}
+\item 本文分析中未获得相对 GR 的可观测偏差。\textit{(预测缺口)}
+\item 在 \S\ref{sec:singularity} 中得到的 $\sigma_1$ 阈值仅为软自洽下界, 而非硬量子重力截断。\textit{(强度)}
+\item 标量 $H$ (信息时间层) 与矩阵权重 $H_{*}$ (稳定性层) 在本框架中尚未被统一。\textit{(符号与分层)}
 \end{enumerate}
 
-\subsection*{Open problems}
+\subsection*{未解问题}
 
-The first three problems concern structural completion and empirical distinctness; the last two concern internal dynamical and quantum consistency.
+前三个问题涉及结构完成与经验区分性; 后两个问题涉及内部动力学与量子自洽性。
 
 \begin{enumerate}
-\item Complete Route~B for general metrics (Gauss--Codazzi relations for null hypersurfaces).
-\item Extend Route~B to non-vacuum matter. In particular, determine whether $\rho=(1-K_2)/(8\pi r^2)$ is an intrinsic consequence of the cost framework, rather than a GR rewriting, whether matter can thereby be understood as the failure of angular eigenvalue self-consistency per unit area, and whether this extends to the full stress-energy tensor~$T_{\mu\nu}$.
-\item Identify testable strong-field predictions. Within the present spherical-vacuum analysis, since in the weak-field regime $K_2=1$ already reproduces the Newtonian potential while $K_1=1$ is automatic at linear order, any observational distinction between the eigenvalue principle and standard GR must arise from the nonlinear strong-field sector, i.e.\ from the term $B/r^2$ in the $K_1$-only family that distinguishes $K_1$-equivalence from pure Schwarzschild (Lemma~\ref{lem:rigidity}). Possible windows include high-precision black-hole shadow data, strong-field gravitational-wave signals, and near-horizon quantum effects.
-\item Establish a first-principles relation between the motivating information time $dt_{\mathrm{info}}$ and the effective dynamical evolution parameter $t$ used in Laws~II--III and Route~A.
-\item Prove $\sigma_{1,\min}\geq\hbar/(4\pi)$ as a hard bound from $K$--$\varphi$ canonical conjugacy \emph{without} invoking the Route~A identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, where $\varphi$ is the boost angle along $\{K{=}1\}$.
-\item Prove global attractivity of $K=1$: show that for any $x_0\in\mathbb{R}^{2}$,
-the trajectory of $\dot{x}=(J_G-d_{c}I)\nabla V$ with $V=\tfrac{1}{2}(K-1)^2$
-satisfies $K(x(t))\to 1$ as $t\to\infty$.
+\item 完成一般度规的途径 B (用于零超曲面的 Gauss--Codazzi 关系)。
+\item 将途径 B 扩展至非真空物质。特别地, 确定 $\rho=(1-K_2)/(8\pi r^2)$ 是否为代价框架的内在推论而非 GR 的重新表述, 物质能否由此被理解为角向特征值自洽性在单位面积上的失效, 以及此式能否推广至完整的能动张量~$T_{\mu\nu}$。
+\item 识别可检验的强场预言。在本文球对称真空分析的范围内, 由于在弱场区 $K_2=1$ 已给出牛顿势, 而 $K_1=1$ 在线性阶自动满足, 故特征值原理与标准 GR 的任何可观测差异必源于非线性强场部分, 即源自 $K_1$-唯一族中将 $K_1$-等价与纯 Schwarzschild 区分开的 $B/r^2$ 项(引理~\ref{lem:rigidity})。可能的窗口包括高精度黑洞阴影数据、强场引力波信号, 以及近视界量子效应。
+\item 建立动机性信息时间 $dt_{\mathrm{info}}$ 与律 II--III 及途径 A 中所用的有效动力学演化参数 $t$ 之间的第一性原理关系。
+\item 证明 $\sigma_{1,\min}\geq\hbar/(4\pi)$ 作为硬下界, 基于 $K$--$\varphi$ 典范共轭, \emph{不}援引途径 A 的等同 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$, 其中 $\varphi$ 为沿 $\{K{=}1\}$ 的 boost 角。
+\item 证明 $K=1$ 的全局吸引性: 证明对任意 $x_0\in\mathbb{R}^{2}$, $\dot{x}=(J_G-d_{c}I)\nabla V$ (其中 $V=\tfrac{1}{2}(K-1)^2$) 的轨迹满足 $K(x(t))\to 1$ 当 $t\to\infty$ 时。
 \end{enumerate}
 
 \bigskip
-\noindent\textbf{Statements and Declarations}
+\noindent\textbf{声明}
 
-\medskip\noindent\textbf{Funding.} No funding was received for conducting this study.
+\medskip
+\noindent\textit{资助.} 本研究未获任何资助。
 
-\medskip\noindent\textbf{Competing interests.} The author has no relevant financial or non-financial interests to disclose.
+\medskip
+\noindent\textit{利益冲突.} 作者声明无利益冲突。
 
-\medskip\noindent\textbf{Author contributions.} Y.\,Y.\,N.\ Li is the sole author of the work presented.
-
-\medskip\noindent\textbf{Data availability.} No datasets were generated or analysed during the current study.
+\medskip
+\noindent\textit{数据可用性.} 本研究不使用任何数据。
 
 \begin{thebibliography}{99}
 
@@ -1014,6 +996,7 @@ Von Neumann algebra automorphisms and time-thermodynamics relation
 in general covariant quantum theories.
 Class.\ Quantum Grav.\ \textbf{11}, 2899--2917 (1994).
 \url{https://doi.org/10.1088/0264-9381/11/12/007}
+
 \end{thebibliography}
 
 \end{document}
