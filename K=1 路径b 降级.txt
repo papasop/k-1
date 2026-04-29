@@ -1,6 +1,3 @@
-以下是您根据审阅意见修改后的完整LaTeX文档。它修复了所有必须修补的问题（Abstract重复、残留“Route A”、Notation注释、Fig. 7 caption措辞、Theorem 9证明顺序），并采纳了建议修补项（Abstract背景扩展、Logical status段后移、Open Problem 1措辞收紧、首次定义“$K=1$ framework”）。现在可以投稿。
-
-```latex
 \documentclass[11pt]{article}
 \usepackage[T1]{fontenc}
 \usepackage[margin=1in]{geometry}
@@ -27,22 +24,20 @@
 \maketitle
 
 \begin{abstract}
-\textit{Background.} Time has invariably entered physics as a primitive --- an underived input. The present paper proposes a structural framework in which the algebraic type of the local cost form is constrained by realizability axioms, with Lorentzian signature emerging as a consequence rather than an assumption.
+\textit{Background.} Time has invariably entered physics as a primitive --- an underived input.
 
-\textit{Framework.} Here the cost of change is modelled through an information time $dt_{\mathrm{info}}:=d\Phi/H$. The object constrained is not $dt_{\mathrm{info}}$ itself, but the signed leading quadratic form $G$ associated with the local second-order expansion of $dt_{\mathrm{info}}^{2}$. Modelling this form as satisfying Axioms~R, E, T of~\cite{Realizability} yields, under nondegeneracy, $\mathrm{Sig}(G)=(1,1)$, equivalently $\det G<0$; the unit-cost locus is $K(x)=x^{\top}Gx=1$.
+\textit{Framework.} Here, cost of change enters as the primitive datum, encoded in an information time $dt_{\mathrm{info}}:=d\Phi/H$. The object constrained is not $dt_{\mathrm{info}}$ itself, but the signed leading quadratic form $G$ associated with the local second-order expansion of $dt_{\mathrm{info}}^{2}$. Modelling this form as satisfying Axioms~R, E, T of~\cite{Realizability} yields, under nondegeneracy, $\mathrm{Sig}(G)=(1,1)$, equivalently $\det G<0$; the unit-cost locus is $K(x)=x^{\top}Gx=1$.
 
 \textit{Dynamics and thermodynamics.} Within the symplectic--dissipative class $GA=\alpha J-GD$, the evolution law takes the uniquely reduced form $\dot x=(J_G-D)\nabla V$. Near $K=1$, the framework supplies the ingredients for a local Clausius relation, thereby providing the thermodynamic input to the Jacobson argument once the two external identifications $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ and $S\propto A$ are supplied.
 
-\textit{Gravitational content.} The thermodynamic perspective above conditionally recovers the Einstein equations $R_{\mu\nu}-\tfrac12 R\,g_{\mu\nu}=8\pi T_{\mu\nu}$ via the Jacobson argument. Independently, in the spherical sector with $f>0$, the differential conditions $K_1=K_2=1$ for the cost-structural functionals $K_i:=\sigma_2^2\Box\ln\sigma_i$ are shown to be algebraically equivalent to the vacuum Einstein equations $R_{\mu\nu}=0$ (Theorem~\ref{thm:field}). The conditions $K_i=1$ are introduced at the field level as a candidate ansatz, motivated by but not derived from the point-level condition $K=1$ of Law~I; Theorem~\ref{thm:field} is therefore an algebraic reformulation of vacuum Einstein in cost-structural language, not a derivation from the framework axioms. Lorentzian signature is supplied internally at the point level throughout.
+\textit{Gravitational content.} In the spherical sector with $f>0$, the differential conditions $K_1=K_2=1$ for the cost-structural functionals $K_i:=\sigma_2^2\Box\ln\sigma_i$ are shown to be algebraically equivalent to the vacuum Einstein equations $R_{\mu\nu}=0$ (Theorem~\ref{thm:field}). The conditions $K_i=1$ are introduced at the field level as a candidate ansatz, motivated by but not derived from the point-level condition $K=1$ of Law~I; Theorem~\ref{thm:field} is therefore an algebraic reformulation of vacuum Einstein in cost-structural language, not a derivation from the framework axioms. Lorentzian signature is supplied internally at the point level throughout.
 \end{abstract}
 
 \noindent\textbf{Keywords:} Lorentzian signature; Information time; Symplectic-dissipative dynamics; Jacobson argument; Rindler horizon
 
 \section{Introduction: time as consequence}
 
-We refer to the structural setup developed in this paper --- consisting of the cost-realizability bridge (Law~I), the symplectic-dissipative dynamics (Law~II), and the critical-damping fluctuation structure (Law~III) --- as the ``$K=1$ framework''.
-
-\textit{The problem.} Riemann's 1854 Habilitation lecture observed that, for a continuous manifold, the basis of metric relations must be sought outside the manifold itself, in forces acting upon it~\cite{Riemann1854}.\footnote{Riemann's formulation: ``the basis of metric relations must be sought outside that actuality, in colligating forces that operate upon it.''} Most standard formulations of spacetime physics, however, assume a metric or a causal structure as input. The Jacobson argument~\cite{Jacobson} obtains the Einstein equations from thermodynamics on local Rindler horizons, but Lorentzian signature is universally assumed --- as in the approaches of Padmanabhan~\cite{Padmanabhan} and Verlinde~\cite{Verlinde}. The EPS axiomatisation~\cite{EPS} derives causal structure from free-fall and light propagation, but uses kinematic primitives. In each of these approaches to Riemann's open problem, either the signature is prescribed or the derivation presupposes kinematic primitives.
+\textit{The problem.} Riemann's 1854 Habilitation lecture observed that, for a continuous manifold, the basis of metric relations must be sought outside the manifold itself, in binding forces acting upon it~\cite{Riemann1854}.\footnote{Clifford's 1873 translation: ``\ldots we must seek the ground of its metric relations outside it, in binding forces which act upon it.''} Most standard formulations of spacetime physics, however, assume a metric or a causal structure as input. The Jacobson argument~\cite{Jacobson} obtains the Einstein equations from thermodynamics on local Rindler horizons, but Lorentzian signature is universally assumed --- as in the approaches of Padmanabhan~\cite{Padmanabhan} and Verlinde~\cite{Verlinde}. The EPS axiomatisation~\cite{EPS} derives causal structure from free-fall and light propagation, but uses kinematic primitives. In each of these approaches to Riemann's open problem, either the signature is prescribed or the derivation presupposes kinematic primitives.
 
 \textit{The gap.} In the ``local cost-based leading quadratic form'' sense adopted here, existing approaches typically take Lorentzian signature or an equivalent causal structure as input; the present work addresses the prior question: when does the cost structure itself enforce a Lorentzian leading symbol?
 
@@ -489,7 +484,7 @@ Adding isotropic additive white noise (It\^{o} convention) to Law~II gives $dx=(
 \node[label, green!50!black, right] at (1.05, 1.0) {Class B (kinematic)};
 \node[label, green!50!black, left] at (-1.05, 1.0) {boost};
 \end{tikzpicture}
-\caption{The $\{K=1\}$ manifold for the Rindler metric $g=\mathrm{diag}(-(\kappa\ell)^{2},1)$. The hyperbola's asymptotes are the light cone. At the base point $x_{*}$: Class A (red, two-way arrows) — thermodynamic fluctuations \emph{along the $\nabla K$ normal} to $\{K=1\}$; Class B (green) — tangential boost along the curve, thermodynamically inert — at $x_{*}=(0,1)$, $dx_{2}/dx_{1}|_{x_{*}}=0$, so the tangent is exactly horizontal. The figure is drawn with $\kappa\ell=1$ and $x_{*}=(0,1)$, satisfying the normalisation $x_{*}^{\top}G^{2}x_{*}=1$; the restoring rate then reduces to $\kappa_{K}=4d_{c}$ (the general-base-point formula is discussed in the present section).}
+\caption{The $\{K=1\}$ manifold for the Rindler metric $g=\mathrm{diag}(-(\kappa\ell)^{2},1)$. The hyperbola's asymptotes are the light cone. At the base point $x_{*}$: Class A (red, two-way arrows) --- thermodynamic fluctuations \emph{along the $\nabla K$ normal} to $\{K=1\}$; Class B (green) --- tangential boost along the curve, thermodynamically inert --- at $x_{*}=(0,1)$, $dx_{2}/dx_{1}|_{x_{*}}=0$, so the tangent is exactly horizontal. The figure is drawn with $\kappa\ell=1$ and $x_{*}=(0,1)$, satisfying the normalisation $x_{*}^{\top}G^{2}x_{*}=1$; the restoring rate then reduces to $\kappa_{K}=4d_{c}$ (the general-base-point formula is discussed in the present section).}
 \label{fig:K1geometry}
 \end{figure}
 
@@ -525,7 +520,7 @@ In this section, $g_{\mu\nu}$ denotes the physical Rindler metric used as the ex
 \[
 K=x^{\top}Gx,\qquad J_G=\alpha G^{-1}J,
 \]
-and the OU reduction is the cost-form used by the framework. In the Rindler realisation, these are related by the sign convention discussed in \S\ref{sec:lawI}, but they should not be conflated notationally: $g$ denotes the physical spacetime metric, whereas $G$ denotes the dynamical cost-form. In all OU and thermodynamic formulas below, $G$ denotes the dynamical cost-form, whereas $g$ denotes the external spacetime metric.
+and the OU reduction is the cost-form used by the framework. In the Rindler realisation, these are related by the sign convention discussed in \S~\ref{sec:lawI}, but they should not be conflated notationally: $g$ denotes the physical spacetime metric, whereas $G$ denotes the dynamical cost-form. In all OU and thermodynamic formulas below, $G$ denotes the dynamical cost-form, whereas $g$ denotes the external spacetime metric.
 
 As a concrete realisation, we apply the framework to the Rindler metric
 \[
@@ -633,8 +628,8 @@ d'Alembertian of each log-eigenvalue equals $1/\sigma_2^2$. We adopt
 these conditions as a candidate field-level ansatz; whether they admit
 an independent justification from Laws~I--III remains open (cf.\ Open
 Problem~1 below). The flavour of the ansatz is similar to the point-level
-$K=1$ — each eigenvalue is required to satisfy a self-consistency
-condition involving its own logarithm — but the field-level conditions
+$K=1$ --- each eigenvalue is required to satisfy a self-consistency
+condition involving its own logarithm --- but the field-level conditions
 are not derived from the point-level ones.
 
 Expanding (direct computation using $\Box\ln\sigma_1=\Box\ln r+\tfrac{1}{2}\Box\ln f$):
@@ -657,15 +652,21 @@ Then $-2\Box\ln\sigma_1+2/r^2=R$.\qed
 \end{proof}
 
 \medskip\noindent
-The following theorem establishes an algebraic equivalence between the candidate ansatz and the vacuum Einstein equations in the spherical sector. It is a reformulation of vacuum Einstein in cost-structural language, conditional on adopting $K_i=1$ as a field-level ansatz.
+The following theorem establishes an algebraic equivalence between the
+candidate ansatz and the vacuum Einstein equations in the spherical
+sector. It is a reformulation of vacuum Einstein in cost-structural
+language, conditional on adopting $K_i=1$ as a field-level ansatz.
 
 \begin{theorem}[Algebraic Equivalence]\label{thm:field}
-For~\eqref{eq:metric} with $f\in C^{2}(I)$ and $f>0$ on an interval $I\subset(0,\infty)$ (so that $\sigma_{1}=r\sqrt{f}$ and $\ln\sigma_{1}$ are real), and $K_1,K_2$ as in Definition~\ref{def:esc}:
+For~\eqref{eq:metric} with $f\in C^{2}(I)$ and $f>0$ on an interval
+$I\subset(0,\infty)$ (so that $\sigma_{1}=r\sqrt{f}$ and $\ln\sigma_{1}$
+are real), and $K_1,K_2$ as in Definition~\ref{def:esc}:
 \begin{equation}\label{eq:equiv}
   K_1=K_2=1
   \quad\Longleftrightarrow\quad R_{\mu\nu}=0,
 \end{equation}
-where $R_{\mu\nu}=0$ are the vacuum Einstein field equations~\cite{Einstein1915,Hilbert1915}.
+where $R_{\mu\nu}=0$ are the vacuum Einstein field
+equations~\cite{Einstein1915,Hilbert1915}.
 \end{theorem}
 
 \begin{proof}
@@ -674,7 +675,8 @@ For this metric, the standard formulas give $R_{\theta\theta}=1-f-rf'$ and $R_{t
 From eqs.~\eqref{eq:K1exp}--\eqref{eq:K2exp}, $K_1-K_2=rf'+\frac{r^2}{2}f''=0$, hence $f''=-2f'/r$. Substituting into $R_{tt}$ gives $R_{tt}=0$. For this metric $R_{tt}=-f^{2}R_{rr}$~\cite{Wald1984}, so $R_{tt}=0$ and $f>0$ give $R_{rr}=0$. The remaining diagonal component $R_{\phi\phi}=\sin^2\theta\cdot R_{\theta\theta}=0$ by spherical symmetry, and all off-diagonal Ricci components vanish identically by staticity and spherical symmetry. Hence $R_{\mu\nu}=0$.
 
 $(\Leftarrow)$\;Suppose $R_{\mu\nu}=0$ on $I$.
-The trace gives $R=g^{\mu\nu}R_{\mu\nu}=0$; by Lemma~\ref{lem:R}, $R=2(1-K_1)/r^2$, hence $K_1=1$.
+The trace gives $R=g^{\mu\nu}R_{\mu\nu}=0$; by Lemma~\ref{lem:R},
+$R=2(1-K_1)/r^2$, hence $K_1=1$.
 $R_{\theta\theta}=0$ gives $K_2=1-R_{\theta\theta}=1$.\qed
 \end{proof}
 
@@ -1045,4 +1047,3 @@ Class.\ Quantum Grav.\ \textbf{11}, 2899--2917 (1994).
 \end{thebibliography}
 
 \end{document}
-```
