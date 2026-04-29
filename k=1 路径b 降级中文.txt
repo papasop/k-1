@@ -41,7 +41,7 @@
 
 \section{引言：时间作为推论}
 
-\textit{问题。}Riemann 1854 年的就职讲座指出，对一个连续流形而言，度量关系的基础须从流形之外求得，存在于作用于其上的绑定力之中~\cite{Riemann1854}。\footnote{Clifford 1873 年英译：``\ldots we must seek the ground of its metric relations outside it, in binding forces which act upon it.''}然而，时空物理的大部分标准表述都假定了度量或因果结构作为输入。Jacobson 论证~\cite{Jacobson} 从局部 Rindler 视界的热力学得到 Einstein 方程，但洛伦兹签名是普遍假设的——Padmanabhan~\cite{Padmanabhan} 与 Verlinde~\cite{Verlinde} 的进路也是如此。EPS 公理化~\cite{EPS} 从自由下落和光线传播导出因果结构，但使用了运动学基本量。在所有这些回应 Riemann 公开问题的进路中，要么签名被规定，要么推导预设了运动学基本量。
+\textit{问题。}Riemann 1854 年的就职讲座指出，对一个连续流形而言，度量关系的基础须从流形之外求得，存在于作用于其上的绑定力之中~\cite{Riemann1854}。\footnote{Clifford 1873 年英译：``\ldots we must seek the ground of its metric relations outside it, in binding forces which act upon it.''}Einstein 1915 年的广义相对论在度量值的层次上回答了这一问题，通过场方程 $R_{\mu\nu}-\tfrac12 R\,g_{\mu\nu}=8\pi T_{\mu\nu}$ 由物质推出度量值~\cite{Einstein1915,Hilbert1915}；然而，洛伦兹签名本身仍作为先验输入。其后时空物理的大部分标准表述同样以某种先验几何结构作为输入。Jacobson 论证~\cite{Jacobson} 从局部 Rindler 视界的热力学得到 Einstein 方程，但洛伦兹签名是普遍假设的——Padmanabhan~\cite{Padmanabhan} 与 Verlinde~\cite{Verlinde} 的进路也是如此。这些进路都以某种先验几何结构作为输入。
 
 \textit{缺口。}在此处采用的 ``局部代价主导二次形式''意义下，已有进路通常将洛伦兹签名或等价的因果结构作为输入；本文回答的是更前置的问题：代价结构本身何时强制要求洛伦兹主导符号？
 
@@ -822,12 +822,6 @@ B.~Riemann,
 \textit{Ueber die Hypothesen, welche der Geometrie zu Grunde liegen}.
 Habilitation lecture (1854); Abh.\ K\"onigl.\ Ges.\ Wiss.\ G\"ottingen \textbf{13} (1868).
 English translation by W.\,K.~Clifford, Nature \textbf{8} (1873), 14--17, 36--37.
-
-\bibitem{EPS}
-J.~Ehlers, F.\,A.\,E.~Pirani, A.~Schild,
-The geometry of free fall and light propagation.
-Gen.\ Relativ.\ Gravit.\ \textbf{44}, 1587 (2012).
-\url{https://doi.org/10.1007/s10714-012-1353-4}
 
 \bibitem{GENERIC}
 M.~Grmela, H.\,C.~\"Ottinger,
