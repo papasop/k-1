@@ -37,7 +37,7 @@
 
 \section{Introduction: time as consequence}
 
-\textit{The problem.} Riemann's 1854 Habilitation lecture observed that, for a continuous manifold, the basis of metric relations must be sought outside the manifold itself, in binding forces acting upon it~\cite{Riemann1854}.\footnote{Clifford's 1873 translation: ``\ldots we must seek the ground of its metric relations outside it, in binding forces which act upon it.''} Most standard formulations of spacetime physics, however, assume a metric or a causal structure as input. The Jacobson argument~\cite{Jacobson} obtains the Einstein equations from thermodynamics on local Rindler horizons, but Lorentzian signature is universally assumed --- as in the approaches of Padmanabhan~\cite{Padmanabhan} and Verlinde~\cite{Verlinde}. The EPS axiomatisation~\cite{EPS} derives causal structure from free-fall and light propagation, but uses kinematic primitives. In each of these approaches to Riemann's open problem, either the signature is prescribed or the derivation presupposes kinematic primitives.
+\textit{The problem.} Riemann's 1854 Habilitation lecture observed that, for a continuous manifold, the basis of metric relations must be sought outside the manifold itself, in binding forces acting upon it~\cite{Riemann1854}.\footnote{Clifford's 1873 translation: ``\ldots we must seek the ground of its metric relations outside it, in binding forces which act upon it.''} Einstein's 1915 theory of general relativity addressed this question at the level of metric values, deriving them from matter through the field equations $R_{\mu\nu}-\tfrac12 R\,g_{\mu\nu}=8\pi T_{\mu\nu}$~\cite{Einstein1915,Hilbert1915}; however, the Lorentzian signature itself entered as an a priori input. Most standard subsequent formulations of spacetime physics likewise take some prior geometric structure as input. The Jacobson argument~\cite{Jacobson} obtains the Einstein equations from thermodynamics on local Rindler horizons, but Lorentzian signature is universally assumed --- as in the approaches of Padmanabhan~\cite{Padmanabhan} and Verlinde~\cite{Verlinde}. Each of these approaches takes some prior geometric structure as input.
 
 \textit{The gap.} In the ``local cost-based leading quadratic form'' sense adopted here, existing approaches typically take Lorentzian signature or an equivalent causal structure as input; the present work addresses the prior question: when does the cost structure itself enforce a Lorentzian leading symbol?
 
@@ -956,12 +956,6 @@ B.~Riemann,
 \textit{Ueber die Hypothesen, welche der Geometrie zu Grunde liegen}.
 Habilitation lecture (1854); Abh.\ K\"onigl.\ Ges.\ Wiss.\ G\"ottingen \textbf{13} (1868).
 English translation by W.\,K.~Clifford, Nature \textbf{8} (1873), 14--17, 36--37.
-
-\bibitem{EPS}
-J.~Ehlers, F.\,A.\,E.~Pirani, A.~Schild,
-The geometry of free fall and light propagation.
-Gen.\ Relativ.\ Gravit.\ \textbf{44}, 1587 (2012).
-\url{https://doi.org/10.1007/s10714-012-1353-4}
 
 \bibitem{GENERIC}
 M.~Grmela, H.\,C.~\"Ottinger,
