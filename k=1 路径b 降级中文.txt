@@ -1,5 +1,9 @@
-\documentclass[11pt]{ctexart}
-\usepackage[T1]{fontenc}
+\documentclass[11pt,UTF8,fontset=none]{ctexart}
+\usepackage{fontspec}
+\setmainfont{Latin Modern Roman}
+\setCJKmainfont[BoldFont={Noto Serif CJK SC Bold},ItalicFont={Noto Serif CJK SC}]{Noto Serif CJK SC}
+\setCJKsansfont{Noto Sans CJK SC}
+\setCJKmonofont{Noto Sans Mono CJK SC}
 \usepackage[margin=1in]{geometry}
 \setlength{\emergencystretch}{1.5em}
 \usepackage{amsmath,amssymb,amsthm}
@@ -24,22 +28,20 @@
 \maketitle
 
 \begin{abstract}
-\textit{背景。}时间一直作为基本量进入物理学——一种未被推导的输入。本文提出一个结构性框架，其中局部代价形式的代数类型受可实现性公理约束，洛伦兹签名作为推论而非假设涌现。
+\textit{背景。}时间一直作为基本量进入物理学——一种未被推导的输入。
 
-\textit{框架。}此处将变化的代价通过信息时间 $dt_{\mathrm{info}}:=d\Phi/H$ 来建模。被约束的对象不是 $dt_{\mathrm{info}}$ 本身，而是与 $dt_{\mathrm{info}}^{2}$ 局部二阶展开相关联的带号主导二次形式 $G$。将该形式建模为满足~\cite{Realizability} 中的公理~R, E, T，则在非退化条件下得到 $\mathrm{Sig}(G)=(1,1)$，等价地 $\det G<0$；单位代价轨迹是 $K(x)=x^{\top}Gx=1$。
+\textit{框架。}此处，变化的代价作为基本量进入，编码于信息时间 $dt_{\mathrm{info}}:=d\Phi/H$。被约束的对象不是 $dt_{\mathrm{info}}$ 本身，而是与 $dt_{\mathrm{info}}^{2}$ 局部二阶展开相关联的带号主导二次形式 $G$。将该形式建模为满足~\cite{Realizability} 中的公理~R, E, T，则在非退化条件下得到 $\mathrm{Sig}(G)=(1,1)$，等价地 $\det G<0$；单位代价轨迹是 $K(x)=x^{\top}Gx=1$。
 
 \textit{动力学与热力学。}在辛-耗散类 $GA=\alpha J-GD$ 中，演化律取唯一约化形式 $\dot x=(J_G-D)\nabla V$。在 $K=1$ 附近，框架提供了局部 Clausius 关系所需的成分，从而在两个外部恒等关系 $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ 与 $S\propto A$ 给定后，为 Jacobson 论证提供了热力学输入。
 
-\textit{引力内容。}上述热力学视角在 Jacobson 论证下条件性地恢复了 Einstein 方程 $R_{\mu\nu}-\tfrac12 R\,g_{\mu\nu}=8\pi T_{\mu\nu}$。独立地，在 $f>0$ 的球对称情形下，对代价结构泛函 $K_i:=\sigma_2^2\Box\ln\sigma_i$ 施加的微分条件 $K_1=K_2=1$ 被证明在代数上等价于真空 Einstein 方程 $R_{\mu\nu}=0$（定理~\ref{thm:field}）。条件 $K_i=1$ 是作为候选拟设在场层级引入的，由 Law~I 的点层条件 $K=1$ 启发但并非从中推出；因此定理~\ref{thm:field} 是真空 Einstein 在代价结构语言下的一个代数重新表述，而非从框架公理出发的推导。洛伦兹签名在整个论证中始终在点层级被内在地提供。
+\textit{引力内容。}在 $f>0$ 的球对称情形下，对代价结构泛函 $K_i:=\sigma_2^2\Box\ln\sigma_i$ 施加的微分条件 $K_1=K_2=1$ 被证明在代数上等价于真空 Einstein 方程 $R_{\mu\nu}=0$（定理~\ref{thm:field}）。条件 $K_i=1$ 是作为候选拟设在场层级引入的，由 Law~I 的点层条件 $K=1$ 启发但并非从中推出；因此定理~\ref{thm:field} 是真空 Einstein 在代价结构语言下的一个代数重新表述，而非从框架公理出发的推导。洛伦兹签名在整个论证中始终在点层级被内在地提供。
 \end{abstract}
 
 \noindent\textbf{关键词：}洛伦兹签名；信息时间；辛-耗散动力学；Jacobson 论证；Rindler 视界
 
 \section{引言：时间作为推论}
 
-我们将本文发展的结构性设定——由代价-可实现性桥接（Law~I）、辛-耗散动力学（Law~II）和临界阻尼涨落结构（Law~III）构成——称作 ``$K=1$ 框架''。
-
-\textit{问题。}Riemann 1854 年的就职讲座指出，对一个连续流形而言，度量关系的基础须从流形之外求得，存在于作用于其上的力之中~\cite{Riemann1854}。\footnote{Riemann 的原文为：``度量关系的基础须从该实存之外求得，存在于作用其上的协同力中。''}然而，时空物理的大部分标准表述都假定了度量或因果结构作为输入。Jacobson 论证~\cite{Jacobson} 从局部 Rindler 视界的热力学得到 Einstein 方程，但洛伦兹签名是普遍假设的——Padmanabhan~\cite{Padmanabhan} 与 Verlinde~\cite{Verlinde} 的进路也是如此。EPS 公理化~\cite{EPS} 从自由下落和光线传播导出因果结构，但使用了运动学基本量。在所有这些回应 Riemann 公开问题的进路中，要么签名被规定，要么推导预设了运动学基本量。
+\textit{问题。}Riemann 1854 年的就职讲座指出，对一个连续流形而言，度量关系的基础须从流形之外求得，存在于作用于其上的绑定力之中~\cite{Riemann1854}。\footnote{Clifford 1873 年英译：``\ldots we must seek the ground of its metric relations outside it, in binding forces which act upon it.''}然而，时空物理的大部分标准表述都假定了度量或因果结构作为输入。Jacobson 论证~\cite{Jacobson} 从局部 Rindler 视界的热力学得到 Einstein 方程，但洛伦兹签名是普遍假设的——Padmanabhan~\cite{Padmanabhan} 与 Verlinde~\cite{Verlinde} 的进路也是如此。EPS 公理化~\cite{EPS} 从自由下落和光线传播导出因果结构，但使用了运动学基本量。在所有这些回应 Riemann 公开问题的进路中，要么签名被规定，要么推导预设了运动学基本量。
 
 \textit{缺口。}在此处采用的 ``局部代价主导二次形式''意义下，已有进路通常将洛伦兹签名或等价的因果结构作为输入；本文回答的是更前置的问题：代价结构本身何时强制要求洛伦兹主导符号？
 
@@ -383,7 +385,7 @@ $\dot{K}=2x^{\top}G\dot{x}=4(K-1)\,x^{\top}G(J_{G}-d_{c}I)Gx$。由 $GJ_{G}=\alp
 
 \subsection*{$\{K=1\}$ 上的两类涨落}
 
-将各向同性加性白噪声（Itô 约定）加到 Law~II 给出 $dx=(J_{G}-D)\nabla V\,dt+\sigma\,dW_{t}$，其中 $W_{t}$ 是标准 $\mathbb{R}^{2}$ 值 Wiener 过程，$\sigma>0$ 为常数。在 $D=d_{c}I$（临界阻尼，Law~III）下，出现两个几何上不同的类：
+将各向同性加性白噪声（It\^{o} 约定）加到 Law~II 给出 $dx=(J_{G}-D)\nabla V\,dt+\sigma\,dW_{t}$，其中 $W_{t}$ 是标准 $\mathbb{R}^{2}$ 值 Wiener 过程，$\sigma>0$ 为常数。在 $D=d_{c}I$（临界阻尼，Law~III）下，出现两个几何上不同的类：
 
 \medskip\noindent
 \textit{类~A}（热力学）：$K$ 关于 $\{K=1\}$ 的法向涨落——偏离度规自洽性——由回复率 $\kappa_{K}(x_{*})=4d_{c}\,x_{*}^{\top}G^{2}x_{*}$ 主导；在固定基点处 $K$-涨落的线性化稳定分布为高斯分布、方差 $\sigma^{2}/(2d_{c})$，由一维 OU 过程的标准稳定分布~\cite{Gardiner1985} 给出。虽然回复率与诱导的 $K$-空间噪声幅度都依赖 $x_{*}^{\top}G^{2}x_{*}$，但此因子在 OU 方差中相消。
@@ -501,9 +503,9 @@ $(\Leftarrow)$：$\sigma^{2}=2d_{c}\cdot T_{\mathrm{tol}}$ 给 $T_{\mathrm{eff}}
 以及代数 Tolman 恒等 $T_{\mathrm{tol}}=d_{c}T_{H}$（$\kappa$-因子在式~\eqref{eq:nearhorizon} 中相消）。
 \end{remark}
 
-\subsection*{位置相关温度与 Itô 修正}
+\subsection*{位置相关温度与 It\^{o} 修正}
 
-将 Itô 公式应用于 $K=x^{\top}Gx$ 给出附加漂移 $\sigma^{2}\,\mathrm{tr}(G)\,dt$。这移动了 $K$ 的均值但不影响其方差：在任意 $G$-特征向量基点处，FDT 比 $\sigma_{K}^{2}/(2\kappa_{K})$ 简化为 $\sigma^{2}/(2d_{c})$，与 $x_{*}^{\top}G^{2}x_{*}$ 无关。因此~\eqref{eq:var} 与 $T_{\mathrm{eff}}=\sigma^{2}/(2d_{c})$ 对任意洛伦兹 $G$ 成立。
+将 It\^{o} 公式应用于 $K=x^{\top}Gx$ 给出附加漂移 $\sigma^{2}\,\mathrm{tr}(G)\,dt$。这移动了 $K$ 的均值但不影响其方差：在任意 $G$-特征向量基点处，FDT 比 $\sigma_{K}^{2}/(2\kappa_{K})$ 简化为 $\sigma^{2}/(2d_{c})$，与 $x_{*}^{\top}G^{2}x_{*}$ 无关。因此~\eqref{eq:var} 与 $T_{\mathrm{eff}}=\sigma^{2}/(2d_{c})$ 对任意洛伦兹 $G$ 成立。
 
 $K$-空间噪声幅度 $\sigma_{K}(x)=2\sigma\|Gx\|$ 沿 $\{K=1\}$ 变化，给出位置相关温度（式~\eqref{eq:Tloc}）：
 \begin{equation}
@@ -593,12 +595,12 @@ K_{2}=1-B/r^{2},
 \]
 故 (a) 之逆在 $B\neq 0$ 时不成立：$K_{1}\equiv 1$ 不蕴含 $K_{2}\equiv 1$。
 \end{enumerate}
-因此 $K_{2}\equiv 1$ 是严格更强的条件；二参数族 $f=1+A/r+B/r^{2}$ 满足 $K_{1}\equiv 1$ 但通常违反 $K_{2}\equiv 1$。Reissner--Nordström 是这样一个非真空例子。
+因此 $K_{2}\equiv 1$ 是严格更强的条件；二参数族 $f=1+A/r+B/r^{2}$ 满足 $K_{1}\equiv 1$ 但通常违反 $K_{2}\equiv 1$。Reissner--Nordstr\"{o}m 是这样一个非真空例子。
 \end{lemma}
 
 \begin{proof}
 $(a)$\;$K_{2}=f+rf'=d(rf)/dr$，故 $K_{2}\equiv 1$ 是一阶 ODE $d(rf)/dr=1$，通解 $rf=r+C$，即 $f=1+C/r$。直接代入给 $K_{1}=(1+C/r)+2r(-C/r^{2})+(r^{2}/2)(2C/r^{3})=1+C/r-2C/r+C/r=1$。
-$(b)$\;$K_{1}\equiv 1$ 是二阶线性 ODE $f+2rf'+(r^{2}/2)f''=1$，即 Euler 型方程，其 Schwarzschild--Reissner-Nordström 形式的通解 $f=1+A/r+B/r^{2}$。代入 $K_{2}=f+rf'$ 给 $K_{2}=(1+A/r+B/r^{2})+r(-A/r^{2}-2B/r^{3})=1-B/r^{2}$。故 $K_{2}\equiv 1$ 要求 $B=0$。\qed
+$(b)$\;$K_{1}\equiv 1$ 是二阶线性 ODE $f+2rf'+(r^{2}/2)f''=1$，即 Euler 型方程，其 Schwarzschild--Reissner-Nordstr\"{o}m 形式的通解 $f=1+A/r+B/r^{2}$。代入 $K_{2}=f+rf'$ 给 $K_{2}=(1+A/r+B/r^{2})+r(-A/r^{2}-2B/r^{3})=1-B/r^{2}$。故 $K_{2}\equiv 1$ 要求 $B=0$。\qed
 \end{proof}
 
 \begin{remark}[$K_1$ 与 $K_2$ 的非对称角色]
