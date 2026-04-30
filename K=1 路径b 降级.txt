@@ -30,7 +30,7 @@
 
 \textit{Dynamics and thermodynamics.} Within the symplectic--dissipative class $GA=\alpha J-GD$, the evolution law takes the uniquely reduced form $\dot x=(J_G-D)\nabla V$. Near $K=1$, the framework supplies the ingredients for a local Clausius relation, thereby providing the thermodynamic input to the Jacobson argument once the two external identifications $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ and $S\propto A$ are supplied.
 
-\textit{Gravitational content.} In the spherical sector with $f>0$, the differential conditions $K_1=K_2=1$ for the cost-structural functionals $K_i:=\sigma_2^2\Box\ln\sigma_i$ are shown to be algebraically equivalent to the vacuum Einstein equations $R_{\mu\nu}=0$ (Theorem~\ref{thm:field}). The conditions $K_i=1$ are introduced at the field level as a candidate ansatz, motivated by but not derived from the point-level condition $K=1$ of Law~I; Theorem~\ref{thm:field} is therefore an algebraic reformulation of vacuum Einstein in cost-structural language, not a derivation from the framework axioms. Lorentzian signature is supplied internally at the point level throughout.
+\textit{Gravitational content.} In the spherical sector with $f>0$, the differential conditions $K_1=K_2=1$ for $K_i:=\sigma_2^2\Box\ln\sigma_i$ are algebraically equivalent to the vacuum Einstein equations $R_{\mu\nu}=0$ (Theorem~\ref{thm:field})---a reformulation in cost-structural language, with $K_i=1$ as a field-level ansatz not derived from the point-level $K=1$. Lorentzian signature is supplied internally throughout.
 \end{abstract}
 
 \noindent\textbf{Keywords:} Lorentzian signature; Information time; Symplectic-dissipative dynamics; Jacobson argument; Rindler horizon
@@ -111,7 +111,9 @@ exact for $r$-dependent $\phi$
 
 \medskip\noindent\textit{Framework definition.} The present paper is organised around the following layers. \emph{Input layer}: a structural parameter $\Phi$ and a positive scalar cost $H$, defining the information time $dt_{\mathrm{info}}:=d\Phi/H$. \emph{Axiom layer}: a signed leading quadratic form $G$ associated with $dt_{\mathrm{info}}^{2}$, modelled as satisfying Axioms~R, E, T of~\cite{Realizability} together with nondegeneracy. \emph{Additional condition}: the unit-cost locus $K(x):=x^{\top}Gx=1$, imposed as a point-level self-consistency condition. \emph{Dynamical completion}: Law~II gives the unique evolution $\dot x=(J_G-D)\nabla V$ within the symplectic--dissipative class $GA=\alpha J-GD$ (Theorem~\ref{thm:lawII}), and Law~III yields the restoring and fluctuation structure at critical damping (Theorem~\ref{thm:restoring}). \emph{Internal conclusions}: at the point level one obtains Lorentzian signature $\mathrm{Sig}(G)=(1,1)$, the threefold equivalence of Theorem~\ref{thm:equivalence}, and the local restoring law $\kappa_K=4d_c$ at a normalised eigenvector base point; conditionally, under the field-level ansatz $K_i=1$, one obtains algebraic equivalence to the Einstein vacuum equations in the spherical vacuum sector (Theorem~\ref{thm:field}). \emph{External inputs}: only for the thermodynamic perspective, the thermal identification $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ and the entropy--area law $S\propto A$ are required.
 
-\medskip\noindent\textit{Main bridge.} The information time is defined by
+\subsection*{Main bridge}
+
+The information time is defined by
 \[
 dt_{\mathrm{info}}:=\frac{d\Phi}{H},
 \]
@@ -129,7 +131,9 @@ is not the primitive cost functional of the realizability layer, but an addition
 \]
 Axiom~R may be read intuitively as saying that there exist arbitrarily small forward displacements whose information cost vanishes relative to their size\footnote{Here ``size'' refers to the Euclidean norm $\|x\|$.}; this is the ingredient that rules out a positive-definite leading form. Thus, in the present modelling, the cost structure forces Lorentzian signature at the level of the signed leading form.
 
-\medskip\noindent\textit{Deeper motivation.} Axioms~R, E, T of~\cite{Realizability} may be viewed as a realizability encoding of the Hessian-level degeneracy structure associated with the local second-order cost form of $dt_{\mathrm{info}}^{2}$, motivated by the requirement that nontrivial variational motion remain realizable rather than collapse to trivial displacement. The present paper does not carry out a full reverse reconstruction of Axioms~R, E, T from that structure; rather, it uses the associated signed leading form $G$ together with the realizability theorem of~\cite{Realizability} as the operative bridge. For relative self-containment, \S\ref{sec:lawI} recalls only the minimal mechanism needed from~\cite{Realizability}, rather than reproducing the full proof.
+\subsection*{Deeper motivation and scope}
+
+\noindent Axioms~R, E, T of~\cite{Realizability} may be viewed as a realizability encoding of the Hessian-level degeneracy structure associated with the local second-order cost form of $dt_{\mathrm{info}}^{2}$, motivated by the requirement that nontrivial variational motion remain realizable rather than collapse to trivial displacement. The present paper does not carry out a full reverse reconstruction of Axioms~R, E, T from that structure; rather, it uses the associated signed leading form $G$ together with the realizability theorem of~\cite{Realizability} as the operative bridge. For relative self-containment, \S\ref{sec:lawI} recalls only the minimal mechanism needed from~\cite{Realizability}, rather than reproducing the full proof.
 
 \medskip\noindent\textit{Scope of the claim.} What is constrained here is the \emph{algebraic type} of $G$ (its signature), not all of its specific values. Accordingly, $G$ should be read as a local cost-form forced by realizability, rather than as a complete reconstruction of the spacetime metric $g_{\mu\nu}$. The present work is therefore structural rather than fully reconstructive: $\Phi$ and $H$ are not fixed to specific physical quantities, and $dt_{\mathrm{info}}$ serves as the motivating cost-time layer from which the local leading form $G$ is introduced, rather than as a complete first-principles derivation of all metric data.
 
@@ -141,7 +145,9 @@ measures local temporal cost, and the condition $K=1$ identifies the self-consis
 
 \medskip\noindent\textit{Role of information time in the present paper.} In the present work, $dt_{\mathrm{info}}$ plays a motivating and structural role: it specifies the cost-time layer from which the local leading form $G$ is introduced. The later dynamical sections use an effective evolution parameter $t$; an explicit first-principles identification between that parameter and $dt_{\mathrm{info}}$ is not derived here. Throughout this paper, the dynamical evolution parameter $t$ is an effective evolution time independent of $dt_{\mathrm{info}}$; establishing their relation is left to future work. In this sense, Law~I establishes the local cost-geometric layer of the framework, while a full dynamical reconstruction from information time alone is left to future work. Throughout the paper, this $2\times 2$ construction is applied on distinguished local two-planes, such as the $(t,r)$ wedge of a local Rindler horizon in the thermodynamic perspective and the radial-time plane in spherical symmetry for the algebraic reformulation. These are not arbitrary two-planes: they are the physically distinguished local planes selected by the problem under consideration.
 
-\medskip\noindent\textit{Sign conventions.} In this section, $G$ is written in the cost-sign convention, so that the temporal direction carries positive cost. In later sections, especially in the Rindler realisation of the thermodynamic perspective, we switch to the spacetime-sign convention
+\subsection*{Sign conventions and Realizability mechanism}
+
+\noindent In this section, $G$ is written in the cost-sign convention, so that the temporal direction carries positive cost. In later sections, especially in the Rindler realisation of the thermodynamic perspective, we switch to the spacetime-sign convention
 \[
 g_{\mu\nu}=-G_{\mu\nu}.
 \]
