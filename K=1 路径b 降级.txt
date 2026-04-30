@@ -26,7 +26,7 @@
 \begin{abstract}
 \textit{Background.} Time has invariably entered physics as a primitive --- an underived input.
 
-\textit{Framework.} Here, cost of change enters as the primitive datum, encoded in an information time $dt_{\mathrm{info}}:=d\Phi/H$. The object constrained is not $dt_{\mathrm{info}}$ itself, but the signed leading quadratic form $G$ associated with the local second-order expansion of $dt_{\mathrm{info}}^{2}$. Modelling this form as satisfying Axioms~R, E, T of~\cite{Realizability} yields, under nondegeneracy, $\mathrm{Sig}(G)=(1,1)$, equivalently $\det G<0$; the unit-cost locus is $K(x)=x^{\top}Gx=1$.
+\textit{Framework.} Here, cost of structural change enters as the primitive datum, encoded in an information time $dt_{\mathrm{info}}:=d\Phi/H$. The object constrained is not $dt_{\mathrm{info}}$ itself, but the signed leading quadratic form $G$ associated with the local second-order expansion of $dt_{\mathrm{info}}^{2}$. Modelling this form as satisfying Axioms~R, E, T of~\cite{Realizability} yields, under nondegeneracy, $\mathrm{Sig}(G)=(1,1)$, equivalently $\det G<0$; the unit-cost locus is $K(x)=x^{\top}Gx=1$.
 
 \textit{Dynamics and thermodynamics.} Within the symplectic--dissipative class $GA=\alpha J-GD$, the evolution law takes the uniquely reduced form $\dot x=(J_G-D)\nabla V$. Near $K=1$, the framework supplies the ingredients for a local Clausius relation, thereby providing the thermodynamic input to the Jacobson argument once the two external identifications $T_{\mathrm{eff}}=T_{\mathrm{tol}}$ and $S\propto A$ are supplied.
 
