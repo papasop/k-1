@@ -7,7 +7,7 @@
 > unit-shell alternatives fail to reproduce the long-horizon stability
 > gain.*
 
-**One sentence**: Adding `(mq + 1)²` to a Transformer's loss—where
+ Adding `(mq + 1)²` to a Transformer's loss—where
 `mq = ||spatial_emb||² − ||time_emb||²`—reliably constrains embeddings
 to the Lorentzian unit hyperboloid (n=20 seeds) and induces a stability
 trade-off: long-horizon endpoint MSE improves 16.9% over no constraint
@@ -27,36 +27,6 @@ loss = loss_task + W_MF * loss_mf
 
 ---
 
-## What this work is, and what it isn't
-
-**It is**:
-- A theoretically grounded loss term derived from Theorem 5 of Li (2026)
-- Empirically validated to maintain Lorentzian geometric structure
-  across 20 random seeds with high consistency
-- Empirically validated to induce a **stability-vs-accuracy trade-off**
-  with statistical significance on multiple metrics (paired t-test,
-  Wilcoxon, sign test all agree; BH-corrected for the secondary
-  metric family)
-- **Empirically distinguished from Euclidean unit-shell alternatives**
-  via a fair-scale control experiment (n=20 paired seeds): both
-  `(||emb||² − 1)²` and `(||emb||²/D − 1)²` fail to reproduce the
-  trade-off
-
-**It isn't**:
-- A method that uniformly improves all task metrics — per-step velocity
-  error reliably worsens
-- Validated across multiple datasets (only pusht_keypoints)
-- Shown to outperform conservation-aware methods like Hamiltonian or
-  Lagrangian Neural Networks (untested)
-- A "next-generation Lorentzian physics AI" — earlier framing rescoped
-  to a calibrated mid-tier scope
-- Proven to be the optimal geometric inductive bias — only proven
-  superior to the specific Euclidean alternatives tested
-
-The history of escalating then refined claims is documented in
-"Refuted Findings". This is the project's research integrity record.
-
----
 
 ## Verified findings (n=20 paired, with multiple comparison correction)
 
