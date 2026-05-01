@@ -437,17 +437,7 @@ analysis plans. Logs saved as JSON.
 
 **Current completion**: 3.5/8.
 
-The path forward:
-- A mid-tier conference paper (CoRL/RSS/ICLR) is now defensible based
-  on the trade-off characterization + Lorentzian-specificity
-  evidence (publication probability ~75-85%)
-- Cross-task validation (Milestone 4) determines whether the trade-off
-  pattern generalizes
-- Comparison with HNN/LNN (Milestone 5) is required before claiming
-  superiority over conservation-aware methods
-- Top-tier venues (NeurIPS/ICML, Nature MI) require Milestones 4-7
 
----
 
 ## Limitations
 
